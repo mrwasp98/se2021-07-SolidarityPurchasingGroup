@@ -1,0 +1,1 @@
+# se2021-07-SolidarityPurchasingGroup
