@@ -24,6 +24,23 @@
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
 
+### Get available products
+* URL: `api/get/clients`
+* HTTP method: GET
+* Description: get from the Client table all the clients present in the system.
+* Request body: None
+* Response body: an array with all the clients,
+``` JSON
+[{
+    "userid": 0, 
+    "name": "John", 
+    "surname": "Doe", 
+    "wallet": 50.30, 
+    "address": "Corso Duca degli Abruzzi, 21, Torino"
+}]
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
+
 ### Add client
 * URL: `api/client`
 * HTTP method: POST
@@ -33,8 +50,8 @@
 [{
     "name": "Grrmafa", 
     "surname": "Idcamcv", 
-    "Wallet": "50,30", 
-    "Address": "Corso Duca degli Abruzzi, 21, Torino"
+    "wallet": 50.30, 
+    "address": "Corso Duca degli Abruzzi, 21, Torino"
 }]
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
