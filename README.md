@@ -24,7 +24,7 @@
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
 
-### Get available products
+### Get available clients
 * URL: `api/get/clients`
 * HTTP method: GET
 * Description: get from the Client table all the clients present in the system.
