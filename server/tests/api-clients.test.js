@@ -64,7 +64,11 @@ describe('Testing GET on /api/clients', () => {
 
 describe('Testing POST on /api/clients', () => {
 
-    test("It should respond with 200 status code", async () => {
+    afterEach(() => {
+        //clear (mock) client database
+    });
+
+    test('It should respond with 200 status code', async () => {
         const response = await request(app).post('/api/clients').send({
             name: 'Grrmafa',
             surname: 'Idcamcv',
@@ -74,6 +78,65 @@ describe('Testing POST on /api/clients', () => {
         expect(response.statusCode).toBe(200);
     });
 
-    //TODO tests in case of failure
+    describe('It should respond with 400 (Bad Request) status code', () => {
+
+        test('Case of one parameter missing', async () => {
+            const obj = {
+                name: 'Grrmafa',
+                surname: 'Idcamcv',
+                wallet: 50.30,
+                address: 'Corso Duca degli Abruzzi, 21, Torino'
+            };
+            for (let [key,value] of Object.entries(obj)) {
+                //at each iteration it will create an object with one parameter missing
+                const wrongObjArray = Object.entries(obj).filter(keyValue => JSON.stringify(keyValue)!==JSON.stringify([key,value]));
+                //need to convert from array to object
+                const wrongObj = Object.fromEntries(wrongObjArray);
+                const response = await request(app).post('/api/clients').send(wrongObj);
+                expect(response.statusCode).toBe(400);
+            }
+        });
+
+        test("Case of wrong 'name' parameter type", async () => {
+            const response = await request(app).post('/api/clients').send({
+                name: 1,
+                surname: 'Idcamcv',
+                wallet: 50.30,
+                address: 'Corso Duca degli Abruzzi, 21, Torino'
+            });
+            expect(response.statusCode).toBe(400);
+        });
+
+        test("Case of wrong 'surname' parameter type", async () => {
+            const response = await request(app).post('/api/clients').send({
+                name: 'Grrmafa',
+                surname: 1,
+                wallet: 50.30,
+                address: 'Corso Duca degli Abruzzi, 21, Torino'
+            });
+            expect(response.statusCode).toBe(400);
+        });
+
+        test("Case of wrong 'wallet' parameter type", async () => {
+            const response = await request(app).post('/api/clients').send({
+                name: 'Grrmafa',
+                surname: 'Idcamcv',
+                wallet: 'a',
+                address: 'Corso Duca degli Abruzzi, 21, Torino'
+            });
+            expect(response.statusCode).toBe(400);
+        });
+
+        test("Case of wrong 'address' parameter type", async () => {
+            const response = await request(app).post('/api/clients').send({
+                name: 'Grrmafa',
+                surname: 'Idcamcv',
+                wallet: 'a',
+                address: 1
+            });
+            expect(response.statusCode).toBe(400);
+        });
+
+    }); //400 status code tests
 
 });
