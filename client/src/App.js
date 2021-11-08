@@ -1,24 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import MyNav from "./Components/MyNav";
+import { BrowserRouter as Router, Route, } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          The dream team
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Route path="/" render={() => <> <MyNav  IsLogin={false} /> </>} />
+         </Router>
+    </>
   );
 }
 

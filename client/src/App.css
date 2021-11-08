@@ -28,6 +28,25 @@
   color: #61dafb;
 }
 
+.NavBar-Background {
+  background-color: #143642;
+ 
+}
+.NavBar-Background> div > span {
+  color:#ec9a2a !important;
+}
+.NavBar-Background> div  button {
+  color:#ec9a2a !important;
+  text-decoration: none;
+}
+.NavBar-Background> div  small {
+  color:#ffffff !important;
+  background-color: #0f8b8b;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
