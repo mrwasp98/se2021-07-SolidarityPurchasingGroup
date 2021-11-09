@@ -58,8 +58,10 @@
   border-left: 1px solid #ddd;
 }
 
-.btn:focus{
-  background:olive;
+.btn-primary:hover,.btn-primary:checked, .btn-primary:active, .btn-primary:visited {
+  color:white !important;
+  background-color: #ec9a2a !important;
+  box-shadow: #ec9a2a !important;
 }
 
 @keyframes App-logo-spin {

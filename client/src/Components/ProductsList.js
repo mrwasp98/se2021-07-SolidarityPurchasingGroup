@@ -28,7 +28,7 @@ export default function ProductsList(props) {
                 {props.categories.map((cat) =>
                     <Col className="border-end border-grey p-4">
                         <div className="d-flex justify-content-around">
-                            <Button className="btn" id="main" style={{ "backgroundColor": "#FFF3E0", "fontSize": "18px", "border": 1, "color":"#EC9A29" }} onClick={handleShow}>
+                            <Button className="btn btn-primary" id="main" style={{"backgroundColor": "#FFF3E0", "fontSize": "18px", "border": 1, "color":"#EC9A29" }} onClick={handleShow}>
                                 <>{cat}</>
                             </Button>
                         </div>
