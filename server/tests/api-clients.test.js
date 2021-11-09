@@ -4,6 +4,7 @@
 const request = require("supertest");
 // we also need our app for the correct routes
 const app = require("../server.js");
+const clientDao = require('./client-dao');
 
 /*
 REMEMBER
@@ -12,7 +13,7 @@ Change the database in database.js before running tests
 
 describe('Testing GET on /api/clients', () => {
 
-    /*
+    
     const fakeClient1 = {
             userid: 1,
             name: 'John',
@@ -27,14 +28,17 @@ describe('Testing GET on /api/clients', () => {
             wallet: 12.30,
             address: 'Corso Mediterraneo, 70, Torino'
         }
-    */
+    
 
     beforeAll(() => {
         //clear and fill (mock) client database with fakeClient1 and fakeClient2
+        clientDao.deleteAllClients();
+        clientDao.insertClient(fakeClient1);
+        clientDao.insertClient(fakeClient2);
     });
 
     afterAll(() => {
-        //clear (mock) client database
+        clientDao.deleteAllClients();
     });
 
     /*remember: mock database should be pre-filled with
@@ -65,7 +69,7 @@ describe('Testing GET on /api/clients', () => {
 describe('Testing POST on /api/clients', () => {
 
     afterEach(() => {
-        //clear (mock) client database
+        clientDao.deleteAllClients();
     });
 
     test('It should respond with 200 status code', async () => {
