@@ -1,6 +1,6 @@
 /** STORY 1 **/
 //POST post the requests into the db
-const addPRequest = (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, productid, quantity, price) => {
+const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, productid, quantity, price) => {
     return new Promise((resolve, reject) => {
       fetch( '/api/requests', {
         method: "POST",
@@ -35,7 +35,7 @@ const addPRequest = (userid, creationdate, claimdate, confirmationdate, delivery
 }
 
 //GET all clients
-const getClients = () => {
+const getClients = async () => {
   return new Promise((resolve, reject) => {
     fetch( '/api/get/clients', {
       method: "GET",
@@ -57,7 +57,7 @@ const getClients = () => {
 }
 
 /** STORY 2 **/
-const addClient = (name, surname, wallet, address) => {
+const addClient = async (name, surname, wallet, address) => {
     return new Promise((resolve, reject) => {
       fetch( '/api/client', {
         method: "POST",
@@ -86,7 +86,7 @@ const addClient = (name, surname, wallet, address) => {
   }
 
 /** STORY 3 **/
-const getAvailableProducts = () => {
+const getAvailableProducts = async () => {
     return new Promise((resolve, reject) => {
       fetch( '/api/products', {
         method: "GET",
