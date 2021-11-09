@@ -25,7 +25,7 @@
 * Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
 
 ### Get available clients
-* URL: `api/get/clients`
+* URL: `api/clients`
 * HTTP method: GET
 * Description: get from the Client table all the clients present in the system.
 * Request body: None
@@ -42,7 +42,7 @@
 * Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
 
 ### Add client
-* URL: `api/client`
+* URL: `api/clients`
 * HTTP method: POST
 * description: add a new client with a wallet and an address
 * Request body:
@@ -77,13 +77,8 @@
 * Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
 
 ### Hand out product
-* URL: `api/handout/{requestid}`
+* URL: `api/orders/{orderid}`
 * HTTP method: PUT
 * Description: send to backend the requestid 
-* Request body: 
-``` JSON
-[{
-    "requestid": 0
-}]
-```
+* Request parameters: orderid
 * Response: `err: PUT error` (generic error)
