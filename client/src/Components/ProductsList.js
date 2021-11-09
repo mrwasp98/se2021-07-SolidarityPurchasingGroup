@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, ListGroup, Offcanvas } from "react-bootstrap";
+import { Row, Col, Button, ListGroup, Offcanvas, InputGroup } from "react-bootstrap";
 import { useHistory } from 'react-router-dom';
 
 export default function ProductsList(props) {
@@ -7,6 +7,7 @@ export default function ProductsList(props) {
     function handle() {
         history.push("/");
     }
+    const [selected, setSelected] = useState("");
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -23,23 +24,48 @@ export default function ProductsList(props) {
                 </Col>
                 <Col className="justify-content-around col-3"></Col>
             </Row>
-            <hr className="m-0 mt-1" />
-            <Row className="ms-2" style={{ "fontWeight": "600", "backgroundColor": "#FFF3E0" }}>
+            <hr className="m-0 mt-3" />
+            <Row style={{ "fontWeight": "600", "backgroundColor": "#FFF3E0" }}>
                 {props.categories.map((cat) =>
                     <Col className="border-end border-grey p-4">
                         <div className="d-flex justify-content-around">
-                            <Button className="btn btn-primary" id="main" style={{"backgroundColor": "#FFF3E0", "fontSize": "18px", "border": 1, "color":"#EC9A29" }} onClick={handleShow}>
+                            <Button className="btn btn-primary" id="main" style={{ "backgroundColor": "#FFF3E0", "fontSize": "18px", "border": 1, "color": "#EC9A29" }}
+                                onClick={() => {
+                                    setSelected(cat);
+                                    handleShow();
+                                }}
+                            >
                                 <>{cat}</>
                             </Button>
                         </div>
                     </Col>)}
-                <Offcanvas show={show} onHide={handleClose} {...props}>
+                <Offcanvas show={show} onHide={handleClose} {...props} className="p-2" style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
                     <Offcanvas.Header closeButton>
-                        <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+                        <Offcanvas.Title style={{ fontSize: "25px" }}>{selected}</Offcanvas.Title>
                     </Offcanvas.Header>
+                    <hr />
                     <Offcanvas.Body>
-                        Some text as placeholder. In real life you can have the elements you
-                        have chosen. Like, text, images, lists, etc.
+                        <Offcanvas.Title style={{ fontSize: "22px" }}>Produttori:</Offcanvas.Title>
+                        <InputGroup>
+                            {
+                                props.farmers.map((farmer, index) => {
+                                    return (
+                                        <Row key={`row-farmer-${index}`} className="w-100">
+                                            <Col>
+                                                <InputGroup.Checkbox
+                                                    value={index}
+                                                    key={`farmer-${index}`}
+                                                    id={`checkbox-${index}`}
+                                                    onChange={() => { }} />
+                                            </Col>
+                                            <Col>
+                                                <span style={{ marginLeft: '1em' }}>{farmer}</span>
+                                            </Col>
+                                        </Row>
+                                    );
+                                })
+                            }
+                        </InputGroup>
                     </Offcanvas.Body>
                 </Offcanvas>
             </Row>

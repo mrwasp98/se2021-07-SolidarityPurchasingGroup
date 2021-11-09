@@ -10,6 +10,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 function App() {
   const [dirty, setDirty] = useState(true);
+  const [farmers, setFarmers] = useState(["Tizio","Caio","Sempronio","Mino","Pino"]);
   const [categories, setCategories] = useState(["Vegetables","Meat","Bread","Eggs","Milk"]);
   const [products, setProducts] = useState([{
     "id": 0,
@@ -55,6 +56,7 @@ function App() {
               <ProductsList
                 products={products}
                 categories={categories}
+                farmers={farmers}
                 className=""
               />
             </Row>
