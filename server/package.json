@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "testPathIgnorePatterns": ["tests/api-products","tests/api-clients","tests/api-requests"]
   },
   "author": "",
   "license": "ISC",
@@ -14,5 +17,9 @@
     "express-validator": "^6.13.0",
     "morgan": "^1.10.0",
     "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1",
+    "supertest": "^6.1.6"
   }
 }

@@ -4,7 +4,7 @@
 const request = require("supertest");
 // we also need our app for the correct routes
 const app = require("../server.js");
-const clientDao = require('./client-dao');
+const clientDao = require('../client-dao');
 
 /*
 REMEMBER
@@ -13,31 +13,31 @@ Change the database in database.js before running tests
 
 describe('Testing GET on /api/clients', () => {
 
-    
-    const fakeClient1 = {
-            userid: 1,
-            name: 'John',
-            surname: 'Doe',
-            wallet: 50.30,
-            address: 'Corso Duca degli Abruzzi, 21, Torino'
-        }
-        const fakeClient2 = {
-            userid: 2,
-            name: 'Mario',
-            surname: 'Rossi',
-            wallet: 12.30,
-            address: 'Corso Mediterraneo, 70, Torino'
-        }
-    
 
-    beforeAll(() => {
+    const fakeClient1 = {
+        userid: 1,
+        name: 'John',
+        surname: 'Doe',
+        wallet: 50.30,
+        address: 'Corso Duca degli Abruzzi, 21, Torino'
+    }
+    const fakeClient2 = {
+        userid: 2,
+        name: 'Mario',
+        surname: 'Rossi',
+        wallet: 12.30,
+        address: 'Corso Mediterraneo, 70, Torino'
+    }
+
+
+    beforeEach(() => {
         //clear and fill (mock) client database with fakeClient1 and fakeClient2
         clientDao.deleteAllClients();
         clientDao.insertClient(fakeClient1);
         clientDao.insertClient(fakeClient2);
     });
 
-    afterAll(() => {
+    afterEach(() => {
         clientDao.deleteAllClients();
     });
 
@@ -65,6 +65,8 @@ describe('Testing GET on /api/clients', () => {
     //TODO tests in case of failure
 
 });
+
+
 
 describe('Testing POST on /api/clients', () => {
 
@@ -144,3 +146,4 @@ describe('Testing POST on /api/clients', () => {
     }); //400 status code tests
 
 });
+

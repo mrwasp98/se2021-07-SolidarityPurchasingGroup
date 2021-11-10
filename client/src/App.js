@@ -6,6 +6,7 @@ import MyNav from "./Components/MyNav";
 import { BrowserRouter as Router, Route, } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ProductsList from "./Components/ProductsList";
+import ProductRequest from "./Components/ProductRequest";
 import { Container, Row, Col } from "react-bootstrap";
 import Handout from "./Components/Handout";
 
@@ -32,9 +33,9 @@ function App() {
     "typeofproduction": "",
     "picture": ""
   }]);
-  const [clients, setClients] = useState([]);
+ // const [clients, setClients] = useState([]);
 
- /*  const [clients, setClients] = useState([
+   const [clients, setClients] = useState([
     {
       "userid": 0,
       "name": "John",
@@ -66,7 +67,7 @@ function App() {
       "wallet": 7.64,
       "address": "Via Lagrange, 3, Torino"
     }
-  ]); */
+  ]); 
 
   /*useEffect(() => {
     if (dirty) {
@@ -95,7 +96,7 @@ function App() {
             </Row>
           </Container>
         </Route>
-
+        <Route exact path='/productRequest' render={()=> <ProductRequest clients={clients} setClients={setClients} products={products}/>}/>
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients}/>} />
       </Router>
     </>

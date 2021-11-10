@@ -32,3 +32,28 @@ exports.updateOrderStatus = (orderId, status) => {
         });
     });
 };
+
+exports.deleteAllOrders = () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM order';
+        db.run(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+        });
+    });
+};
+
+exports.insertOrder = (order) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO order(id, userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status) VALUES(?,?,?,?,?,?,?,?)';
+        db.run(sql, [order.id, order.userid, order.creationdate, order.claimdate, order.confirmationdate, order.deliveryaddress, order.deliveryid, order.status], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.lastID);
+        });
+    });
+};
