@@ -43,8 +43,8 @@ describe('Testing GET on /api/products', () => {
         //clear (mock) product database
     });
 
-    /*remember: mock database should be pre-filled with
-    fakeProduct1 and fakeProduct2 for this method to work*/
+    //remember: mock database should be pre-filled with
+    //fakeProduct1 and fakeProduct2 for this method to work
     test("It should respond with an array of products", async () => {
         const response = await request(app).get('/api/products');
         const fakeProduct1 = {
@@ -78,3 +78,4 @@ describe('Testing GET on /api/products', () => {
     //TODO tests in case of failure
 
 });
+

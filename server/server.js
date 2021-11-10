@@ -31,10 +31,10 @@ app.get('/api/clients',
       .catch(() => res.status(500).end());
   });
 
-//get orders given a clientId
+//get orders given a clientid
 app.get('/api/orders',
   async (req, res) => {
-    orderDao.getOrders(req.body.clientId)
+    orderDao.getOrders(req.query.clientid)
       .then(order => res.json(order))
       .catch(() => res.status(500).end());
   });
