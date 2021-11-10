@@ -87,7 +87,12 @@
     border: 2px solid #EC9A29;
 }
 
-.btn-outline-yellow:hover {
+.btn-outline-yellow:hover,
+.btn-outline-yellow:focus {
     background-color: #EC9A29;
     color: black;
+}
+
+.linkred {
+    color: red;
 }

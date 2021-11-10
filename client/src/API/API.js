@@ -43,7 +43,6 @@ const getClients = async () => {
         "content-type": "application/json",
       },
     }).then((res) => {
-      console.log(res)
         if (!res.ok) {
           const error = new Error(`${res.status}: ${res.statusText}`);
           error.response = res;
