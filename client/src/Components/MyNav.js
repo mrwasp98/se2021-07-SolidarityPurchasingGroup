@@ -14,7 +14,7 @@ export default function MyNav(props) {
             {iconStar}
             <span> SPG - Group 07</span>
           </Navbar.Brand>
-          <small>Curent Date: {dayjs().format("DD/MM/YYYY").toString()}{"  "}{iconCalendar}</small>
+          <small>Current Date: {dayjs().format("DD/MM/YYYY").toString()}{"  "}{iconCalendar}</small>
           <Navbar.Text>
             {iconPerson}{" "}
             {props.IsLogin ? (
