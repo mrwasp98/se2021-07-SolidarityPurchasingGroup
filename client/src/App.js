@@ -32,8 +32,9 @@ function App() {
     "typeofproduction": "",
     "picture": ""
   }]);
+  const [clients, setClients] = useState([]);
 
-  const [clients, setClients] = useState([
+ /*  const [clients, setClients] = useState([
     {
       "userid": 0,
       "name": "John",
@@ -52,8 +53,20 @@ function App() {
       "surname": "Rossi",
       "wallet": 7.64,
       "address": "Via Lagrange, 3, Torino"
+    }, {
+      "userid": 3,
+      "name": "XXXXXXX",
+      "surname": "YYYYYYYYY",
+      "wallet": 7.64,
+      "address": "Via Lagrange, 3, Torino"
+    },{
+      "userid": 4,
+      "name": "XXAXXXX",
+      "surname": "YYBYYYYYY",
+      "wallet": 7.64,
+      "address": "Via Lagrange, 3, Torino"
     }
-  ]);
+  ]); */
 
   /*useEffect(() => {
     if (dirty) {

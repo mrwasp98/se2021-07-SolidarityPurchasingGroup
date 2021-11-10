@@ -37,12 +37,13 @@ const addPRequest = async (userid, creationdate, claimdate, confirmationdate, de
 //GET all clients
 const getClients = async () => {
   return new Promise((resolve, reject) => {
-    fetch( '/api/get/clients', {
+    fetch( '/api/clients', {
       method: "GET",
       headers: {
         "content-type": "application/json",
       },
     }).then((res) => {
+      console.log(res)
         if (!res.ok) {
           const error = new Error(`${res.status}: ${res.statusText}`);
           error.response = res;
@@ -123,3 +124,4 @@ async function handOutProduct(requestid) {
 
 
 
+export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct}

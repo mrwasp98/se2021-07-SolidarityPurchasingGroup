@@ -1,9 +1,23 @@
-import { useState } from "react";
-import { Card, Container, Button, Form, Row, ListGroup, ListGroupItem } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Card, Container, Button, Form, ListGroup, ListGroupItem } from "react-bootstrap";
+import React, { Component } from 'react'
+import Select from 'react-select'
+import { getClients } from "../API/API"
 
 export default function Handout(props) {
 
     const [selectedClient, setSelectedClient] = useState("");
+    const [options, setOptions] = useState([]);
+
+    useEffect(() => {
+        getClients()
+            .then((res) => {
+                console.log(res)
+                props.setClients(res)
+                setOptions(props.clients.map((e) => { return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address } }))
+            })
+    }, []);
+
 
     return (
         <Container className="justify-content-center mt-3">
@@ -16,14 +30,8 @@ export default function Handout(props) {
                         </Card.Header>
                         <Card.Body>
                             <Form>
-                                <Form.Select onChange={(ev) => setSelectedClient(ev.target.value)}>
-                                    <option disabled> Select the client </option>
-                                    {props.clients.map((el, ind) => {
-                                        return (
-                                            <option key={ind}>{el.name} {el.surname} - {el.address}</option>
-                                        )
-                                    })}
-                                </Form.Select>
+                                <Select options={options}
+                                    onChange={(event) => setSelectedClient(event.value)} />
                             </Form>
                         </Card.Body>
                     </ListGroupItem>
