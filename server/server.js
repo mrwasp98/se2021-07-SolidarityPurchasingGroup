@@ -5,6 +5,7 @@ const morgan = require("morgan"); // logging middleware
 const { check, validationResult } = require('express-validator');
 const clientDao = require('./client-dao');
 const orderDao = require('./order-dao');
+const productDao = require('./product-dao');
 
 // init express
 const app = new express();
@@ -48,4 +49,11 @@ app.put('/api/orders/:orderid', async (req, res) => {
   } catch (err) {
     res.status(503).json({ error: `Database error ${err}.` });
   }
+});
+
+app.get('/api/products',
+  async (req, res) => {
+    productDao.getProductsAvailable()
+      .then(products => res.json(products))
+      .catch(()=> res.staus(500).end());
 });
