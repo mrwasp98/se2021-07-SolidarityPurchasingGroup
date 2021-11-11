@@ -48,8 +48,8 @@ exports.deleteAllOrders = () => {
 
 exports.insertOrder = (order) => {
     return new Promise((resolve, reject) => {
-        const sql = "INSERT INTO 'order'(id, userid, creationdate, claimdate, confirmationdate, deliveryaddress, status) VALUES(?,?,?,?,?,?,?)";
-        db.run(sql, [order.id, order.userid, order.creationdate, order.claimdate, order.confirmationdate, order.deliveryaddress, order.status], function (err) {
+        const sql = "INSERT INTO 'order'(userid, creationdate, claimdate, confirmationdate, deliveryaddress, status) VALUES(?,?,?,?,?,?)";
+        db.run(sql, [order.userid, order.creationdate, order.claimdate, order.confirmationdate, order.deliveryaddress, order.status], function (err) {
             if (err) {
                 reject(err);
                 return;

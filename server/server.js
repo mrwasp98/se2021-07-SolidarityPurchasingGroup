@@ -150,6 +150,52 @@ app.get('/api/farmers',
       .catch(()=> res.staus(500).end());
 });
 
+// Post: post the request by shop employee
+app.post('/api/requests', async (req, res) => {
+  try {
+    // Get the products availability in the magazine
+    let productsAvailability = await productDao.getProductsAvailable();
+
+    // Verify the request (check the quantitiy)
+    let products = req.body.products; // Copy the list of products
+
+    let listProductsNotAvailability = []
+    products.map((product) => {
+      if(productsAvailability.filter((p) => p.id === product.id).quantity < product.quantity)
+        // Quantity request not availability
+        listProductsNotAvailability.push(product);
+    })
+
+	if(!listProductsNotAvailability.length){
+    // All products are availability
+    // Create new order  
+    let order = {
+      userid: req.body.userId,
+      creationdate: req.body.creationdate,
+      claimdate: req.body.claimdate,
+      confirmationdate: req.body.confirmationdate,
+      deliveryaddress: "",
+      status: req.body.status
+    }
+    
+    let numberId = await orderDao.insertOrder(order);
+
+    console.log(".Start.");
+    console.log(numberId);
+    console.log(".Fine.");
+
+    // Insert all products in the db
+    res.status(200).end();
+  }
+	else
+    res.status(403).json({error: `A few product are not availability` });
+
+  } catch (err) {
+    res.status(503).json({ error: `Database error ${err}.` });
+  }
+});
+
+
 /*** User APIs ***/
 
 //Login
