@@ -19,3 +19,16 @@ exports.getOrderLines = (orderid) => {
         });
     });
 };
+
+exports.insertOrderLine = (line) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO orderline (orderid, productid, quantity, price) VALUES(?,?,?,?);';
+        db.run(sql, [line.orderid, line.productid, line.quantity, line.price], function(err) {
+            if(err) {
+                reject(err);
+                return;
+            }
+            resolve(this.lastID);
+        });
+    });
+};

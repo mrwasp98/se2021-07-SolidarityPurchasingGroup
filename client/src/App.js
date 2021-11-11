@@ -2,9 +2,9 @@ import logo from "./logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import API from './API/API.js';
-import {addPRequest} from './API/API'
+import { addPRequest } from './API/API'
 import MyNav from "./Components/MyNav";
-import {LoginForm} from "./Components/LoginForm";
+import { LoginForm } from "./Components/LoginForm";
 import { BrowserRouter as Router, Route, } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ProductsList from "./Components/ProductsList";
@@ -40,7 +40,7 @@ function App() {
 
   const [orders, setOrders] = useState([
     {
-      id:1,
+      id: 1,
       userid: 4,
       creationdate: "2021-11-09",
       claimdate: "2021-11-10 12:30",
@@ -58,11 +58,11 @@ function App() {
         id: 2,
         name: "Patate",
         quantity: 10,
-        measure:"kg",
+        measure: "kg",
         price: 20.11
       }]
     }, {
-      id:2,
+      id: 2,
       userid: 5,
       creationdate: "2021-11-09",
       claimdate: "2021-11-10 12:30",
@@ -74,11 +74,11 @@ function App() {
         id: 4,
         name: "Tomino di Capra",
         quantity: 3,
-        measure:"kg",
+        measure: "kg",
         price: 12.10
       }]
     }, {
-      id:3,
+      id: 3,
       userid: 6,
       creationdate: "2021-11-09",
       claimdate: "2021-11-10 12:30",
@@ -90,23 +90,23 @@ function App() {
         id: 4,
         name: "Tomino di Capra",
         quantity: 3,
-        measure:"kg",
+        measure: "kg",
         price: 12.10
       }, {
         id: 2,
         name: "Patate",
         quantity: 10,
-        measure:"kg",
+        measure: "kg",
         price: 20.11
       }, {
         id: 1,
         name: "Patate",
         quantity: 3,
-        measure:"kg",
+        measure: "kg",
         price: 12.10
       }]
     }, {
-      id:4,
+      id: 4,
       userid: 7,
       creationdate: "2021-11-09",
       claimdate: "2021-11-10 12:30",
@@ -116,25 +116,25 @@ function App() {
       status: "confirmed",
       products: [{
         id: 7,
-        name:"Salame",
+        name: "Salame",
         quantity: 3,
-        measure:"kg",
+        measure: "kg",
         price: 12.10
       }, {
         id: 6,
-        name:"Croccante di nocciola",
+        name: "Croccante di nocciola",
         quantity: 10,
-        measure:"unità",
+        measure: "unità",
         price: 20.11
       }, {
         id: 2,
-        name:"Patate",
+        name: "Patate",
         quantity: 3,
-        measure:"kg",
+        measure: "kg",
         price: 12.10
       }]
     }, {
-      id:5,
+      id: 5,
       userid: 9,
       creationdate: "2021-11-09",
       claimdate: "2021-11-10 12:30",
@@ -144,21 +144,21 @@ function App() {
       status: "confirmed",
       products: [{
         id: 7,
-        name:"Salame",
+        name: "Salame",
         quantity: 3,
-        measure:"kg",
+        measure: "kg",
         price: 12.10
       }, {
         id: 6,
-        name:"Croccante di nocciola",
+        name: "Croccante di nocciola",
         quantity: 10,
-        measure:"unità",
+        measure: "unità",
         price: 20.11
       }, {
         id: 2,
-        name:"Patate",
+        name: "Patate",
         quantity: 3,
-        measure:"kg",
+        measure: "kg",
         price: 12.10
       }, {
         id: 1,
@@ -168,19 +168,19 @@ function App() {
         price: 12.10
       }, {
         id: 8,
-        name:"Hamburger",
+        name: "Hamburger",
         quantity: 1,
-        measure:"kg",
+        measure: "kg",
         price: 15.11
       }, {
         id: 3,
-        name:"Prezzemolo",
+        name: "Prezzemolo",
         quantity: 2,
-        measure:"mazzi",
+        measure: "mazzi",
         price: 3.00
       }]
     }, {
-      id:6,
+      id: 6,
       userid: 4,
       creationdate: "2021-11-09",
       claimdate: "2021-11-10 12:30",
@@ -190,9 +190,9 @@ function App() {
       status: "confirmed",
       products: [{
         id: 4,
-        name:"Tomino di capra",
+        name: "Tomino di capra",
         quantity: 3,
-        measure:"kg",
+        measure: "kg",
         price: 12.10
       }]
     }
@@ -209,12 +209,30 @@ function App() {
     }
   }, [dirty]);*/
 
-  useEffect(() => {
+  /*useEffect(() => {
     //API get availability
-    let order = orders[0];
 
-    addPRequest(order.userid, order.creationdate, order.claimdate, order.confirmationdate, order.deliveryaddress, order.deliveryid, order.status, order.products).then().catch();
-}, []);
+    orders.map((order) => {
+      let listProducts = [];
+
+    order.products.map((p) => {
+      listProducts.push({
+        productid: p.id,
+        quantity: p.quantity,
+        price: p.price
+      })
+    })
+
+    addPRequest(order.userid,
+      order.creationdate,
+      order.claimdate,
+      order.confirmationdate,
+      order.deliveryaddress,
+      order.deliveryid,
+      order.status,
+      listProducts).then().catch();
+    })
+  }, []); */
 
   return (
     <>

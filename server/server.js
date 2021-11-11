@@ -5,6 +5,7 @@ const morgan = require("morgan"); // logging middleware
 const { check, validationResult } = require('express-validator');
 const clientDao = require('./client-dao');
 const orderDao = require('./order-dao');
+const orderlineDao = require('./orderline-dao');
 const productDao = require('./product-dao');
 const farmerDao = require('./farmer-dao');
 
@@ -159,36 +160,45 @@ app.post('/api/requests', async (req, res) => {
     // Verify the request (check the quantitiy)
     let products = req.body.products; // Copy the list of products
 
-    let listProductsNotAvailability = []
+    let listProductsNotAvailability = [] // List the products not availability in the magazine
     products.map((product) => {
-      if(productsAvailability.filter((p) => p.id === product.id).quantity < product.quantity)
-        // Quantity request not availability
-        listProductsNotAvailability.push(product);
+      if (productsAvailability.filter((p) => p.id === product.id).quantity < product.quantity)
+        listProductsNotAvailability.push(product);  // Quantity request not availability
     })
 
-	if(!listProductsNotAvailability.length){
-    // All products are availability
-    // Create new order  
-    let order = {
-      userid: req.body.userId,
-      creationdate: req.body.creationdate,
-      claimdate: req.body.claimdate,
-      confirmationdate: req.body.confirmationdate,
-      deliveryaddress: "",
-      status: req.body.status
+    if (!listProductsNotAvailability.length) {
+      // All products are availability. Create new order  
+      let order = {
+        userid: req.body.userId,
+        creationdate: req.body.creationdate,
+        claimdate: req.body.claimdate,
+        confirmationdate: req.body.confirmationdate,
+        deliveryaddress: req.body.deliveryaddress,
+        status: req.body.status
+      }
+
+      let numberId = await orderDao.insertOrder(order);
+
+      products.map((product) => {
+        // Create new request line
+        let line = {
+          orderid: numberId,
+          productid: product.productid,
+          quantity: product.quantity,
+          price: product.price
+        } 
+
+        orderlineDao.insertOrderLine(line)
+        .then()
+        .catch((err) => {
+          // Remove order
+
+        })
+      })
+      res.status(200).end();
     }
-    
-    let numberId = await orderDao.insertOrder(order);
-
-    console.log(".Start.");
-    console.log(numberId);
-    console.log(".Fine.");
-
-    // Insert all products in the db
-    res.status(200).end();
-  }
-	else
-    res.status(403).json({error: `A few product are not availability` });
+    else
+      res.status(403).json({ error: `A few product are not availability` });
 
   } catch (err) {
     res.status(503).json({ error: `Database error ${err}.` });
