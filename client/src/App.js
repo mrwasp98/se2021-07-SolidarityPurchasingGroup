@@ -213,7 +213,7 @@ function App() {
         <Route path="/"> <MyNav IsLogin={false} /></Route>
         <Route exact path='/products'>
           <Container className="p-0 m-0" fluid>
-            <Row className="mt-3">
+            <Row className="">
               <ProductsList
                 products={products}
                 categories={categories}
