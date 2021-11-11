@@ -67,3 +67,24 @@ app.get('/api/farmers',
       .then(farmers => res.json(farmers))
       .catch(()=> res.staus(500).end());
 });
+
+// Post: post the request by shop employee
+app.post('/api/requests', async (req, res) => {
+  try {
+    // Get the products availability in the magazine
+    let productsAvailability = await productDao.getProductsAvailable();
+
+    // Verify the request (check the quantitiy)
+    let products = req.body.products; // Copy the list of products
+
+    let listProductsNotAvailability = []
+
+    console.log("-Start-")
+    console.log(products)
+    console.log("-Finish-")
+
+    res.status(200).end();
+  } catch (err) {
+    res.status(503).json({ error: `Database error ${err}.` });
+  }
+});

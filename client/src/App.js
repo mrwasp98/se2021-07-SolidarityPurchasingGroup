@@ -2,6 +2,7 @@ import logo from "./logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import API from './API/API.js';
+import {addPRequest} from './API/API'
 import MyNav from "./Components/MyNav";
 import { BrowserRouter as Router, Route, } from "react-router-dom";
 import { useEffect, useState } from 'react';
@@ -206,6 +207,13 @@ function App() {
       });
     }
   }, [dirty]);*/
+
+  useEffect(() => {
+    //API get availability
+    let order = orders[0];
+
+    addPRequest(order.userid, order.creationdate, order.claimdate, order.confirmationdate, order.deliveryaddress, order.deliveryid, order.status, order.products).then().catch();
+}, []);
 
   return (
     <>
