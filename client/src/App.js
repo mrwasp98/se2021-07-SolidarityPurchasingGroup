@@ -9,6 +9,7 @@ import ProductsList from "./Components/ProductsList";
 import ProductRequest from "./Components/ProductRequest";
 import { Container, Row, Col } from "react-bootstrap";
 import Handout from "./Components/Handout";
+import Register from "./Components/Register";
 
 function App() {
   const [dirty, setDirty] = useState(true);
@@ -222,8 +223,11 @@ function App() {
             </Row>
           </Container>
         </Route>
+
         <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} />} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
+        <Route exact path="/registerClient" render={() => <Register />} />
+
       </Router>
     </>
   );
