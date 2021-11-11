@@ -16,15 +16,11 @@ const addPRequest = async (userid, creationdate, claimdate, confirmationdate, de
             deliveryaddress : deliveryaddress,
             deliveryid : deliveryid, 
             status : status,
-            products: productid
-            
-            // Change
-
-            /**[{
+            products: [{
               productid: productid,
               quantity: quantity,
               price: price
-            }] */
+            }]
         })
       })
         .then((res) => {
