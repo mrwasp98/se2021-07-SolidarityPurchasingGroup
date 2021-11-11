@@ -1,6 +1,6 @@
 import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col} from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { getClients } from "../API/API"
+import { getAvailableProducts, getClients } from "../API/API"
 import Select from 'react-select'
 import { iconAdd } from "./Icons";
 
@@ -24,6 +24,7 @@ export default function ProductRequest(props){
 
     const [selectedClient, setSelectedClient] = useState("");
     const [options, setOptions] = useState([]);
+    const [products, setProducts] = useState(props.products);
 
     useEffect(() => {
         getClients()
@@ -31,6 +32,10 @@ export default function ProductRequest(props){
                 props.setClients(res)
                 setOptions(props.clients.map((e) => { return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address } }))
             })
+        getAvailableProducts()
+        .then((res) => {
+            
+        })
     }, []);
 
     return(<>
