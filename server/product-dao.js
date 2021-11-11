@@ -12,7 +12,7 @@ exports.getProductsAvailable = () => {
                 reject(err);
                 return;
             }
-            const products = rows.map((p) => ({id: p.id, name: p.name, farmerid: p.farmerid, price: p.price, measure: p.measure, category: p.category, typeofproduction: p.typeofproduction, picture: p.picture, dateavailability: p.dateavailability}))
+            const products = rows.map((p) => ({id: p.id, name: p.name, farmerid: p.farmerid, price: p.price, measure: p.measure, category: p.category, typeofproduction: p.typeofproduction, picture: p.picture, dateavailability: p.dateavailability, quantity: p.quatity}))
                             .filter((p) => {return ((dayjs(p.dateavailability)).isBefore(dayjs().format("YYYY-MM-DD")) || (dayjs(p.dateavailability).format("YYYY-MM-DD")) === (dayjs().format("YYYY-MM-DD")))});
             resolve(products);
         });
