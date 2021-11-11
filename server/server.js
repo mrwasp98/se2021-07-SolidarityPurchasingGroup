@@ -6,6 +6,7 @@ const { check, validationResult } = require('express-validator');
 const clientDao = require('./client-dao');
 const orderDao = require('./order-dao');
 const productDao = require('./product-dao');
+const farmerDao = require('./farmer-dao');
 
 // init express
 const app = new express();
@@ -51,9 +52,18 @@ app.put('/api/orders/:orderid', async (req, res) => {
   }
 });
 
+//Get all available products
 app.get('/api/products',
   async (req, res) => {
     productDao.getProductsAvailable()
       .then(products => res.json(products))
+      .catch(()=> res.staus(500).end());
+});
+
+//Get all farmers name
+app.get('/api/farmers',
+  async (req, res) => {
+    farmerDao.getFarmers()
+      .then(farmers => res.json(farmers))
       .catch(()=> res.staus(500).end());
 });
