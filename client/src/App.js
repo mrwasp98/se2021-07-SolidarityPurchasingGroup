@@ -209,13 +209,6 @@ function App() {
     }
   }, [dirty]);*/
 
-  useEffect(() => {
-    //API get availability
-    let order = orders[0];
-
-    addPRequest(order.userid, order.creationdate, order.claimdate, order.confirmationdate, order.deliveryaddress, order.deliveryid, order.status, order.products).then().catch();
-}, []);
-
   return (
     <>
       <Router>
