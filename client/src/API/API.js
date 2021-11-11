@@ -1,7 +1,21 @@
 /** STORY 1 **/
 //POST post the requests into the db
 
-const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, productid, quantity, price) => {
+
+/**
+ * 
+ * @param {*} userid 
+ * @param {*} creationdate 
+ * @param {*} claimdate 
+ * @param {*} confirmationdate 
+ * @param {*} deliveryaddress 
+ * @param {*} deliveryid 
+ * @param {*} status 
+ * @param {*} products : [{ productid: integer, quantity: integer, price: float }]
+ * 
+ * @returns 
+ */
+const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, products) => {
     return new Promise((resolve, reject) => {
       fetch( '/api/requests', {
         method: "POST",
@@ -16,11 +30,7 @@ const addPRequest = async (userid, creationdate, claimdate, confirmationdate, de
             deliveryaddress : deliveryaddress,
             deliveryid : deliveryid, 
             status : status,
-            products: [{
-              productid: productid,
-              quantity: quantity,
-              price: price
-            }]
+            products: products
         })
       })
         .then((res) => {
