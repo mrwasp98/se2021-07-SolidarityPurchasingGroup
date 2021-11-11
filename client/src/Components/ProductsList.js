@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, ListGroup, Offcanvas, InputGroup } from "react-bootstrap";
+import { Row, Col, Button, ListGroup, Offcanvas, InputGroup, Form, Card } from "react-bootstrap";
 import { useHistory } from 'react-router-dom';
 
 export default function ProductsList(props) {
@@ -9,6 +9,7 @@ export default function ProductsList(props) {
     }
     const [selected, setSelected] = useState("");
     const [show, setShow] = useState(false);
+    const [rand, setRand] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     return (
@@ -46,21 +47,19 @@ export default function ProductsList(props) {
                     <hr />
                     <Offcanvas.Body>
                         <Offcanvas.Title style={{ fontSize: "22px" }}>Produttori:</Offcanvas.Title>
-                        <InputGroup>
+                        <Offcanvas.Title style={{ fontSize: "16px", color: "#A4660E" }}>selezionati nella ricerca</Offcanvas.Title>
+                        <InputGroup className="mt-3">
                             {
                                 props.farmers.map((farmer, index) => {
                                     return (
-                                        <Row key={`row-farmer-${index}`} className="w-100">
-                                            <Col>
-                                                <InputGroup.Checkbox
-                                                    value={index}
-                                                    key={`farmer-${index}`}
-                                                    id={`checkbox-${index}`}
-                                                    onChange={() => { }} />
-                                            </Col>
-                                            <Col>
-                                                <span style={{ marginLeft: '1em' }}>{farmer}</span>
-                                            </Col>
+                                        <Row key={`row-farmer-${index}`} className="w-100 mt-1 ms-2" style={{ fontSize: "17px", color: "#8D570C", "fontWeight": "500", }}>
+                                            <Form.Check
+                                                className=""
+                                                type="checkbox"
+                                                label={farmer}
+                                                defaultChecked={true}
+                                                onChange={(e) => { e.target.checked ? setRand(true) : setRand(false) }}
+                                            />
                                         </Row>
                                     );
                                 })
@@ -71,7 +70,7 @@ export default function ProductsList(props) {
             </Row>
             <Row>
                 <Col>
-                    <ListGroup variant='flush'>
+                    <ListGroup variant='flush' className="">
                         {props.products.map((prod) =>
                             <Product
                                 prod={prod}
@@ -85,6 +84,22 @@ export default function ProductsList(props) {
 
 function Product(props) {
     return (
-        <></>
+        <Row className="justify-content-between">
+            <Card className="p-4">
+                <Card.Img variant="top" src={props.prod.picture} />
+                <Card.Body>
+                    <Card.Title style={{ fontSize: "22px" }}>{props.prod.name} <hr className="mt-1" /></Card.Title>
+                    <Card.Text className="p-4">
+                        <p className="mt-0 mb-1 myText">Farmer: NaN</p>
+                        <p className="mt-0 mb-1 myText">Category: {props.prod.category}</p>
+                        <p className="mt-0 mb-1 myText">Type of production: {props.prod.typeofproduction}</p>
+                    </Card.Text>
+                    <hr className="mt-0" />
+                    <Col md={{ span: 3, offset: 10 }}>
+                        <Button variant="primary" className="cartButton">Add to cart</Button>
+                    </Col>
+                </Card.Body>
+            </Card>
+        </Row>
     );
 }

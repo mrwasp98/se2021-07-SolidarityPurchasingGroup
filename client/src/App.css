@@ -69,9 +69,35 @@
 .btn-primary:visited {
     color: white !important;
     background-color: #ec9a2a !important;
-    box-shadow: 5px 8px #888888 !important;
+    /*box-shadow: 5px 8px #888888 !important;*/
+    box-shadow: 0px 0px #888888 !important;
 }
 
+.myText{
+    font-size: 17px !important;
+    font-weight: 500 !important;
+}
+
+.cartButton{
+    font-size: 17px ;
+    font-weight: 400 ;
+    background-color: #0f8b8b ;
+    border: 1px solid #143642;
+}
+.cartButton:focus, .cartButton:active, .btn-primary:visited{
+    font-size: 17px ;
+    font-weight: 400 ;
+    background-color: #0f8b8b ;
+    border: 1px solid #143642;
+}
+
+.btn-danger:hover,
+.btn-danger:checked,
+.btn-danger:active
+{   
+    color: white !important;
+    background-color: #C1260B !important;
+}
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);

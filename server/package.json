@@ -7,7 +7,11 @@
     "test": "jest"
   },
   "jest": {
-    "testPathIgnorePatterns": ["tests/api-products","tests/api-clients","tests/api-requests"]
+    "testPathIgnorePatterns": [
+      "tests/api-products",
+      "tests/api-clients",
+      "tests/api-requests"
+    ]
   },
   "author": "",
   "license": "ISC",
