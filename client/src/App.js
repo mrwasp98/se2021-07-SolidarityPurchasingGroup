@@ -2,7 +2,9 @@ import logo from "./logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import API from './API/API.js';
+import {addPRequest} from './API/API'
 import MyNav from "./Components/MyNav";
+import {LoginForm} from "./Components/LoginForm";
 import { BrowserRouter as Router, Route, } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ProductsList from "./Components/ProductsList";
@@ -207,13 +209,20 @@ function App() {
     }
   }, [dirty]);*/
 
+  useEffect(() => {
+    //API get availability
+    let order = orders[0];
+
+    addPRequest(order.userid, order.creationdate, order.claimdate, order.confirmationdate, order.deliveryaddress, order.deliveryid, order.status, order.products).then().catch();
+}, []);
+
   return (
     <>
       <Router>
         <Route path="/"> <MyNav IsLogin={false} /></Route>
         <Route exact path='/products'>
           <Container className="p-0 m-0" fluid>
-            <Row className="mt-3">
+            <Row className="">
               <ProductsList
                 products={products}
                 categories={categories}
@@ -227,7 +236,7 @@ function App() {
         <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} />} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
-
+        <Route exact path="/login" render={() => <LoginForm />} />
       </Router>
     </>
   );
