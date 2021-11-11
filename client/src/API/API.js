@@ -1,5 +1,6 @@
 /** STORY 1 **/
 //POST post the requests into the db
+
 const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, productid, quantity, price) => {
     return new Promise((resolve, reject) => {
       fetch( '/api/requests', {
@@ -15,11 +16,15 @@ const addPRequest = async (userid, creationdate, claimdate, confirmationdate, de
             deliveryaddress : deliveryaddress,
             deliveryid : deliveryid, 
             status : status,
-            products: [{
+            products: productid
+            
+            // Change
+
+            /**[{
               productid: productid,
               quantity: quantity,
               price: price
-            }]
+            }] */
         })
       })
         .then((res) => {
