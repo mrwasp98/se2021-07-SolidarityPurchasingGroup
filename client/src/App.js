@@ -212,10 +212,11 @@ function App() {
   /*useEffect(() => {
     //API get availability
 
-    orders.map((order) => {
-      let listProducts = [];
+    let order = orders[2];
 
-    order.products.map((p) => {
+    let listProducts = [];
+
+    order.products.forEach((p) => {
       listProducts.push({
         productid: p.id,
         quantity: p.quantity,
@@ -230,34 +231,33 @@ function App() {
       order.deliveryaddress,
       order.deliveryid,
       order.status,
-      listProducts).then().catch();
-    })
-  }, []); */
+      listProducts).then(() => {}).catch((err) => {});
+}, []); */
 
-  return (
-    <>
-      <Router>
-        <Route path="/"> <MyNav IsLogin={false} /></Route>
-        <Route exact path='/products'>
-          <Container className="p-0 m-0" fluid>
-            <Row className="">
-              <ProductsList
-                products={products}
-                categories={categories}
-                farmers={farmers}
-                className=""
-              />
-            </Row>
-          </Container>
-        </Route>
+return (
+  <>
+    <Router>
+      <Route path="/"> <MyNav IsLogin={false} /></Route>
+      <Route exact path='/products'>
+        <Container className="p-0 m-0" fluid>
+          <Row className="">
+            <ProductsList
+              products={products}
+              categories={categories}
+              farmers={farmers}
+              className=""
+            />
+          </Row>
+        </Container>
+      </Route>
 
-        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} />} />
-        <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
-        <Route exact path="/registerClient" render={() => <Register />} />
-        <Route exact path="/login" render={() => <LoginForm />} />
-      </Router>
-    </>
-  );
+      <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} />} />
+      <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
+      <Route exact path="/registerClient" render={() => <Register />} />
+      <Route exact path="/login" render={() => <LoginForm />} />
+    </Router>
+  </>
+);
 }
 
 export default App;

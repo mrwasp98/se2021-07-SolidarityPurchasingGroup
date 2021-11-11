@@ -153,6 +153,7 @@ app.get('/api/farmers',
 
 // Post: post the request by shop employee
 app.post('/api/requests', async (req, res) => {
+
   try {
     // Get the products availability in the magazine
     let productsAvailability = await productDao.getProductsAvailable();
@@ -161,7 +162,7 @@ app.post('/api/requests', async (req, res) => {
     let products = req.body.products; // Copy the list of products
 
     let listProductsNotAvailability = [] // List the products not availability in the magazine
-    products.map((product) => {
+    products.forEach((product) => {
       if (productsAvailability.filter((p) => p.id === product.id).quantity < product.quantity)
         listProductsNotAvailability.push(product);  // Quantity request not availability
     })
@@ -179,7 +180,7 @@ app.post('/api/requests', async (req, res) => {
 
       let numberId = await orderDao.insertOrder(order);
 
-      products.map((product) => {
+      products.forEach((product) => {
         // Create new request line
         let line = {
           orderid: numberId,
