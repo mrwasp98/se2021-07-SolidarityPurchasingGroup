@@ -122,3 +122,23 @@
 .linkred {
     color: red;
 }
+
+.login-form{
+    padding: 2%;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+    width: 30%;
+    height: 70%;
+    margin: 100px auto;
+    border-radius: 10px;
+    background-color: #143642;
+  }
+
+.loginButton{
+    position: relative;
+    left: 300px;
+    top: 16px;
+    font-size: 17px ;
+    font-weight: 400 ;
+    background-color: #0f8b8b ;
+    border: 1px solid #143642;
+}

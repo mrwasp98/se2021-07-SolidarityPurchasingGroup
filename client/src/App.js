@@ -4,6 +4,7 @@ import "./App.css";
 import API from './API/API.js';
 import {addPRequest} from './API/API'
 import MyNav from "./Components/MyNav";
+import {LoginForm} from "./Components/LoginForm";
 import { BrowserRouter as Router, Route, } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ProductsList from "./Components/ProductsList";
@@ -235,7 +236,7 @@ function App() {
         <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} />} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
-
+        <Route exact path="/login" render={() => <LoginForm />} />
       </Router>
     </>
   );
