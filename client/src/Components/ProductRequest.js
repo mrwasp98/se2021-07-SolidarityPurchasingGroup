@@ -71,7 +71,7 @@ export default function ProductRequest(props){
                                 {props.products.map(p => <ProductLine product={p}></ProductLine>)}
                                 </tbody>    
                             </Table>
-                            <div class="d-flex justify-content-between">
+                            <div className="d-flex justify-content-between">
                                 <Button variant="danger">Back</Button>
                                 <Button>Check and order</Button>
                             </div>

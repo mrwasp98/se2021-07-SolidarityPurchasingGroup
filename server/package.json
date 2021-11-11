@@ -7,14 +7,23 @@
     "test": "jest"
   },
   "jest": {
-    "testPathIgnorePatterns": ["tests/api-products","tests/api-clients","tests/api-requests"]
+    "testPathIgnorePatterns": [
+      "tests/api-products",
+      "tests/api-clients",
+      "tests/api-requests"
+    ]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dayjs": "^1.10.7",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "express-validator": "^6.13.0",
     "morgan": "^1.10.0",
+    "passport": "^0.5.0",
+    "passport-local": "^1.0.0",
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
