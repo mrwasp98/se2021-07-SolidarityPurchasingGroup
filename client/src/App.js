@@ -209,37 +209,46 @@ function App() {
     }
   }, [dirty]);*/
 
+  useEffect(() => {
 
-  // useEffect(() => {
-  //   if (dirty) {
-  //     console.log(order)
-  //     addPRequest(order).then((p) => {
-  //       //setTimeout(() => {
-  //       setProducts(p);
-  //       setDirty(false);
-  //       //}, 1000);
-  //     });
-  //   }
-  // }, [dirty]);
+    let order = orders[2];
 
+    let listProducts = [];
 
+    order.products.forEach((p) => {
+      listProducts.push({
+        productid: p.id,
+        quantity: p.quantity,
+        price: p.price
+      })
+    })
 
-  return (
-    <>
-      <Router>
-        <Route path="/"> <MyNav IsLogin={false} /></Route>
-        <Route exact path='/products'>
-          <Container className="p-0 m-0" fluid>
-            <Row className="">
-              <ProductsList
-                products={products}
-                categories={categories}
-                farmers={farmers}
-                className=""
-              />
-            </Row>
-          </Container>
-        </Route>
+    addPRequest(order.userid,
+      order.creationdate,
+      order.claimdate,
+      order.confirmationdate,
+      order.deliveryaddress,
+      order.deliveryid,
+      order.status,
+      listProducts).then(() => {}).catch((err) => {});
+}, []); 
+
+return (
+  <>
+    <Router>
+      <Route path="/"> <MyNav IsLogin={false} /></Route>
+      <Route exact path='/products'>
+        <Container className="p-0 m-0" fluid>
+          <Row className="">
+            <ProductsList
+              products={products}
+              categories={categories}
+              farmers={farmers}
+              className=""
+            />
+          </Row>
+        </Container>
+      </Route>
 
         <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} order={order} setOrder={setOrder} setDirty={setDirty}/>} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
