@@ -11,7 +11,7 @@ import ProductRequest from "./Components/ProductRequest";
 import { Container, Row, Col } from "react-bootstrap";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
-import {login, getUserInfo} from "./API/API.js";
+import {login, getUserInfo, getAvailableProducts} from "./API/API.js";
 
 function App() {
   const [dirty, setDirty] = useState(false);
