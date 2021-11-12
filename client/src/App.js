@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { addPRequest, getClients } from "./API/API"
+import { addPRequest, getClients, getAvailableProducts } from "./API/API"
 import MyNav from "./Components/MyNav";
 import { LoginForm } from "./Components/LoginForm";
 import { BrowserRouter as Router, Route, } from "react-router-dom";
@@ -200,6 +200,8 @@ function App() {
     }
   ]);
   const [order, setOrder] = useState();
+  const [errorMessage, setErrorMessage] = useState();
+  const [show, setShow] = useState(false);
 
   useEffect(() =>{
     const checkAuth = async() => {
@@ -248,7 +250,10 @@ function App() {
         order.status,
         order.products).then(() => {
           setOrder({});
-        }).catch((err) => { });
+        }).catch((err) => { 
+          setErrorMessage(err.message)
+          setShow(true);
+        });
     }
 
     /*let order = orders[0];
@@ -290,7 +295,7 @@ function App() {
           </Container>
         </Route>
 
-        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} />} />
+        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} show={show} setShow={setShow}/>} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername}/>} />

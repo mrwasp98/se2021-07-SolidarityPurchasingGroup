@@ -1,4 +1,4 @@
-import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col } from "react-bootstrap";
+import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col, Alert } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { addPRequest, getClients } from "../API/API"
 import Select from 'react-select'
@@ -6,31 +6,32 @@ import { iconAdd, iconSub } from "./Icons";
 import dayjs from "dayjs";
 
 function ProductLine(props) {
-    //const {..., ...} = props;
+    const {product} = props;
 
     const [quantity, setQuantity] = useState(0);
 
     const add = () => {
         let x = quantity + 1;
         setQuantity(x);
-        handleOrder()
+        handleProducts(x)
     }
 
     const sub = () => {
-        let x = quantity - 1;
-        setQuantity(x);
-        handleOrder()
+        if(quantity > 0){
+            let x = quantity - 1;
+            setQuantity(x);
+            handleProducts(x)
+        }
     }
 
-    const handleOrder = () => {
+    const handleProducts = (x) => {
         if (props.productsSelected.length == 0) {
-            const newProduct = { productid: props.product.id, name: props.product.name, quantity: quantity, measure: props.product.measure, price: props.product.price };
+            const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
             props.setProductsSelected([newProduct])
 
-        }
-        else {
-            const otherProducts = props.productsSelected.filter(x => x.id != props.product.id)
-            const newProduct = { productid: props.product.id, name: props.product.name, quantity: quantity, measure: props.product.measure, price: props.product.price };
+        }else {
+            const otherProducts = props.productsSelected.filter(x => x.id != product.productid)
+            const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
             const newProducts = [...otherProducts, newProduct];
             props.setProductsSelected(newProducts);
         }
@@ -38,9 +39,9 @@ function ProductLine(props) {
 
 
     return (<tr>
-        <td>{props.product.name}</td>
-        <td>{props.product.category}</td>
-        <td>{quantity}</td>
+        <td>{product.name}</td>
+        <td>{product.category}</td>
+        <td>{quantity + " " + product.measure}</td>
         <td><span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>&nbsp;
             <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>&nbsp;</td>
     </tr>
@@ -58,9 +59,6 @@ export default function ProductRequest(props) {
     const [products, setProducts] = useState(props.products);
     const [productsSelected, setProductsSelected] = useState([]);
 
-
-    console.log();
-
     const handleOrder = () => {
         const newOrder = {
             userid: selectedClient,
@@ -72,7 +70,6 @@ export default function ProductRequest(props) {
             status: "pending",
             products: productsSelected
         }
-        console.log(newOrder)
         props.setOrder(newOrder);
         props.setDirty(true);
     }
@@ -101,6 +98,7 @@ export default function ProductRequest(props) {
             </Card>
             {selectedClient &&
                 <>
+                    {props.errorMessage && <Alert show={props.show} onClose={()=> props.setShow(false)} variant="danger" dismissible>Messaggio di errore da definire</Alert>}
                     <Table className="mt-3" striped bordered hover>
                         <thead>
                             <tr>
@@ -111,7 +109,7 @@ export default function ProductRequest(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {props.products.map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
+                            {products.map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                         </tbody>
                     </Table>
                     <div class="d-flex justify-content-between">
