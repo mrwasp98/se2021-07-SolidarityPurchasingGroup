@@ -79,9 +79,9 @@ function LoginForm(props) {
                         <h2 className="text-warning">Login</h2>
                         <Form.Group controlId='email'>
                             <Form.Label className='text-warning myText'>Email</Form.Label>
-                            <Form.Control required type="text" placeholder="Insert your email" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
+                            <Form.Control required type="text" placeholder="Insert your username" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
                             <Form.Control.Feedback type="invalid">
-                                Please insert a valid email.
+                                Please insert a valid username.
                             </Form.Control.Feedback>
                         </Form.Group>
 
