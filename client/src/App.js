@@ -210,8 +210,27 @@ function App() {
   }, [dirty]);*/
 
   useEffect(() => {
+    getClients()
+      .then((res) => setClients(res))
+  }, []);
 
-    let order = orders[0];
+  useEffect(() => {
+    if (dirty) {
+      setDirty(false)
+
+      addPRequest(order.userid,
+        order.creationdate,
+        order.claimdate,
+        order.confirmationdate,
+        order.deliveryaddress,
+        order.deliveryid,
+        order.status,
+        order.products).then(() => {
+          setOrder({});
+        }).catch((err) => { });
+    }
+
+    /*let order = orders[0];
 
     let listProducts = [];
 
@@ -230,27 +249,27 @@ function App() {
       order.deliveryaddress,
       order.deliveryid,
       order.status,
-      listProducts).then(() => {}).catch((err) => {});
-}, []); 
+      listProducts).then(() => {}).catch((err) => {}); */
+  }, [dirty, order]);
 
-return (
-  <>
-    <Router>
-      <Route path="/"> <MyNav IsLogin={false} /></Route>
-      <Route exact path='/products'>
-        <Container className="p-0 m-0" fluid>
-          <Row className="">
-            <ProductsList
-              products={products}
-              categories={categories}
-              farmers={farmers}
-              className=""
-            />
-          </Row>
-        </Container>
-      </Route>
+  return (
+    <>
+      <Router>
+        <Route path="/"> <MyNav IsLogin={false} /></Route>
+        <Route exact path='/products'>
+          <Container className="p-0 m-0" fluid>
+            <Row className="">
+              <ProductsList
+                products={products}
+                categories={categories}
+                farmers={farmers}
+                className=""
+              />
+            </Row>
+          </Container>
+        </Route>
 
-        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} order={order} setOrder={setOrder} setDirty={setDirty}/>} />
+        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} />} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
         <Route exact path="/login" render={() => <LoginForm />} />
