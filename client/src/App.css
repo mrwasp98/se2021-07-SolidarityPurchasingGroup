@@ -51,7 +51,9 @@
 .border-right {
     border-right: 1px solid #ddd;
 }
-
+.priority{
+    z-index: 100;
+}
 .borders {
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
