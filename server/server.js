@@ -161,12 +161,14 @@ app.post('/api/requests', async (req, res) => {
     // Verify the request (check the quantitiy)
     let products = req.body.products; // Copy the list of products
 
+    console.log(products)
     let listProductsNotAvailability = [] // List the products not availability in the magazine
     products.forEach((product) => {
-      if (productsAvailability.filter((p) => Number(p.id) === Number(product.productid))[0].quantity < product.quantity)
+      if (productsAvailability.filter((p) => p.id == product.productid)[0].quantity < product.quantity)
         listProductsNotAvailability.push(product);  // Quantity request not availability
     })
 
+    
     if (!listProductsNotAvailability.length) {
       // All products are availability. Create new order  
       let order = {
@@ -179,7 +181,7 @@ app.post('/api/requests', async (req, res) => {
       }
 
       let numberId = await orderDao.insertOrder(order);
-
+      console.log("Okay")
       products.forEach((product) => {
         // Create new request line
         let line = {
