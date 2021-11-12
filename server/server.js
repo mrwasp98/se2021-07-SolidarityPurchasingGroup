@@ -13,6 +13,7 @@ const passport = require('passport'); //auth middleware
 const LocalStrategy = require('passport-local').Strategy; //Username and password for login
 const session = require('express-session'); //enable sessions
 const userDao = require('./user-dao'); //module fo accessing the users in the DB
+var path = require('path');
 
 /*** Set up Passport ***/
 
@@ -48,6 +49,8 @@ const port = 3001;
 // set-up the middlewares
 app.use(morgan("dev"));
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Custom middleware: check if a given request is coming from an authenticated user
 const isLoggedIn = (req, res, next) => {
