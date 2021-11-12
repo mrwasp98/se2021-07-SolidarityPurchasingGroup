@@ -155,6 +155,42 @@ async function handOutProduct(requestid) {
   } else return { 'err': 'PUT error' };
 };
 
+async function login(credentials) {
+  let response = await fetch('/login', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+  });
+  if(response.ok) {
+      const user = await response.json();
+      return user.name;
+  } else {
+      const errDetails = await response.text();
+      throw errDetails;
+  }
+}
+
+async function logout() {
+  const response = await fetch('/logout', {
+      method: 'DELETE'
+  });
+  if(response.ok) {
+      return null;
+  } else return {'err': 'DELETE error' };
+}
+
+async function getUserInfo(){
+  const response = await fetch('/api/sessions/current');
+  const userInfo = await response.json();
+  if(response.ok) {
+      return userInfo;
+  } else {
+      throw userInfo;
+  }
+}
 
 
-export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct, getFarmers}
+
+export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo}

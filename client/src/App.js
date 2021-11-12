@@ -11,11 +11,14 @@ import ProductRequest from "./Components/ProductRequest";
 import { Container, Row, Col } from "react-bootstrap";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
+import {login, getUserInfo} from "./API/API.js";
 
 function App() {
   const [dirty, setDirty] = useState(false);
   const [farmers, setFarmers] = useState(["Tizio", "Caio", "Sempronio", "Mino", "Pino"]);
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]);
+  const [logged, setLogged] = useState(false);
+  const [username, setUsername] = useState('');
   const [products, setProducts] = useState([{
     "id": 0,
     "name": "Artichoke",
@@ -198,6 +201,19 @@ function App() {
   ]);
   const [order, setOrder] = useState();
 
+  useEffect(() =>{
+    const checkAuth = async() => {
+      try {
+        const user = await getUserInfo();
+        setUsername(user.name);
+        setLogged(true);
+      } catch(err) {
+        console.error(err.error);
+      }
+    };
+    checkAuth();
+  }, []);
+
   /*useEffect(() => {
     if (dirty) {
       API.getAvailableProducts().then((p) => {
@@ -253,7 +269,7 @@ return (
         <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} order={order} setOrder={setOrder} setDirty={setDirty}/>} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
-        <Route exact path="/login" render={() => <LoginForm />} />
+        <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername}/>} />
       </Router>
     </>
   );

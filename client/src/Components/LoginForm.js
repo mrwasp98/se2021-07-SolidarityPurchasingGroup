@@ -31,9 +31,9 @@ function LoginForm(props) {
 
     const doLogIn = async (credentials) => {
         try {
+            console.log('entra');
             const user = await props.login(credentials);
             props.setLogged(true);
-            props.setDirty(true);
             props.setUser(user);
         } catch (err) {
             setError('Wrong email or password! Try again');
@@ -64,6 +64,7 @@ function LoginForm(props) {
                 valid = true;
             }
             if (valid) {
+                console.log(credentials);
                 doLogIn(credentials);
 
             }
@@ -78,7 +79,7 @@ function LoginForm(props) {
                         <h2 className="text-warning">Login</h2>
                         <Form.Group controlId='email'>
                             <Form.Label className='text-warning myText'>Email</Form.Label>
-                            <Form.Control required type="email" placeholder="Insert your email" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
+                            <Form.Control required type="text" placeholder="Insert your email" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
                             <Form.Control.Feedback type="invalid">
                                 Please insert a valid email.
                             </Form.Control.Feedback>
@@ -95,7 +96,7 @@ function LoginForm(props) {
                         </Alert>
                         : ''}
 
-                        <Button type='submit' variant='secondary' className='loginButton'>Login</Button>
+                        <Button type='submit' variant='warning' className='loginButton'>Login</Button>
 
                     </Form>
                 </Col>

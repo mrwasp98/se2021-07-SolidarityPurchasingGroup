@@ -1,4 +1,5 @@
-import { Navbar, Container, Button } from "react-bootstrap";
+import { Navbar, Container, Button} from "react-bootstrap";
+import { Link } from 'react-router-dom';
 import dayjs from "dayjs";
 import { iconStar, iconPerson, iconCalendar } from "./Icons";
 
@@ -22,7 +23,9 @@ export default function MyNav(props) {
             ) : (
               <>
                 {" "}
-                <Button variant="link">Login</Button>
+                <Link to= "/login">
+                  <Button variant="link">Login</Button>
+                </Link>
                 <Button variant="link">Register</Button>{" "}
               </>
             )}{" "}
