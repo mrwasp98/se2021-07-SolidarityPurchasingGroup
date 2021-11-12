@@ -56,7 +56,7 @@ function App() {
       }, {
         id: 2,
         name: "Patate",
-        quantity: 10,
+        quantity: 2,
         measure: "kg",
         price: 20.11
       }]
@@ -209,29 +209,29 @@ function App() {
     }
   }, [dirty]);*/
 
-//   useEffect(() => {
+  useEffect(() => {
 
-//     let order = orders[2];
+    let order = orders[0];
 
-//     let listProducts = [];
+    let listProducts = [];
 
-//     order.products.forEach((p) => {
-//       listProducts.push({
-//         productid: p.id,
-//         quantity: p.quantity,
-//         price: p.price
-//       })
-//     })
+    order.products.forEach((p) => {
+      listProducts.push({
+        productid: p.id,
+        quantity: p.quantity,
+        price: p.price
+      })
+    })
 
-//     addPRequest(order.userid,
-//       order.creationdate,
-//       order.claimdate,
-//       order.confirmationdate,
-//       order.deliveryaddress,
-//       order.deliveryid,
-//       order.status,
-//       listProducts).then(() => {}).catch((err) => {});
-// }, []); 
+    addPRequest(order.userid,
+      order.creationdate,
+      order.claimdate,
+      order.confirmationdate,
+      order.deliveryaddress,
+      order.deliveryid,
+      order.status,
+      listProducts).then(() => {}).catch((err) => {});
+}, []); 
 
 return (
   <>

@@ -153,7 +153,6 @@ app.get('/api/farmers',
 
 // Post: post the request by shop employee
 app.post('/api/requests', async (req, res) => {
-
   try {
     // Get the products availability in the magazine
     let productsAvailability = await productDao.getProductsAvailable();
@@ -161,14 +160,14 @@ app.post('/api/requests', async (req, res) => {
     // Verify the request (check the quantitiy)
     let products = req.body.products; // Copy the list of products
 
-    console.log(products)
     let listProductsNotAvailability = [] // List the products not availability in the magazine
-    products.forEach((product) => {
-      if (productsAvailability.filter((p) => p.id == product.productid)[0].quantity < product.quantity)
+    products.map((product) => {
+      let singleProduct = productsAvailability.filter((p) => p.id === product.productid)
+
+      if (!singleProduct.length || singleProduct[0].quantity < product.quantity)
         listProductsNotAvailability.push(product);  // Quantity request not availability
     })
 
-    
     if (!listProductsNotAvailability.length) {
       // All products are availability. Create new order  
       let order = {
@@ -181,7 +180,7 @@ app.post('/api/requests', async (req, res) => {
       }
 
       let numberId = await orderDao.insertOrder(order);
-      console.log("Okay")
+
       products.forEach((product) => {
         // Create new request line
         let line = {
@@ -199,13 +198,19 @@ app.post('/api/requests', async (req, res) => {
           });
 
         let x = productDao.updateProductsQuantity(line.productid, line.quantity).then().catch(() => {
-          res.status(403).json({ error: `A few product are not availability` });
+          res.status(403).json({
+            error: `A few product are not availability`,
+            listofProducts: listProductsNotAvailability
+          });
         })
       })
       res.status(200).end();
     }
     else
-      res.status(403).json({ error: `A few product are not availability` });
+      res.status(403).json({
+        error: `A few product are not availability`,
+        listofProducts: listProductsNotAvailability
+      });
 
   } catch (err) {
     res.status(503).json({ error: `Database error ${err}.` });
