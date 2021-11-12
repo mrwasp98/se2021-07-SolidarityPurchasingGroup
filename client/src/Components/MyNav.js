@@ -34,7 +34,7 @@ export default function MyNav(props) {
             {iconCalendar}
           </Button>
           {show ? (
-        <Calendar className="position-absolute" onChange={onChange} value={value} />
+        <Calendar className="position-absolute priority" onChange={onChange} value={value} />
       ) : (
         ""
       )}
