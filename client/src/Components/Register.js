@@ -83,7 +83,7 @@ export default function Register(props) {
               </Form.Label>
               <Col sm="10">
                 <Form.Control
-                  type="text"
+                  type="number"
                   placeholder="Wallet"
                   required
                   onChange={(ev) => setWallet(ev.target.value)}
