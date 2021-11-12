@@ -2,7 +2,7 @@ import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Co
 import { useEffect, useState } from "react";
 import { addPRequest, getClients } from "../API/API"
 import Select from 'react-select'
-import { iconAdd } from "./Icons";
+import { iconAdd, iconSub } from "./Icons";
 import dayjs from "dayjs";
 
 function ProductLine(props){
@@ -41,7 +41,7 @@ function ProductLine(props){
                 <td>{props.product.category}</td>
                 <td>{quantity}</td>
                 <td><span style={{cursor: 'pointer'}} onClick={add}>{iconAdd}</span>&nbsp;
-                    <span style={{cursor: 'pointer'}} onClick={sub}>--- d</span>&nbsp;</td>
+                    <span style={{cursor: 'pointer'}} onClick={sub}>{iconSub}</span>&nbsp;</td>
             </tr>
 )
 
