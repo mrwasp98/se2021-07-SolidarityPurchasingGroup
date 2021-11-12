@@ -24,13 +24,13 @@ function ProductLine(props) {
 
     const handleOrder = () => {
         if (props.productsSelected.length == 0) {
-            const newProduct = { id: props.product.id, name: props.product.name, quantity: quantity, measure: props.product.measure, price: props.product.price };
+            const newProduct = { productid: props.product.id, name: props.product.name, quantity: quantity, measure: props.product.measure, price: props.product.price };
             props.setProductsSelected([newProduct])
 
         }
         else {
             const otherProducts = props.productsSelected.filter(x => x.id != props.product.id)
-            const newProduct = { id: props.product.id, name: props.product.name, quantity: quantity, measure: props.product.measure, price: props.product.price };
+            const newProduct = { productid: props.product.id, name: props.product.name, quantity: quantity, measure: props.product.measure, price: props.product.price };
             const newProducts = [...otherProducts, newProduct];
             props.setProductsSelected(newProducts);
         }

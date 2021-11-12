@@ -231,6 +231,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    getAvailableProducts()
+    .then((res) => setProducts(res));
+  }, []);
+
+  useEffect(() => {
     if (dirty) {
       setDirty(false)
 
