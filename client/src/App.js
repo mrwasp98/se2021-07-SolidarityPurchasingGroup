@@ -59,7 +59,7 @@ function App() {
       }, {
         id: 2,
         name: "Patate",
-        quantity: 10,
+        quantity: 2,
         measure: "kg",
         price: 20.11
       }]
@@ -225,48 +225,67 @@ function App() {
     }
   }, [dirty]);*/
 
-//   useEffect(() => {
+  useEffect(() => {
+    getClients()
+      .then((res) => setClients(res))
+  }, []);
 
-//     let order = orders[2];
+  useEffect(() => {
+    if (dirty) {
+      setDirty(false)
 
-//     let listProducts = [];
+      addPRequest(order.userid,
+        order.creationdate,
+        order.claimdate,
+        order.confirmationdate,
+        order.deliveryaddress,
+        order.deliveryid,
+        order.status,
+        order.products).then(() => {
+          setOrder({});
+        }).catch((err) => { });
+    }
 
-//     order.products.forEach((p) => {
-//       listProducts.push({
-//         productid: p.id,
-//         quantity: p.quantity,
-//         price: p.price
-//       })
-//     })
+    /*let order = orders[0];
 
-//     addPRequest(order.userid,
-//       order.creationdate,
-//       order.claimdate,
-//       order.confirmationdate,
-//       order.deliveryaddress,
-//       order.deliveryid,
-//       order.status,
-//       listProducts).then(() => {}).catch((err) => {});
-// }, []); 
+    let listProducts = [];
 
-return (
-  <>
-    <Router>
-      <Route path="/"> <MyNav IsLogin={false} /></Route>
-      <Route exact path='/products'>
-        <Container className="p-0 m-0" fluid>
-          <Row className="">
-            <ProductsList
-              products={products}
-              categories={categories}
-              farmers={farmers}
-              className=""
-            />
-          </Row>
-        </Container>
-      </Route>
+    order.products.forEach((p) => {
+      listProducts.push({
+        productid: p.id,
+        quantity: p.quantity,
+        price: p.price
+      })
+    })
 
-        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} order={order} setOrder={setOrder} setDirty={setDirty}/>} />
+    addPRequest(order.userid,
+      order.creationdate,
+      order.claimdate,
+      order.confirmationdate,
+      order.deliveryaddress,
+      order.deliveryid,
+      order.status,
+      listProducts).then(() => {}).catch((err) => {}); */
+  }, [dirty, order]);
+
+  return (
+    <>
+      <Router>
+        <Route path="/"> <MyNav IsLogin={false} /></Route>
+        <Route exact path='/products'>
+          <Container className="p-0 m-0" fluid>
+            <Row className="">
+              <ProductsList
+                products={products}
+                categories={categories}
+                farmers={farmers}
+                className=""
+              />
+            </Row>
+          </Container>
+        </Route>
+
+        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} />} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername}/>} />
