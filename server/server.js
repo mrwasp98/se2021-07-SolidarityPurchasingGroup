@@ -193,8 +193,7 @@ app.post('/api/requests', async (req, res) => {
         orderlineDao.insertOrderLine(line)
           .then()
           .catch((err) => {
-            // Remove order
-
+            orderDao.deleteOrder(numberId); // Delete the order
           });
 
         let x = productDao.updateProductsQuantity(line.productid, line.quantity).then().catch(() => {

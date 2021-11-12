@@ -34,6 +34,19 @@ exports.updateOrderStatus = (orderId, status) => {
     });
 };
 
+exports.deleteOrder = (orderid) => {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM 'order' WHERE id = ?;"
+        db.run(sql, [orderid], (err, rows) => {
+            if(err) {
+                reject(err)
+                return;
+            }
+            resolve()
+        })
+    })
+}
+
 exports.deleteAllOrders = () => {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM 'order'";
