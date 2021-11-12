@@ -1,21 +1,6 @@
 /** STORY 1 **/
 //POST post the requests into the db
-
-
-/**
- * 
- * @param {*} userid 
- * @param {*} creationdate 
- * @param {*} claimdate 
- * @param {*} confirmationdate 
- * @param {*} deliveryaddress 
- * @param {*} deliveryid 
- * @param {*} status 
- * @param {*} products : [{ productid: integer, quantity: integer, price: float }]
- * 
- * @returns 
- */
-const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, products) => {
+const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, productid, quantity, price) => {
     return new Promise((resolve, reject) => {
       fetch( '/api/requests', {
         method: "POST",
@@ -30,7 +15,9 @@ const addPRequest = async (userid, creationdate, claimdate, confirmationdate, de
             deliveryaddress : deliveryaddress,
             deliveryid : deliveryid, 
             status : status,
-            products: products
+            productid : productid,
+            quantity : quantity,
+            price : price
         })
       })
         .then((res) => {
@@ -56,6 +43,7 @@ const getClients = async () => {
         "content-type": "application/json",
       },
     }).then((res) => {
+      console.log(res)
         if (!res.ok) {
           const error = new Error(`${res.status}: ${res.statusText}`);
           error.response = res;
@@ -120,27 +108,6 @@ const getAvailableProducts = async () => {
     });
 }
 
-const getFarmers = async () => {
-  return new Promise((resolve, reject) => {
-    fetch( '/api/farmers', {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    }).then((res) => {
-        if (!res.ok) {
-          const error = new Error(`${res.status}: ${res.statusText}`);
-          error.response = res;
-          throw error;
-        }
-        resolve(res.json());
-      })
-      .catch((err) => {
-          reject({ message: err.message });
-      });
-  });
-}
-
 /** STORY 4 **/
 //In the server function do a query on OrderLine and get productid and quantity,
 //Then do an update on Availability and subtract the optained quantity to the availability quantity where 
@@ -157,4 +124,4 @@ async function handOutProduct(requestid) {
 
 
 
-export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct, getFarmers}
+export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct}
