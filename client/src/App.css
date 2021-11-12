@@ -30,6 +30,7 @@
 
 .NavBar-Background {
     background-color: #143642;
+    
 }
 
 .NavBar-Background>div>span {
@@ -41,11 +42,10 @@
     text-decoration: none;
 }
 
-.NavBar-Background>div small {
+
+.NavBar-Background>div .callandarButton {
     color: #ffffff !important;
     background-color: #0f8b8b;
-    padding: 5px;
-    border-radius: 3px;
 }
 
 .border-right {
