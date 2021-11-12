@@ -4,6 +4,7 @@ import { useState } from "react";
 import { iconStar, iconPerson, iconCalendar } from "./Icons";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { Link } from 'react-router-dom';
 
 export default function MyNav(props) {
   const [value, onChange] = useState(new Date());
@@ -46,7 +47,9 @@ export default function MyNav(props) {
             ) : (
               <>
                 {" "}
-                <Button variant="link">Login</Button>
+                <Link to= "/login">
+                  <Button variant="link">Login</Button>
+                </Link>
                 <Button variant="link">Register</Button>{" "}
               </>
             )}{" "}
