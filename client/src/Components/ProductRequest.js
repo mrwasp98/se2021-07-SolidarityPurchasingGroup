@@ -1,20 +1,47 @@
 import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col} from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { getClients } from "../API/API"
+import { addPRequest, getClients } from "../API/API"
 import Select from 'react-select'
-import { iconAdd } from "./Icons";
+import { iconAdd, iconSub } from "./Icons";
+import dayjs from "dayjs";
 
 function ProductLine(props){
 
-    useEffect(() => {
-        //API get availability
-    }, []);
+    const [quantity, setQuantity] = useState(0);
+
+    const add = () => {
+        let x = quantity + 1;
+        setQuantity(x);
+        handleOrder()
+    }
+
+    const sub = () => {
+        let x = quantity - 1;
+        setQuantity(x);
+        handleOrder()
+    }
+
+    const handleOrder = () => {
+        if(props.productsSelected.length == 0){
+            const newProduct = {id: props.product.id, name: props.product.name, quantity: quantity, measure: props.product.measure, price: props.product.price};
+            props.setProductsSelected([newProduct])
+
+        }
+        else{
+            const otherProducts = props.productsSelected.filter( x => x.id != props.product.id)
+            const newProduct = {id: props.product.id, name: props.product.name, quantity: quantity, measure: props.product.measure, price: props.product.price};
+            const newProducts = [...otherProducts, newProduct];
+            props.setProductsSelected(newProducts);
+        }
+    }
+    
 
     return( <tr>
                 <td>{props.product.name}</td>
                 <td>{props.product.category}</td>
-                <td>to define</td>
-                <td><span style={{cursor: 'pointer'}}>{iconAdd}</span>&nbsp;</td>
+                <td>{quantity}</td>
+                <td><span style={{cursor: 'pointer'}} onClick={add}>{iconAdd}</span>&nbsp;
+                    <span style={{cursor: 'pointer'}} onClick={sub}>{iconSub}</span>&nbsp;</td>
             </tr>
 )
 
@@ -24,6 +51,8 @@ export default function ProductRequest(props){
 
     const [selectedClient, setSelectedClient] = useState("");
     const [options, setOptions] = useState([]);
+    const [products, setProducts] = useState(props.products);
+    const [productsSelected, setProductsSelected] = useState([]);
 
     useEffect(() => {
         getClients()
@@ -32,6 +61,21 @@ export default function ProductRequest(props){
                 setOptions(props.clients.map((e) => { return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address } }))
             })
     }, []);
+
+    const handleOrder = () => {
+        const newOrder = {
+            userid: selectedClient,
+            creationdate: dayjs().format('YYYY-MM-DD').toString(),
+            claimdate: "2021-11-10 12:30",
+            confirmationdate: "2021-11-09",
+            deliveryaddress: null,
+            deliveryid: null,
+            status: "pending",
+            products: productsSelected
+          }
+        props.setOrder(newOrder);
+        props.setDirty(true);
+    }
 
     return(<>
         <Container className="justify-content-center mt-3">
@@ -50,7 +94,6 @@ export default function ProductRequest(props){
                     </ListGroupItem>
                     </ListGroup>
                     </Card>
-
                     {selectedClient &&
                         <>
                             <Table className="mt-3" striped bordered hover>
@@ -63,12 +106,12 @@ export default function ProductRequest(props){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {props.products.map(p => <ProductLine product={p}></ProductLine>)}
+                                {props.products.map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                                 </tbody>    
                             </Table>
-                            <div className="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between">
                                 <Button variant="danger">Back</Button>
-                                <Button>Check and order</Button>
+                                <Button onClick={handleOrder}>Check and order</Button>
                             </div>
                         </>
                     }

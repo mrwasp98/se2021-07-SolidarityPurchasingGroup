@@ -1,8 +1,7 @@
 import logo from "./logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import API from './API/API.js';
-import { addPRequest } from './API/API'
+import { addPRequest, getClients } from "./API/API"
 import MyNav from "./Components/MyNav";
 import { LoginForm } from "./Components/LoginForm";
 import { BrowserRouter as Router, Route, } from "react-router-dom";
@@ -14,7 +13,7 @@ import Handout from "./Components/Handout";
 import Register from "./Components/Register";
 
 function App() {
-  const [dirty, setDirty] = useState(true);
+  const [dirty, setDirty] = useState(false);
   const [farmers, setFarmers] = useState(["Tizio", "Caio", "Sempronio", "Mino", "Pino"]);
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]);
   const [products, setProducts] = useState([{
@@ -197,6 +196,7 @@ function App() {
       }]
     }
   ]);
+  const [order, setOrder] = useState();
 
   /*useEffect(() => {
     if (dirty) {
@@ -209,30 +209,29 @@ function App() {
     }
   }, [dirty]);*/
 
-  /*useEffect(() => {
-    //API get availability
+//   useEffect(() => {
 
-    let order = orders[2];
+//     let order = orders[2];
 
-    let listProducts = [];
+//     let listProducts = [];
 
-    order.products.forEach((p) => {
-      listProducts.push({
-        productid: p.id,
-        quantity: p.quantity,
-        price: p.price
-      })
-    })
+//     order.products.forEach((p) => {
+//       listProducts.push({
+//         productid: p.id,
+//         quantity: p.quantity,
+//         price: p.price
+//       })
+//     })
 
-    addPRequest(order.userid,
-      order.creationdate,
-      order.claimdate,
-      order.confirmationdate,
-      order.deliveryaddress,
-      order.deliveryid,
-      order.status,
-      listProducts).then(() => {}).catch((err) => {});
-}, []); */
+//     addPRequest(order.userid,
+//       order.creationdate,
+//       order.claimdate,
+//       order.confirmationdate,
+//       order.deliveryaddress,
+//       order.deliveryid,
+//       order.status,
+//       listProducts).then(() => {}).catch((err) => {});
+// }, []); 
 
 return (
   <>
@@ -251,13 +250,13 @@ return (
         </Container>
       </Route>
 
-      <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} />} />
-      <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
-      <Route exact path="/registerClient" render={() => <Register />} />
-      <Route exact path="/login" render={() => <LoginForm />} />
-    </Router>
-  </>
-);
+        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} setClients={setClients} products={products} order={order} setOrder={setOrder} setDirty={setDirty}/>} />
+        <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
+        <Route exact path="/registerClient" render={() => <Register />} />
+        <Route exact path="/login" render={() => <LoginForm />} />
+      </Router>
+    </>
+  );
 }
 
 export default App;
