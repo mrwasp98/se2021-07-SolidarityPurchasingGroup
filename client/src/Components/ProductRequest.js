@@ -9,7 +9,6 @@ function ProductLine(props) {
     const { product } = props;
 
     const [quantity, setQuantity] = useState(0);
-    const [available, setAvailable] = useState(true)
 
     { (quantity != 0 && !props.productsSelected.length) && setQuantity(0) }
 
@@ -27,12 +26,6 @@ function ProductLine(props) {
 
     const handleProducts = (x) => {
         setQuantity(x);
-
-        if (x >= product.quantity) {
-            setAvailable(false);
-        } else {
-            setAvailable(true)
-        }
         if (props.productsSelected.length == 0) {
             const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
             props.setProductsSelected([newProduct])
@@ -53,7 +46,7 @@ function ProductLine(props) {
         <td>{product.name}</td>
         <td>{product.category}</td>
         <td>{quantity + " " + product.measure + "/" + product.quantity + " " + product.measure + " available"}</td>
-        <td>{available ? <span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>
+        <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
             {quantity != 0 ? <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>
                 : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
@@ -65,7 +58,6 @@ function ProductLine(props) {
 
 export default function ProductRequest(props) {
     const { clients, products } = props;
-    console.log(products)
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
 
