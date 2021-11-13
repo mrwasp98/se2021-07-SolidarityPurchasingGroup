@@ -65,7 +65,7 @@ function ProductLine(props) {
 
 export default function ProductRequest(props) {
     const { clients, products } = props;
-
+    console.log(products)
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
 
@@ -120,6 +120,7 @@ export default function ProductRequest(props) {
             </Card>
             {selectedClient &&
                 <>
+                 {(products.filter(p => p.quantity > 0).length != 0) ? <>
                     {props.errorMessage && <Alert show={props.show} onClose={() => props.setShow(false)} variant="danger" dismissible>{props.errorMessage}</Alert>}
                     <Table className="mt-3" striped bordered hover>
                         <thead>
@@ -139,6 +140,9 @@ export default function ProductRequest(props) {
                         <Link to="/"><Button variant="danger">Back</Button></Link>
                         <Button onClick={handleOrder}>Check and order</Button>
                     </div>
+                    </>
+                    :
+                    <p>There are no available products. In the next days this message will be better</p>}
                 </>
             }
         </Container>
