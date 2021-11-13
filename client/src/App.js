@@ -250,7 +250,7 @@ function App() {
         order.products).then((res) => {
           if (res.status !== undefined && res.status === 406)
             // A few products are not availability
-            console.log(res.listofProducts); // The list of products non availability "res.listofProducts"
+            //console.log(res.listofProducts);  The list of products non availability "res.listofProducts"
             setErrorMessage(res.listofProducts.map(x => x.name + " not available" + "\n"));
             setShow(true);
             setOrder({});
@@ -261,6 +261,8 @@ function App() {
           }
         });
     }
+
+
 
     /*let order = orders[0];
 
