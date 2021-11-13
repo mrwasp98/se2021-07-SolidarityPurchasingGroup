@@ -11,7 +11,7 @@ import ProductRequest from "./Components/ProductRequest";
 import { Container, Row, Col } from "react-bootstrap";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
-import {login, getUserInfo} from "./API/API.js";
+import {login, getUserInfo, logout} from "./API/API.js";
 
 function App() {
   const [dirty, setDirty] = useState(false);
@@ -283,7 +283,7 @@ function App() {
   return (
     <>
       <Router>
-        <Route path="/"> <MyNav IsLogin={false} /></Route>
+        <Route path="/"> <MyNav IsLogin={logged} logout={logout} setLogged={setLogged}/></Route>
         <Route exact path='/products'>
           <Container className="p-0 m-0" fluid>
             <Row className="">
