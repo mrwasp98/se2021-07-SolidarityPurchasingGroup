@@ -40,7 +40,7 @@ function App() {
   }]);
   const [clients, setClients] = useState([]);
 
-  const [orders, setOrders] = useState([
+  /* const [clientOrders, setClientOrders] = useState([
     {
       id: 1,
       userid: 4,
@@ -198,7 +198,9 @@ function App() {
         price: 12.10
       }]
     }
-  ]);
+  ]) */
+
+  const [clientOrders, setClientOrders] = useState([]);
   const [order, setOrder] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [show, setShow] = useState(false);
@@ -296,7 +298,7 @@ function App() {
         </Route>
 
         <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} show={show} setShow={setShow}/>} />
-        <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={orders} setOrders={setOrders} />} />
+        <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={clientOrders} setOrders={setClientOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername}/>} />
       </Router>

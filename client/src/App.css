@@ -30,7 +30,6 @@
 
 .NavBar-Background {
     background-color: #143642;
-    
 }
 
 .NavBar-Background>div>span {
@@ -42,7 +41,6 @@
     text-decoration: none;
 }
 
-
 .NavBar-Background>div .callandarButton {
     color: #ffffff !important;
     background-color: #0f8b8b;
@@ -51,9 +49,11 @@
 .border-right {
     border-right: 1px solid #ddd;
 }
-.priority{
+
+.priority {
     z-index: 100;
 }
+
 .borders {
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
@@ -73,33 +73,38 @@
     background-color: #ec9a2a !important;
     /*box-shadow: 5px 8px #888888 !important;*/
     box-shadow: 0px 0px #888888 !important;
+    color: black !important;
+    border: 1px solid #ec9a2a;
 }
 
-.myText{
+.myText {
     font-size: 17px !important;
     font-weight: 500 !important;
 }
 
-.cartButton{
-    font-size: 17px ;
-    font-weight: 400 ;
-    background-color: #0f8b8b ;
-    border: 1px solid #143642;
+.cartButton {
+    font-size: 17px;
+    font-weight: 400;
+    background-color: #0f8b8b;
+    border: 1px solid #0f8b8b;
 }
-.cartButton:focus, .cartButton:active, .btn-primary:visited{
-    font-size: 17px ;
-    font-weight: 400 ;
-    background-color: #0f8b8b ;
+
+.cartButton:focus,
+.cartButton:active,
+.btn-primary:visited {
+    font-size: 17px;
+    font-weight: 400;
+    background-color: #0f8b8b;
     border: 1px solid #143642;
 }
 
 .btn-danger:hover,
 .btn-danger:checked,
-.btn-danger:active
-{   
+.btn-danger:active {
     color: white !important;
     background-color: #C1260B !important;
 }
+
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
@@ -125,7 +130,7 @@
     color: red;
 }
 
-.login-form{
+.login-form {
     padding: 2%;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
     width: 30%;
@@ -133,14 +138,14 @@
     margin: 100px auto;
     border-radius: 10px;
     background-color: #143642;
-  }
+}
 
-.loginButton{
+.loginButton {
     position: relative;
     left: 300px;
     top: 16px;
-    font-size: 17px ;
-    font-weight: 400 ;
-    background-color: #0f8b8b ;
+    font-size: 17px;
+    font-weight: 400;
+    background-color: #0f8b8b;
     border: 1px solid #143642;
 }

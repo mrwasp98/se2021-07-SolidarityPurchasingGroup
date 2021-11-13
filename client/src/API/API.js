@@ -155,6 +155,29 @@ async function handOutProduct(requestid) {
   } else return { 'err': 'PUT error' };
 };
 
+//this API fetches the orders of a specific client
+const getClientOrders = async (clientid) => {
+  return new Promise((resolve, reject) => {
+    fetch( '/api/orders?clientid='+clientid, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => {
+        if (!res.ok) {
+          const error = new Error(`${res.status}: ${res.statusText}`);
+          error.response = res;
+          throw error;
+        }
+        resolve(res.json());
+      })
+      .catch((err) => {
+          reject({ message: err.message });
+      });
+  });
+  }
+
+
 async function login(credentials) {
   let response = await fetch('/login', {
       method: 'POST',
@@ -193,4 +216,4 @@ async function getUserInfo(){
 
 
 
-export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo}
+export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders}

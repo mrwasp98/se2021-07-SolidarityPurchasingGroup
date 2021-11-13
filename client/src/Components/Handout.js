@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Card, Container, Button, Form, ListGroup, ListGroupItem, Collapse } from "react-bootstrap";
-import React, { Component } from 'react'
+import React from 'react'
 import Select from 'react-select'
 import { Link } from "react-router-dom";
-import { getClients } from "../API/API"
+import { getClients, getClientOrders } from "../API/API"
 import OrderToggle from "./OrderToggle";
 
 export default function Handout(props) {
@@ -25,6 +25,16 @@ export default function Handout(props) {
         }
     }, [props.clients, props.setClients]);
 
+    //this function is called only when the client is selected in order to load their orders
+    function handlechange(event) {
+        setSelectedClient(event.value);
+        getClientOrders(event.value)
+            .then((res) => {
+                props.setOrders(res)
+            })
+            //todo: error
+    }
+
     return (
         <Container className="justify-content-center mt-3">
             <h1 className="text-center">Record product handout.</h1>
@@ -36,7 +46,7 @@ export default function Handout(props) {
                         </Card.Header>
                         <Card.Body>
                             <Form>
-                                <Select options={options} onChange={(event) => setSelectedClient(event.value)} />
+                                <Select options={options} onChange={(event) => handlechange(event)} />
                             </Form>
                         </Card.Body>
                     </ListGroupItem>
@@ -45,21 +55,16 @@ export default function Handout(props) {
                             <ListGroupItem className="p-0">
                                 <Card.Header>Then, select <b>the order</b>.</Card.Header>
                                 <Card.Body>
-
                                     {props.orders.length == 0 ?
-                                        <span>Non c'è nessun ordine</span>
+                                        <span>There is no order to be handed out.</span>
                                         :
                                         <ListGroup>
                                             {props.orders.map((o, i) => {
-                                                if (o.userid == selectedClient) { /* TODO: elimina */
-                                                    return (
-                                                        <OrderToggle order={o} chiave={i} key={i} />
-                                                    )
-                                                }
-                                            })}
+                                                return (
+                                                    <OrderToggle order={o} chiave={o.id} key={i} />
+                                                )})}
                                         </ListGroup>
                                     }
-
                                 </Card.Body>
                             </ListGroupItem>
                             <Card.Body>
