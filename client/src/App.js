@@ -231,6 +231,12 @@ function App() {
 
 
   useEffect(() => {
+    if (!dirty)
+      getAvailableProducts()
+        .then((res) => setProducts(res));
+  }, [dirty]);
+
+  useEffect(() => {
     if (dirty) {
       setDirty(false)
 
@@ -253,7 +259,6 @@ function App() {
             setErrorMessage("Some products are not available")
             setShow(true);
           }
-
         });
     }
 
@@ -296,7 +301,7 @@ function App() {
           </Container>
         </Route>
 
-        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} setErrorMessage={setErrorMessage} show={show} setShow={setShow}/>} />
+        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} setErrorMessage={setErrorMessage} show={show} setShow={setShow} />} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={clientOrders} setOrders={setClientOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} />} />
