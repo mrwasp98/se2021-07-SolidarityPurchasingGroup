@@ -11,7 +11,7 @@ import ProductRequest from "./Components/ProductRequest";
 import { Container, Row, Col } from "react-bootstrap";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
-import {login, getUserInfo, logout} from "./API/API.js";
+import { login, getUserInfo, logout } from "./API/API.js";
 
 function App() {
   const [dirty, setDirty] = useState(false);
@@ -205,13 +205,13 @@ function App() {
   const [errorMessage, setErrorMessage] = useState();
   const [show, setShow] = useState(false);
 
-  useEffect(() =>{
-    const checkAuth = async() => {
+  useEffect(() => {
+    const checkAuth = async () => {
       try {
         const user = await getUserInfo();
         setUsername(user.name);
         setLogged(true);
-      } catch(err) {
+      } catch (err) {
         console.error(err.error);
       }
     };
@@ -236,7 +236,7 @@ function App() {
 
   useEffect(() => {
     getAvailableProducts()
-    .then((res) => setProducts(res));
+      .then((res) => setProducts(res));
   }, []);
 
   useEffect(() => {
@@ -250,9 +250,12 @@ function App() {
         order.deliveryaddress,
         order.deliveryid,
         order.status,
-        order.products).then(() => {
+        order.products).then((res) => {
+          if (res.status !== undefined && res.status === 403)
+            // A few products are not availability
+            console.log(res.listofProducts); // The list of products non availability "res.listofProducts"
           setOrder({});
-        }).catch((err) => { 
+        }).catch((err) => {
           setErrorMessage(err.message)
           setShow(true);
         });
@@ -283,7 +286,7 @@ function App() {
   return (
     <>
       <Router>
-        <Route path="/"> <MyNav IsLogin={logged} logout={logout} setLogged={setLogged}/></Route>
+        <Route path="/"> <MyNav IsLogin={logged} logout={logout} setLogged={setLogged} /></Route>
         <Route exact path='/products'>
           <Container className="p-0 m-0" fluid>
             <Row className="">
@@ -297,10 +300,10 @@ function App() {
           </Container>
         </Route>
 
-        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} show={show} setShow={setShow}/>} />
+        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} show={show} setShow={setShow} />} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={clientOrders} setOrders={setClientOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
-        <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername}/>} />
+        <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} />} />
       </Router>
     </>
   );
