@@ -1,7 +1,7 @@
 import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col, Alert } from "react-bootstrap";
 import { useState } from "react";
 import Select from 'react-select'
-import { iconAdd, iconSub } from "./Icons";
+import { iconAdd, iconSub, iconAddDisabled } from "./Icons";
 import dayjs from "dayjs";
 import {Link} from 'react-router-dom'
 
@@ -9,6 +9,7 @@ function ProductLine(props) {
     const {product} = props;
 
     const [quantity, setQuantity] = useState(0);
+    const [available, setAvailable] = useState(true)
 
     const add = () => {
         let x = quantity + 1;
@@ -24,6 +25,12 @@ function ProductLine(props) {
 
     const handleProducts = (x) => {
         setQuantity(x);
+
+        if(x >= product.quantity){
+            setAvailable(false);
+        }else{
+            setAvailable(true)
+        }
         if (props.productsSelected.length == 0) {
             const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
             props.setProductsSelected([newProduct])
@@ -43,8 +50,9 @@ function ProductLine(props) {
     return (<tr>
         <td>{product.name}</td>
         <td>{product.category}</td>
-        <td>{quantity + " " + product.measure}</td>
-        <td><span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>&nbsp;
+        <td>{quantity + " " + product.measure + "/" + product.quantity + " " + product.measure + " available"}</td>
+        <td>{available ? <span style={{ cursor: 'pointer'}} onClick={add}>{iconAdd}</span>
+        : <span style={{ cursor: 'pointer'}}>{iconAddDisabled}</span>                 }&nbsp;
             <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>&nbsp;</td>
     </tr>
     )

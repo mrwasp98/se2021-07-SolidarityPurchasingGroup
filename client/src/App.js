@@ -234,9 +234,12 @@ function App() {
         order.status,
         order.products).then(() => {
           setOrder({});
-        }).catch((err) => { 
-          setErrorMessage(err.message)
-          setShow(true);
+        }).catch((err) => {
+          if(err.message.includes("403")){
+            setErrorMessage("Some products are not available")
+            setShow(true);
+          }
+
         });
     }
 
