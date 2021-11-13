@@ -44,6 +44,8 @@
 .NavBar-Background>div .callandarButton {
     color: #ffffff !important;
     background-color: #0f8b8b;
+    border: 0px solid #ec9a2a !important;
+    font-weight: 400 !important;
 }
 
 .border-right {
@@ -74,7 +76,16 @@
     /*box-shadow: 5px 8px #888888 !important;*/
     box-shadow: 0px 0px #888888 !important;
     color: black !important;
-    border: 1px solid #ec9a2a;
+    font-weight: 700 !important;
+    border: 0px solid #ec9a2a !important;
+}
+
+.btn-primary{
+    border: 0px solid #ec9a2a !important;
+    background-color: #FFDEAD;
+    font-size: 20px;
+    font-weight: 600;
+    color: #CE8012;
 }
 
 .myText {
@@ -82,23 +93,34 @@
     font-weight: 500 !important;
 }
 
-.cartButton {
-    font-size: 17px;
-    font-weight: 400;
-    background-color: #0f8b8b;
-    border: 1px solid #0f8b8b;
+.myTitle {
+    font-weight: 600 !important;
+    font-family: Helvetica, sans-serif;
+    color: #143642;
 }
 
+.cartButton {
+    border: 0px solid #ec9a2a !important;
+    font-weight: 400;
+    background-color: #0C7373;
+    border: 1px solid #0C7373;
+    color:white;
+}
+
+<<<<<<< Updated upstream
 .color{
     color:#0f8b8b;
 }
 
+=======
+.cartButton:hover,
+>>>>>>> Stashed changes
 .cartButton:focus,
 .cartButton:active,
-.btn-primary:visited {
+.cartButton:visited {
     font-size: 17px;
-    font-weight: 400;
-    background-color: #0f8b8b;
+    font-weight: 500;
+    background-color: #0C7373;
     border: 1px solid #143642;
 }
 
@@ -117,6 +139,26 @@
         transform: rotate(360deg);
     }
 }
+
+.myCard{
+    border-style: solid;
+    border-width: 0px;
+    border-color: #B77110;
+}
+
+.cardDescription{
+    border-style: outset;
+    border-width: 0px;
+    background-color: white;
+    border-color: #EC9A29;
+}
+
+.priceDescription{
+    font-size: 18px;
+    font-weight: 500;
+    background-color: white;
+}
+
 
 .btn-outline-yellow {
     background-color: white;
