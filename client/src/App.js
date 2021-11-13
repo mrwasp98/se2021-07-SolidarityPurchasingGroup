@@ -221,6 +221,15 @@ function App() {
       .then((res) => setProducts(res));
   }, []);
 
+
+  useEffect(() => {
+    if(!dirty){
+      getAvailableProducts()
+      .then((res) => setProducts(res));
+    }
+  }, [dirty]);
+
+
   useEffect(() => {
     if (dirty) {
       setDirty(false)
@@ -236,9 +245,11 @@ function App() {
           if (res.status !== undefined && res.status === 406)
             // A few products are not availability
             console.log(res.listofProducts); // The list of products non availability "res.listofProducts"
-          setOrder({});
+            setErrorMessage(res.listofProducts.map(x => x.name + " not available" + "\n"));
+            setShow(true);
+            setOrder({});
         }).catch((err) => {
-          if(err.message.includes("403")){
+          if(err.message.includes("406")){
             setErrorMessage("Some products are not available")
             setShow(true);
           }
