@@ -1,9 +1,9 @@
 import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col, Alert } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import { addPRequest, getClients } from "../API/API"
+import { useState } from "react";
 import Select from 'react-select'
 import { iconAdd, iconSub } from "./Icons";
 import dayjs from "dayjs";
+import {Link} from 'react-router-dom'
 
 function ProductLine(props) {
     const {product} = props;
@@ -12,28 +12,30 @@ function ProductLine(props) {
 
     const add = () => {
         let x = quantity + 1;
-        setQuantity(x);
         handleProducts(x)
     }
 
     const sub = () => {
         if(quantity > 0){
             let x = quantity - 1;
-            setQuantity(x);
             handleProducts(x)
         }
     }
 
     const handleProducts = (x) => {
+        setQuantity(x);
         if (props.productsSelected.length == 0) {
             const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
             props.setProductsSelected([newProduct])
-
         }else {
-            const otherProducts = props.productsSelected.filter(x => x.id != product.productid)
-            const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
-            const newProducts = [...otherProducts, newProduct];
-            props.setProductsSelected(newProducts);
+            const otherProducts = props.productsSelected.filter(p => p.productid != product.id)
+            if(x == 0){
+                props.setProductsSelected(otherProducts);
+            }else{
+                const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
+                const newProducts = [...otherProducts, newProduct];
+                props.setProductsSelected(newProducts);
+            }
         }
     }
 
@@ -50,13 +52,9 @@ function ProductLine(props) {
 }
 
 export default function ProductRequest(props) {
-
-    const { clients } = props;
-
-    //clients { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
+    const { clients, products } = props;
 
     const [selectedClient, setSelectedClient] = useState("");
-    const [products, setProducts] = useState(props.products);
     const [productsSelected, setProductsSelected] = useState([]);
 
     const handleOrder = () => {
@@ -70,8 +68,19 @@ export default function ProductRequest(props) {
             status: "pending",
             products: productsSelected
         }
-        props.setOrder(newOrder);
-        props.setDirty(true);
+
+        let valid = true;
+
+        if(newOrder.products.length == 0){
+            valid=false;
+            props.setErrorMessage("Select the amount")
+            props.setShow(true);
+        }
+
+        if(valid){
+            props.setOrder(newOrder);
+            props.setDirty(true);
+        }
     }
 
     return (<>
@@ -98,7 +107,7 @@ export default function ProductRequest(props) {
             </Card>
             {selectedClient &&
                 <>
-                    {props.errorMessage && <Alert show={props.show} onClose={()=> props.setShow(false)} variant="danger" dismissible>Messaggio di errore da definire</Alert>}
+                    {props.errorMessage && <Alert show={props.show} onClose={()=> props.setShow(false)} variant="danger" dismissible>{props.errorMessage}</Alert>}
                     <Table className="mt-3" striped bordered hover>
                         <thead>
                             <tr>
@@ -113,7 +122,7 @@ export default function ProductRequest(props) {
                         </tbody>
                     </Table>
                     <div class="d-flex justify-content-between">
-                        <Button variant="danger">Back</Button>
+                        <Link to="/"><Button variant="danger">Back</Button></Link>
                         <Button onClick={handleOrder}>Check and order</Button>
                     </div>
                 </>
