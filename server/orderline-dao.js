@@ -35,7 +35,7 @@ exports.insertOrderLine = (line) => {
 
 exports.getOrderLinesWithProducts = (orderid) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT p.id,p.name,o.quantity,p.measure,p.price FROM orderline AS O, product as P WHERE orderid=? AND O.productid=P.id';
+        const sql = 'SELECT p.id,p.name,o.quantity,p.measure,o.price FROM orderline AS O, product as P WHERE orderid=? AND O.productid=P.id';
         db.all(sql, [orderid], (err, rows) => {
             if (err) {
                 reject(err);
@@ -45,6 +45,7 @@ exports.getOrderLinesWithProducts = (orderid) => {
                 resolve({ error: 'Orderline not found.' });
             }
             else {
+                console.log(rows)
                 resolve(rows);
             }
         });
