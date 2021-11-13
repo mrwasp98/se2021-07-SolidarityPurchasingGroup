@@ -36,14 +36,14 @@ const addPRequest = async (userid, creationdate, claimdate, confirmationdate, de
       .then((res) => {
         if (res.ok)
           resolve(res.json());
-        else if (res.status === 403)
+        else if (res.status === 406)
           // The request can be not resolve because a few products are not availability
           resolve(res.json());
 
         else if (!res.ok) {
           const error = new Error(`${res.status}: ${res.statusText}`);
           error.response = res;
-          
+
           throw error;
         }
         resolve(res.json());

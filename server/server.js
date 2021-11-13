@@ -202,8 +202,8 @@ app.post('/api/requests', async (req, res) => {
           });
 
         let x = productDao.updateProductsQuantity(line.productid, line.quantity).then().catch(() => {
-          res.status(403).json({
-            status: 403,
+          res.status(406).json({
+            status: 406,
             error: `A few product are not availability`,
             listofProducts: listProductsNotAvailability
           });
@@ -212,8 +212,8 @@ app.post('/api/requests', async (req, res) => {
       res.status(200).end();
     }
     else
-      res.status(403).json({
-        status: 403,
+      res.status(406).json({
+        status: 406,
         error: `A few product are not availability`,
         listofProducts: listProductsNotAvailability
       });

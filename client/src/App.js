@@ -233,7 +233,7 @@ function App() {
         order.deliveryid,
         order.status,
         order.products).then((res) => {
-          if (res.status !== undefined && res.status === 403)
+          if (res.status !== undefined && res.status === 406)
             // A few products are not availability
             console.log(res.listofProducts); // The list of products non availability "res.listofProducts"
           setOrder({});
