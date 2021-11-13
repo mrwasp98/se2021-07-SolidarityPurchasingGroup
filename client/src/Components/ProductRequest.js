@@ -1,7 +1,7 @@
 import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col, Alert } from "react-bootstrap";
 import { useState } from "react";
 import Select from 'react-select'
-import { iconAdd, iconSub, iconAddDisabled } from "./Icons";
+import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import dayjs from "dayjs";
 import {Link} from 'react-router-dom'
 
@@ -53,7 +53,9 @@ function ProductLine(props) {
         <td>{quantity + " " + product.measure + "/" + product.quantity + " " + product.measure + " available"}</td>
         <td>{available ? <span style={{ cursor: 'pointer'}} onClick={add}>{iconAdd}</span>
         : <span style={{ cursor: 'pointer'}}>{iconAddDisabled}</span>                 }&nbsp;
-            <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>&nbsp;</td>
+        {quantity != 0 ? <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>
+        : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
+        </td>
     </tr>
     )
 
@@ -87,6 +89,7 @@ export default function ProductRequest(props) {
 
         if(valid){
             props.setOrder(newOrder);
+            setProductsSelected([])
             props.setDirty(true);
         }
     }
