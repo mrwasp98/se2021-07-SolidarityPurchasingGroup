@@ -46,7 +46,6 @@ const addPRequest = async (userid, creationdate, claimdate, confirmationdate, de
 
           throw error;
         }
-        resolve(res.json());
       })
       .catch((err) => {
         reject({ message: err.message });
