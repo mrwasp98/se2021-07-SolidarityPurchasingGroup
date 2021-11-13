@@ -3,10 +3,10 @@ import { useState } from "react";
 import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import dayjs from "dayjs";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function ProductLine(props) {
-    const {product} = props;
+    const { product } = props;
 
     const [quantity, setQuantity] = useState(0);
     const [available, setAvailable] = useState(true)
@@ -17,7 +17,7 @@ function ProductLine(props) {
     }
 
     const sub = () => {
-        if(quantity > 0){
+        if (quantity > 0) {
             let x = quantity - 1;
             handleProducts(x)
         }
@@ -26,19 +26,19 @@ function ProductLine(props) {
     const handleProducts = (x) => {
         setQuantity(x);
 
-        if(x >= product.quantity){
+        if (x >= product.quantity) {
             setAvailable(false);
-        }else{
+        } else {
             setAvailable(true)
         }
         if (props.productsSelected.length == 0) {
             const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
             props.setProductsSelected([newProduct])
-        }else {
+        } else {
             const otherProducts = props.productsSelected.filter(p => p.productid != product.id)
-            if(x == 0){
+            if (x == 0) {
                 props.setProductsSelected(otherProducts);
-            }else{
+            } else {
                 const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
                 const newProducts = [...otherProducts, newProduct];
                 props.setProductsSelected(newProducts);
@@ -51,10 +51,10 @@ function ProductLine(props) {
         <td>{product.name}</td>
         <td>{product.category}</td>
         <td>{quantity + " " + product.measure + "/" + product.quantity + " " + product.measure + " available"}</td>
-        <td>{available ? <span style={{ cursor: 'pointer'}} onClick={add}>{iconAdd}</span>
-        : <span style={{ cursor: 'pointer'}}>{iconAddDisabled}</span>                 }&nbsp;
-        {quantity != 0 ? <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>
-        : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
+        <td>{available ? <span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>
+            : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
+            {quantity != 0 ? <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>
+                : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
         </td>
     </tr>
     )
@@ -81,13 +81,13 @@ export default function ProductRequest(props) {
 
         let valid = true;
 
-        if(newOrder.products.length == 0){
-            valid=false;
+        if (newOrder.products.length == 0) {
+            valid = false;
             props.setErrorMessage("Select the amount")
             props.setShow(true);
         }
 
-        if(valid){
+        if (valid) {
             props.setOrder(newOrder);
             setProductsSelected([])
             props.setDirty(true);
@@ -118,7 +118,7 @@ export default function ProductRequest(props) {
             </Card>
             {selectedClient &&
                 <>
-                    {props.errorMessage && <Alert show={props.show} onClose={()=> props.setShow(false)} variant="danger" dismissible>{props.errorMessage}</Alert>}
+                    {props.errorMessage && <Alert show={props.show} onClose={() => props.setShow(false)} variant="danger" dismissible>{props.errorMessage}</Alert>}
                     <Table className="mt-3" striped bordered hover>
                         <thead>
                             <tr>
@@ -129,7 +129,8 @@ export default function ProductRequest(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {products.map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
+                            {products.filter(p => p.quantity > 0)
+                                .map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                         </tbody>
                     </Table>
                     <div class="d-flex justify-content-between">
