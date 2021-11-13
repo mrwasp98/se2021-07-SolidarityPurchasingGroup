@@ -251,3 +251,19 @@ app.get('/api/products/:id',
       .then(product => res.json(product))
       .catch(() => res.status(500).end());
   });
+
+//get orders with products given a clientid
+app.get('/api/completeOrders',
+  async (req, res) => {
+    try {
+      const orders = await orderDao.getOrders(req.query.clientid);
+      for (const order of orders) {
+        const products = await orderlineDao.getOrderLinesWithProducts(order.id);
+        order.products = products;
+      }
+      res.status(200).json(orders);
+    } catch (err) {
+        res.status(500).end()
+    }
+  });
+
