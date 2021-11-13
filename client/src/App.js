@@ -19,25 +19,7 @@ function App() {
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]);
   const [logged, setLogged] = useState(false);
   const [username, setUsername] = useState('');
-  const [products, setProducts] = useState([{
-    "id": 0,
-    "name": "Artichoke",
-    "farmerid": 0,
-    "price": 2,
-    "measure": "kg",
-    "category": "Vegetables",
-    "typeofproduction": "",
-    "picture": ""
-  }, {
-    "id": 1,
-    "name": "lOLLO",
-    "farmerid": 1,
-    "price": 200,
-    "measure": "kg",
-    "category": "Vegetables",
-    "typeofproduction": "",
-    "picture": ""
-  }]);
+  const [products, setProducts] = useState([]);
   const [clients, setClients] = useState([]);
 
   /* const [clientOrders, setClientOrders] = useState([
@@ -300,7 +282,7 @@ function App() {
           </Container>
         </Route>
 
-        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} show={show} setShow={setShow} />} />
+        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} setErrorMessage={setErrorMessage} show={show} setShow={setShow}/>} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={clientOrders} setOrders={setClientOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} />} />
