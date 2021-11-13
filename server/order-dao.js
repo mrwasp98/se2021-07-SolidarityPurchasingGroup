@@ -29,7 +29,8 @@ exports.updateOrderStatus = (orderId, status) => {
                 reject(err);
                 return;
             }
-            resolve(row);
+            if(row==undefined) resolve(false);
+            else resolve(true);
         });
     });
 };
@@ -55,6 +56,7 @@ exports.deleteAllOrders = () => {
                 reject(err);
                 return;
             }
+            else resolve();
         });
     });
 };

@@ -1,4 +1,5 @@
-import {Alert, Button, Form, Container, Col} from 'react-bootstrap';
+import {Alert, Button, Form, Container, Col, Table} from 'react-bootstrap';
+import { iconStar } from "./Icons";
 import {useState} from 'react';
 import '../App.css';
 
@@ -73,31 +74,32 @@ function LoginForm(props) {
 
     return (
         <>
-            <Container className='login-form'>
+            <Container className='login-form text-warning'>
                 <Col>
+                  <h2 align="center">{iconStar}&nbsp;Login</h2>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                        <h2 className="text-warning">Login</h2>
-                        <Form.Group controlId='email'>
-                            <Form.Label className='text-warning myText'>Email</Form.Label>
-                            <Form.Control required type="text" placeholder="Insert your username" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
-                            <Form.Control.Feedback type="invalid">
-                                Please insert a valid username.
-                            </Form.Control.Feedback>
-                        </Form.Group>
+                        <Table className="mb-3 color">
+                            <Form.Group className="m-3" controlId='email'>
+                                <Form.Label className='text-warning myText'>Email</Form.Label>
+                                <Form.Control required type="text" placeholder="Insert your username" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
+                                <Form.Control.Feedback type="invalid">
+                                    Please insert a valid username.
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="m-3" controlId='password'>
+                                <Form.Label className='text-warning myText'>Password</Form.Label>
+                                <Form.Control required type="password" placeholder='Insert your password' onChange={(ev) => { setPassword(ev.target.value); setShow(false) }}/>
+                            </Form.Group>
 
-                        <Form.Group controlId='password'>
-                            <Form.Label className='text-warning myText'>Password</Form.Label>
-                            <Form.Control required type="password" placeholder='Insert your password' onChange={(ev) => { setPassword(ev.target.value); setShow(false) }}/>
-                        </Form.Group>
-
-                        {show ? <Alert variant='danger' className='error-box' onClose={() => (setShow(false))} dismissible>
-                            <Alert.Heading>{error}</Alert.Heading>
-                            <p>The password must be at least 6 characters long and must contain both alphabetical and numerical values.</p>
-                        </Alert>
-                        : ''}
-
-                        <Button type='submit' variant='warning' className='loginButton'>Login</Button>
-
+                            {show ? <Alert variant='danger' className='error-box' onClose={() => (setShow(false))} dismissible>
+                                <Alert.Heading>{error}</Alert.Heading>
+                                <p>The password must be at least 6 characters long and must contain both alphabetical and numerical values.</p>
+                            </Alert>
+                            : ''}
+                        </Table>
+                        <Container className="d-flex justify-content-end">
+                            <Button type='submit' variant='warning' className="cartButton mb-2 text-white">Login</Button>
+                        </Container>
                     </Form>
                 </Col>
             </Container>

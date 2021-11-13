@@ -89,6 +89,10 @@
     border: 1px solid #0f8b8b;
 }
 
+.color{
+    color:#0f8b8b;
+}
+
 .cartButton:focus,
 .cartButton:active,
 .btn-primary:visited {
@@ -133,7 +137,7 @@
 .login-form {
     padding: 2%;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
-    width: 30%;
+    width: 40%;
     height: 70%;
     margin: 100px auto;
     border-radius: 10px;

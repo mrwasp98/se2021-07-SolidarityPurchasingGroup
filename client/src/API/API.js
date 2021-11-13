@@ -15,47 +15,53 @@
  * 
  * @returns 
  */
- const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, products) => {
+const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, products) => {
   return new Promise((resolve, reject) => {
-    fetch( '/api/requests', {
+    fetch('/api/requests', {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-          userId : userid, 
-          creationdate : creationdate,
-          claimdate : claimdate,
-          confirmationdate : confirmationdate, 
-          deliveryaddress : deliveryaddress,
-          deliveryid : deliveryid, 
-          status : status,
-          products: products
+        userId: userid,
+        creationdate: creationdate,
+        claimdate: claimdate,
+        confirmationdate: confirmationdate,
+        deliveryaddress: deliveryaddress,
+        deliveryid: deliveryid,
+        status: status,
+        products: products
       })
     })
       .then((res) => {
-        if (!res.ok) {
+        if (res.ok)
+          resolve(res.json());
+        else if (res.status === 406)
+          // The request can be not resolve because a few products are not availability
+          resolve(res.json());
+
+        else if (!res.ok) {
           const error = new Error(`${res.status}: ${res.statusText}`);
           error.response = res;
+
           throw error;
         }
-        resolve(res.json());
       })
       .catch((err) => {
-          reject({ message: err.message });
+        reject({ message: err.message });
       });
   });
 }
 
 //GET all clients
 const getClients = async () => {
-return new Promise((resolve, reject) => {
-  fetch( '/api/clients', {
-    method: "GET",
-    headers: {
-      "content-type": "application/json",
-    },
-  }).then((res) => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/clients', {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => {
       if (!res.ok) {
         const error = new Error(`${res.status}: ${res.statusText}`);
         error.response = res;
@@ -63,25 +69,25 @@ return new Promise((resolve, reject) => {
       }
       resolve(res.json());
     })
-    .catch((err) => {
+      .catch((err) => {
         reject({ message: err.message });
-    });
-});
+      });
+  });
 }
 
 /** STORY 2 **/
 const addClient = async (name, surname, wallet, address) => {
   return new Promise((resolve, reject) => {
-    fetch( '/api/client', {
+    fetch('/api/client', {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-          name : name, 
-          surname: surname,
-          wallet: wallet,
-          address: address
+        name: name,
+        surname: surname,
+        wallet: wallet,
+        address: address
       })
     })
       .then((res) => {
@@ -93,7 +99,7 @@ const addClient = async (name, surname, wallet, address) => {
         resolve(res.json());
       })
       .catch((err) => {
-          reject({ message: err.message });
+        reject({ message: err.message });
       });
   });
 }
@@ -101,33 +107,12 @@ const addClient = async (name, surname, wallet, address) => {
 /** STORY 3 **/
 const getAvailableProducts = async () => {
   return new Promise((resolve, reject) => {
-    fetch( '/api/products', {
+    fetch('/api/products', {
       method: "GET",
       headers: {
         "content-type": "application/json",
       },
     }).then((res) => {
-        if (!res.ok) {
-          const error = new Error(`${res.status}: ${res.statusText}`);
-          error.response = res;
-          throw error;
-        }
-        resolve(res.json());
-      })
-      .catch((err) => {
-          reject({ message: err.message });
-      });
-  });
-}
-
-const getFarmers = async () => {
-return new Promise((resolve, reject) => {
-  fetch( '/api/farmers', {
-    method: "GET",
-    headers: {
-      "content-type": "application/json",
-    },
-  }).then((res) => {
       if (!res.ok) {
         const error = new Error(`${res.status}: ${res.statusText}`);
         error.response = res;
@@ -135,10 +120,31 @@ return new Promise((resolve, reject) => {
       }
       resolve(res.json());
     })
-    .catch((err) => {
+      .catch((err) => {
         reject({ message: err.message });
-    });
-});
+      });
+  });
+}
+
+const getFarmers = async () => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/farmers', {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        const error = new Error(`${res.status}: ${res.statusText}`);
+        error.response = res;
+        throw error;
+      }
+      resolve(res.json());
+    })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
 }
 
 /** STORY 4 **/
@@ -167,56 +173,56 @@ const getClientOrders = async (clientid) => {
         "content-type": "application/json",
       },
     }).then((res) => {
-        if (!res.ok) {
-          const error = new Error(`${res.status}: ${res.statusText}`);
-          error.response = res;
-          throw error;
-        }
-        resolve(res.json());
-      })
+      if (!res.ok) {
+        const error = new Error(`${res.status}: ${res.statusText}`);
+        error.response = res;
+        throw error;
+      }
+      resolve(res.json());
+    })
       .catch((err) => {
-          reject({ message: err.message });
+        reject({ message: err.message });
       });
   });
-  }
+}
 
 
 async function login(credentials) {
   let response = await fetch('/login', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(credentials),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
   });
-  if(response.ok) {
-      const user = await response.json();
-      return user.name;
+  if (response.ok) {
+    const user = await response.json();
+    return user.name;
   } else {
-      const errDetails = await response.text();
-      throw errDetails;
+    const errDetails = await response.text();
+    throw errDetails;
   }
 }
 
 async function logout() {
   const response = await fetch('/logout', {
-      method: 'DELETE'
+    method: 'DELETE'
   });
-  if(response.ok) {
-      return null;
-  } else return {'err': 'DELETE error' };
+  if (response.ok) {
+    return null;
+  } else return { 'err': 'DELETE error' };
 }
 
-async function getUserInfo(){
+async function getUserInfo() {
   const response = await fetch('/api/sessions/current');
   const userInfo = await response.json();
-  if(response.ok) {
-      return userInfo;
+  if (response.ok) {
+    return userInfo;
   } else {
-      throw userInfo;
+    throw userInfo;
   }
 }
 
 
 
-export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders}
+export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders }
