@@ -11,6 +11,8 @@ function ProductLine(props) {
     const [quantity, setQuantity] = useState(0);
     const [available, setAvailable] = useState(true)
 
+    { (quantity != 0 && !props.productsSelected.length) && setQuantity(0) }
+
     const add = () => {
         let x = quantity + 1;
         handleProducts(x)
