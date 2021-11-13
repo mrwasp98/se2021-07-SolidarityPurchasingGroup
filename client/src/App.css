@@ -107,14 +107,11 @@
     color:white;
 }
 
-<<<<<<< Updated upstream
 .color{
     color:#0f8b8b;
 }
 
-=======
 .cartButton:hover,
->>>>>>> Stashed changes
 .cartButton:focus,
 .cartButton:active,
 .cartButton:visited {

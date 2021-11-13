@@ -45,7 +45,7 @@ export default function ProductsList(props) {
                         }}>Back</Button>
                 </Col>
                 <Col className="col-6">
-                    <div className="d-flex justify-content-around mt-3">
+                    <div className="d-flex justify-content-around mt-4">
                         <h1 className="myTitle" style={{ fontSize: "40px" }}>Available Products</h1>
                     </div>
                 </Col>
@@ -81,6 +81,11 @@ export default function ProductsList(props) {
                     </InputGroup>
                 </Offcanvas.Body>
             </Offcanvas>
+            <Row >
+                <div className="d-flex justify-content-around">
+                    <p style={{ fontSize: "30px" }}>{selected}</p>
+                </div>
+            </Row>
             <Row className="p-5 m-5 mt-0">
                 <Row className="ps-5 ms-5 pe-5 me-5 mt-0">
                     {props.products.map((prod) =>
