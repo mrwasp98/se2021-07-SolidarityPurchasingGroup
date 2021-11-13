@@ -23,6 +23,7 @@ exports.deleteAllClients = () => {
                 reject(err);
                 return;
             }
+            else resolve();
         });
     });
 };
