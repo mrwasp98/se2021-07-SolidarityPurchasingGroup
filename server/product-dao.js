@@ -34,3 +34,19 @@ exports.updateProductsQuantity = (productid, quantity) => {
 
     })
 }
+
+exports.getProductById = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM product WHERE id=?';
+        db.get(sql, [id], (err, row) => {
+            if(err) {
+                reject(err);
+                return;
+            }
+            if(row==undefined){
+                resolve({ error: 'Product not found for id '+id });
+            }
+            resolve(row);
+        });
+    });
+};
