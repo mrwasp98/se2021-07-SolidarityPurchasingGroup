@@ -21,9 +21,10 @@ export default function MyNav(props) {
       <Navbar
         className="justify-content-between NavBar-Background text-warning"
         expand="sm"
+        
       >
         <Container fluid>
-          <Navbar.Brand>
+          <Navbar.Brand style={{fontSize:"25px"}}>
             {iconStar}
             <span> SPG - Group 07</span>
           </Navbar.Brand>
@@ -32,6 +33,7 @@ export default function MyNav(props) {
             variant="light"
             onClick={toggleShow}
             className="callandarButton"
+            style={{fontSize:"17px"}}
           >
             Current Date: {value.getDate()}/{value.getMonth() + 1}/
             {value.getFullYear()}
@@ -53,9 +55,9 @@ export default function MyNav(props) {
               <>
                 {" "}
                 <Link to= "/login">
-                  <Button variant="link">Login</Button>
+                  <Button variant="link" style={{fontSize:"20px"}}>Login</Button>
                 </Link>
-                <Button variant="link">Register</Button>{" "}
+                <Button variant="link" style={{fontSize:"20px"}}>Register</Button>{" "}
               </>
             )}{" "}
           </Navbar.Text>
