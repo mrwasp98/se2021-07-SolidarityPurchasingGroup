@@ -151,20 +151,23 @@ const getFarmers = async () => {
 //In the server function do a query on OrderLine and get productid and quantity,
 //Then do an update on Availability and subtract the optained quantity to the availability quantity where 
 //productid is equal to the one optained before!
-async function handOutProduct(requestid) {
-  const response = await fetch('/api/handout/' + requestid, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+async function handOutProduct(orderid) {
+  const response = await fetch('/api/orders/' + orderid, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        status: 'completed'
+    })
   });
-  if (response.ok) {
-    return null;
-  } else return { 'err': 'PUT error' };
+  if(response.ok) {
+      return response.status;
+  } else return { message: 'PUT error' };
 };
 
 //this API fetches the orders of a specific client
 const getClientOrders = async (clientid) => {
   return new Promise((resolve, reject) => {
-    fetch('/api/orders?clientid=' + clientid, {
+    fetch( '/api/completeOrders?clientid='+clientid, {
       method: "GET",
       headers: {
         "content-type": "application/json",

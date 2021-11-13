@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Container, Button, Form, ListGroup, ListGroupItem, Collapse } from "react-bootstrap";
+import { Card, Container, Button, Form, ListGroup, ListGroupItem, Alert } from "react-bootstrap";
 import React from 'react'
 import Select from 'react-select'
 import { Link } from "react-router-dom";
@@ -10,11 +10,13 @@ export default function Handout(props) {
 
     const [selectedClient, setSelectedClient] = useState(""); //this state controls the Select input
     const [options, setOptions] = useState([]); //this state is used to store the information in props.clients in the format that works with the Select 
-
+    const [error, setError] = useState("");
+    
     /*used to get all the clients when the component is being loaded
     then, converts the information in the best format to show options in the Select input*/
     useEffect(() => {
-        if (props.clients.length == 0) {
+        setError("");
+        if (props.clients.length === 0) {
             getClients()
                 .then((res) => {
                     props.setClients(res)
@@ -22,17 +24,23 @@ export default function Handout(props) {
                         return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
                     }))
                 })
+                .catch((err)=>{
+                    setError(err.message);
+                })
         }
-    }, [props.clients, props.setClients]);
+    }, [props.clients, props.setClients, props]);
 
-    //this function is called only when the client is selected in order to load their orders
+    //this function is called only when the client is selected to load their orders
     function handlechange(event) {
         setSelectedClient(event.value);
         getClientOrders(event.value)
             .then((res) => {
+                console.log(res);
                 props.setOrders(res)
             })
-            //todo: error
+            .catch((err)=>{
+                setError(err.message);
+            })
     }
 
     return (
@@ -50,7 +58,7 @@ export default function Handout(props) {
                             </Form>
                         </Card.Body>
                     </ListGroupItem>
-                    {selectedClient &&
+                    {selectedClient && !error &&
                         <>
                             <ListGroupItem className="p-0">
                                 <Card.Header>Then, select <b>the order</b>.</Card.Header>
@@ -76,6 +84,7 @@ export default function Handout(props) {
                             </Card.Body>
                         </>
                     }
+                    {error && <Alert variant="danger">An error as occurred: {error}</Alert>}
                 </ListGroup>
             </Card>
         </Container>
