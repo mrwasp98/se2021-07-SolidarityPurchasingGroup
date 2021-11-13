@@ -10,7 +10,6 @@ export default function MyNav(props) {
   const [value, onChange] = useState(new Date());
   const [show, setShow] = useState(false);
   const toggleShow = () => setShow(!show);
-  const doLogout = () => props.logout;
 
   const handleLogout = async () => {
     await props.logout();
