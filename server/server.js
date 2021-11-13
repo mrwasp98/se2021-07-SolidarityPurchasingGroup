@@ -131,8 +131,10 @@ app.get('/api/orders',
 //TODO manage order not existing
 app.put('/api/orders/:orderid', async (req, res) => {
   try {
-    await orderDao.updateOrderStatus(req.params.orderid, req.body.status);
-    res.status(200).end();
+    const result = await orderDao.updateOrderStatus(req.params.orderid, req.body.status);
+    console.log(result)
+    if (result) res.status(200).end();
+    else res.status(404).end();
   } catch (err) {
     res.status(503).json({ error: `Database error ${err}.` });
   }
@@ -251,3 +253,19 @@ app.get('/api/products/:id',
       .then(product => res.json(product))
       .catch(() => res.status(500).end());
   });
+
+//get orders with products given a clientid
+app.get('/api/completeOrders',
+  async (req, res) => {
+    try {
+      const orders = await orderDao.getOrders(req.query.clientid);
+      for (const order of orders) {
+        const products = await orderlineDao.getOrderLinesWithProducts(order.id);
+        order.products = products;
+      }
+      res.status(200).json(orders);
+    } catch (err) {
+        res.status(500).end()
+    }
+  });
+

@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand",
     "start": "node server.js"
   },
   "jest": {
     "testPathIgnorePatterns": [
       "tests/api-products",
-      "tests/api-clients",
-      "tests/api-requests"
+      "tests/api-requests",
+      "tests/api-clients"
     ]
   },
   "author": "",
