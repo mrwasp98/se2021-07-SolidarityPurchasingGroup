@@ -79,6 +79,12 @@
 ### Hand out product
 * URL: `api/orders/{orderid}`
 * HTTP method: PUT
+* Request body:
+``` JSON
+[{
+    "status": "completed"
+}]
+```
 * Description: send to backend the requestid 
 * Request parameters: orderid
-* Response: `err: PUT error` (generic error)
+* Response: `200 OK`, `err: PUT error` (generic error)
