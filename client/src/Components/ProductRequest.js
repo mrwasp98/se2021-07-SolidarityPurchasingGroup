@@ -1,9 +1,32 @@
-import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col, Alert } from "react-bootstrap";
+import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col, Alert, Modal} from "react-bootstrap";
 import { useState } from "react";
 import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import dayjs from "dayjs";
 import { Link } from 'react-router-dom'
+
+function ModalEnd(props) {
+    return (
+        <Modal show={props.showModal} handleClose={props.handleCloseModal} backdrop="static">
+            <Modal.Header>
+                <Modal.Title>Order received!</Modal.Title>
+            </Modal.Header>
+            <Form>
+              <Modal.Body>
+                <Form.Group controlId='selectedName'>
+                  <Form.Label>Summary of order</Form.Label>
+                  <ul>
+                  {props.products.map(x => <li>{x.quantity + " " + x.measure + " of " + x.name}</li>)}
+                  </ul>
+                </Form.Group>              
+              </Modal.Body>
+              <Modal.Footer>
+                  <Button onClick={() => props.setShowModal(false)}>Ok</Button>
+              </Modal.Footer>
+            </Form>
+        </Modal>
+    );
+  }
 
 function ProductLine(props) {
     const { product } = props;
@@ -61,6 +84,11 @@ export default function ProductRequest(props) {
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
 
+    const [showModal, setShowModal] = useState(false);
+    const handleCloseModal = () => setShowModal(false);
+    const handleShowModal = () => setShowModal(true);
+    const [summary, setSummary] = useState([]);
+
     const handleOrder = () => {
         const newOrder = {
             userid: selectedClient,
@@ -81,7 +109,9 @@ export default function ProductRequest(props) {
             props.setShow(true);
         }
 
-        if (valid) {
+        if (valid){
+            setSummary(newOrder.products);
+            setShowModal(true);
             props.setOrder(newOrder);
             setProductsSelected([])
             props.setDirty(true);
@@ -138,5 +168,6 @@ export default function ProductRequest(props) {
                 </>
             }
         </Container>
+        <ModalEnd showModal={showModal} setShowModal={setShowModal} handleCloseModal={handleCloseModal} handleShowModal={handleShowModal} products={summary}/>
     </>)
 }
