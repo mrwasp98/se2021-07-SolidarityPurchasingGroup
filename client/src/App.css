@@ -80,7 +80,7 @@
     border: 0px solid #ec9a2a !important;
 }
 
-.btn-primary{
+.btn-primary {
     border: 0px solid #ec9a2a !important;
     background-color: #FFDEAD;
     font-size: 20px;
@@ -104,11 +104,11 @@
     font-weight: 400;
     background-color: #0C7373;
     border: 1px solid #0C7373;
-    color:white;
+    color: white;
 }
 
-.color{
-    color:#0f8b8b;
+.color {
+    color: #0f8b8b;
 }
 
 .cartButton:hover,
@@ -137,36 +137,36 @@
     }
 }
 
-.myCard{
+.myCard {
     border-style: solid;
     border-width: 0px;
     border-color: #B77110;
 }
 
-.cardDescription{
+.cardDescription {
     border-style: outset;
     border-width: 0px;
     background-color: white;
     border-color: #EC9A29;
 }
 
-.priceDescription{
+.priceDescription {
     font-size: 18px;
     font-weight: 500;
     background-color: white;
 }
 
-
-.btn-outline-yellow {
-    background-color: white;
-    color: #EC9A29;
-    border: 2px solid #EC9A29;
+.btn-yellow {
+    border: 0px solid #ec9a2a !important;
+    background-color: #0C7373;
+    border: 1px solid #0C7373;
+    color: white;
 }
 
-.btn-outline-yellow:hover,
-.btn-outline-yellow:focus {
-    background-color: #EC9A29;
-    color: black;
+.btn-yellow:hover,
+.btn-yellow:focus {
+    background-color: #ec9a2a;
+    border: 1px solid #143642;
 }
 
 .linkred {

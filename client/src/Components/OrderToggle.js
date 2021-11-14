@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Accordion, Container, Row, Table, Button, Alert } from "react-bootstrap";
+import { Accordion, Container, Table, Button, Alert } from "react-bootstrap";
 import { handOutProduct } from '../API/API'
 
 export default function OrderToggle(props) {
@@ -55,7 +55,7 @@ export default function OrderToggle(props) {
                     </Table>
                     <Container className={"d-flex " + (error ? "justify-content-between" : "justify-content-end")}>
                         {error && <Alert variant="danger" className=" mb-2 py-0 my-auto mr-2">An error has occurred: {error}</Alert>}
-                        <Button variant="primary" className="cartButton py-0 mb-2" size="lg" onClick={handleConfirm}
+                        <Button variant="yellow" className="py-0 mb-2" onClick={handleConfirm}
                             disabled={props.order.status === "completed" || completed} >Confirm Handout</Button>
 
                     </Container>

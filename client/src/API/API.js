@@ -160,7 +160,7 @@ async function handOutProduct(orderid) {
     })
   });
   if(response.ok) {
-      return null;
+      return response.status;
   } else return { message: 'PUT error' };
 };
 

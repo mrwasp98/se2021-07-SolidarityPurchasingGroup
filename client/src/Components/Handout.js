@@ -63,7 +63,7 @@ export default function Handout(props) {
                             <ListGroupItem className="p-0">
                                 <Card.Header>Then, select <b>the order</b>.</Card.Header>
                                 <Card.Body>
-                                    {props.orders.length == 0 ?
+                                    {props.orders.length === 0 ?
                                         <span>There is no order to be handed out.</span>
                                         :
                                         <ListGroup>

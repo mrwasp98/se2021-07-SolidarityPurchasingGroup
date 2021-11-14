@@ -24,12 +24,12 @@ exports.getOrders = (clientId) => {
 exports.updateOrderStatus = (orderId, status) => {
     return new Promise((resolve, reject) => {
         const sql = "UPDATE 'order' SET status=? WHERE id=?";
-        db.get(sql, [status, orderId], (err, row) => {
+        db.run(sql, [status, orderId], (err) => {
             if (err) {
                 reject(err);
                 return;
             }
-            if(row==undefined) resolve(false);
+            if(this.changes===0) resolve(false);
             else resolve(true);
         });
     });
