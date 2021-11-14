@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, ListGroup, Offcanvas, InputGroup, Form, Card } from "react-bootstrap";
 import { useHistory } from 'react-router-dom';
-import { iconCart, iconFilter } from "./Icons";
+import { iconCart, iconFilter, home } from "./Icons";
 export default function ProductsList(props) {
     const history = useHistory();
     function handle() {
@@ -39,13 +39,14 @@ export default function ProductsList(props) {
                             handleShow();
                         }}
                         style={{
-                            right: '3rem', fontSize: "20px", "fontWeight": "400", width: '8rem', height: '3rem', bottom: '2rem', right: '3rem', zIndex: '2'
-                        }}>{iconFilter} Farmers</Button>
-                    <Button variant="danger" className="ms-3 position-fixed" onClick={() => handle()}
-                        style={{
-                            fontSize: '24px', "backgroundColor": "#A8210A",
-                            width: '5rem', height: '3rem', bottom: '2rem', right: '3rem', zIndex: '2'
-                        }}>Back</Button>
+                            right: '3rem', fontSize: "20px", "fontWeight": "400", width: '14rem', height: '3rem', bottom: '2rem', right: '3rem', zIndex: '2'
+                        }}>Select Farmers {iconFilter} </Button>
+                    <Button
+                        className='position-fixed rounded-circle'
+                        style={{ width: '5rem', height: '5rem', bottom: '3rem', right: '3rem', zIndex: '2', "backgroundColor": "#143642", color: "white" }}
+                        onClick={() => handle()}>
+                        {home}
+                    </Button>
                 </Col>
                 <Col className="col-6">
                     <div className="d-flex justify-content-around mt-4">
@@ -89,11 +90,11 @@ export default function ProductsList(props) {
                     <p style={{ fontSize: "30px" }}>{selected}</p>
                 </div>
             </Row>
-            <Row className="p-5 m-5 mt-0">
-                <Row className="ps-5 ms-5 pe-5 me-5 mt-0">
-                    {props.products.map((prod) =>
+            <Row className="mt-3 pt-5">
+                <Row className="mt-0 justify-content-center">
+                    {props.products.filter(p => (selected) ? p.category === selected : true).map((prod) =>
                         <Product
-                            prod={prod}
+                            prod={prod} farmerName={props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0].place}
                         />)}
                 </Row>
             </Row>
@@ -103,21 +104,21 @@ export default function ProductsList(props) {
 
 function Product(props) {
     return (
-        <Card className="m-3 p-0 myCard text-center" style={{ width: '20rem', backgroundColor: "#FFEFD6" }}>
+        <Card className="m-3 p-0 myCard" style={{ width: '25rem', backgroundColor: "#FFEFD6" }}> {/*text-center*/}
             <Card.Img variant="top" className="m-0" src={props.prod.picture} />
             <Card.Body className="pb-0">
                 <Card.Header className="myTitle" style={{ fontSize: "23px", "fontWeight": "600" }}>{props.prod.name}</Card.Header>
                 <Card.Text className="p-3 pb-3 m-2 mt-3 cardDescription" >
-                    <p className="mt-0 mb-1 myText">Farmer: NaN</p>
+                    <p className="mt-0 mb-1 myText">Farmer: {props.farmerName}</p>
                     <p className="mt-0 mb-1 myText">Category: {props.prod.category}</p>
                     <p className="mt-0 mb-0 myText">Type of production: {props.prod.typeofproduction}</p>
                 </Card.Text>
             </Card.Body>
             <Card.Footer className="mt-3">
                 <Row >
-                    <Col className="ps-3 mb-3">
+                    <Col className="mb-3">
                         <p style={{ display: "inline", fontSize: "21px", "fontWeight": "600" }}>Price:</p>
-                        <Col md={{ span: 7, offset: 3 }}>
+                        <Col md={{ span: 8, offset: 3 }}>
                             <InputGroup className="priceGroup mt-1">
                                 <InputGroup.Text className="priceDescription">{props.prod.price}</InputGroup.Text>
                                 <InputGroup.Text className="priceDescription">€</InputGroup.Text>
