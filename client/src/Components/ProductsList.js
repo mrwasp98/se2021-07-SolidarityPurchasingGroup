@@ -12,10 +12,13 @@ export default function ProductsList(props) {
     const [rand, setRand] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    let categories = [...new Set(props.products.map(prod => prod.category))];
+    let farmersPresent = props.products.map(prod => prod.farmerid);
+    farmersPresent = props.farmers.filter(f => farmersPresent.includes(f.userid));
     return (
         <>
             <Row className="pt-0" style={{ "fontWeight": "600", "backgroundColor": "#FFDEAD" }}>
-                {props.categories.map((cat) =>
+                {categories.map((cat) =>
                     <Col className="border-end border-grey p-4">
                         <div className="d-flex justify-content-around">
                             <Button className="btn-primary" id="main"
@@ -63,14 +66,14 @@ export default function ProductsList(props) {
                     <Offcanvas.Title style={{ fontSize: "19px", color: "#A4660E" }}>selected in the research</Offcanvas.Title>
                     <InputGroup className="mt-3">
                         {
-                            props.farmers.map((farmer, index) => {
+                            farmersPresent.map((farmer, index) => {
                                 return (
                                     <Row className="w-100 mt-1 ms-2" style={{ fontSize: "20px", color: "#8D570C", "fontWeight": "500", }}>
                                         <Form.Check
                                             key={`row-farmer-${index}`}
                                             className=""
                                             type="checkbox"
-                                            label={farmer}
+                                            label={farmer.place}
                                             defaultChecked={true}
                                             onChange={(e) => { e.target.checked ? setRand(true) : setRand(false) }}
                                         />

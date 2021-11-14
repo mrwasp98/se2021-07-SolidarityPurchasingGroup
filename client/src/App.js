@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { addPRequest, getClients, getAvailableProducts } from "./API/API"
+import { addPRequest, getClients, getAvailableProducts, getFarmers } from "./API/API"
 import MyNav from "./Components/MyNav";
 import { LoginForm } from "./Components/LoginForm";
 import { BrowserRouter as Router, Route, } from "react-router-dom";
@@ -15,7 +15,7 @@ import { login, getUserInfo, logout } from "./API/API.js";
 
 function App() {
   const [dirty, setDirty] = useState(false);
-  const [farmers, setFarmers] = useState(["Tizio", "Caio", "Sempronio", "Mino", "Pino"]);
+  const [farmers, setFarmers] = useState([]);
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]);
   const [logged, setLogged] = useState(false);
   const [username, setUsername] = useState('');
@@ -200,16 +200,14 @@ function App() {
     checkAuth();
   }, []);
 
-  /*useEffect(() => {
-    if (dirty) {
-      API.getAvailableProducts().then((p) => {
-        //setTimeout(() => {
-        setProducts(p);
-        setDirty(false);
-        //}, 1000);
-      });
-    }
-  }, [dirty]);*/
+  useEffect(() => {
+    getFarmers().then((p) => {
+      //setTimeout(() => {
+      setFarmers(p);
+      console.log(p);
+      //}, 1000);
+    });
+  }, []);
 
   useEffect(() => {
     getClients()
@@ -220,21 +218,6 @@ function App() {
     getAvailableProducts()
       .then((res) => setProducts(res));
   }, []);
-
-
-  useEffect(() => {
-    if(!dirty){
-      getAvailableProducts()
-      .then((res) => setProducts(res));
-    }
-  }, [dirty]);
-
-
-  useEffect(() => {
-    if (!dirty)
-      getAvailableProducts()
-        .then((res) => setProducts(res));
-  }, [dirty]);
 
   useEffect(() => {
     if (dirty) {
@@ -252,10 +235,10 @@ function App() {
             // A few products are not availability
             //console.log(res.listofProducts);  The list of products non availability "res.listofProducts"
             setErrorMessage(res.listofProducts.map(x => x.name + " not available" + "\n"));
-            setShow(true);
-            setOrder({});
+          setShow(true);
+          setOrder({});
         }).catch((err) => {
-          if(err.message.includes("406")){
+          if (err.message.includes("406")) {
             setErrorMessage("Some products are not available")
             setShow(true);
           }
@@ -303,7 +286,7 @@ function App() {
           </Container>
         </Route>
 
-        <Route exact path='/productRequest' render={() => <ProductRequest clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} setErrorMessage={setErrorMessage} show={show} setShow={setShow} />} />
+        <Route exact path='/productRequest' render={() => <ProductRequest farmers={farmers} clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} setErrorMessage={setErrorMessage} show={show} setShow={setShow} />} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={clientOrders} setOrders={setClientOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} />} />
