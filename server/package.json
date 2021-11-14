@@ -9,8 +9,8 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "tests/api-products",
       "tests/api-requests",
+      "tests/api-orders",
       "tests/api-clients"
     ]
   },

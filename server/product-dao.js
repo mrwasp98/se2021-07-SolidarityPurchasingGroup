@@ -30,10 +30,8 @@ exports.updateProductsQuantity = (productid, quantity) => {
             }
             resolve(row);
         });
-
-
-    })
-}
+    });
+};
 
 exports.getProductById = (id) => {
     return new Promise((resolve, reject) => {
@@ -50,3 +48,58 @@ exports.getProductById = (id) => {
         });
     });
 };
+
+/** JUST FOR TEXTS **/
+exports.deleteAllProducts = () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM product';
+        db.run(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else resolve();
+        });
+    });
+};
+
+exports.insertProduct = (product) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO product(id, name, farmerid, price, measure, category, typeofproduction, picture) VALUES(?,?,?,?,?,?,?,?)';
+        db.run(sql, [product.id, product.name, product.farmerid, product.price, product.measure, product.category, product.typeofproduction, product.picture], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.lastID);
+        });
+    });
+};
+
+exports.deleteAvailability = () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM availability';
+        db.run(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else resolve();
+        });
+    });
+};
+
+exports.insertAvailability = (availability) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO availability(productid, dateavailability, quantity, status) VALUES(?,?,?,?)';
+        db.run(sql, [availability.productid, availability.dateavailability, availability.quantity, availability.status], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.lastID);
+        });
+    });
+};
+
+/**  JUST FOR THE TEST **/
