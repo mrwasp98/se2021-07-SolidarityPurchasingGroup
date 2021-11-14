@@ -65,8 +65,8 @@ exports.deleteAllProducts = () => {
 
 exports.insertProduct = (product) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO product(id, name, farmerid, price, measure, category, typeofproduction, picture) VALUES(?,?,?,?,?,?,?,?)';
-        db.run(sql, [product.id, product.name, product.farmerid, product.price, product.measure, product.category, product.typeofproduction, product.picture], function (err) {
+        const sql = 'INSERT INTO product(id, name, description, farmerid, price, measure, category, typeofproduction, picture) VALUES(?,?,?,?,?,?,?,?,?)';
+        db.run(sql, [product.id, product.name, product.description, product.farmerid, product.price, product.measure, product.category, product.typeofproduction, product.picture], function (err) {
             if (err) {
                 reject(err);
                 return;

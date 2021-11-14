@@ -97,6 +97,7 @@ describe('Testing GET on /api/products', () => {
         const fakeProduct1 = {
             id: 0,
             name: 'Artichoke',
+            description: 'prova description1',
             farmerid: 1,
             price: 1,
             measure: 'kg',
@@ -109,6 +110,7 @@ describe('Testing GET on /api/products', () => {
         const fakeProduct2 = {
             id: 1,
             name: 'Banana',
+            description: 'prova description2',
             farmerid: 2,
             price: 15.00,
             measure: 'kg',
