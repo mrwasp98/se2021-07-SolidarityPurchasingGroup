@@ -161,7 +161,7 @@ async function handOutProduct(orderid) {
   });
   if(response.ok) {
       return response.status;
-  } else return { message: 'PUT error' };
+  } else return { message: "Couldn't mark the order as completed." };
 };
 
 //this API fetches the orders of a specific client
