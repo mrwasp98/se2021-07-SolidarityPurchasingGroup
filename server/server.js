@@ -99,7 +99,13 @@ app.get("/api/clients", async (req, res) => {
 //insert new client
 app.post(
   "/api/client",
-  [check(["wallet"]).isFloat(), check(["email"]).isEmail()],
+  [
+    check(["wallet"]).isFloat(),
+    check(["email"]).isEmail(),
+    check(["name"]).isString().isLength({ min: 2 }),
+    check(["surname"]).isString().isLength({ min: 2 }),
+    check(["address"]).isLength({ min: 3 }),
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
