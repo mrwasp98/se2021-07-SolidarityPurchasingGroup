@@ -106,7 +106,7 @@ app.post("/api/client", [check(["wallet"]).isFloat()], async (req, res) => {
   }
   const user = {
     username: req.body.surname,
-    password: "123",
+    password: "abc123",
     type: "client",
   };
   const userId = await userDao.insertUser(user);
