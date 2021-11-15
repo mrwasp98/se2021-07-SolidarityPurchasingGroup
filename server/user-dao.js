@@ -45,3 +45,31 @@ exports.getUser = (username, password) => {
         });
     });
 };
+
+/** JUST FOR THE TESTS **/
+exports.deleteAllUsers = () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM user';
+        db.run(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else resolve();
+        });
+    });
+};
+
+exports.insertUser = (user) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO user(id, usename, password, type) VALUES(?,?,?,?)';
+        db.run(sql, [user.id, user.username, user.password, user.type], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.lastID);
+        });
+    });
+};
+/** JUST FOR THE TESTS **/

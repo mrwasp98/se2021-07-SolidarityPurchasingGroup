@@ -11,7 +11,8 @@
     "testPathIgnorePatterns": [
       "tests/api-requests",
       "tests/api-orders",
-      "tests/api-clients"
+      "tests/api-clients",
+      "tests/api-products"
     ]
   },
   "author": "",
