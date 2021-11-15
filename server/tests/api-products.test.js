@@ -128,7 +128,93 @@ describe('Testing GET on /api/products', () => {
         expect(response.statusCode).toBe(200);
     });
 
-    //TODO tests in case of failure
-
+    test("It should respond with a 404 status code", async () => {
+        const response = await request(app).get('/api/product');
+        expect(response.statusCode).toBe(404);
+    });
 });
 
+describe('Testing GET on /api/products/:id', () => {
+
+    
+    const fakeProduct1 = {
+            id: 0,
+            name: 'Artichoke',
+            description: 'prova description1',
+            farmerid: 1,
+            price: 1,
+            measure: 'kg',
+            category: 'Vegetables',
+            typeofproduction: 'Bio',
+            picture: ''
+        }
+    const fakeProduct2 = {
+            id: 1,
+            name: 'Banana',
+            description: 'prova description2',
+            farmerid: 2,
+            price: 15.00,
+            measure: 'kg',
+            category: 'Fruit',
+            typeofproduction: 'Bio',
+            picture: ''
+        }
+    const fakeProduct3 = {
+            id: 2,
+            name: 'Mele',
+            description: 'prova description3',
+            farmerid: 3,
+            price: 11.00,
+            measure: 'kg',
+            category: 'Fruit',
+            typeofproduction: 'Bio',
+            picture: ''
+        }
+
+    beforeAll(async() => {
+        //clear and fill (mock) product database with fakeProduct1 and fakeProduct2
+        await productDao.deleteAllProducts();
+
+        await productDao.insertProduct(fakeProduct1);
+        await productDao.insertProduct(fakeProduct2);
+        await productDao.insertProduct(fakeProduct3);
+    });
+
+    afterAll(async() => {
+        //clear (mock) product database
+        await productDao.deleteAllProducts();
+    });
+
+    //remember: mock database should be pre-filled with
+    //fakeProduct1 and fakeProduct2 for this method to work
+    test("It should respond with a product", async () => {
+        const response = await request(app).get('/api/products/1');
+        const fakeProduct2 = {
+            id: 1,
+            name: 'Banana',
+            description: 'prova description2',
+            farmerid: 2,
+            price: 15.00,
+            measure: 'kg',
+            category: 'Fruit',
+            typeofproduction: 'Bio',
+            picture: ''
+        }
+        expect(response.body).toEqual(fakeProduct2);
+    });
+
+    test("It should respond with a 200 status code", async () => {
+        const response = await request(app).get('/api/products/1');
+        expect(response.statusCode).toBe(200);
+    });
+
+    test("It should respond with a 404 status code", async () => {
+        const response = await request(app).get('/api/product/1');
+        expect(response.statusCode).toBe(404);
+    });
+
+    test("It should respond with a 500 status code", async () => {
+        const response = await request(app).get('/api/products/5');
+        expect(response.statusCode).toBe(500);
+    });
+});

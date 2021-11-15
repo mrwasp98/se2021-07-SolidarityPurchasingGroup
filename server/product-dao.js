@@ -42,14 +42,14 @@ exports.getProductById = (id) => {
                 return;
             }
             if(row==undefined){
-                resolve({ error: 'Product not found for id '+id });
+                reject({ error: 'Product not found for id ' + id });
             }
             resolve(row);
         });
     });
 };
 
-/** JUST FOR TEXTS **/
+/** JUST FOR TESTS **/
 exports.deleteAllProducts = () => {
     return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM product';
@@ -102,4 +102,4 @@ exports.insertAvailability = (availability) => {
     });
 };
 
-/**  JUST FOR THE TEST **/
+/**  JUST FOR TESTS **/
