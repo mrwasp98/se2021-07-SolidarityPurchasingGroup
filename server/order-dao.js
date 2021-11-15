@@ -14,7 +14,6 @@ exports.getOrders = (clientId) => {
                 resolve({ error: 'Order not found for clientid '+clientId });
             }
             else {
-                console.log(rows)
                 resolve(rows);
             }
         });

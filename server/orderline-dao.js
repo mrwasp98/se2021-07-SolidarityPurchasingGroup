@@ -45,7 +45,6 @@ exports.getOrderLinesWithProducts = (orderid) => {
                 resolve({ error: 'Orderline not found.' });
             }
             else {
-                console.log(rows)
                 resolve(rows);
             }
         });

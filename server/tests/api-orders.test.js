@@ -51,32 +51,34 @@ const fakeOrder3 = {
     deliveryaddress: 'prova',
     status: 'confirmed'
 };
+let id;
 
-describe.skip('Testing PUT on /api/orders/:orderid', () => {
+describe('Testing PUT on /api/orders/:orderid', () => {
 
-    beforeAll(async()=>{
+    beforeAll(async () => {
         await clientDao.deleteAllClients();
         await clientDao.insertClient(fakeClient1);
     })
 
-    afterAll(async()=>{
+    afterAll(async () => {
         await clientDao.deleteAllClients();
         await orderDao.deleteAllOrders();
     })
 
-    beforeEach(async()=>{
+    beforeEach(async () => {
         await orderDao.deleteAllOrders();
-        await orderDao.insertOrder(fakeOrder1);
     })
 
-    test('It should respond with 200 status code', async () => {        
-        const response = await request(app).put('/api/orders/1').send({
+    test('It should respond with 200 status code', async () => {
+        id = await orderDao.insertOrder(fakeOrder1);
+        const response = await request(app).put('/api/orders/'+id).send({
             status: 'completed'
         })
         expect(response.statusCode).toBe(200);
     });
 
     test('It should respond with 404 status code', async () => {
+        //order with id 0 shouldn't be present
         const response = await request(app).put('/api/orders/0').send({
             status: 'completed'
         })
