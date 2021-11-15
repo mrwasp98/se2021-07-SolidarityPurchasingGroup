@@ -75,7 +75,9 @@ export default function ProductRequest(props) {
         return total;
     }
 
-    const handleOrder = (setDirty) => {
+    console.log(message)
+
+    const handleOrder = () => {
         const newOrder = {
             userid: selectedClient,
             creationdate: dayjs().format('YYYY-MM-DD').toString(),
@@ -100,7 +102,7 @@ export default function ProductRequest(props) {
 
         if (valid) {
             props.setOrder(newOrder)
-            setProductsSelected([]) 
+            setProductsSelected([])
             props.setDirty(true)
         }
     }
@@ -159,9 +161,7 @@ export default function ProductRequest(props) {
                         {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal()}€</Alert>}
                         <div class="d-flex justify-content-between">
                             <Link to="/"><Button variant="danger">Back</Button></Link>
-                            <Button onClick={() => {
-                                handleOrder()
-                            }}>Check and order</Button>
+                            <Button onClick={() => handleOrder()}>Check and order</Button>
                         </div>
                     </>
                         :

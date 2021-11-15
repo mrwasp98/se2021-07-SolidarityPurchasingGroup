@@ -230,7 +230,9 @@ app.post("/api/requests", async (req, res) => {
             });
           });
       });
-      res.status(200).end();
+      res.status(200).json({
+        status: 200
+      })
     } else
       res.status(406).json({
         status: 406,

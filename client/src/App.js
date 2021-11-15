@@ -237,9 +237,6 @@ function App() {
 
   useEffect(async () => {
     if (dirty) {
-
-      let tempMessage = {}
-
       setDirty(false);
 
       addPRequest(order.userid,
@@ -253,22 +250,18 @@ function App() {
           // A few products are not availability
           //console.log(res.listofProducts);  The list of products non availability "res.listofProducts"
           if (result.status !== undefined && result.status === 406)
-            tempMessage = {
+            setMessageProductRequest({
               type: "error",
               show: true,
               text: result.listofProducts.map(x => x.name + " not available" + "\n")
-            }
-          else {
-            tempMessage = {
+            })
+          else if (result.status !== undefined && result.status === 200)
+            setMessageProductRequest({
               type: "done",
               show: true,
               text: "Success"
-
-            }
-          }
-          setMessageProductRequest({...tempMessage})
-        }).catch(err => {
-        })
+            })
+        }).catch(err => { })
     }
 
   }, [dirty]);
