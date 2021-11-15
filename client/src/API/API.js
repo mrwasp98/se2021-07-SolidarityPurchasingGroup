@@ -76,7 +76,7 @@ const getClients = async () => {
 }
 
 /** STORY 2 **/
-const addClient = async (name, surname, wallet, address) => {
+const addClient = async (name, surname, email, wallet, address) => {
   return new Promise((resolve, reject) => {
     fetch('/api/client', {
       method: "POST",
@@ -86,6 +86,7 @@ const addClient = async (name, surname, wallet, address) => {
       body: JSON.stringify({
         name: name,
         surname: surname,
+        email: email,
         wallet: wallet,
         address: address
       })

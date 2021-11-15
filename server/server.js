@@ -97,39 +97,41 @@ app.get("/api/clients", async (req, res) => {
 });
 
 //insert new client
-app.post("/api/client", [check(["wallet"]).isFloat()], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res
-      .status(422)
-      .json({ errors: errors.array() } + console.log(errors.array()));
-  }
-  const user = {
-    username: req.body.surname,
-    password: "abc123",
-    type: "client",
-  };
-  const userId = await userDao.insertUser(user);
+app.post(
+  "/api/client",
+  [check(["wallet"]).isFloat(), check(["email"]).isEmail()],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(422)
+        .json({ errors: errors.array() } + console.log(errors.array()));
+    }
+    const user = {
+      username: req.body.email,
+      password: "abc123",
+      type: "client",
+    };
+    const userId = await userDao.insertUser(user);
 
-  const client = {
-    userid: userId,
-    name: req.body.name,
-    surname: req.body.surname,
-    wallet: req.body.wallet,
-    address: req.body.address,
-  };
+    const client = {
+      userid: userId,
+      name: req.body.name,
+      surname: req.body.surname,
+      wallet: req.body.wallet,
+      address: req.body.address,
+    };
 
-  try {
-    const result = await clientDao.insertClient(client);
-    res.json(result);
-  } catch (err) {
-    res
-      .status(503)
-      .json({
+    try {
+      const result = await clientDao.insertClient(client);
+      res.json(result);
+    } catch (err) {
+      res.status(503).json({
         error: `Database error during the creation of new client: ${err}.`,
       });
+    }
   }
-});
+);
 
 //get orders given a clientid
 app.get("/api/orders", async (req, res) => {
