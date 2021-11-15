@@ -9,20 +9,22 @@ describe('SPG product request page', () => {
         cy.contains('No option')
     })
 
-    it('type a invalid user', () => {
-        cy.get('.client-here')
-            .type('unknown').should('have.value', '')
-        cy.contains('No option')
-    })
-
-    it('type a valid user, no order', () => {
+    it('type a valid user, back', () => {
         cy.get('.client-here').click().type('{enter}')
-        cy.contains('There is no order to be handed out.')
+        cy.get('.back-btn').click()
+        cy.url().should('include', '/')
     })
 
-    it('type a valid user, many orders', () => {
+    it('type a valid user, press add', () => {
+        cy.visit('http://localhost:3000/productRequest')
         cy.get('.client-here').click().type('Loren')
         cy.get('.css-1n7v3ny-option').click()
-        cy.contains('Then, select the order.')
+        cy.get('.add-btn-0').click()
+        cy.contains('Total order')
+    })
+
+    it('type a valid user, press sub', () => {
+        cy.get('.sub-btn-0').click()
+        cy.contains('.alert-total').should('not.exist')
     })
 })

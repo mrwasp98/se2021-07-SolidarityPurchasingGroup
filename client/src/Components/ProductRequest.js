@@ -50,9 +50,9 @@ function ProductLine(props) {
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{quantity + " " + product.measure}</td>
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.quantity + " " + product.measure + " available"}</td>
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.price}</td>
-        <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>
+        <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
-            {quantity != 0 ? <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>
+            {quantity != 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
                 : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
         </td>
     </tr>
@@ -115,7 +115,7 @@ export default function ProductRequest(props) {
                             First, select <b>the client</b>.
                         </Card.Header>
                         <Card.Body>
-                            <Form>
+                            <Form className="client-here">
                                 <Select options={clients.map(client => {
                                     return {
                                         value: client.userid,
@@ -158,7 +158,7 @@ export default function ProductRequest(props) {
                         </Table>
                         {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal()}€</Alert>}
                         <div class="d-flex justify-content-between">
-                            <Link to="/"><Button variant="danger">Back</Button></Link>
+                            <Link to="/"><Button className="back-btn" variant="danger">Back</Button></Link>
                             <Button onClick={() => {
                                 handleOrder()
                             }}>Check and order</Button>
