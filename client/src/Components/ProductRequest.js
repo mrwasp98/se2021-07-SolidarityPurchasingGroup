@@ -1,4 +1,4 @@
-import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col, Alert } from "react-bootstrap";
+import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Alert } from "react-bootstrap";
 import { useState } from "react";
 import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
@@ -10,7 +10,7 @@ function ProductLine(props) {
 
     const [quantity, setQuantity] = useState(0);
 
-    { (quantity != 0 && !props.productsSelected.length) && setQuantity(0) }
+    { (quantity !== 0 && !props.productsSelected.length) && setQuantity(0) }
 
     const add = () => {
         let x = quantity + 1;
@@ -26,13 +26,13 @@ function ProductLine(props) {
 
     const handleProducts = (x) => {
         setQuantity(x);
-        if (props.productsSelected.length == 0) {
+        if (props.productsSelected.length === 0) {
             let total = parseFloat(product.price) * parseFloat(x);
             const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price, total: total };
             props.setProductsSelected([newProduct])
         } else {
-            const otherProducts = props.productsSelected.filter(p => p.productid != product.id)
-            if (x == 0) {
+            const otherProducts = props.productsSelected.filter(p => p.productid !== product.id)
+            if (x === 0) {
                 props.setProductsSelected(otherProducts);
             } else {
                 let total = parseFloat(product.price) * parseFloat(x);
@@ -52,7 +52,7 @@ function ProductLine(props) {
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.price}</td>
         <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
-            {quantity != 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
+            {quantity !== 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
                 : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
         </td>
     </tr>
@@ -91,7 +91,7 @@ export default function ProductRequest(props) {
 
         let valid = true;
 
-        if (newOrder.products.length == 0) {
+        if (newOrder.products.length === 0) {
             valid = false;
             props.setMessage({
                 type: "error",
@@ -131,7 +131,7 @@ export default function ProductRequest(props) {
             </Card>
             {selectedClient &&
                 <>
-                    {(products.filter(p => p.quantity > 0).length != 0) ? <>
+                    {(products.filter(p => p.quantity > 0).length !== 0) ? <>
                         {message.show && message.type === "error" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
                             type: message.type,
                             show: false,

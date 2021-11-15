@@ -7,7 +7,7 @@
     pointer-events: none;
 }
 
-.myModalEnd{
+.myModalEnd {
     width: 100%;
     text-align: center;
 }
@@ -93,7 +93,7 @@
     color: #CE8012;
 }
 
-.cursive{
+.cursive {
     font-size: 19px !important;
     font-family: italic;
 }
@@ -109,7 +109,7 @@
     color: #143642;
 }
 
-.descriptionDiv{
+.descriptionDiv {
     color: #575757;
     font-weight: 500 !important;
 }
@@ -206,4 +206,17 @@
     font-weight: 400;
     background-color: #0f8b8b;
     border: 1px solid #143642;
+}
+
+.yellowLink {
+    border: 0px solid #ec9a2a !important;
+    background-color: #0C7373;
+    border: 1px solid #0C7373;
+    color: white;
+}
+
+.yellowLink:hover,
+.yellowLink:focus {
+    background-color: #ec9a2a;
+    color: black;
 }

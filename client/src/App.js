@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { addPRequest, getClients, getAvailableProducts, getFarmers } from "./API/API"
@@ -13,6 +12,7 @@ import { Container, Row } from "react-bootstrap";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
 import { login, getUserInfo, logout } from "./API/API.js";
+import HomeButtons from "./Components/HomeButtons";
 
 function App() {
   const [dirty, setDirty] = useState(false);
@@ -23,167 +23,6 @@ function App() {
   const [products, setProducts] = useState([]);
   const [clients, setClients] = useState([]);
   const [resultOrder, setResultOrder] = useState()
-
-  /* const [clientOrders, setClientOrders] = useState([
-    {
-      id: 1,
-      userid: 4,
-      creationdate: "2021-11-09",
-      claimdate: "2021-11-10 12:30",
-      confirmationdate: "2021-11-09",
-      deliveryaddress: null,
-      deliveryid: null,
-      status: "confirmed",
-      products: [{
-        id: 1,
-        name: "Carote",
-        quantity: 3,
-        measure: "kg",
-        price: 12.10
-      }, {
-        id: 2,
-        name: "Patate",
-        quantity: 2,
-        measure: "kg",
-        price: 20.11
-      }]
-    }, {
-      id: 2,
-      userid: 5,
-      creationdate: "2021-11-09",
-      claimdate: "2021-11-10 12:30",
-      confirmationdate: "2021-11-09",
-      deliveryaddress: null,
-      deliveryid: null,
-      status: "confirmed",
-      products: [{
-        id: 4,
-        name: "Tomino di Capra",
-        quantity: 3,
-        measure: "kg",
-        price: 12.10
-      }]
-    }, {
-      id: 3,
-      userid: 6,
-      creationdate: "2021-11-09",
-      claimdate: "2021-11-10 12:30",
-      confirmationdate: "2021-11-09",
-      deliveryaddress: null,
-      deliveryid: null,
-      status: "confirmed",
-      products: [{
-        id: 4,
-        name: "Tomino di Capra",
-        quantity: 3,
-        measure: "kg",
-        price: 12.10
-      }, {
-        id: 2,
-        name: "Patate",
-        quantity: 10,
-        measure: "kg",
-        price: 20.11
-      }, {
-        id: 1,
-        name: "Patate",
-        quantity: 3,
-        measure: "kg",
-        price: 12.10
-      }]
-    }, {
-      id: 4,
-      userid: 7,
-      creationdate: "2021-11-09",
-      claimdate: "2021-11-10 12:30",
-      confirmationdate: "2021-11-09",
-      deliveryaddress: null,
-      deliveryid: null,
-      status: "confirmed",
-      products: [{
-        id: 7,
-        name: "Salame",
-        quantity: 3,
-        measure: "kg",
-        price: 12.10
-      }, {
-        id: 6,
-        name: "Croccante di nocciola",
-        quantity: 10,
-        measure: "unità",
-        price: 20.11
-      }, {
-        id: 2,
-        name: "Patate",
-        quantity: 3,
-        measure: "kg",
-        price: 12.10
-      }]
-    }, {
-      id: 5,
-      userid: 9,
-      creationdate: "2021-11-09",
-      claimdate: "2021-11-10 12:30",
-      confirmationdate: "2021-11-09",
-      deliveryaddress: null,
-      deliveryid: null,
-      status: "confirmed",
-      products: [{
-        id: 7,
-        name: "Salame",
-        quantity: 3,
-        measure: "kg",
-        price: 12.10
-      }, {
-        id: 6,
-        name: "Croccante di nocciola",
-        quantity: 10,
-        measure: "unità",
-        price: 20.11
-      }, {
-        id: 2,
-        name: "Patate",
-        quantity: 3,
-        measure: "kg",
-        price: 12.10
-      }, {
-        id: 1,
-        name: "Carote",
-        quantity: 3,
-        measure: "kg",
-        price: 12.10
-      }, {
-        id: 8,
-        name: "Hamburger",
-        quantity: 1,
-        measure: "kg",
-        price: 15.11
-      }, {
-        id: 3,
-        name: "Prezzemolo",
-        quantity: 2,
-        measure: "mazzi",
-        price: 3.00
-      }]
-    }, {
-      id: 6,
-      userid: 4,
-      creationdate: "2021-11-09",
-      claimdate: "2021-11-10 12:30",
-      confirmationdate: "2021-11-09",
-      deliveryaddress: null,
-      deliveryid: null,
-      status: "confirmed",
-      products: [{
-        id: 4,
-        name: "Tomino di capra",
-        quantity: 3,
-        measure: "kg",
-        price: 12.10
-      }]
-    }
-  ]) */
-
   const [clientOrders, setClientOrders] = useState([]);
   const [order, setOrder] = useState({});
   const [errorMessage, setErrorMessage] = useState();
@@ -316,7 +155,7 @@ function App() {
             </Row>
           </Container>
         </Route>
-
+        <Route exact path='/' render= {() =><HomeButtons/> } />
         <Route exact path='/productRequest' render={() => <ProductRequest farmers={farmers} clients={clients} products={products} order={order} setOrder={setOrder} setDirty={() => setDirty(true)} message={messageProductRequest} setMessage={setMessageProductRequest} />} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={clientOrders} setOrders={setClientOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
