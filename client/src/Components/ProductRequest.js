@@ -45,11 +45,11 @@ function ProductLine(props) {
 
 
     return (<tr>
-        <td style={quantity>0 ? {background: "#ffdead"} : {background: ""}}>{product.name}</td>
-        <td style={quantity>0 ? {background: "#ffdead"} : {background: ""}}>{product.category}</td>
-        <td style={quantity>0 ? {background: "#ffdead"} : {background: ""}}>{quantity + " " + product.measure}</td>
-        <td style={quantity>0 ? {background: "#ffdead"} : {background: ""}}>{product.quantity + " " + product.measure + " available"}</td>
-        <td style={quantity>0 ? {background: "#ffdead"} : {background: ""}}>{product.price}</td>
+        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.name}</td>
+        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.category}</td>
+        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{quantity + " " + product.measure}</td>
+        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.quantity + " " + product.measure + " available"}</td>
+        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.price}</td>
         <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
             {quantity != 0 ? <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>
@@ -61,21 +61,21 @@ function ProductLine(props) {
 }
 
 export default function ProductRequest(props) {
-    const { clients, products } = props;
+    const { clients, products, message } = props;
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
 
     const calculateTotal = () => {
-        var total = parseFloat(0)
+        let total = parseFloat(0)
         //old memories
-        for(let i = 0; i < productsSelected.length; i++){
+        for (let i = 0; i < productsSelected.length; i++) {
             total = parseFloat(total) + parseFloat(productsSelected[i].total)
         }
-        console.log(total)
+
         return total;
     }
 
-    const handleOrder = () => {
+    const handleOrder = (setDirty) => {
         const newOrder = {
             userid: selectedClient,
             creationdate: dayjs().format('YYYY-MM-DD').toString(),
@@ -91,14 +91,17 @@ export default function ProductRequest(props) {
 
         if (newOrder.products.length == 0) {
             valid = false;
-            props.setErrorMessage("Select the amount")
-            props.setShow(true);
+            props.setMessage({
+                type: "error",
+                show: true,
+                value: "Select the amout"
+            })
         }
 
         if (valid) {
-            props.setOrder(newOrder);
-            setProductsSelected([])
-            props.setDirty(true);
+            props.setOrder(newOrder)
+            setProductsSelected([]) 
+            props.setDirty(true)
         }
     }
 
@@ -126,32 +129,43 @@ export default function ProductRequest(props) {
             </Card>
             {selectedClient &&
                 <>
-                 {(products.filter(p => p.quantity > 0).length != 0) ? <>
-                    {props.errorMessage && <Alert className="mt-3" show={props.show} onClose={() => props.setShow(false)} variant="danger" dismissible>{props.errorMessage}</Alert>}
-                    <Table className="mt-3" striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Various info</th>
-                                <th>Quantity selected</th>
-                                <th>Quantity available</th>
-                                <th>Price each</th>
-                                <th>Add to order</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {products.filter(p => p.quantity > 0)
-                                .map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
-                        </tbody>
-                    </Table>
-                    {productsSelected.length> 0 && <Alert style={{width: "100%", textAlign: "rigth"}} variant="primary">Total order: {calculateTotal()}€</Alert>}
-                    <div class="d-flex justify-content-between">
-                        <Link to="/"><Button variant="danger">Back</Button></Link>
-                        <Button onClick={handleOrder}>Check and order</Button>
-                    </div>
+                    {(products.filter(p => p.quantity > 0).length != 0) ? <>
+                        {message.show && message.type === "error" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
+                            type: message.type,
+                            show: false,
+                            text: message.text
+                        })} variant="danger" dismissible>{message.text}</Alert>}
+                        {message.show && message.type === "done" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
+                            type: message.type,
+                            show: false,
+                            text: message.text
+                        })} variant="success" dismissible>{message.text}</Alert>}
+                        <Table className="mt-3" striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Various info</th>
+                                    <th>Quantity selected</th>
+                                    <th>Quantity available</th>
+                                    <th>Price each</th>
+                                    <th>Add to order</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.filter(p => p.quantity > 0)
+                                    .map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
+                            </tbody>
+                        </Table>
+                        {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal()}€</Alert>}
+                        <div class="d-flex justify-content-between">
+                            <Link to="/"><Button variant="danger">Back</Button></Link>
+                            <Button onClick={() => {
+                                handleOrder()
+                            }}>Check and order</Button>
+                        </div>
                     </>
-                    :
-                    <p >There are no available products</p>}
+                        :
+                        <p >There are no available products</p>}
                 </>
             }
         </Container>

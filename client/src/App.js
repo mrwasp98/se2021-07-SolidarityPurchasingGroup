@@ -185,7 +185,7 @@ function App() {
   ]) */
 
   const [clientOrders, setClientOrders] = useState([]);
-  const [order, setOrder] = useState();
+  const [order, setOrder] = useState({});
   const [errorMessage, setErrorMessage] = useState();
   const [show, setShow] = useState(false);
 
@@ -221,12 +221,26 @@ function App() {
   }, []);
 
   useEffect(() => {
-    getAvailableProducts()
-      .then((res) => setProducts(res));
+    if (!dirty) {
+      getAvailableProducts()
+        .then((res) => setProducts(res));
+    }
   }, [dirty]);
-  useEffect(() => {
+
+
+
+  const [messageProductRequest, setMessageProductRequest] = useState({
+    type: "",
+    show: false,
+    text: ""
+  })
+
+  useEffect(async () => {
     if (dirty) {
-      setDirty(false)
+
+      let tempMessage = {}
+
+      setDirty(false);
 
       addPRequest(order.userid,
         order.creationdate,
@@ -235,44 +249,63 @@ function App() {
         order.deliveryaddress,
         order.deliveryid,
         order.status,
-        order.products).then((res) => {
+        order.products).then(result => {
           // A few products are not availability
           //console.log(res.listofProducts);  The list of products non availability "res.listofProducts"
-          if (res.status !== undefined && res.status === 406){
-            setErrorMessage(res.listofProducts.map(x => x.name + " not available" + "\n"));
-            setShow(true);
-            setOrder({});
-          }
-        })
-        .catch((err) => {
+          if (result.status !== undefined && result.status === 406)
+            tempMessage = {
+              type: "error",
+              show: true,
+              text: result.listofProducts.map(x => x.name + " not available" + "\n")
+            }
+          else {
+            tempMessage = {
+              type: "done",
+              show: true,
+              text: "Success"
 
-        });
+            }
+          }
+          setMessageProductRequest({...tempMessage})
+        }).catch(err => {
+        })
     }
 
-
-
-
-    /*let order = orders[0];
-
-    let listProducts = [];
-
-    order.products.forEach((p) => {
-      listProducts.push({
-        productid: p.id,
-        quantity: p.quantity,
-        price: p.price
-      })
-    })
-
-    addPRequest(order.userid,
-      order.creationdate,
-      order.claimdate,
-      order.confirmationdate,
-      order.deliveryaddress,
-      order.deliveryid,
-      order.status,
-      listProducts).then(() => {}).catch((err) => {}); */
   }, [dirty]);
+
+
+  /*
+    useEffect(() => {
+      if (dirty) {
+        setDirty(false)
+  
+        
+      } */
+
+
+
+
+  /*let order = orders[0];
+
+  let listProducts = [];
+
+  order.products.forEach((p) => {
+    listProducts.push({
+      productid: p.id,
+      quantity: p.quantity,
+      price: p.price
+    })
+  })
+
+  addPRequest(order.userid,
+    order.creationdate,
+    order.claimdate,
+    order.confirmationdate,
+    order.deliveryaddress,
+    order.deliveryid,
+    order.status,
+    listProducts).then(() => {}).catch((err) => {}); */
+  // }, [dirty]);
 
   return (
     <>
@@ -291,7 +324,7 @@ function App() {
           </Container>
         </Route>
 
-        <Route exact path='/productRequest' render={() => <ProductRequest farmers={farmers} clients={clients} products={products} order={order} setOrder={setOrder} setDirty={setDirty} errorMessage={errorMessage} setErrorMessage={setErrorMessage} show={show} setShow={setShow}/>} />
+        <Route exact path='/productRequest' render={() => <ProductRequest farmers={farmers} clients={clients} products={products} order={order} setOrder={setOrder} setDirty={() => setDirty(true)} message={messageProductRequest} setMessage={setMessageProductRequest} />} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={clientOrders} setOrders={setClientOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} />} />
