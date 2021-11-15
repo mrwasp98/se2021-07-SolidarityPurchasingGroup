@@ -110,8 +110,15 @@ function Product(props) {
                 <Card.Header className="myTitle" style={{ fontSize: "23px", "fontWeight": "600" }}>{props.prod.name}</Card.Header>
                 <Card.Text className="p-3 pb-3 m-2 mt-3 cardDescription" >
                     <p className="mt-0 mb-1 myText">Farmer: {props.farmerName}</p>
+                    <hr/>
                     <p className="mt-0 mb-1 myText">Category: {props.prod.category}</p>
+                    <hr/>
                     <p className="mt-0 mb-0 myText">Type of production: {props.prod.typeofproduction}</p>
+                    <hr/>
+                    <p className="mt-1 mb-1 myText">Description: </p>
+                    <div className="descriptionDiv">
+                        <p className="mt-0 mb-0 cursive"> {props.prod.description}</p>
+                    </div>
                 </Card.Text>
             </Card.Body>
             <Card.Footer className="mt-3">
