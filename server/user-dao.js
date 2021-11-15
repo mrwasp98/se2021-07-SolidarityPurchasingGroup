@@ -3,6 +3,7 @@
 const db = require('./database');
 
 const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 exports.getUserById = (id) => {
     return new Promise((resolve, reject) => {
@@ -60,10 +61,11 @@ exports.deleteAllUsers = () => {
     });
 };
 
-exports.insertUser = (user) => {
+exports.insertUser =  (user) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO user(id, usename, password, type) VALUES(?,?,?,?)';
-        db.run(sql, [user.id, user.username, user.password, user.type], function (err) {
+        const sql = 'INSERT INTO user(usename, password, type) VALUES(?,?,?)';
+        const hash = bcrypt.hashSync(user.password, saltRounds);
+        db.run(sql, [user.username, hash , user.type], function (err) {
             if (err) {
                 reject(err);
                 return;
