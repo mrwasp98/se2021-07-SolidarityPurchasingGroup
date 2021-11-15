@@ -72,3 +72,21 @@ exports.insertOrder = (order) => {
         });
     });
 };
+
+exports.getOrder = (orderid) => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM 'order' WHERE id=?";
+        db.get(sql, [orderid], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row == undefined) {
+                resolve({ error: 'Order not found for id '+orderid });
+            }
+            else {
+                resolve(row);
+            }
+        });
+    });
+};

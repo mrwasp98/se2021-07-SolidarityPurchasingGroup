@@ -10,9 +10,10 @@
   "jest": {
     "testPathIgnorePatterns": [
       "tests/api-requests",
-      "tests/api-orders",
       "tests/api-clients",
-      "tests/api-products"
+      "tests/api-completeOrders",
+      "tests/api-products",
+      "tests/api-users"
     ]
   },
   "author": "",

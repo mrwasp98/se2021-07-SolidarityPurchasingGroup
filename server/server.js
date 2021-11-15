@@ -142,14 +142,12 @@ app.get("/api/orders", async (req, res) => {
 });
 
 //update order status
-//TODO manage order not existing
 app.put("/api/orders/:orderid", async (req, res) => {
   try {
     const result = await orderDao.updateOrderStatus(
       req.params.orderid,
       req.body.status
     );
-    console.log(result);
     if (result == true) res.status(200).end();
     else res.status(404).end();
   } catch (err) {

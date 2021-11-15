@@ -9,7 +9,7 @@ Remember to use:
 They must to be changed manually as the string parameter below
 */
 
-const database = new sqlite.Database('database.db', (err) => {
+const database = new sqlite.Database('mock-database.db', (err) => {
     if (err) throw err;
 });
 
