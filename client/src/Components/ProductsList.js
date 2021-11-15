@@ -104,7 +104,7 @@ export default function ProductsList(props) {
 
 function Product(props) {
     return (
-        <Card className="m-3 p-0 myCard" style={{ width: '25rem', backgroundColor: "#FFEFD6" }}> {/*text-center*/}
+        <Card className="m-4 myCard p-0" style={{ width: '25rem', backgroundColor: "#FFEFD6" }}> {/*text-center*/}
             <Card.Img variant="top" className="m-0" src={props.prod.picture} />
             <Card.Body className="pb-0">
                 <Card.Header className="myTitle" style={{ fontSize: "23px", "fontWeight": "600" }}>{props.prod.name}</Card.Header>
