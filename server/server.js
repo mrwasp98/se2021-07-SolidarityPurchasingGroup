@@ -133,7 +133,7 @@ app.put('/api/orders/:orderid', async (req, res) => {
   try {
     const result = await orderDao.updateOrderStatus(req.params.orderid, req.body.status);
     console.log(result)
-    if (result) res.status(200).end();
+    if (result == true) res.status(200).end();
     else res.status(404).end();
   } catch (err) {
     res.status(503).json({ error: `Database error ${err}.` });
@@ -252,7 +252,10 @@ app.get('/api/sessions/current', (req, res) => {
 app.get('/api/products/:id',
   async (req, res) => {
     productDao.getProductById(req.params.id)
-      .then(product => res.json(product))
+      .then(product => {
+        if(product===undefined) res.status(404).end();
+        else res.status(200).json(product)
+      })
       .catch(() => res.status(500).end());
   });
 
