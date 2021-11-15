@@ -93,19 +93,19 @@
 
 - POST `/api/login`
   - Request body: a credential object conatining username e password.
-  ```
-    {
+  ```JSON
+    [{
       "username": "farmer1",
       "password": "farmer1"
-    }
+    }]
   ```
   - Response body: the user object in the database.
-  ```
-    {
+  ```JSON
+    [{
       "id": 1,
       "username": "farmer1",
       "type": "farmer"
-    }
+    }]
   ```
   * Response: `200 OK`, `401 Unothorized` (wrong username or password)
 - DELETE `/logout`
@@ -115,11 +115,11 @@
 - GET `/api/sessions/current`
   - Request paameters: empty.
   - Response body: the user object saved in the sessions current.
-  ```
-    {
+  ```JSON
+    [{
       "id": 1,
       "username": "farmer1",
       "name": "farmer"
-    }
+    }]
   ```
   * Response: `200 OK`, `401 Unothorized` (wrong username or password)
