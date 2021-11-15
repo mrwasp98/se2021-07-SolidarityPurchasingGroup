@@ -27,14 +27,16 @@ function ProductLine(props) {
     const handleProducts = (x) => {
         setQuantity(x);
         if (props.productsSelected.length == 0) {
-            const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
+            let total = parseFloat(product.price) * parseFloat(x);
+            const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price, total: total };
             props.setProductsSelected([newProduct])
         } else {
             const otherProducts = props.productsSelected.filter(p => p.productid != product.id)
             if (x == 0) {
                 props.setProductsSelected(otherProducts);
             } else {
-                const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price };
+                let total = parseFloat(product.price) * parseFloat(x);
+                const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price, total: total };
                 const newProducts = [...otherProducts, newProduct];
                 props.setProductsSelected(newProducts);
             }
@@ -62,6 +64,16 @@ export default function ProductRequest(props) {
     const { clients, products } = props;
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
+
+    const calculateTotal = () => {
+        var total = parseFloat(0)
+        //old memories
+        for(let i = 0; i < productsSelected.length; i++){
+            total = parseFloat(total) + parseFloat(productsSelected[i].total)
+        }
+        console.log(total)
+        return total;
+    }
 
     const handleOrder = () => {
         const newOrder = {
@@ -132,10 +144,7 @@ export default function ProductRequest(props) {
                                 .map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                         </tbody>
                     </Table>
-                    {productsSelected.length> 0 && <Alert style={{width: "100%", textAlign: "rigth"}}variant="primary">Total order: {productsSelected.map(x=> {
-                        let total = parseFloat(x.price) * parseFloat(x.quantity)
-                        return total;
-                        })}€</Alert>}
+                    {productsSelected.length> 0 && <Alert style={{width: "100%", textAlign: "rigth"}} variant="primary">Total order: {calculateTotal()}€</Alert>}
                     <div class="d-flex justify-content-between">
                         <Link to="/"><Button variant="danger">Back</Button></Link>
                         <Button onClick={handleOrder}>Check and order</Button>
