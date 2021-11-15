@@ -5,6 +5,7 @@ import { addClient } from "../API/API.js";
 export default function Register(props) {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
+  const [email, setEmail] = useState("");
   const [wallet, setWallet] = useState("");
   const [address, setAddress] = useState("");
   const [inserted, setInserted] = useState(false);
@@ -15,11 +16,12 @@ export default function Register(props) {
     if (!form.checkValidity()) {
       form.reportValidity();
     } else {
-      addClient(name, surname, wallet, address)
+      addClient(name, surname, email, wallet, address)
         .then((data) => {
           setInserted(true);
           setName("");
           setSurname("");
+          setEmail("");
           setWallet("");
           setAddress("");
         })
@@ -47,7 +49,7 @@ export default function Register(props) {
           )}
           <h3> Register new client</h3>
           <Form className="mt-5 " onSubmit={(event) => submit(event)}>
-            <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
+            <Form.Group as={Row} className="mb-3" controlId="formBasicNama">
               <Form.Label column sm="2">
                 Name:
               </Form.Label>
@@ -62,7 +64,7 @@ export default function Register(props) {
               </Col>
             </Form.Group>
 
-            <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
+            <Form.Group as={Row} className="mb-3" controlId="formBasicSurname">
               <Form.Label column sm="2">
                 Surname:
               </Form.Label>
@@ -79,6 +81,21 @@ export default function Register(props) {
 
             <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
               <Form.Label column sm="2">
+                Email:
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  type="email"
+                  placeholder="Email"
+                  required
+                  onChange={(ev) => setEmail(ev.target.value)}
+                  value={email}
+                />
+              </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} className="mb-3" controlId="formBasicWallet">
+              <Form.Label column sm="2">
                 Wallet:
               </Form.Label>
               <Col sm="10">
@@ -92,7 +109,7 @@ export default function Register(props) {
               </Col>
             </Form.Group>
 
-            <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
+            <Form.Group as={Row} className="mb-3" controlId="formBasicAddress">
               <Form.Label column sm="2">
                 Address:
               </Form.Label>
