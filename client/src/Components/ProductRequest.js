@@ -155,7 +155,7 @@ export default function ProductRequest(props) {
                             </thead>
                             <tbody>
                                 {products.filter(p => p.quantity > 0)
-                                    .map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
+                                    .map((p,index) => <ProductLine product={p} index={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                             </tbody>
                         </Table>
                         {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal()}€</Alert>}
