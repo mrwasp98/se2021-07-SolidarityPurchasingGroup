@@ -1,32 +1,9 @@
-import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col, Alert, Modal} from "react-bootstrap";
+import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Col, Alert } from "react-bootstrap";
 import { useState } from "react";
 import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import dayjs from "dayjs";
 import { Link } from 'react-router-dom'
-
-function ModalEnd(props) {
-    return (
-        <Modal show={props.showModal} handleClose={props.handleCloseModal} backdrop="static">
-            <Modal.Header>
-                <Modal.Title>Order received!</Modal.Title>
-            </Modal.Header>
-            <Form>
-              <Modal.Body>
-                <Form.Group controlId='selectedName'>
-                  <Form.Label>Summary of order</Form.Label>
-                  <ul>
-                  {props.products.map(x => <li>{x.quantity + " " + x.measure + " of " + x.name}</li>)}
-                  </ul>
-                </Form.Group>              
-              </Modal.Body>
-              <Modal.Footer>
-                  <Button onClick={() => props.setShowModal(false)}>Ok</Button>
-              </Modal.Footer>
-            </Form>
-        </Modal>
-    );
-  }
 
 function ProductLine(props) {
     const { product } = props;
@@ -66,9 +43,11 @@ function ProductLine(props) {
 
 
     return (<tr>
-        <td>{product.name}</td>
-        <td>{product.category}</td>
-        <td>{quantity + " " + product.measure + "/" + product.quantity + " " + product.measure + " available"}</td>
+        <td style={quantity>0 ? {background: "#ffdead"} : {background: ""}}>{product.name}</td>
+        <td style={quantity>0 ? {background: "#ffdead"} : {background: ""}}>{product.category}</td>
+        <td style={quantity>0 ? {background: "#ffdead"} : {background: ""}}>{quantity + " " + product.measure}</td>
+        <td style={quantity>0 ? {background: "#ffdead"} : {background: ""}}>{product.quantity + " " + product.measure + " available"}</td>
+        <td style={quantity>0 ? {background: "#ffdead"} : {background: ""}}>{product.price}</td>
         <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
             {quantity != 0 ? <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>
@@ -83,11 +62,6 @@ export default function ProductRequest(props) {
     const { clients, products } = props;
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
-
-    const [showModal, setShowModal] = useState(false);
-    const handleCloseModal = () => setShowModal(false);
-    const handleShowModal = () => setShowModal(true);
-    const [summary, setSummary] = useState([]);
 
     const handleOrder = () => {
         const newOrder = {
@@ -109,9 +83,7 @@ export default function ProductRequest(props) {
             props.setShow(true);
         }
 
-        if (valid){
-            setSummary(newOrder.products);
-            setShowModal(true);
+        if (valid) {
             props.setOrder(newOrder);
             setProductsSelected([])
             props.setDirty(true);
@@ -143,13 +115,15 @@ export default function ProductRequest(props) {
             {selectedClient &&
                 <>
                  {(products.filter(p => p.quantity > 0).length != 0) ? <>
-                    {props.errorMessage && <Alert show={props.show} onClose={() => props.setShow(false)} variant="danger" dismissible>{props.errorMessage}</Alert>}
+                    {props.errorMessage && <Alert className="mt-3" show={props.show} onClose={() => props.setShow(false)} variant="danger" dismissible>{props.errorMessage}</Alert>}
                     <Table className="mt-3" striped bordered hover>
                         <thead>
                             <tr>
                                 <th>Product</th>
-                                <th>Variuos info</th>
-                                <th>Quantity</th>
+                                <th>Various info</th>
+                                <th>Quantity selected</th>
+                                <th>Quantity available</th>
+                                <th>Price each</th>
                                 <th>Add to order</th>
                             </tr>
                         </thead>
@@ -158,16 +132,19 @@ export default function ProductRequest(props) {
                                 .map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                         </tbody>
                     </Table>
+                    {productsSelected.length> 0 && <Alert style={{width: "100%", textAlign: "rigth"}}variant="primary">Total order: {productsSelected.map(x=> {
+                        let total = parseFloat(x.price) * parseFloat(x.quantity)
+                        return total;
+                        })}€</Alert>}
                     <div class="d-flex justify-content-between">
                         <Link to="/"><Button variant="danger">Back</Button></Link>
                         <Button onClick={handleOrder}>Check and order</Button>
                     </div>
                     </>
                     :
-                    <p>There are no available products. In the next days this message will be better</p>}
+                    <p >There are no available products</p>}
                 </>
             }
         </Container>
-        <ModalEnd showModal={showModal} setShowModal={setShowModal} handleCloseModal={handleCloseModal} handleShowModal={handleShowModal} products={summary}/>
     </>)
 }
