@@ -71,19 +71,14 @@ describe('Testing PUT on /api/orders/:orderid', () => {
 
     test('It should respond with 200 status code', async () => {
         id = await orderDao.insertOrder(fakeOrder1);
-        const response = await request(app).put('/api/orders/'+id).send({
+        await request(app).put('/api/orders/'+id).send({
             status: 'completed'
         })
-        expect(response.statusCode).toBe(200);
+        const order = await orderDao.getOrder(id);
+        const s = order.status;
+        expect(s).toBe('completed');
     });
 
-    test('It should respond with 404 status code', async () => {
-        //order with id 0 shouldn't be present
-        const response = await request(app).put('/api/orders/0').send({
-            status: 'completed'
-        })
-        expect(response.statusCode).toBe(404);
-    });
 });
 
 

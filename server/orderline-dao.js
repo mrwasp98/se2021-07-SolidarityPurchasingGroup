@@ -50,3 +50,16 @@ exports.getOrderLinesWithProducts = (orderid) => {
         });
     });
 };
+
+exports.deleteAllOrderlines = () => {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM orderline";
+        db.run(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            else resolve();
+        });
+    });
+};
