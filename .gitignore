@@ -104,3 +104,8 @@ dist
 .tern-port
 server/package-lock.json
 client/package-lock.json
+
+#cypress
+client/cypress/dowloads/*
+client/cypress/plugins/*
+client/cypress/support/*
