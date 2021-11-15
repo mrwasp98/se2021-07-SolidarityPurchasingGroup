@@ -1,6 +1,6 @@
-describe('SPG handout page', () => {
+describe('SPG product request page', () => {
     it('open route', () => {
-        cy.visit('http://localhost:3000/handout')
+        cy.visit('http://localhost:3000/productRequest')
     })
 
     it('type a invalid user', () => {

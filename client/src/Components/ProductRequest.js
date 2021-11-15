@@ -116,7 +116,7 @@ export default function ProductRequest(props) {
                         </Card.Header>
                         <Card.Body>
                             <Form>
-                                <Select options={clients.map(client => {
+                                <Select classname="client-here" options={clients.map(client => {
                                     return {
                                         value: client.userid,
                                         label: client.name + " " + client.surname + " - " + client.address
