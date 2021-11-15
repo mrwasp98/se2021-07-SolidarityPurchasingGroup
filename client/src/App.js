@@ -23,6 +23,7 @@ function App() {
   const [products, setProducts] = useState([]);
   const [clients, setClients] = useState([]);
   const [resultOrder, setResultOrder] = useState()
+  const [dirtyAvailability, setDirtyAvailability] = useState(true);
 
   /* const [clientOrders, setClientOrders] = useState([
     {
@@ -189,10 +190,6 @@ function App() {
   const [errorMessage, setErrorMessage] = useState();
   const [show, setShow] = useState(false);
 
-  //the next useStates are needed to one story 
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -221,11 +218,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!dirty) {
+    if (dirtyAvailability) {
       getAvailableProducts()
         .then((res) => setProducts(res));
+        setDirtyAvailability(false)
     }
-  }, [dirty]);
+  }, [dirtyAvailability]);
 
 
 
@@ -237,7 +235,6 @@ function App() {
 
   useEffect(async () => {
     if (dirty) {
-      setDirty(false);
 
       addPRequest(order.userid,
         order.creationdate,
@@ -253,15 +250,16 @@ function App() {
             setMessageProductRequest({
               type: "error",
               show: true,
-              text: result.listofProducts.map(x => x.name + " not available" + "\n")
+              text: result.listofProducts.map(x => x.name + " ").concat("are not available")
             })
           else if (result.status !== undefined && result.status === 200)
             setMessageProductRequest({
               type: "done",
               show: true,
-              text: "Success"
+              text: "Order received!" //this message won't be used. I don't remove it for consistency
             })
         }).catch(err => { })
+        setDirty(false);
     }
 
   }, [dirty]);
@@ -317,7 +315,7 @@ function App() {
           </Container>
         </Route>
 
-        <Route exact path='/productRequest' render={() => <ProductRequest farmers={farmers} clients={clients} products={products} order={order} setOrder={setOrder} setDirty={() => setDirty(true)} message={messageProductRequest} setMessage={setMessageProductRequest} />} />
+        <Route exact path='/productRequest' render={() => <ProductRequest farmers={farmers} clients={clients} products={products} order={order} setOrder={setOrder} setDirty={() => setDirty(true)} message={messageProductRequest} setMessage={setMessageProductRequest} setDirtyAvailability={setDirtyAvailability}/>} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={clientOrders} setOrders={setClientOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} />} />
