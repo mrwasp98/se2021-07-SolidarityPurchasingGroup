@@ -204,7 +204,6 @@ function App() {
     getFarmers().then((p) => {
       //setTimeout(() => {
       setFarmers(p);
-      console.log(p);
       //}, 1000);
     });
   }, []);
