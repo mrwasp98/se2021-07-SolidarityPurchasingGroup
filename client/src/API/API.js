@@ -76,7 +76,7 @@ const getClients = async () => {
 }
 
 /** STORY 2 **/
-const addClient = async (name, surname, wallet, address) => {
+const addClient = async (name, surname, email, wallet, address) => {
   return new Promise((resolve, reject) => {
     fetch('/api/client', {
       method: "POST",
@@ -86,6 +86,7 @@ const addClient = async (name, surname, wallet, address) => {
       body: JSON.stringify({
         name: name,
         surname: surname,
+        email: email,
         wallet: wallet,
         address: address
       })
@@ -161,7 +162,7 @@ async function handOutProduct(orderid) {
   });
   if(response.ok) {
       return response.status;
-  } else return { message: 'PUT error' };
+  } else return { message: "Couldn't mark the order as completed." };
 };
 
 //this API fetches the orders of a specific client

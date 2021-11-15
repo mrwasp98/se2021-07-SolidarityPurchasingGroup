@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, ListGroup, Offcanvas, InputGroup, Form, Card } from "react-bootstrap";
 import { useHistory } from 'react-router-dom';
-import { iconCart, iconFilter, home } from "./Icons";
+import { iconFilter, home } from "./Icons";
 export default function ProductsList(props) {
     const history = useHistory();
     function handle() {
@@ -63,13 +63,13 @@ export default function ProductsList(props) {
                 </Offcanvas.Header>
                 <hr />
                 <Offcanvas.Body>
-                    <Offcanvas.Title style={{ fontSize: "25px", "fontWeight": "600" }}>Farmers:</Offcanvas.Title>
-                    <Offcanvas.Title style={{ fontSize: "19px", color: "#A4660E" }}>selected in the research</Offcanvas.Title>
+                    <Offcanvas.Title style={{ fontSize: "30px", "fontWeight": "600" }}>Farmers:</Offcanvas.Title>
+                    <Offcanvas.Title style={{ fontSize: "22px", color: "#A4660E" }}>selected in the research</Offcanvas.Title>
                     <InputGroup className="mt-3">
                         {
                             farmersPresent.map((farmer, index) => {
                                 return (
-                                    <Row className="w-100 mt-1 ms-2" style={{ fontSize: "20px", color: "#8D570C", "fontWeight": "500", }}>
+                                    <Row className="w-100 mt-1 ms-2" style={{ fontSize: "22px", color: "#8D570C", "fontWeight": "500", }}>
                                         <Form.Check
                                             key={`row-farmer-${index}`}
                                             className=""
@@ -86,7 +86,7 @@ export default function ProductsList(props) {
                 </Offcanvas.Body>
             </Offcanvas>
             <Row >
-                <div className="d-flex justify-content-around">
+                <div className="d-flex justify-content-around selected-items">
                     <p style={{ fontSize: "30px" }}>{selected}</p>
                 </div>
             </Row>
@@ -110,8 +110,15 @@ function Product(props) {
                 <Card.Header className="myTitle" style={{ fontSize: "23px", "fontWeight": "600" }}>{props.prod.name}</Card.Header>
                 <Card.Text className="p-3 pb-3 m-2 mt-3 cardDescription" >
                     <p className="mt-0 mb-1 myText">Farmer: {props.farmerName}</p>
+                    <hr/>
                     <p className="mt-0 mb-1 myText">Category: {props.prod.category}</p>
+                    <hr/>
                     <p className="mt-0 mb-0 myText">Type of production: {props.prod.typeofproduction}</p>
+                    <hr/>
+                    <p className="mt-1 mb-1 myText">Description: </p>
+                    <div className="descriptionDiv">
+                        <p className="mt-0 mb-0 cursive"> {props.prod.description}</p>
+                    </div>
                 </Card.Text>
             </Card.Body>
             <Card.Footer className="mt-3">

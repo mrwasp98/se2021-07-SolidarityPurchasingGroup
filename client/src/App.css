@@ -93,6 +93,11 @@
     color: #CE8012;
 }
 
+.cursive{
+    font-size: 19px !important;
+    font-family: italic;
+}
+
 .myText {
     font-size: 17px !important;
     font-weight: 500 !important;
@@ -102,6 +107,11 @@
     font-weight: 600 !important;
     font-family: Helvetica, sans-serif;
     color: #143642;
+}
+
+.descriptionDiv{
+    color: #575757;
+    font-weight: 500 !important;
 }
 
 .cartButton {

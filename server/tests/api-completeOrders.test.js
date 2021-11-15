@@ -9,6 +9,7 @@ const orderlineDao = require('../orderline-dao');
 const clientDao = require('../client-dao');
 const productDao = require('../product-dao');
 
+
 jest.setTimeout(10000);
 
 let client1 = {
@@ -34,7 +35,7 @@ let product2 = {
     price: 20.11
 };
 let product3 = {
-    id=3, //will be changed at execution time
+    id: 3, //will be changed at execution time
     name: "Tomino di Capra",
     quantity: 3,
     measure: "kg",
@@ -71,7 +72,7 @@ let order3 = {
     deliveryid: null,
     status: "confirmed"
 };
-let completeOrder1,completeOrder2;
+let completeOrder1, completeOrder2;
 
 
 describe('Testing GET on /api/completeOrders', () => {
@@ -89,9 +90,9 @@ describe('Testing GET on /api/completeOrders', () => {
         product2.id = await productDao.insertProduct(product2);
         product3.id = await productDao.insertProduct(product3);
         //insert orders (1 and 2 are related to client1, order3 is not)
-        order1.userid = client1.id;
-        order2.userid = client1.id;
-        order3.userid = client1.id + 1;
+        order1.userid = client1.userid;
+        order2.userid = client1.userid;
+        order3.userid = client1.userid + 1;
         order1.id = await orderDao.insertOrder(order1);
         order2.id = await orderDao.insertOrder(order2);
         order3.id = await orderDao.insertOrder(order3);
@@ -117,17 +118,17 @@ describe('Testing GET on /api/completeOrders', () => {
         //create complete orders
         completeOrder1 = {
             id: order1.id,
-            userid: client1.id,
+            userid: client1.userid,
             creationdate: "2021-11-09",
             claimdate: "2021-11-10 12:30",
             confirmationdate: "2021-11-09",
             deliveryaddress: null,
             status: "confirmed",
-            products: [product1,product2]
+            products: [product1, product2]
         };
         completeOrder2 = {
             id: order2.id,
-            userid: client1.id,
+            userid: client1.userid,
             creationdate: "2021-11-09",
             claimdate: "2021-11-10 12:30",
             confirmationdate: "2021-11-09",
@@ -145,9 +146,9 @@ describe('Testing GET on /api/completeOrders', () => {
     });
 
     test('It should respond with an array of orders with products', async () => {
-        const response = await request(app).get('/api/completeOrders/?clientid=' + client1.userid);
+        const response = await request(app).get('/api/completeOrders?clientid=' + client1.userid);
         //test equality
-        expect(result).toEqual([completeOrder1, completeOrder2]);
+        expect(response.body).toEqual([completeOrder1, completeOrder2]);
     });
 });
 

@@ -53,7 +53,7 @@ export default function Handout(props) {
                             First, select <b>the client</b>.
                         </Card.Header>
                         <Card.Body>
-                            <Form>
+                            <Form className="client-here">
                                 <Select options={options} onChange={(event) => handlechange(event)} />
                             </Form>
                         </Card.Body>
