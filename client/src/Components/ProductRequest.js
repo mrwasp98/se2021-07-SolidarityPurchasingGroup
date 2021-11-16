@@ -37,7 +37,7 @@ function ProductLine(props) {
 
     const [quantity, setQuantity] = useState(0);
 
-    { (quantity != 0 && !props.productsSelected.length) && setQuantity(0) }
+    { (quantity !== 0 && !props.productsSelected.length) && setQuantity(0) }
 
     const add = () => {
         let x = quantity + 1;
@@ -53,13 +53,13 @@ function ProductLine(props) {
 
     const handleProducts = (x) => {
         setQuantity(x);
-        if (props.productsSelected.length == 0) {
+        if (props.productsSelected.length === 0) {
             let total = parseFloat(product.price) * parseFloat(x);
             const newProduct = { productid: product.id, name: product.name, quantity: x, measure: product.measure, price: product.price, total: total };
             props.setProductsSelected([newProduct])
         } else {
-            const otherProducts = props.productsSelected.filter(p => p.productid != product.id)
-            if (x == 0) {
+            const otherProducts = props.productsSelected.filter(p => p.productid !== product.id)
+            if (x === 0) {
                 props.setProductsSelected(otherProducts);
             } else {
                 let total = parseFloat(product.price) * parseFloat(x);
@@ -79,7 +79,7 @@ function ProductLine(props) {
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.price}€</td>
         <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
-            {quantity != 0 ? <span style={{ cursor: 'pointer' }} onClick={sub}>{iconSub}</span>
+            {quantity !== 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
                 : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
         </td>
     </tr>
@@ -123,12 +123,12 @@ export default function ProductRequest(props) {
 
         let valid = true;
 
-        if (newOrder.products.length == 0) {
+        if (newOrder.products.length === 0) {
             valid = false;
             props.setMessage({
                 type: "error",
                 show: true,
-                value: "Select the amount of at least one product"
+                text: "Select the amount of at least one product"
             })
         }
 
@@ -166,12 +166,7 @@ export default function ProductRequest(props) {
             </Card>
             {selectedClient &&
                 <>
-                    {(products.filter(p => p.quantity > 0).length != 0) ? <>
-                        {message.show && message.type === "error" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
-                            type: message.type,
-                            show: false,
-                            text: message.text
-                        })} variant="danger" dismissible>{message.text}</Alert>}
+                    {(products.filter(p => p.quantity > 0).length !== 0) ? <>
                         <ModalEnd showModal={message.show && message.type === "done"} setShowModal={() => {
                             props.setMessage({
                                 type: message.type,
@@ -195,6 +190,11 @@ export default function ProductRequest(props) {
                                     .map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                             </tbody>
                         </Table>
+                        {message.show && message.type === "error" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
+                            type: message.type,
+                            show: false,
+                            text: message.text
+                        })} variant="danger" dismissible>{message.text}</Alert>}
                         {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal(productsSelected)}€</Alert>}
                         <div class="d-flex justify-content-between">
                             <Link to="/"><Button variant="danger">Back</Button></Link>

@@ -16,19 +16,23 @@ export default function Handout(props) {
     then, converts the information in the best format to show options in the Select input*/
     useEffect(() => {
         setError("");
+        console.log("chiamata")
         if (props.clients.length === 0) {
+            console.log("entro")
             getClients()
                 .then((res) => {
                     props.setClients(res)
-                    setOptions(res.map((e) => {
-                        return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
-                    }))
                 })
                 .catch((err)=>{
                     setError(err.message);
                 })
         }
-    }, [props.clients, props.setClients, props]);
+        if(props.clients){
+            setOptions(props.clients.map((e) => {
+                return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
+            }))
+        }
+    }, [props]);
 
     //this function is called only when the client is selected to load their orders
     function handlechange(event) {

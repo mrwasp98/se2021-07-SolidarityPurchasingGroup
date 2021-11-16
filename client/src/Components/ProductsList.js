@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, ListGroup, Offcanvas, InputGroup, Form, Card } from "react-bootstrap";
+import { Row, Col, Button, Offcanvas, InputGroup, Form, Card } from "react-bootstrap";
 import { useHistory } from 'react-router-dom';
 import { iconFilter, home } from "./Icons";
 export default function ProductsList(props) {
@@ -39,7 +39,7 @@ export default function ProductsList(props) {
                             handleShow();
                         }}
                         style={{
-                            right: '3rem', fontSize: "20px", "fontWeight": "400", width: '14rem', height: '3rem', bottom: '2rem', right: '3rem', zIndex: '2'
+                            right: '3rem', fontSize: "20px", "fontWeight": "400", width: '14rem', height: '3rem', bottom: '2rem', zIndex: '2'
                         }}>Select Farmers {iconFilter} </Button>
                     <Button
                         className='position-fixed rounded-circle'
