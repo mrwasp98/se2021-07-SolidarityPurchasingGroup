@@ -41,7 +41,7 @@ export default function Register(props) {
         <Col md={6}>
           {" "}
           {inserted ? (
-            <Alert key={155} variant={"success"}>
+            <Alert className="alert-success" key={155} variant={"success"}>
               The user has been created
             </Alert>
           ) : (
@@ -60,6 +60,7 @@ export default function Register(props) {
                   required
                   onChange={(ev) => setName(ev.target.value)}
                   value={name}
+                  className="name-input"
                 />
               </Col>
             </Form.Group>
@@ -73,6 +74,7 @@ export default function Register(props) {
                   type="text"
                   placeholder="surname"
                   required
+                  className="surname-input"
                   onChange={(ev) => setSurname(ev.target.value)}
                   value={surname}
                 />
@@ -88,6 +90,7 @@ export default function Register(props) {
                   type="email"
                   placeholder="Email"
                   required
+                  className="email-input"
                   onChange={(ev) => setEmail(ev.target.value)}
                   value={email}
                 />
@@ -103,6 +106,7 @@ export default function Register(props) {
                   type="number"
                   placeholder="Wallet"
                   required
+                  className="wallet-input"
                   onChange={(ev) => setWallet(ev.target.value)}
                   value={wallet}
                 />
@@ -118,13 +122,14 @@ export default function Register(props) {
                   type="text"
                   placeholder="Address"
                   required
+                  className="address-input"
                   onChange={(ev) => setAddress(ev.target.value)}
                   value={address}
                 />
               </Col>
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="mt-3 ">
+            <Button variant="primary" type="submit" className="mt-3 submit-btn">
               Submit
             </Button>
           </Form>
