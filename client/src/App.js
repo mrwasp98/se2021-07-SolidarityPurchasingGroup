@@ -140,7 +140,7 @@ function App() {
   return (
     <>
       <Router>
-        <Route path="/"> <MyNav IsLogin={logged} logout={logout} setLogged={setLogged} /></Route>
+        <Route path="/"> <MyNav IsLogin={logged} logout={logout} setLogged={setLogged} className="myNav"/></Route>
         <Route exact path='/products'>
           <Container className="p-0 m-0" fluid>
             <Row className="">

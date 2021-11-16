@@ -79,16 +79,16 @@ function LoginForm(props) {
                   <h2 align="center">{iconStar}&nbsp;Login</h2>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Table className="mb-3 color">
-                            <Form.Group className="m-3" controlId='email'>
+                            <Form.Group className="m-3 emailfield" controlId='email'>
                                 <Form.Label className='text-warning myText'>Email</Form.Label>
                                 <Form.Control required type="text" placeholder="Insert your username" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
                                 <Form.Control.Feedback type="invalid">
                                     Please insert a valid username.
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group className="m-3" controlId='password'>
+                            <Form.Group className="m-3 " controlId='password'>
                                 <Form.Label className='text-warning myText'>Password</Form.Label>
-                                <Form.Control required type="password" placeholder='Insert your password' onChange={(ev) => { setPassword(ev.target.value); setShow(false) }}/>
+                                <Form.Control required type="password" className="passwordfield" placeholder='Insert your password' onChange={(ev) => { setPassword(ev.target.value); setShow(false) }}/>
                             </Form.Group>
 
                             {show ? <Alert variant='danger' className='error-box' onClose={() => (setShow(false))} dismissible>
@@ -98,7 +98,7 @@ function LoginForm(props) {
                             : ''}
                         </Table>
                         <Container className="d-flex justify-content-end">
-                            <Button type='submit' variant='warning' className="cartButton mb-2 text-white">Login</Button>
+                            <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton">Login</Button>
                         </Container>
                     </Form>
                 </Col>

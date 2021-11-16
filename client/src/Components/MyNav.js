@@ -19,32 +19,26 @@ export default function MyNav(props) {
   return (
     <>
       <Navbar
-        className="justify-content-between NavBar-Background text-warning"
+        className="justify-content-between NavBar-Background text-warning myNav"
         expand="sm"
-        
       >
         <Container fluid>
-          <Navbar.Brand style={{fontSize:"25px"}}>
+          <Navbar.Brand style={{ fontSize: "25px" }}>
             {iconStar}
             <span> SPG - Group 07</span>
           </Navbar.Brand>
           < div className="">
-          <Button
-            variant="light"
-            onClick={toggleShow}
-            className="callandarButton"
-            style={{fontSize:"17px"}}
-          >
-            Current Date: {value.getDate()}/{value.getMonth() + 1}/
-            {value.getFullYear()}
-            {"  "}
-            {iconCalendar}
-          </Button>
-          {show ? (
-        <Calendar className="position-absolute priority" onChange={onChange} value={value} />
-      ) : (
-        ""
-      )}
+            <Button variant="light" onClick={toggleShow}className="callandarButton" style={{ fontSize: "17px" }}>
+              Current Date: {value.getDate()}/{value.getMonth() + 1}/
+              {value.getFullYear()}
+              {"  "}
+              {iconCalendar}
+            </Button>
+            {show ? (
+              <Calendar className="position-absolute priority react-calendar" onChange={onChange} value={value} />
+            ) : (
+              ""
+            )}
 
           </div>
           <Navbar.Text>
@@ -54,10 +48,10 @@ export default function MyNav(props) {
             ) : (
               <>
                 {" "}
-                <Link to= "/login">
-                  <Button variant="link" style={{fontSize:"20px"}}>Login</Button>
+                <Link to="/login">
+                  <Button variant="link" style={{ fontSize: "20px" }} className="loginLink">Login</Button>
                 </Link>
-                <Button variant="link" style={{fontSize:"20px"}}>Register</Button>{" "}
+                <Button variant="link" style={{ fontSize: "20px" }}>Register</Button>{" "}
               </>
             )}{" "}
           </Navbar.Text>
