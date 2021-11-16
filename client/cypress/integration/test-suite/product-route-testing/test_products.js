@@ -11,9 +11,9 @@ describe('SPG product show page', () => {
         cy.visit('http://localhost:3000/products')
         cy.get('.myCard').its('length').should('be.gte', 1)
         cy.contains('Dairy').click()
-        cy.get('.myCard').its('length').should('eq', 1)
+        cy.get('.myCard').its('length').should('eq', 6)
         cy.get('.myCard').should('contain', 'Dairy')
-
+        cy.get('.myCard').should('not.contain', 'Salame')
     })
     it('selected category', () => {
         cy.visit('http://localhost:3000/products')
