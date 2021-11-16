@@ -82,7 +82,7 @@ export default function Handout(props) {
                             <Card.Body>
                                 <Container className="d-flex justify-content-start">
                                     <Link style={{ textDecoration: "none", hover: "black" }} to="/" className="linkred">
-                                        <Button variant="outline-danger" type="submit" className="mr-3" size="lg">Back</Button>
+                                        <Button variant="outline-danger" type="submit" className="mr-3 back-btn" size="lg">Back</Button>
                                     </Link>
                                 </Container>
                             </Card.Body>

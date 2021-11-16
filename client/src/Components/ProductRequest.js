@@ -77,7 +77,7 @@ function ProductLine(props) {
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{quantity + " " + product.measure}</td>
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.quantity + " " + product.measure + " available"}</td>
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.price}€</td>
-        <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>
+        <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
             {quantity !== 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
                 : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
@@ -152,7 +152,7 @@ export default function ProductRequest(props) {
                             First, select <b>the client</b>.
                         </Card.Header>
                         <Card.Body>
-                            <Form>
+                            <Form className="client-here">
                                 <Select options={clients.map(client => {
                                     return {
                                         value: client.userid,
@@ -187,7 +187,7 @@ export default function ProductRequest(props) {
                             </thead>
                             <tbody>
                                 {products.filter(p => p.quantity > 0)
-                                    .map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
+                                    .map((p,index) => <ProductLine product={p} index={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                             </tbody>
                         </Table>
                         {message.show && message.type === "error" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
@@ -197,8 +197,8 @@ export default function ProductRequest(props) {
                         })} variant="danger" dismissible>{message.text}</Alert>}
                         {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal(productsSelected)}€</Alert>}
                         <div class="d-flex justify-content-between">
-                            <Link to="/"><Button variant="danger">Back</Button></Link>
-                            <Button onClick={() => handleOrder()}>Check and order</Button>
+                            <Link to="/"><Button variant="danger" className="back-btn">Back</Button></Link>
+                            <Button className="order-btn" onClick={() => handleOrder()}>Check and order</Button>
                         </div>
                     </>
                         :
