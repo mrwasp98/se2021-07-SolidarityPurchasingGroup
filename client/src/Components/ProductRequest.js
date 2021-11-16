@@ -1,10 +1,37 @@
-import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Alert } from "react-bootstrap";
+import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Modal, Alert } from "react-bootstrap";
 import { useState } from "react";
 import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import dayjs from "dayjs";
 import { Link } from 'react-router-dom'
 
+
+function ModalEnd(props) {
+    return (
+        <Modal show={props.showModal} handleClose={props.handleCloseModal} backdrop="static">
+            <Modal.Header>
+                <Modal.Title style={{width: "100%"}}><Alert variant="success" >Order received!</Alert></Modal.Title>
+            </Modal.Header>
+            <Form>
+              <Modal.Body>
+                <Form.Group controlId='selectedName'>
+                  <Form.Label>Summary of order</Form.Label>
+                  <ul>
+                  {props.products.summary.map(x => <li>{x.quantity + " " + x.measure + " of " + x.name}</li>)}
+                  </ul>
+                  <p>Total: {props.products.total}€</p>
+                </Form.Group>              
+              </Modal.Body>
+              <Modal.Footer>
+                  <Button onClick={() => {
+                      props.setShowModal(false)
+                      props.setDirtyAvailability(true)
+                    }}>Ok</Button>
+              </Modal.Footer>
+            </Form>
+        </Modal>
+    );
+  }
 function ProductLine(props) {
     const { product } = props;
 
@@ -49,8 +76,8 @@ function ProductLine(props) {
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.category}</td>
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{quantity + " " + product.measure}</td>
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.quantity + " " + product.measure + " available"}</td>
-        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.price}</td>
-        <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
+        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.price}€</td>
+        <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
             {quantity !== 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
                 : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
@@ -64,12 +91,17 @@ export default function ProductRequest(props) {
     const { clients, products, message } = props;
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
+    const [summary, setSummary] = useState([])
 
-    const calculateTotal = () => {
+    const [showModal, setShowModal] = useState(false);
+    const handleCloseModal = () => setShowModal(false);
+    const handleShowModal = () => setShowModal(true);
+
+    const calculateTotal = (elements) => {
         let total = parseFloat(0)
         //old memories
-        for (let i = 0; i < productsSelected.length; i++) {
-            total = parseFloat(total) + parseFloat(productsSelected[i].total)
+        for (let i = 0; i < elements.length; i++) {
+            total = parseFloat(total) + parseFloat(elements[i].total)
         }
 
         return total;
@@ -96,14 +128,17 @@ export default function ProductRequest(props) {
             props.setMessage({
                 type: "error",
                 show: true,
-                value: "Select the amout"
+                text: "Select the amount of at least one product"
             })
         }
 
         if (valid) {
             props.setOrder(newOrder)
+            setSummary(productsSelected);
             setProductsSelected([])
             props.setDirty(true)
+            props.setDirtyAvailability(true)
+
         }
     }
 
@@ -117,7 +152,7 @@ export default function ProductRequest(props) {
                             First, select <b>the client</b>.
                         </Card.Header>
                         <Card.Body>
-                            <Form className="client-here">
+                            <Form>
                                 <Select options={clients.map(client => {
                                     return {
                                         value: client.userid,
@@ -132,16 +167,13 @@ export default function ProductRequest(props) {
             {selectedClient &&
                 <>
                     {(products.filter(p => p.quantity > 0).length !== 0) ? <>
-                        {message.show && message.type === "error" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
-                            type: message.type,
-                            show: false,
-                            text: message.text
-                        })} variant="danger" dismissible>{message.text}</Alert>}
-                        {message.show && message.type === "done" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
-                            type: message.type,
-                            show: false,
-                            text: message.text
-                        })} variant="success" dismissible>{message.text}</Alert>}
+                        <ModalEnd showModal={message.show && message.type === "done"} setShowModal={() => {
+                            props.setMessage({
+                                type: message.type,
+                                show: false,
+                                text: message.text
+                            })
+                        }} handleCloseModal={handleCloseModal} handleShowModal={handleShowModal} products={{summary: summary, total: calculateTotal(summary)}} setDirtyAvailability={props.setDirtyAvailability}/>
                         <Table className="mt-3" striped bordered hover>
                             <thead>
                                 <tr>
@@ -155,17 +187,22 @@ export default function ProductRequest(props) {
                             </thead>
                             <tbody>
                                 {products.filter(p => p.quantity > 0)
-                                    .map((p,index) => <ProductLine product={p} index={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
+                                    .map(p => <ProductLine product={p} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                             </tbody>
                         </Table>
-                        {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal()}€</Alert>}
+                        {message.show && message.type === "error" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
+                            type: message.type,
+                            show: false,
+                            text: message.text
+                        })} variant="danger" dismissible>{message.text}</Alert>}
+                        {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal(productsSelected)}€</Alert>}
                         <div class="d-flex justify-content-between">
-                            <Link to="/"><Button className="back-btn" variant="danger">Back</Button></Link>
+                            <Link to="/"><Button variant="danger">Back</Button></Link>
                             <Button onClick={() => handleOrder()}>Check and order</Button>
                         </div>
                     </>
                         :
-                        <p >There are no available products</p>}
+                        <Alert className="mt-3" variant="primary">There are no available products</Alert>}
                 </>
             }
         </Container>
