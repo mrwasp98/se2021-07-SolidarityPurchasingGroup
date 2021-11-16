@@ -44,7 +44,7 @@ export default function MyNav(props) {
           <Navbar.Text>
             {iconPerson}{" "}
             {props.IsLogin ? (
-              <Button variant="link" onClick={handleLogout}>Logout</Button>
+              <Button variant="link" onClick={handleLogout} id="logoutbutton">Logout</Button>
             ) : (
               <>
                 {" "}
