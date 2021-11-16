@@ -16,15 +16,20 @@ Change the database in database.js before running tests
 describe('Testing POST on /login', () => {
 
     const fakeUser1 = {
-        id: 1,
-        username: 'farmer1',
-        password: '$2a$12$xTDtbn8cqfIqBxTUo1lMiupwpnVxbm9t3BtofQ/Yf8.cW0b1kiTB6',
+        username: 'group07@gmail.com',
+        password: 'abc123',
+        type: 'client'
+    };
+
+    const fakeUser2 = {
+        username: 'group07-1@gmail.com',
+        password: 'abc123',
         type: 'farmer'
     };
 
     const credentials = { 
-        username: 'farmer1', 
-        password: 'farmer1' 
+        username: 'group07@gmail.com', 
+        password: 'abc123' 
     };
 
 
@@ -32,6 +37,7 @@ describe('Testing POST on /login', () => {
         //clear and fill (mock) client database with fakeClient1 and fakeClient2
         await userDao.deleteAllUsers();
         await userDao.insertUser(fakeUser1);
+        await userDao.insertUser(fakeUser2);
     });
 
     afterAll(async () => {
@@ -47,8 +53,8 @@ describe('Testing POST on /login', () => {
 
         test('Case of wrong username', async () => {
             const wrongCredentials = { 
-                username: 'farmer', 
-                password: 'farmer1' 
+                username: 'gruop07@gmail.com', 
+                password: 'abc123' 
             };
             const response = await request(app).post('/login').send(wrongCredentials);
             expect(response.statusCode).toBe(401);
@@ -56,8 +62,8 @@ describe('Testing POST on /login', () => {
 
         test('Case of wrong password', async () => {
             const wrongCredentials = { 
-                username: 'farmer1', 
-                password: 'farmer' 
+                username: 'group07@gmail.com', 
+                password: 'abc1234' 
             };
             const response = await request(app).post('/login').send(wrongCredentials);
             expect(response.statusCode).toBe(401);
@@ -70,15 +76,14 @@ describe('Testing POST on /login', () => {
 describe('Testing DELETE on /logout', () => {
 
     const fakeUser1 = {
-        id: 1,
-        username: 'farmer1',
-        password: '$2a$12$xTDtbn8cqfIqBxTUo1lMiupwpnVxbm9t3BtofQ/Yf8.cW0b1kiTB6',
+        username: 'farmer1@gmail.com',
+        password: 'abc123',
         type: 'farmer'
     };
 
     const credentials = { 
-        username: 'farmer1', 
-        password: 'farmer1' 
+        username: 'farmer1@gmail.com', 
+        password: 'abc123' 
     };
 
 
