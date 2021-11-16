@@ -21,7 +21,7 @@ describe('SPG register page', () => {
     })
 
     it('type a invalid wallet', () => {
-        cy.get('.email-input').type('antonio@poli.it')
+        cy.get('.email-input').type('antonioVes@poli.it')
         cy.get('.submit-btn').click()
         cy.contains('The user has been created').should('not.exist')
     })
@@ -39,7 +39,7 @@ describe('SPG register page', () => {
 
     it('register succefully', () => {
         cy.get('.submit-btn').click()
-        cy.contains('.alert-success').should('exist')
+        cy.contains('The user has been created').should('exist')
     })
 
 })
