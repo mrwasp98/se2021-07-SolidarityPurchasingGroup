@@ -9,10 +9,10 @@ describe('SPG handout page', () => {
         cy.contains('No option')
     })
 
-    it('type a invalid user', () => {
-        cy.get('.client-here')
-            .type('unknown').should('have.value', '')
-        cy.contains('No option')
+    it('back to home', () => {
+        cy.visit('http://localhost:3000/products')
+        cy.get('.rounded-circle').click()
+        cy.url().should('include', '/')
     })
 
     it('type a valid user, no order', () => {
