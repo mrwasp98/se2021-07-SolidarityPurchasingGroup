@@ -166,7 +166,7 @@ app.get("/api/products", async (req, res) => {
   productDao
     .getProductsAvailable()
     .then((products) => res.json(products))
-    .catch(() => res.staus(500).end());
+    .catch(() => res.status(500).end());
 });
 
 //Get all farmers name

@@ -6,7 +6,7 @@ const db = require('./database');
 
 exports.getProductsAvailable = () => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM product AS P, availability AS A WHERE P.id=A.productid';
+        const sql = 'SELECT * FROM product AS P, availability AS A WHERE P.id=A.productid AND A.quantity<>0';
         db.all(sql, [], (err, rows) => {
             if(err) {
                 reject(err);
