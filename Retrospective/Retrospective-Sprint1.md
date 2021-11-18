@@ -45,7 +45,7 @@ The retrospective should include _at least_ the following sections:
 
 - Unit Testing:
   - Total hours estimated => 3h
-  - Total hours spent =>
+  - Total hours spent => 12h 25m
   - Nr of automated unit test cases  => 11
   - Coverage (if available)
 - E2E testing:
