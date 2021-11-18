@@ -44,9 +44,9 @@ The retrospective should include _at least_ the following sections:
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated => 
+  - Total hours estimated => 3h
   - Total hours spent =>
-  - Nr of automated unit test cases  => 
+  - Nr of automated unit test cases  => 11
   - Coverage (if available)
 - E2E testing:
   - Total hours estimated
