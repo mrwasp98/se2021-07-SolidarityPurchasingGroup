@@ -68,19 +68,18 @@ The retrospective should include _at least_ the following sections:
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
-
-  We were over optimistic! Thinking that organizing the base structure of the project (DB structures and APIs) would have made us very fast.
+  We underestimated the time needed for the "tuning" of the project. We thought we would have been fast.
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
-  It's better to plan 
+  The positive lesson that we learnt is the fact that planning is "half of the work". 
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
 
 - Which ones you were not able to achieve? Why?
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-
-> Propose one or two
+  Improve technical debt management and code revision!
 
 - One thing you are proud of as a Team!!
+  We were able to complete everything we set our eyes on! We were able to communicate in an excellent way.
