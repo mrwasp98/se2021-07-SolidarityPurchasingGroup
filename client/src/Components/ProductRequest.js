@@ -112,7 +112,7 @@ export default function ProductRequest(props) {
                     props.setDirtyClients(false);
                 })
         }
-    }, [props.setClients, props.setDirtyClients, props.dirtyClients]);
+    }, [props]);
 
     const calculateTotal = (elements) => {
         let total = parseFloat(0)

@@ -31,7 +31,7 @@ export default function Handout(props) {
                     setError(err.message);
                 })
         }
-    }, [props.dirtyClients, props.setDirtyClients, props.setClients]);
+    }, [props]);
 
     //this function is called only when the client is selected to load their orders
     function handlechange(event) {
