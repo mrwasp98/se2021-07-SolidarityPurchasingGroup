@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
-import { Card, Container, Button, Form, ListGroup, ListGroupItem, Alert } from "react-bootstrap";
+import { Card, Container, Form, ListGroup, ListGroupItem, Alert } from "react-bootstrap";
 import React from 'react'
 import Select from 'react-select'
 import { getClients, getClientOrders } from "../API/API"
 import OrderToggle from "./OrderToggle";
-import { home } from "./Icons";
-import { useHistory } from 'react-router-dom';
+import HomeButton from "./HomeButton";
 
 export default function Handout(props) {
-    const history = useHistory();
-
     const [selectedClient, setSelectedClient] = useState(""); //this state controls the Select input
     const [options, setOptions] = useState([]); //this state is used to store the information in props.clients in the format that works with the Select 
     const [error, setError] = useState("");
@@ -22,7 +19,7 @@ export default function Handout(props) {
             getClients()
                 .then((res) => {
                     props.setClients(res)
-                    props.setDirtyClients(true)
+                    props.setDirtyClients(false)
                     setOptions(res.map((e) => {
                         return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
                     }))
@@ -83,12 +80,7 @@ export default function Handout(props) {
                     {error && <Alert variant="danger">An error as occurred: {error}</Alert>}
                 </ListGroup>
             </Card>
-                <Button
-                    className='position-fixed rounded-circle d-none d-md-block'
-                    style={{ width: '4rem', height: '4rem', bottom: '3rem', right: '3rem', zIndex: '100', "backgroundColor": "#143642", color: "white" }}
-                    onClick={() => history.push("/")}>
-                    {home}
-                </Button>
+                <HomeButton/>
         </Container>
     )
 }
