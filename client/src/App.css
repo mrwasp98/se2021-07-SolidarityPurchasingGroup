@@ -220,3 +220,15 @@
     background-color: #ec9a2a;
     color: black;
 }
+
+.text-yellow {
+    color: #ec9a2a !important;
+}
+
+.vh-70 {
+    height: 70vh;
+}
+
+.carousel-control-next-icon .carousel-control-prev-icon {
+    color: #143642;
+}

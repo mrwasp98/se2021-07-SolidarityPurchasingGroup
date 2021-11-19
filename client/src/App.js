@@ -12,8 +12,8 @@ import { Container, Row } from "react-bootstrap";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
 import { login, getUserInfo, logout } from "./API/API.js";
-import HomeButtons from "./Components/HomeButtons";
-
+import ShopEmployeeHome from "./Components/ShopEmployeeHome";
+import Home from "./Components/Home.js"
 function App() {
   const [dirty, setDirty] = useState(false);
   const [farmers, setFarmers] = useState([]);
@@ -153,7 +153,8 @@ function App() {
             </Row>
           </Container>
         </Route>
-        <Route exact path='/' render= {() =><HomeButtons/> } />
+        <Route exact path='/home' render= {() =><Home/> } />
+        <Route exact path='/employeeHome' render= {() =><ShopEmployeeHome/> } />
         <Route exact path='/productRequest' render={() => <ProductRequest farmers={farmers} clients={clients} products={products} order={order} setOrder={setOrder} setDirty={() => setDirty(true)} message={messageProductRequest} setMessage={setMessageProductRequest} setDirtyAvailability={setDirtyAvailability}/>} />
         <Route exact path="/handout" render={() => <Handout clients={clients} setClients={setClients} orders={clientOrders} setOrders={setClientOrders} />} />
         <Route exact path="/registerClient" render={() => <Register />} />

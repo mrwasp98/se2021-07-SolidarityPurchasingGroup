@@ -33,9 +33,9 @@ export default function OrderToggle(props) {
         <Accordion defaultActiveKey="0" >
             <Accordion.Item key={props.chiave} className="mb-3">
                 <Accordion.Header >
-                    <Container className="d-flex justify-content-between">
+                    <Container className="d-flex justify-content-between flex-column flex-md-row">
                         <div>Order created on the: <strong>{props.order.creationdate}</strong> </div>
-                        <strong>Total price: {totalprice()}€</strong>
+                        <span><strong>Total price: {totalprice()}€</strong></span>
                     </Container>
 
                 </Accordion.Header>

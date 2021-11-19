@@ -69,7 +69,7 @@ export default function ProductsList(props) {
                         {
                             farmersPresent.map((farmer, index) => {
                                 return (
-                                    <Row className="w-100 mt-1 ms-2" style={{ fontSize: "22px", color: "#8D570C", "fontWeight": "500", }}>
+                                    <Row className="w-100 mt-1 ms-2" key={index} style={{ fontSize: "22px", color: "#8D570C", "fontWeight": "500", }}>
                                         <Form.Check
                                             key={`row-farmer-${index}`}
                                             className=""

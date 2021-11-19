@@ -1,9 +1,11 @@
-import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Row, Modal, Alert } from "react-bootstrap";
+import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Modal, Alert } from "react-bootstrap";
 import { useState } from "react";
 import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import dayjs from "dayjs";
 import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
+import { home } from "./Icons";
 
 
 function ModalEnd(props) {
@@ -17,7 +19,7 @@ function ModalEnd(props) {
                 <Form.Group controlId='selectedName'>
                   <Form.Label>Summary of order</Form.Label>
                   <ul>
-                  {props.products.summary.map(x => <li>{x.quantity + " " + x.measure + " of " + x.name}</li>)}
+                  {props.products.summary.map((x, i) => <li key={i}>{x.quantity + " " + x.measure + " of " + x.name}</li>)}
                   </ul>
                   <p>Total: {props.products.total}€</p>
                 </Form.Group>              
@@ -37,7 +39,7 @@ function ProductLine(props) {
 
     const [quantity, setQuantity] = useState(0);
 
-    { (quantity !== 0 && !props.productsSelected.length) && setQuantity(0) }
+ (quantity !== 0 && !props.productsSelected.length) && setQuantity(0) 
 
     const add = () => {
         let x = quantity + 1;
@@ -88,6 +90,8 @@ function ProductLine(props) {
 }
 
 export default function ProductRequest(props) {
+    const history = useHistory();
+
     const { clients, products, message } = props;
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
@@ -106,8 +110,6 @@ export default function ProductRequest(props) {
 
         return total;
     }
-
-    console.log(message)
 
     const handleOrder = () => {
         const newOrder = {
@@ -187,7 +189,7 @@ export default function ProductRequest(props) {
                             </thead>
                             <tbody>
                                 {products.filter(p => p.quantity > 0)
-                                    .map((p,index) => <ProductLine product={p} index={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
+                                    .map((p,index) => <ProductLine product={p} index={index} key={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                             </tbody>
                         </Table>
                         {message.show && message.type === "error" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
@@ -196,15 +198,21 @@ export default function ProductRequest(props) {
                             text: message.text
                         })} variant="danger" dismissible>{message.text}</Alert>}
                         {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal(productsSelected)}€</Alert>}
-                        <div class="d-flex justify-content-between">
+                        <div className="d-flex justify-content-between mb-4">
                             <Link to="/"><Button variant="danger" className="back-btn">Back</Button></Link>
-                            <Button className="order-btn" onClick={() => handleOrder()}>Check and order</Button>
+                            <Button className="order-btn" variant="yellow" onClick={() => handleOrder()}>Check and order</Button>
                         </div>
                     </>
                         :
                         <Alert className="mt-3" variant="primary">There are no available products</Alert>}
                 </>
             }
+             <Button
+                    className='position-fixed rounded-circle d-none d-md-block'
+                    style={{ width: '4rem', height: '4rem', bottom: '3rem', right: '3rem', zIndex: '100', "backgroundColor": "#143642", color: "white" }}
+                    onClick={() => history.push("/")}>
+                    {home}
+                </Button>
         </Container>
     </>)
 }

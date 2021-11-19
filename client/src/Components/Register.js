@@ -1,6 +1,7 @@
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { addClient } from "../API/API.js";
+import { Link } from "react-router-dom";
 
 export default function Register(props) {
   const [name, setName] = useState("");
@@ -25,7 +26,7 @@ export default function Register(props) {
           setWallet("");
           setAddress("");
         })
-        .catch((errorObj) => {});
+        .catch((errorObj) => { });
     }
   };
 
@@ -129,9 +130,12 @@ export default function Register(props) {
               </Col>
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="mt-3 submit-btn">
-              Submit
-            </Button>
+            <Container className="d-flex justify-content-between my-4">
+              <Link style={{ textDecoration: "none", hover: "black" }} to="/" className="linkred">
+                <Button variant="outline-danger" type="submit" className="back-btn">Back</Button>
+              </Link>
+              <Button variant="yellow" type="submit" className="submit-btn">Submit</Button>
+            </Container>
           </Form>
         </Col>
       </Row>
