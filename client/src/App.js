@@ -38,7 +38,7 @@ function App() {
 
   const [show, setShow] = useState(false);
 
-//this use effect checks whether the user logged in previously
+  //this use effect checks whether the user logged in previously
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -52,7 +52,7 @@ function App() {
     checkAuth();
   }, []);
 
-//this use effect is used to fetch the farmers
+  //this use effect is used to fetch the farmers
   useEffect(() => {
     getFarmers().then((p) => {
       //setTimeout(() => {
@@ -62,17 +62,17 @@ function App() {
   }, []);
 
 
-/*   useEffect(() => {
-    getClients()
-      .then((res) => setClients(res))
-  }, []); */
+  /*   useEffect(() => {
+      getClients()
+        .then((res) => setClients(res))
+    }, []); */
 
-//this use effect is used to get the available products
+  //this use effect is used to get the available products
   useEffect(() => {
     if (dirtyAvailability) {
       getAvailableProducts()
         .then((res) => setProducts(res));
-        setDirtyAvailability(false)
+      setDirtyAvailability(false)
     }
   }, [dirtyAvailability]);
 
@@ -84,36 +84,37 @@ function App() {
     text: ""
   })
 
-  useEffect(async () => {
-    if (dirty) {
-
-      addPRequest(order.userid,
-        order.creationdate,
-        order.claimdate,
-        order.confirmationdate,
-        order.deliveryaddress,
-        order.deliveryid,
-        order.status,
-        order.products).then(result => {
-          // A few products are not availability
-          //console.log(res.listofProducts);  The list of products non availability "res.listofProducts"
-          if (result.status !== undefined && result.status === 406)
-            setMessageProductRequest({
-              type: "error",
-              show: true,
-              text: result.listofProducts.map(x => x.name + " ").concat("are not available")
-            })
-          else if (result.status !== undefined && result.status === 200)
-            setMessageProductRequest({
-              type: "done",
-              show: true,
-              text: "Order received!" //this message won't be used. I don't remove it for consistency
-            })
-        }).catch(err => { })
+  useEffect(() => {
+    async function fetchdata() {
+      if (dirty) {
+        addPRequest(order.userid,
+          order.creationdate,
+          order.claimdate,
+          order.confirmationdate,
+          order.deliveryaddress,
+          order.deliveryid,
+          order.status,
+          order.products).then(result => {
+            // A few products are not availability
+            //console.log(res.listofProducts);  The list of products non availability "res.listofProducts"
+            if (result.status !== undefined && result.status === 406)
+              setMessageProductRequest({
+                type: "error",
+                show: true,
+                text: result.listofProducts.map(x => x.name + " ").concat("are not available")
+              })
+            else if (result.status !== undefined && result.status === 200)
+              setMessageProductRequest({
+                type: "done",
+                show: true,
+                text: "Order received!" //this message won't be used. I don't remove it for consistency
+              })
+          }).catch(err => { })
         setDirty(false);
+      }
     }
-
-  }, [dirty]);
+    fetchdata();
+  }, [dirty, order]);
 
 
   /*
@@ -147,7 +148,7 @@ function App() {
   return (
     <>
       <Router>
-        <Route path="/"> <MyNav IsLogin={logged} logout={logout} setLogged={setLogged} className="myNav"/></Route>
+        <Route path="/"> <MyNav IsLogin={logged} logout={logout} setLogged={setLogged} className="myNav" /></Route>
         <Route exact path='/products'>
           <Container className="p-0 m-0" fluid>
             <Row className="">
@@ -157,36 +158,36 @@ function App() {
                 farmers={farmers}
                 className=""
               />
-            </Row> 
+            </Row>
           </Container>
         </Route>
-        <Route exact path='/home' render= {() =><Home/> } />
-        <Route exact path='/employeeHome' render= {() =><ShopEmployeeHome/> } />
-        <Route exact path='/productRequest' render={() => 
-          <ProductRequest 
-              farmers={farmers} 
-              clients={clients} 
-              setClients={setClients}
-              dirtyClients={dirtyClients}
-              setDirtyClients={setDirtyClients} 
-              products={products} 
-              order={order} 
-              setOrder={setOrder} 
-              setDirty={() => setDirty(true)} 
-              message={messageProductRequest} 
-              setMessage={setMessageProductRequest} 
-              setDirtyAvailability={setDirtyAvailability}/>} 
-        />
-        <Route exact path="/handout" render={() => 
-          <Handout 
-            clients={clients} 
+        <Route exact path='/home' render={() => <Home />} />
+        <Route exact path='/employeeHome' render={() => <ShopEmployeeHome />} />
+        <Route exact path='/productRequest' render={() =>
+          <ProductRequest
+            farmers={farmers}
+            clients={clients}
             setClients={setClients}
             dirtyClients={dirtyClients}
-            setDirtyClients={setDirtyClients} 
-            orders={clientOrders} 
-            setOrders={setClientOrders} />} 
+            setDirtyClients={setDirtyClients}
+            products={products}
+            order={order}
+            setOrder={setOrder}
+            setDirty={() => setDirty(true)}
+            message={messageProductRequest}
+            setMessage={setMessageProductRequest}
+            setDirtyAvailability={setDirtyAvailability} />}
         />
-        <Route exact path="/registerClient" render={() => <Register  setDirtyClients={setDirtyClients}/>} />
+        <Route exact path="/handout" render={() =>
+          <Handout
+            clients={clients}
+            setClients={setClients}
+            dirtyClients={dirtyClients}
+            setDirtyClients={setDirtyClients}
+            orders={clientOrders}
+            setOrders={setClientOrders} />}
+        />
+        <Route exact path="/registerClient" render={() => <Register setDirtyClients={setDirtyClients} />} />
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} />} />
       </Router>
     </>

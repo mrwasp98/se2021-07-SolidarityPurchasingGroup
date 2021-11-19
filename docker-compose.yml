@@ -1,19 +1,17 @@
 version: '20.10.10'
 
 services: 
-    sqlite3db:
-      image: keinos/sqlite3:latest
-      volumes:
-      - db:/server/database.db
-      networks:
-      - backend
+    # sqlite3db:
+    #   container_name: sqlite3db
+    #   build: ./server/db
+    #   healthcheck:
+    #     test: exit 0
     server:
-      depends_on:
-        - sqlite3db
+      # depends_on:
+      #   - sqlite3db
       build: ./server
-      restart: unless-stopped
       ports:
-        - 5000:5001
+        - 5001:3001
       environment:
         - CLIENT_ORIGIN=http://127.0.0.1:3000
       networks:
@@ -24,8 +22,10 @@ services:
       - server
       build:
         context: ./client
+        args:
+        - REACT_APP_API_BASE_URL=http://127.0.0.1:5001
       ports:
-        - 3000:3001
+        - 5000:3000
       networks:
       - frontend
 
