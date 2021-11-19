@@ -4,10 +4,8 @@ import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import dayjs from "dayjs";
 import { Link } from 'react-router-dom'
-import { useHistory } from 'react-router-dom';
-import { home } from "./Icons";
 import { getClients } from "../API/API.js";
-
+import HomeButton from "./HomeButton";
 
 function ModalEnd(props) {
     return (
@@ -92,8 +90,6 @@ function ProductLine(props) {
 }
 
 export default function ProductRequest(props) {
-    const history = useHistory();
-
     const { clients, products, message } = props;
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
@@ -218,12 +214,7 @@ export default function ProductRequest(props) {
                         <Alert className="mt-3" variant="primary">There are no available products</Alert>}
                 </>
             }
-            <Button
-                className='position-fixed rounded-circle d-none d-md-block'
-                style={{ width: '4rem', height: '4rem', bottom: '3rem', right: '3rem', zIndex: '100', "backgroundColor": "#143642", color: "white" }}
-                onClick={() => history.push("/")}>
-                {home}
-            </Button>
+            <HomeButton/>
         </Container>
     </>)
 }

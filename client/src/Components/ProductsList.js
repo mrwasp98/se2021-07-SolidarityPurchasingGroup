@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, Offcanvas, InputGroup, Form, Card, Container } from "react-bootstrap";
-import { useHistory } from 'react-router-dom';
-import { iconFilter, home } from "./Icons";
+import { iconFilter } from "./Icons";
+import HomeButton from './HomeButton';
+
 export default function ProductsList(props) {
-    const history = useHistory();
-    function handle() {
-        history.push("/");
-    }
+
     const [selected, setSelected] = useState("");
     const [show, setShow] = useState(false);
     const [rand, setRand] = useState(false);
@@ -18,8 +16,8 @@ export default function ProductsList(props) {
     return (
         <>
             <Row className="pt-0" style={{ "fontWeight": "600", "backgroundColor": "#FFDEAD" }}>
-                {categories.map((cat) =>
-                    <Col className="border-end border-grey p-4">
+                {categories.map((cat, index) =>
+                    <Col className="border-end border-grey p-4" key={index}>
                         <div className="d-flex justify-content-around">
                             <Button className="btn-primary" id="main"
                                 onClick={() => {
@@ -32,33 +30,26 @@ export default function ProductsList(props) {
                     </Col>)}
             </Row>
             <Container className="d-flex justify-content-around">
-            <Row className="p-0 pt-3 ">
-                <Col className=" col-12 col-md-6 p-0 mx-auto">
-                    <div className="d-flex justify-content-around mt-4">
-                        <h1 className="myTitle" style={{ fontSize: "40px" }}>Available Products</h1>
-                    </div>
-                </Col>
-                <Col className=" col-12 col-md-3 pt-2 ps-5">
-                    <Button
-                        className=" rounded-circle mt-3"
-                        onClick={() => {
-                            handleShow();
-                        }}
-                        style={{
-                            right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', "backgroundColor": "#143642", color:"white"
-                        }}>{iconFilter} </Button>
-                    <Button
-                        className='position-fixed rounded-circle'
-                        style={{ width: '4rem', height: '4rem', bottom: '3rem', right: '3rem', zIndex: '2', "backgroundColor": "#143642", color: "white" }}
-                        onClick={() => handle()}>
-                        {home}
-                    </Button>
-                </Col>
+                <Row className="p-0 pt-3 ">
+                    <Col className=" col-12 col-md-6 p-0 mx-auto">
+                        <div className="d-flex justify-content-around mt-4">
+                            <h1 className="myTitle" style={{ fontSize: "40px" }}>Available Products</h1>
+                        </div>
+                    </Col>
+                    <Col className=" col-12 col-md-3 pt-2 ps-5">
+                        <Button
+                            className=" rounded-circle mt-3"
+                            onClick={() => {
+                                handleShow();
+                            }}
+                            style={{
+                                right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', "backgroundColor": "#143642", color: "white"
+                            }}>{iconFilter} </Button>
+                        <HomeButton />
+                    </Col>
 
-                <Col className="justify-content-around col-3">
-
-                </Col>
-            </Row>
+                    <Col className="justify-content-around col-3" />
+                </Row>
             </Container>
 
             <Offcanvas show={show} onHide={handleClose} {...props} className="p-2" style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
@@ -96,9 +87,9 @@ export default function ProductsList(props) {
             </Row>
             <Row className="mt-3 pt-5">
                 <Row className="mt-0 justify-content-center">
-                    {props.products.filter(p => (selected) ? p.category === selected : true).map((prod) =>
+                    {props.products.filter(p => (selected) ? p.category === selected : true).map((prod, index) =>
                         <Product
-                            prod={prod} farmerName={props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0].place}
+                            prod={prod} key={index} farmerName={props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0].place}
                         />)}
                 </Row>
             </Row>

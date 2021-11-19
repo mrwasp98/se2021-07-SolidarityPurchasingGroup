@@ -162,7 +162,7 @@ function App() {
           </Container>
         </Route>
         <Route exact path='/home' render={() => <Home />} />
-        <Route exact path='/employeeHome' render={() => <ShopEmployeeHome />} />
+        <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
         <Route exact path='/productRequest' render={() =>
           <ProductRequest
             farmers={farmers}
