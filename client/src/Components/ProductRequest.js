@@ -1,4 +1,4 @@
-import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Modal, Alert } from "react-bootstrap";
+import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Modal, Alert, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
@@ -77,10 +77,9 @@ function ProductLine(props) {
 
     return (<tr>
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.name}</td>
-        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.category}</td>
-        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{quantity + " " + product.measure}</td>
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.quantity + " " + product.measure + " available"}</td>
         <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.price}€</td>
+        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{quantity + " " + product.measure}</td>
         <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
             {quantity !== 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
@@ -98,6 +97,7 @@ export default function ProductRequest(props) {
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
     const [summary, setSummary] = useState([])
+    const [product, setProduct] = useState("");
 
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
@@ -113,6 +113,10 @@ export default function ProductRequest(props) {
                 })
         }
     }, [props]);
+
+    useEffect(()=>{
+
+    }, [product])
 
     const calculateTotal = (elements) => {
         let total = parseFloat(0)
@@ -156,7 +160,7 @@ export default function ProductRequest(props) {
     }
 
     return (<>
-        <Container className="justify-content-center mt-3">
+        <Container className="containerProdRequest justify-content-center mt-3">
             <h1>Enter a new product request</h1>
             <Card className="text-left mt-4">
                 <ListGroup className="list-group-flush">
@@ -177,6 +181,7 @@ export default function ProductRequest(props) {
                     </ListGroupItem>
                 </ListGroup>
             </Card>
+            
             {selectedClient &&
                 <>
                     {(products.filter(p => p.quantity > 0).length !== 0) ? <>
@@ -187,19 +192,33 @@ export default function ProductRequest(props) {
                                 text: message.text
                             })
                         }} handleCloseModal={handleCloseModal} handleShowModal={handleShowModal} products={{ summary: summary, total: calculateTotal(summary) }} setDirtyAvailability={props.setDirtyAvailability} />
-                        <Table className="mt-3" striped bordered hover>
+                        <Row>
+                            <Col>
+                            </Col>
+                            <Col>
+                            </Col>
+                            <Col>
+                                <Form>
+                                <Form.Group className="mb-3" controlId="formProduct">
+                                    <Form.Label></Form.Label>
+                                        <Form.Control type="product" placeholder="Search product" onChange={(ev)=>setProduct(ev.target.value)}/>
+                                </Form.Group>
+                                </Form>
+                            </Col>
+                        </Row>
+  
+                        <Table className="mt-3" striped bordered hover responsive>
                             <thead>
                                 <tr>
                                     <th>Product</th>
-                                    <th>Various info</th>
-                                    <th>Quantity selected</th>
                                     <th>Quantity available</th>
                                     <th>Price each</th>
+                                    <th>Quantity selected</th>
                                     <th>Add to order</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {products.filter(p => p.quantity > 0)
+                                {products.filter(p => p.quantity > 0).filter(p => p.name.toLowerCase().includes(product) || p.name.toUpperCase().includes(product))
                                     .map((p, index) => <ProductLine product={p} index={index} key={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                             </tbody>
                         </Table>
