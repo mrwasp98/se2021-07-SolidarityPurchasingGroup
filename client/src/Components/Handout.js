@@ -13,17 +13,16 @@ export default function Handout(props) {
     const [selectedClient, setSelectedClient] = useState(""); //this state controls the Select input
     const [options, setOptions] = useState([]); //this state is used to store the information in props.clients in the format that works with the Select 
     const [error, setError] = useState("");
-    const [stop, setStop] = useState(false);
 
     /*used to get all the clients when the component is being loaded
     then, converts the information in the best format to show options in the Select input*/
     useEffect(() => {
         setError("");
-        if (!stop) {
+        if (props.dirtyClients) {
             getClients()
                 .then((res) => {
                     props.setClients(res)
-                    setStop(true)
+                    props.setDirtyClients(true)
                     setOptions(res.map((e) => {
                         return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
                     }))
@@ -32,7 +31,7 @@ export default function Handout(props) {
                     setError(err.message);
                 })
         }
-    }, [props]);
+    }, [props.dirtyClients, props.setDirtyClients, props.setClients]);
 
     //this function is called only when the client is selected to load their orders
     function handlechange(event) {

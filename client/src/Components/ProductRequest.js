@@ -1,45 +1,47 @@
 import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Modal, Alert } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import dayjs from "dayjs";
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom';
 import { home } from "./Icons";
+import { getClients } from "../API/API.js";
 
 
 function ModalEnd(props) {
     return (
         <Modal show={props.showModal} handleClose={props.handleCloseModal} backdrop="static">
             <Modal.Header>
-                <Modal.Title style={{width: "100%"}}><Alert variant="success" >Order received!</Alert></Modal.Title>
+                <Modal.Title style={{ width: "100%" }}><Alert variant="success" >Order received!</Alert></Modal.Title>
             </Modal.Header>
             <Form>
-              <Modal.Body>
-                <Form.Group controlId='selectedName'>
-                  <Form.Label>Summary of order</Form.Label>
-                  <ul>
-                  {props.products.summary.map((x, i) => <li key={i}>{x.quantity + " " + x.measure + " of " + x.name}</li>)}
-                  </ul>
-                  <p>Total: {props.products.total}€</p>
-                </Form.Group>              
-              </Modal.Body>
-              <Modal.Footer>
-                  <Button onClick={() => {
-                      props.setShowModal(false)
-                      props.setDirtyAvailability(true)
+                <Modal.Body>
+                    <Form.Group controlId='selectedName'>
+                        <Form.Label>Summary of order</Form.Label>
+                        <ul>
+                            {props.products.summary.map((x, i) => <li key={i}>{x.quantity + " " + x.measure + " of " + x.name}</li>)}
+                        </ul>
+                        <p>Total: {props.products.total}€</p>
+                    </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => {
+                        props.setShowModal(false)
+                        props.setDirtyAvailability(true)
                     }}>Ok</Button>
-              </Modal.Footer>
+                </Modal.Footer>
             </Form>
         </Modal>
     );
-  }
+}
+
 function ProductLine(props) {
     const { product } = props;
 
     const [quantity, setQuantity] = useState(0);
 
- (quantity !== 0 && !props.productsSelected.length) && setQuantity(0) 
+    (quantity !== 0 && !props.productsSelected.length) && setQuantity(0)
 
     const add = () => {
         let x = quantity + 1;
@@ -101,13 +103,23 @@ export default function ProductRequest(props) {
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
 
+    //this use Effect is used to load the clients when the component is loaded
+    useEffect(() => {
+        if (props.dirtyClients) {
+            getClients()
+                .then((res) => {
+                    props.setClients(res)
+                    props.setDirtyClients(false);
+                })
+        }
+    }, [props.setClients, props.setDirtyClients, props.dirtyClients]);
+
     const calculateTotal = (elements) => {
         let total = parseFloat(0)
         //old memories
         for (let i = 0; i < elements.length; i++) {
             total = parseFloat(total) + parseFloat(elements[i].total)
         }
-
         return total;
     }
 
@@ -140,7 +152,6 @@ export default function ProductRequest(props) {
             setProductsSelected([])
             props.setDirty(true)
             props.setDirtyAvailability(true)
-
         }
     }
 
@@ -175,7 +186,7 @@ export default function ProductRequest(props) {
                                 show: false,
                                 text: message.text
                             })
-                        }} handleCloseModal={handleCloseModal} handleShowModal={handleShowModal} products={{summary: summary, total: calculateTotal(summary)}} setDirtyAvailability={props.setDirtyAvailability}/>
+                        }} handleCloseModal={handleCloseModal} handleShowModal={handleShowModal} products={{ summary: summary, total: calculateTotal(summary) }} setDirtyAvailability={props.setDirtyAvailability} />
                         <Table className="mt-3" striped bordered hover>
                             <thead>
                                 <tr>
@@ -189,7 +200,7 @@ export default function ProductRequest(props) {
                             </thead>
                             <tbody>
                                 {products.filter(p => p.quantity > 0)
-                                    .map((p,index) => <ProductLine product={p} index={index} key={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
+                                    .map((p, index) => <ProductLine product={p} index={index} key={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                             </tbody>
                         </Table>
                         {message.show && message.type === "error" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
@@ -207,12 +218,12 @@ export default function ProductRequest(props) {
                         <Alert className="mt-3" variant="primary">There are no available products</Alert>}
                 </>
             }
-             <Button
-                    className='position-fixed rounded-circle d-none d-md-block'
-                    style={{ width: '4rem', height: '4rem', bottom: '3rem', right: '3rem', zIndex: '100', "backgroundColor": "#143642", color: "white" }}
-                    onClick={() => history.push("/")}>
-                    {home}
-                </Button>
+            <Button
+                className='position-fixed rounded-circle d-none d-md-block'
+                style={{ width: '4rem', height: '4rem', bottom: '3rem', right: '3rem', zIndex: '100', "backgroundColor": "#143642", color: "white" }}
+                onClick={() => history.push("/")}>
+                {home}
+            </Button>
         </Container>
     </>)
 }

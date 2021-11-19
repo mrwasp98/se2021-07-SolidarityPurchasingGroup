@@ -25,6 +25,7 @@ export default function Register(props) {
           setEmail("");
           setWallet("");
           setAddress("");
+          props.setDirtyClients(true);
         })
         .catch((errorObj) => { });
     }
