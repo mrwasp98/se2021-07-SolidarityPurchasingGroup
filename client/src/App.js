@@ -150,7 +150,7 @@ function App() {
                 farmers={farmers}
                 className=""
               />
-            </Row>
+            </Row> 
           </Container>
         </Route>
         <Route exact path='/home' render= {() =><Home/> } />

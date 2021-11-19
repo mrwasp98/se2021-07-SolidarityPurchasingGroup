@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, Offcanvas, InputGroup, Form, Card } from "react-bootstrap";
+import { Row, Col, Button, Offcanvas, InputGroup, Form, Card, Container } from "react-bootstrap";
 import { useHistory } from 'react-router-dom';
 import { iconFilter, home } from "./Icons";
 export default function ProductsList(props) {
@@ -31,32 +31,36 @@ export default function ProductsList(props) {
                         </div>
                     </Col>)}
             </Row>
-            <Row className="pt-3">
-                <Col className="col-3 pt-2 ps-5">
-                    <Button
-                        className="cartButton mt-3"
-                        onClick={() => {
-                            handleShow();
-                        }}
-                        style={{
-                            right: '3rem', fontSize: "20px", "fontWeight": "400", width: '14rem', height: '3rem', bottom: '2rem', zIndex: '2'
-                        }}>Select Farmers {iconFilter} </Button>
-                    <Button
-                        className='position-fixed rounded-circle'
-                        style={{ width: '5rem', height: '5rem', bottom: '3rem', right: '3rem', zIndex: '2', "backgroundColor": "#143642", color: "white" }}
-                        onClick={() => handle()}>
-                        {home}
-                    </Button>
-                </Col>
-                <Col className="col-6">
+            <Container className="d-flex justify-content-around">
+            <Row className="p-0 pt-3 ">
+                <Col className=" col-12 col-md-6 p-0 mx-auto">
                     <div className="d-flex justify-content-around mt-4">
                         <h1 className="myTitle" style={{ fontSize: "40px" }}>Available Products</h1>
                     </div>
                 </Col>
+                <Col className=" col-12 col-md-3 pt-2 ps-5">
+                    <Button
+                        className=" rounded-circle mt-3"
+                        onClick={() => {
+                            handleShow();
+                        }}
+                        style={{
+                            right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', "backgroundColor": "#143642", color:"white"
+                        }}>{iconFilter} </Button>
+                    <Button
+                        className='position-fixed rounded-circle'
+                        style={{ width: '4rem', height: '4rem', bottom: '3rem', right: '3rem', zIndex: '2', "backgroundColor": "#143642", color: "white" }}
+                        onClick={() => handle()}>
+                        {home}
+                    </Button>
+                </Col>
+
                 <Col className="justify-content-around col-3">
 
                 </Col>
             </Row>
+            </Container>
+
             <Offcanvas show={show} onHide={handleClose} {...props} className="p-2" style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title style={{ fontSize: "28px" }}>{selected}</Offcanvas.Title>
@@ -110,11 +114,11 @@ function Product(props) {
                 <Card.Header className="myTitle" style={{ fontSize: "23px", "fontWeight": "600" }}>{props.prod.name}</Card.Header>
                 <Card.Text className="p-3 pb-3 m-2 mt-3 cardDescription" >
                     <p className="mt-0 mb-1 myText">Farmer: {props.farmerName}</p>
-                    <hr/>
+                    <hr />
                     <p className="mt-0 mb-1 myText">Category: {props.prod.category}</p>
-                    <hr/>
+                    <hr />
                     <p className="mt-0 mb-0 myText">Type of production: {props.prod.typeofproduction}</p>
-                    <hr/>
+                    <hr />
                     <p className="mt-1 mb-1 myText">Description: </p>
                     <div className="descriptionDiv">
                         <p className="mt-0 mb-0 cursive"> {props.prod.description}</p>

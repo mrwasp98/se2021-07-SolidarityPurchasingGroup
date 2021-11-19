@@ -3,37 +3,37 @@ import { Carousel, Container, Row, Col } from "react-bootstrap";
 
 export default function Handout(props) {
     return (
-        <Container className="justify-content-center text-center">
-            <Carousel className="mb-3">
+        <>
+            <Carousel className="mb-3" >
                 <Carousel.Item interval={3000}>
-                    <img
+                    <img style={{ height: '22rem'}}
                         className="d-block w-100"
                         src="/carousel/dairy.jpg"
                         alt="Diary"
                     />
                     <Carousel.Caption>
-                        <h3 className="text-yellow py-2" style={{ background: "#14364290" }}>High quality dairy products</h3>
+                        <h3 className="text-yellow py-2" style={{ background: "#14364240" }}>High quality dairy products</h3>
 
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item interval={3000}>
-                    <img
+                    <img style={{ height: '22rem'}}
                         className="d-block w-100"
                         src="/carousel/veggies.jpg"
                         alt="Vegetables"
                     />
                     <Carousel.Caption >
-                        <h3 className="py-2 text-yellow" style={{ background: "#14364290" }}>Fresh vegetables and fruits</h3>
+                        <h3 className="py-2 text-yellow" style={{ background: "#14364250" }}>Fresh vegetables and fruits</h3>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item interval={3000}>
-                    <img
+                    <img style={{ height: '22rem'}}
                         className="d-block w-100"
                         src="/carousel/meat.jpg"
                         alt="Meat"
                     />
                     <Carousel.Caption>
-                        <h3 className="text-yellow py-2" style={{ background: "#14364290" }}>Tender meat</h3>
+                        <h3 className="text-yellow py-2" style={{ background: "#14364240" }}>Tender meat</h3>
                     </Carousel.Caption>
                 </Carousel.Item>
             </Carousel>
@@ -47,6 +47,6 @@ export default function Handout(props) {
                     <Col sm={4}><img src="/carousel/broccoli.png" alt="Diary"className="d-block h-25 mx-auto" /></Col>
                 </Row>
             </Container>
-        </Container>
+        </>
     )
 }
