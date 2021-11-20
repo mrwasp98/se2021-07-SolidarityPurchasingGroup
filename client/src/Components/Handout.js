@@ -80,7 +80,7 @@ export default function Handout(props) {
                     {error && <Alert variant="danger">An error as occurred: {error}</Alert>}
                 </ListGroup>
             </Card>
-                <HomeButton/>
+                <HomeButton IsLogin={props.IsLogin}/>
         </Container>
     )
 }

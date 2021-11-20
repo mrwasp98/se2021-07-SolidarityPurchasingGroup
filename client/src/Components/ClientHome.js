@@ -9,7 +9,7 @@ export default function ClientHome() {
                 <Card.Body className="mb-2">
                     <ButtonGroup vertical aria-label="Directions" className="d-flex" >
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprodreq">
-                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="#" className="py-2 yellowLink">
+                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/products" className="py-2 yellowLink">
                                 Buy some products
                             </Link>
                         </Button>

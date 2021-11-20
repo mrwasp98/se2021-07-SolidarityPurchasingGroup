@@ -144,21 +144,17 @@ function App() {
     <>
       <Router>
         <Route path="/"> <MyNav IsLogin={logged} logout={logout} setLogged={setLogged} className="myNav" /></Route>
-        <Route exact path='/products'>
-          <Container className="p-0 m-0" fluid>
-            <Row className="">
-              <ProductsList
-                products={products}
-                categories={categories}
-                farmers={farmers}
-                className=""
-              />
-            </Row>
-          </Container>
-        </Route>
+
+        <Route exact path='/products' render={()=>
+          <ProductsList products={products} categories={categories} farmers={farmers} IsLogin={logged} />}
+        />
+
         <Route exact path='/' render={() => <Home />} />
+        
         <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
+        
         <Route exact path='/clienthome' render={()=><ClientHome/>}/>
+        
         <Route exact path='/productRequest' render={() =>
           <ProductRequest
             farmers={farmers}
@@ -172,8 +168,10 @@ function App() {
             setDirty={() => setDirty(true)}
             message={messageProductRequest}
             setMessage={setMessageProductRequest}
-            setDirtyAvailability={setDirtyAvailability} />}
+            setDirtyAvailability={setDirtyAvailability}
+            IsLogin={logged} />}
         />
+        
         <Route exact path="/handout" render={() =>
           <Handout
             clients={clients}
@@ -181,10 +179,14 @@ function App() {
             dirtyClients={dirtyClients}
             setDirtyClients={setDirtyClients}
             orders={clientOrders}
-            setOrders={setClientOrders} />}
+            setOrders={setClientOrders} 
+            IsLogin={logged}/>}
         />
+        
         <Route exact path="/registerClient" render={() => <Register setDirtyClients={setDirtyClients} />} />
+        
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} />} />
+      
       </Router>
     </>
   );

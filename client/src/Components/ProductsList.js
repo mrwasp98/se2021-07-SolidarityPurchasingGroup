@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, Offcanvas, InputGroup, Form, Card, Container } from "react-bootstrap";
-import { iconFilter } from "./Icons";
+import { Row, Col, Button, Offcanvas, InputGroup, Form, Card, Container, Accordion } from "react-bootstrap";
+import { useAccordionButton } from 'react-bootstrap/AccordionButton';
+import { iconFilter, arrowdown, arrowup} from "./Icons";
 import HomeButton from './HomeButton';
 
 export default function ProductsList(props) {
@@ -45,7 +46,7 @@ export default function ProductsList(props) {
                             style={{
                                 right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', "backgroundColor": "#143642", color: "white"
                             }}>{iconFilter} </Button>
-                        <HomeButton />
+                        <HomeButton IsLogin={props.IsLogin} />
                     </Col>
 
                     <Col className="justify-content-around col-3" />
@@ -110,10 +111,16 @@ function Product(props) {
                     <hr />
                     <p className="mt-0 mb-0 myText">Type of production: {props.prod.typeofproduction}</p>
                     <hr />
-                    <p className="mt-1 mb-1 myText">Description: </p>
-                    <div className="descriptionDiv">
-                        <p className="mt-0 mb-0 cursive"> {props.prod.description}</p>
-                    </div>
+                    <Accordion defaultActiveKey="0" flush>
+                        <Accordion.Item eventKey="0">
+                            <Card className="border-0">
+                                <CustomToggle eventKey="0" className="mt-1 mb-1 myText"/>
+                                <Accordion.Collapse eventKey="0">
+                                    <Card.Body className="descriptionDiv mt-0 mb-0 cursive">{props.prod.description} </Card.Body>
+                                </Accordion.Collapse>
+                            </Card>
+                        </Accordion.Item>
+                    </Accordion>
                 </Card.Text>
             </Card.Body>
             <Card.Footer className="mt-3">
@@ -127,10 +134,21 @@ function Product(props) {
                                 <InputGroup.Text className="priceDescription">{props.prod.measure}</InputGroup.Text>
                             </InputGroup>
                         </Col>
-                        {/*<Button variant="primary" className="cartButton">{iconCart}</Button>*/}
+                        {/* <Button variant="primary" className="cartButton">{iconCart}</Button> */}
                     </Col>
                 </Row>
             </Card.Footer>
         </Card>
+    );
+}
+
+function CustomToggle({ children, eventKey }) {
+    const [closed, setClosed] = useState(true);
+    const decoratedOnClick = useAccordionButton(eventKey, () =>
+       setClosed(old => !old)
+    );
+
+    return (
+        <p className="mt-1 mb-1 myText" onClick={decoratedOnClick}>{closed? arrowup : arrowdown} Description: {children}</p>
     );
 }

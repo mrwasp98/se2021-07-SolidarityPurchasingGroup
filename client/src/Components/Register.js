@@ -132,7 +132,7 @@ export default function Register(props) {
             </Form.Group>
 
             <Container className="d-flex justify-content-between my-4">
-              <Link style={{ textDecoration: "none", hover: "black" }} to="/employehome" className="linkred">
+              <Link style={{ textDecoration: "none", hover: "black" }} to="/employeehome" className="linkred">
                 <Button variant="outline-danger" type="submit" className="back-btn">Back</Button>
               </Link>
               <Button variant="yellow" type="submit" className="submit-btn">Submit</Button>
