@@ -50,12 +50,12 @@ export default function MyNav(props) {
           <Navbar.Text>
             {iconPerson}{" "}
             {props.IsLogin ? (
-              <Button variant="link" onClick={handleLogout} id="logoutbutton">Logout</Button>
+              <Button variant="link"  style={{color:"#ec9a2a", fontSize:"20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
             ) : (
               <>
                 {" "}
                 <Link to="/login">
-                  <Button variant="link" style={{ fontSize: "20px" }} className="btn-login" style={{color:"#ec9a2a"}}>Login</Button>
+                  <Button variant="link" style={{ fontSize: "20px", color:"#ec9a2a" }} className="btn-login">Login</Button>
                 </Link>
                 <Button variant="link" style={{ fontSize: "20px", color:"#ec9a2a" }} className="btn-reg">Register</Button>{" "}
               </>
