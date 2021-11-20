@@ -296,3 +296,13 @@ app.get("/api/completeOrders", async (req, res) => {
     res.status(500).end();
   }
 });
+
+app.put("/api/clients/:clientid", async (req, res) => {
+  try {
+    const result = await clientDao.topUp(req.params.clientid, req.query.ammount);
+    if (result == true) res.status(200).end();
+    else res.status(404).end();
+  } catch (err) {
+    res.status(503).json({ error: `Database error ${err}.` });
+  }
+});

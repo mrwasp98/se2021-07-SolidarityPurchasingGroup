@@ -177,4 +177,42 @@ describe('Testing POST on /api/clients', () => {
     }); //400 status code tests
 
 });
+/*
+describe('Testing PUT on /api/clients/:clientid', () => {
 
+    const fakeUser1 = {
+        username: 'group07@gmail.com',
+        password: 'abc123',
+        type: 'client'
+    };
+    let id1;
+
+    beforeAll(async () => {
+        await userDao.deleteAllUsers();
+        await clientDao.deleteAllClients();
+        userId3 = await userDao.insertUser(fakeUser1);
+    })
+
+    afterAll(async () => {
+        await userDao.deleteAllUsers();
+        await clientDao.deleteAllClients();
+    })
+
+    test('It should respond with 200 status code', async () => {
+        const fakeClient1 = {
+            userid: userId3,
+            name: 'John',
+            surname: 'Doe',
+            wallet: 50.30,
+            address: 'Corso Duca degli Abruzzi, 21, Torino'
+        }
+        id1 = await clientDao.insertClient(fakeClient1);
+        await request(app).put('/api/clients/'+userId3+'/?ammount=30').send({
+            status: 'completed'
+        })
+        const client = await clientDao.getClientById(userId3);
+        const s = client.status;
+        expect(s).toBe('completed');
+    });
+
+});*/

@@ -187,6 +187,20 @@ const getClientOrders = async (clientid) => {
   });
 }
 
+/** STORY 5 **/
+async function topUpWallet(clientid, ammount) {
+  const response = await fetch('/api/clients/' + clientid + '/?ammount=' + ammount, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        status: 'completed'
+    })
+  });
+  if(response.ok) {
+      return response.status;
+  } else return { message: "Couldn't top up the client's wallet." };
+};
+
 
 async function login(credentials) {
   let response = await fetch('/login', {
@@ -223,6 +237,8 @@ async function getUserInfo() {
     throw userInfo;
   }
 }
+
+
 
 
 
