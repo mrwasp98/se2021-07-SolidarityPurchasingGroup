@@ -12,18 +12,17 @@
     text-align: center;
 }
 
-.colBasket{
+.colBasket {
     text-align: right;
     margin-right: 2rem;
 }
-
 
 @media only screen and (min-width: 1200px) {
     .containerProdRequest {
         padding-left: 250px;
         padding-right: 250px;
     }
-  }
+}
 
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
@@ -54,11 +53,6 @@
     color: #ec9a2a !important;
 }
 
-.NavBar-Background>div button {
-    color: #ec9a2a !important;
-    text-decoration: none;
-}
-
 .NavBar-Background>div .callandarButton {
     color: #ffffff !important;
     background-color: #0f8b8b;
@@ -72,6 +66,16 @@
 
 .priority {
     z-index: 100;
+}
+
+.btn-login{
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.btn-reg{
+    font-size: 20px;
+    text-decoration: none;
 }
 
 .borders {
@@ -96,6 +100,18 @@
     color: black !important;
     font-weight: 700 !important;
     border: 0px solid #ec9a2a !important;
+}
+
+.btn-hour,
+ .btn-hour:hover,
+ .btn-hour:focus,
+ .btn-hour:active,
+ .btn-hour:visited,
+ .btn-hour:checked {
+    border: 0px solid #ec9a2a !important;
+    background-color: #0f8b8b;
+    font-size: 17px;
+    color: white !important;
 }
 
 .btn-primary {
@@ -209,6 +225,7 @@
     margin: 100px auto;
     border-radius: 10px;
     background-color: #143642;
+    text-decoration: none;
 }
 
 .loginButton {
@@ -244,4 +261,8 @@
 
 .carousel-control-next-icon .carousel-control-prev-icon {
     color: #143642;
+}
+
+.division {
+    border-bottom: 2px solid #ec9a2a;
 }

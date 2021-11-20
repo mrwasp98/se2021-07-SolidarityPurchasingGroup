@@ -1,7 +1,7 @@
 import { Card, Button, ButtonGroup, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export default function HomeButtons() {
+export default function ShopEmployeeHome() {
     return (
         <Container className="justify-content-center">
             <Card className="mt-4">

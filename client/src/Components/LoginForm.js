@@ -2,6 +2,8 @@ import {Alert, Button, Form, Container, Col, Table} from 'react-bootstrap';
 import { iconStar } from "./Icons";
 import {useState} from 'react';
 import '../App.css';
+import { useHistory } from 'react-router-dom';
+
 
 function isAlphaNumeric(str) {
     var code, i, len, nNum = 0, nLett = 0;
@@ -22,6 +24,7 @@ function isAlphaNumeric(str) {
 };
 
 function LoginForm(props) {
+    const history = useHistory();
 
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
@@ -31,15 +34,20 @@ function LoginForm(props) {
     const [show, setShow] = useState(false);
 
     const doLogIn = async (credentials) => {
-        try {
-            console.log('entra');
-            const user = await props.login(credentials);
-            props.setLogged(true);
-            props.setUser(user);
-        } catch (err) {
+      props.login(credentials)
+      .then((user)=>{
+        props.setLogged(user.type);
+        props.setUser(user.username);
+        if(user.type === "shopemployee"){
+            history.push("/employeehome")
+        }else if(user.type === "client"){
+            history.push("/clienthome")
+        }
+      })
+        .catch (err=>{
             setError('Wrong email or password! Try again');
             setShow(true);
-        }
+        })
     }
 
     const handleSubmit = (event) => {
@@ -65,9 +73,7 @@ function LoginForm(props) {
                 valid = true;
             }
             if (valid) {
-                console.log(credentials);
                 doLogIn(credentials);
-
             }
         }
     };
@@ -90,7 +96,6 @@ function LoginForm(props) {
                                 <Form.Label className='text-warning myText'>Password</Form.Label>
                                 <Form.Control required type="password" className="passwordfield" placeholder='Insert your password' onChange={(ev) => { setPassword(ev.target.value); setShow(false) }}/>
                             </Form.Group>
-
                             {show ? <Alert variant='danger' className='error-box' onClose={() => (setShow(false))} dismissible>
                                 <Alert.Heading>{error}</Alert.Heading>
                                 <p>The password must be at least 6 characters long and must contain both alphabetical and numerical values.</p>
