@@ -1,7 +1,7 @@
 import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Modal, Alert, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Select from 'react-select'
-import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
+import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket } from "./Icons";
 import dayjs from "dayjs";
 import { Link } from 'react-router-dom'
 import { getClients } from "../API/API.js";
@@ -79,8 +79,9 @@ function ProductLine(props) {
                 <Col style={{marginLeft: "0.5rem"}}>
                     <p style={{fontSize: "18pt"}}>{product.name}</p>
                     {product.quantity + " " + product.measure + " available"}
+                    <div className="d-block d-md-none mt-2">{basket}: <b>{quantity + " " + product.measure}</b></div>
                 </Col>
-                <Col style={{textAlign: "right", marginRight: "2rem"}}>Quantity: <b>{quantity + " " + product.measure}</b></Col>
+                <Col className="d-none d-md-block colBasket">{basket}: <b>{quantity + " " + product.measure}</b></Col>
             </Row>
         </td>
         <td className="align-middle" style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}><p style={{fontSize: "18pt"}}>{product.price}€</p></td>
