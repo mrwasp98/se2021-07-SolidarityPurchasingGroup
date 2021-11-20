@@ -13,10 +13,12 @@ import { login, getUserInfo, logout, addPRequest, getAvailableProducts, getFarme
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
+import dayjs from "dayjs";
 
 function App() {
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]); //main categories of the products
 
+  const [date, setDate] = useState(new Date());
   const [dirty, setDirty] = useState(false); ///?????
 
   const [farmers, setFarmers] = useState([]);

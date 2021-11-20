@@ -52,3 +52,35 @@ exports.insertClient = (client) => {
         });
     });
 };
+
+exports.topUp = (clientid, ammount) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE client SET wallet = wallet + ? WHERE userid == ?';
+        db.run(sql, [ammount, clientid], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if(this.changes===0) resolve(false);
+            else resolve(true);
+        });
+    });
+};
+
+exports.getClientById = (clientid) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM client WHERE userid=?';
+        db.get(sql, [clientid], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row == undefined) {
+                resolve({ error: 'Client not found for id '+ clientid });
+            }
+            else {
+                resolve(row);
+            }
+        });
+    });
+};
