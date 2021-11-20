@@ -12,18 +12,17 @@
     text-align: center;
 }
 
-.colBasket{
+.colBasket {
     text-align: right;
     margin-right: 2rem;
 }
-
 
 @media only screen and (min-width: 1200px) {
     .containerProdRequest {
         padding-left: 250px;
         padding-right: 250px;
     }
-  }
+}
 
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
@@ -244,4 +243,8 @@
 
 .carousel-control-next-icon .carousel-control-prev-icon {
     color: #143642;
+}
+
+.division {
+    border-bottom: 2px solid #ec9a2a;
 }

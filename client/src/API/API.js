@@ -198,7 +198,7 @@ async function login(credentials) {
   });
   if (response.ok) {
     const user = await response.json();
-    return user.name;
+    return user;
   } else {
     const errDetails = await response.text();
     throw errDetails;

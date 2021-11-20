@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import { Navbar, Container, Button } from "react-bootstrap";
 //import dayjs from "dayjs";
 import { useState } from "react";
@@ -7,6 +8,8 @@ import "react-calendar/dist/Calendar.css";
 import { Link } from 'react-router-dom';
 
 export default function MyNav(props) {
+  const history = useHistory();
+
   const [value, onChange] = useState(new Date());
   const [show, setShow] = useState(false);
   const toggleShow = () => setShow(!show);
@@ -14,6 +17,8 @@ export default function MyNav(props) {
   const handleLogout = async () => {
     await props.logout();
     props.setLogged(false);
+    history.push("/")
+
   }
 
   return (

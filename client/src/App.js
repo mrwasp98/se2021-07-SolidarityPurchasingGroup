@@ -12,6 +12,7 @@ import Register from "./Components/Register";
 import { login, getUserInfo, logout, addPRequest, getAvailableProducts, getFarmers } from "./API/API.js";
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
+import ClientHome from "./Components/ClientHome";
 
 function App() {
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]); //main categories of the products
@@ -20,8 +21,8 @@ function App() {
 
   const [farmers, setFarmers] = useState([]);
 
-  const [logged, setLogged] = useState(false);
-  const [username, setUsername] = useState('');
+  const [logged, setLogged] = useState(''); //this state is used to store the type of the user logged
+  const [username, setUsername] = useState(''); //this state saves the name of the logged user
 
   const [products, setProducts] = useState([]);
   const [dirtyAvailability, setDirtyAvailability] = useState(true);
@@ -60,12 +61,6 @@ function App() {
       //}, 1000);
     });
   }, []);
-
-
-  /*   useEffect(() => {
-      getClients()
-        .then((res) => setClients(res))
-    }, []); */
 
   //this use effect is used to get the available products
   useEffect(() => {
@@ -161,8 +156,9 @@ function App() {
             </Row>
           </Container>
         </Route>
-        <Route exact path='/home' render={() => <Home />} />
+        <Route exact path='/' render={() => <Home />} />
         <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
+        <Route exact path='/clienthome' render={()=><ClientHome/>}/>
         <Route exact path='/productRequest' render={() =>
           <ProductRequest
             farmers={farmers}
