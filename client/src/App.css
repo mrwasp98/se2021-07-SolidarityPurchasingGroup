@@ -138,6 +138,10 @@
     color: #143642;
 }
 
+.input-hour{
+    border: 1px solid #143642 !important;
+}
+
 .descriptionDiv {
     color: #575757;
     font-weight: 500 !important;
