@@ -12,10 +12,14 @@
     text-align: center;
 }
 
-.containerProdRequest {
-    padding-left: 200px;
-    padding-right: 200px;
-}
+
+
+@media only screen and (min-width: 1200px) {
+    .containerProdRequest {
+        padding-left: 250px;
+        padding-right: 250px;
+    }
+  }
 
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {

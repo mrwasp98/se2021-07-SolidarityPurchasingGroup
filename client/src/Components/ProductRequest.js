@@ -74,11 +74,17 @@ function ProductLine(props) {
 
 
     return (<tr>
-        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.name}</td>
-        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.quantity + " " + product.measure + " available"}</td>
-        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{product.price}€</td>
-        <td style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>{quantity + " " + product.measure}</td>
-        <td>{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
+        <td className="align-middle" style={quantity > 0 ? { background: "#ffdead"} : { background: "" }}>
+            <Row className="align-items-center">
+                <Col style={{marginLeft: "0.5rem"}}>
+                    <p style={{fontSize: "18pt"}}>{product.name}</p>
+                    {product.quantity + " " + product.measure + " available"}
+                </Col>
+                <Col style={{textAlign: "right", marginRight: "2rem"}}>Quantity: <b>{quantity + " " + product.measure}</b></Col>
+            </Row>
+        </td>
+        <td className="align-middle" style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}><p style={{fontSize: "18pt"}}>{product.price}€</p></td>
+        <td className="align-middle">{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
             {quantity !== 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
                 : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
@@ -189,9 +195,9 @@ export default function ProductRequest(props) {
                             })
                         }} handleCloseModal={handleCloseModal} handleShowModal={handleShowModal} products={{ summary: summary, total: calculateTotal(summary) }} setDirtyAvailability={props.setDirtyAvailability} />
                         <Row>
-                            <Col>
+                            <Col className="d-none d-md-block">
                             </Col>
-                            <Col>
+                            <Col className="d-none d-md-block">
                             </Col>
                             <Col>
                                 <Form>
@@ -207,14 +213,13 @@ export default function ProductRequest(props) {
                             <thead>
                                 <tr>
                                     <th>Product</th>
-                                    <th>Quantity available</th>
                                     <th>Price each</th>
-                                    <th>Quantity selected</th>
                                     <th>Add to order</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {products.filter(p => p.quantity > 0).filter(p => p.name.toLowerCase().includes(product) || p.name.toUpperCase().includes(product))
+                                {products.filter(p => p.quantity > 0)
+                                    .filter(p => p.name.toLowerCase().includes(product) || p.name.toUpperCase().includes(product))
                                     .map((p, index) => <ProductLine product={p} index={index} key={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                             </tbody>
                         </Table>
