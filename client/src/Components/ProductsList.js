@@ -111,10 +111,10 @@ function Product(props) {
                     <hr />
                     <p className="mt-0 mb-0 myText">Type of production: {props.prod.typeofproduction}</p>
                     <hr />
-                    <Accordion defaultActiveKey="0" flush>
+                    <Accordion defaultActiveKey="1" flush>
                         <Accordion.Item eventKey="0">
                             <Card className="border-0">
-                                <CustomToggle eventKey="0" className="mt-1 mb-1 myText"/>
+                                <CustomToggle eventKey="0" className="mt-1 mb-1 myText"> Description: </CustomToggle>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body className="descriptionDiv mt-0 mb-0 cursive">{props.prod.description} </Card.Body>
                                 </Accordion.Collapse>
@@ -149,6 +149,6 @@ function CustomToggle({ children, eventKey }) {
     );
 
     return (
-        <p className="mt-1 mb-1 myText" onClick={decoratedOnClick}>{closed? arrowup : arrowdown} Description: {children}</p>
+        <p className="mt-1 mb-1 myText" onClick={decoratedOnClick}>{closed? arrowdown : arrowup}{children}</p>
     );
 }
