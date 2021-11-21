@@ -171,7 +171,8 @@ function App() {
             message={messageProductRequest}
             setMessage={setMessageProductRequest}
             setDirtyAvailability={setDirtyAvailability}
-            IsLogin={logged} />}
+            IsLogin={logged}
+            date={date}/>}
         />
         
         <Route exact path="/handout" render={() =>

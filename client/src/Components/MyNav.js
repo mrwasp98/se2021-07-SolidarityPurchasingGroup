@@ -54,7 +54,7 @@ export default function MyNav(props) {
           < div className="">
             <Button variant="light" onClick={toggleShow} className="me-2 callandarButton" style={{ fontSize: "17px" }}>
               {iconCalendar}
-              {date.format('ddd')}
+              {date.format('ddd DD MMM')}
             </Button>
             <Button variant="light" onClick={toggleShowHour} className="btn-hour">
               {clock}
@@ -68,8 +68,8 @@ export default function MyNav(props) {
             <Modal className="" show={showHour} onHide={() => !showHour} animation={false}>
               <Modal.Body>
                 <Row className="mt-3 ps-3 pe-3 mb-2">
-                  <Col className="col-3"><p>Select hour: </p></Col>
-                  <Col className="col-9"><input
+                  <Col className="col-3" style={{"fontWeight":"600"}}><p>Select hour: </p></Col>
+                  <Col className="col-9" ><input
                     className="input-hour"
                     type="number"
                     min={0}
@@ -79,7 +79,8 @@ export default function MyNav(props) {
                     onChange={e => setHour(e.target.value)}
                   /></Col>
                 </Row>
-                <Row className="ps-3 pe-3">
+                <hr className="p-0 m-0 mb-3" />
+                <Row className="ps-3 pe-3" style={{"fontWeight":"600"}}>
                   <Col className="col-3"><p>Select min: </p></Col>
                   <Col className="col-9"><input
                     className="input-hour"
