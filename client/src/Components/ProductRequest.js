@@ -170,8 +170,6 @@ export default function ProductRequest(props) {
         sat9am = dayjs(props.date).endOf('week').subtract(1, 'week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         sun23pm = dayjs(props.date).endOf('week').subtract(1, 'week').add(1, 'day').subtract(59, 'minute').subtract(59, 'second')
     }
-    console.log(sat9am)
-    console.log(dayjs(props.date).isBefore(sat9am));
     return (<>
         {dayjs(props.date).isAfter(sat9am) && dayjs(props.date).isBefore(sun23pm) ?
             <Container className="containerProdRequest justify-content-center mt-3">

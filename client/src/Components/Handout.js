@@ -5,6 +5,7 @@ import Select from 'react-select'
 import { getClients, getClientOrders } from "../API/API"
 import OrderToggle from "./OrderToggle";
 import HomeButton from "./HomeButton";
+import dayjs from "dayjs";
 
 export default function Handout(props) {
     const [selectedClient, setSelectedClient] = useState(""); //this state controls the Select input
@@ -24,7 +25,7 @@ export default function Handout(props) {
                         return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
                     }))
                 })
-                .catch((err)=>{
+                .catch((err) => {
                     setError(err.message);
                 })
         }
@@ -42,45 +43,73 @@ export default function Handout(props) {
             })
     }
 
+    let wedMorning;
+    let fridEv;
+    if (dayjs(props.date).format('dddd') != 'Sunday') {
+        wedMorning = dayjs(props.date).endOf('week').subtract(3, 'day').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        fridEv = dayjs(props.date).endOf('week').subtract(1, 'day').subtract(4, 'hour').subtract(59, 'minute').subtract(59, 'second')
+    } else {
+        wedMorning = dayjs(props.date).endOf('week').subtract(1, 'week').subtract(3, 'day').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        fridEv = dayjs(props.date).endOf('week').subtract(1, 'week').subtract(1, 'day').subtract(4, 'hour').subtract(59, 'minute').subtract(59, 'second')
+    }
     return (
-        <Container className="justify-content-center mt-3">
-            <h1 className="text-center">Record product handout.</h1>
-            <Card className="text-left mt-4">
-                <ListGroup className="list-group-flush">
-                    <ListGroupItem className="p-0">
-                        <Card.Header>
-                            First, select <b>the client</b>.
-                        </Card.Header>
-                        <Card.Body>
-                            <Form className="client-here">
-                                <Select options={options} onChange={(event) => handlechange(event)} />
-                            </Form>
-                        </Card.Body>
-                    </ListGroupItem>
-                    {selectedClient && !error &&
-                        <>
-                            <ListGroupItem className="p-0">
-                                <Card.Header>Then, select <b>the order</b>.</Card.Header>
-                                <Card.Body>
-                                    {props.orders.length === 0 ?
-                                        <span>There is no order to be handed out.</span>
-                                        :
-                                        <ListGroup>
-                                            {props.orders.map((o, i) => {
-                                                return (
-                                                    <OrderToggle order={o} chiave={o.id} key={i} />
-                                                )
-                                            })}
-                                        </ListGroup>
-                                    }
-                                </Card.Body>
-                            </ListGroupItem>
-                        </>
-                    }
-                    {error && <Alert variant="danger">An error as occurred: {error}</Alert>}
-                </ListGroup>
-            </Card>
-                <HomeButton IsLogin={props.IsLogin}/>
-        </Container>
+        <>
+            {
+                (dayjs(props.date).isAfter(wedMorning) && dayjs(props.date).isBefore(fridEv)) ?
+                    <Container className="justify-content-center mt-3" >
+                        <h1 className="text-center">Record product handout.</h1>
+                        <Card className="text-left mt-4">
+                            <ListGroup className="list-group-flush">
+                                <ListGroupItem className="p-0">
+                                    <Card.Header>
+                                        First, select <b>the client</b>.
+                                    </Card.Header>
+                                    <Card.Body>
+                                        <Form className="client-here">
+                                            <Select options={options} onChange={(event) => handlechange(event)} />
+                                        </Form>
+                                    </Card.Body>
+                                </ListGroupItem>
+                                {selectedClient && !error &&
+                                    <>
+                                        <ListGroupItem className="p-0">
+                                            <Card.Header>Then, select <b>the order</b>.</Card.Header>
+                                            <Card.Body>
+                                                {props.orders.length === 0 ?
+                                                    <span>There is no order to be handed out.</span>
+                                                    :
+                                                    <ListGroup>
+                                                        {props.orders.map((o, i) => {
+                                                            return (
+                                                                <OrderToggle order={o} chiave={o.id} key={i} />
+                                                            )
+                                                        })}
+                                                    </ListGroup>
+                                                }
+                                            </Card.Body>
+                                        </ListGroupItem>
+                                    </>
+                                }
+                                {error && <Alert variant="danger">An error as occurred: {error}</Alert>}
+                            </ListGroup>
+                        </Card>
+                        <HomeButton IsLogin={props.IsLogin} />
+                    </Container >
+                    :
+                    <>
+                        {
+                            (dayjs(props.date).isBefore(wedMorning)) ?
+                                <Alert variant="danger" style={{ "fontWeight": "500" }}>
+                                    Pickups take place from Wednesday morning until Friday evening
+                                </Alert>
+                                :
+                                <Alert variant="danger" style={{ "fontWeight": "500" }}>
+                                    Pickups take place from Wednesday morning until Friday evening
+                                </Alert>
+
+                        }
+                    </>
+            }
+        </>
     )
 }

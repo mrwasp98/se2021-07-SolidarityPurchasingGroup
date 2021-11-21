@@ -183,7 +183,8 @@ function App() {
             setDirtyClients={setDirtyClients}
             orders={clientOrders}
             setOrders={setClientOrders} 
-            IsLogin={logged}/>}
+            IsLogin={logged}
+            date={date}/>}
         />
         
         <Route exact path="/registerClient" render={() => <Register setDirtyClients={setDirtyClients} />} />
