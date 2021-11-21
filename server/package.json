@@ -10,7 +10,7 @@
   "jest": {
     "testPathIgnorePatterns": [
       "tests/api-products",
-      "tests/api-clients",
+      "tests/api-requests",
       "tests/api-completeOrders",
       "tests/api-farmers",
       "tests/api-users",

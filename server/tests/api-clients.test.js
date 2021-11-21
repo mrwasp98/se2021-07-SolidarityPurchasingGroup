@@ -177,7 +177,7 @@ describe('Testing POST on /api/clients', () => {
     }); //400 status code tests
 
 });
-/*
+
 describe('Testing PUT on /api/clients/:clientid', () => {
 
     const fakeUser1 = {
@@ -207,12 +207,10 @@ describe('Testing PUT on /api/clients/:clientid', () => {
             address: 'Corso Duca degli Abruzzi, 21, Torino'
         }
         id1 = await clientDao.insertClient(fakeClient1);
-        await request(app).put('/api/clients/'+userId3+'/?ammount=30').send({
+        const response = await request(app).put('/api/clients/'+userId3+'/?ammount=30').send({
             status: 'completed'
         })
-        const client = await clientDao.getClientById(userId3);
-        const s = client.status;
-        expect(s).toBe('completed');
+        expect(response.statusCode).toBe(200);;
     });
 
-});*/
+});
