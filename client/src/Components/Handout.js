@@ -21,14 +21,17 @@ export default function Handout(props) {
                 .then((res) => {
                     props.setClients(res)
                     props.setDirtyClients(false)
-                    setOptions(res.map((e) => {
-                        return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
-                    }))
                 })
                 .catch((err) => {
                     setError(err.message);
                 })
         }
+        if(props.clients.length!==0){
+            setOptions(props.clients.map((e) => {
+                return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
+            }))
+        }
+        
     }, [props]);
 
     //this function is called only when the client is selected to load their orders
@@ -45,7 +48,7 @@ export default function Handout(props) {
 
     let wedMorning;
     let fridEv;
-    if (dayjs(props.date).format('dddd') != 'Sunday') {
+    if (dayjs(props.date).format('dddd') !== 'Sunday') {
         wedMorning = dayjs(props.date).endOf('week').subtract(3, 'day').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         fridEv = dayjs(props.date).endOf('week').subtract(1, 'day').subtract(4, 'hour').subtract(59, 'minute').subtract(59, 'second')
     } else {
@@ -93,7 +96,7 @@ export default function Handout(props) {
                                 {error && <Alert variant="danger">An error as occurred: {error}</Alert>}
                             </ListGroup>
                         </Card>
-                        <HomeButton IsLogin={props.IsLogin} />
+                        <HomeButton logged={props.logged} />
                     </Container >
                     :
                     <>
@@ -108,7 +111,7 @@ export default function Handout(props) {
                                 </Alert>
 
                         }
-                        <HomeButton IsLogin={props.IsLogin} />
+                        <HomeButton logged={props.logged} />
                     </>
             }
         </>

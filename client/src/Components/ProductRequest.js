@@ -102,6 +102,7 @@ export default function ProductRequest(props) {
     const [summary, setSummary] = useState([])
     const [product, setProduct] = useState("");
 
+    // eslint-disable-next-line
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
@@ -163,7 +164,7 @@ export default function ProductRequest(props) {
     }
     let sat9am;
     let sun23pm;
-    if (dayjs(props.date).format('dddd') != 'Sunday') {
+    if (dayjs(props.date).format('dddd') !== 'Sunday') {
         sat9am = dayjs(props.date).endOf('week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         sun23pm = dayjs(props.date).endOf('week').add(1, 'day').subtract(59, 'minute').subtract(59, 'second')
     } else {
@@ -248,7 +249,7 @@ export default function ProductRequest(props) {
                             <Alert className="mt-3" variant="primary">There are no available products</Alert>}
                     </>
                 }
-                <HomeButton IsLogin={props.IsLogin} />
+                <HomeButton logged={props.logged} />
 
             </Container>
             :
@@ -264,7 +265,7 @@ export default function ProductRequest(props) {
                         </Alert>
 
                 }
-                <HomeButton IsLogin={props.IsLogin} />
+                <HomeButton logged={props.logged} />
             </>
 
         }

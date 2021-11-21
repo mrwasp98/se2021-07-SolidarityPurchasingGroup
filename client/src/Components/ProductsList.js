@@ -1,19 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Button, Offcanvas, InputGroup, Form, Card, Container, Accordion } from "react-bootstrap";
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
-import { iconFilter, arrowdown, arrowup} from "./Icons";
+import { iconFilter, arrowdown, arrowup, iconCart } from "./Icons";
 import HomeButton from './HomeButton';
+import { getFarmers } from "../API/API.js";
 
 export default function ProductsList(props) {
 
     const [selected, setSelected] = useState("");
     const [show, setShow] = useState(false);
+    // eslint-disable-next-line
     const [rand, setRand] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     let categories = [...new Set(props.products.map(prod => prod.category))];
     let farmersPresent = props.products.map(prod => prod.farmerid);
     farmersPresent = props.farmers.filter(f => farmersPresent.includes(f.userid));
+
+    //this use effect is used to fetch the farmers
+  useEffect(() => {
+      console.log("hi", props.logged)
+    getFarmers().then((p) => {
+      //setTimeout(() => {
+      props.setFarmers(p);
+      //}, 1000);
+    });
+  }, []);
+
+   
     return (
         <>
             <Row className="pt-0" style={{ "fontWeight": "600", "backgroundColor": "#FFDEAD" }}>
@@ -31,26 +45,23 @@ export default function ProductsList(props) {
                     </Col>)}
             </Row>
             <Container className="d-flex justify-content-around">
-                <Row className="p-0 pt-3 ">
-                    <Col className=" col-12 col-md-6 p-0 mx-auto">
-                        <div className="d-flex justify-content-around mt-4">
-                            <h1 className="myTitle" style={{ fontSize: "40px" }}>Available Products</h1>
-                        </div>
-                    </Col>
-                    <Col className=" col-12 col-md-3 pt-2 ps-5">
+                <Row className="p-0 w-100">
+                    <Col className="col-12 col-md-3 text-center">
                         <Button
-                            className=" rounded-circle mt-3"
-                            onClick={() => {
-                                handleShow();
-                            }}
+                            className=" rounded-circle mt-3 "
+                            onClick={() => { handleShow(); }}
                             style={{
                                 right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', "backgroundColor": "#143642", color: "white"
                             }}>{iconFilter} </Button>
-                        <HomeButton IsLogin={props.IsLogin} />
-                    </Col>
 
-                    <Col className="justify-content-around col-3" />
+                    </Col>
+                    <Col className=" col-12 col-md-6 mx-auto pl-0 text-center">
+                        <div className="d-flex mt-4">
+                            <h1 className="myTitle" style={{ fontSize: "40px" }}>Available Products</h1>
+                        </div>
+                    </Col>
                 </Row>
+                <HomeButton logged={props.logged} />
             </Container>
 
             <Offcanvas show={show} onHide={handleClose} {...props} className="p-2" style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
@@ -86,8 +97,8 @@ export default function ProductsList(props) {
                     <p style={{ fontSize: "30px" }}>{selected}</p>
                 </div>
             </Row>
-            <Row className="mt-3 pt-5">
-                <Row className="mt-0 justify-content-center">
+            <Row className="mt-3 d-block m-0">
+                <Row className="mt-0 p-0 justify-content-center">
                     {props.products.filter(p => (selected) ? p.category === selected : true).map((prod, index) =>
                         <Product
                             prod={prod} key={index} farmerName={props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0].place}
@@ -100,55 +111,57 @@ export default function ProductsList(props) {
 
 function Product(props) {
     return (
-        <Card className="m-4 myCard p-0" style={{ width: '25rem', backgroundColor: "#FFEFD6" }}> {/*text-center*/}
-            <Card.Img variant="top" className="m-0" src={props.prod.picture} />
-            <Card.Body className="pb-0">
-                <Card.Header className="myTitle" style={{ fontSize: "23px", "fontWeight": "600" }}>{props.prod.name}</Card.Header>
-                <Card.Text className="p-3 pb-3 m-2 mt-3 cardDescription" >
-                    <p className="mt-0 mb-1 myText">Farmer: {props.farmerName}</p>
-                    <hr />
-                    <p className="mt-0 mb-1 myText">Category: {props.prod.category}</p>
-                    <hr />
-                    <p className="mt-0 mb-0 myText">Type of production: {props.prod.typeofproduction}</p>
-                    <hr />
-                    <Accordion defaultActiveKey="1" flush>
-                        <Accordion.Item eventKey="0">
-                            <Card className="border-0">
-                                <CustomToggle eventKey="0" className="mt-1 mb-1 myText"> Description: </CustomToggle>
-                                <Accordion.Collapse eventKey="0">
-                                    <Card.Body className="descriptionDiv mt-0 mb-0 cursive">{props.prod.description} </Card.Body>
-                                </Accordion.Collapse>
-                            </Card>
-                        </Accordion.Item>
-                    </Accordion>
-                </Card.Text>
-            </Card.Body>
-            <Card.Footer className="mt-3">
-                <Row >
-                    <Col className="mb-3">
-                        <p style={{ display: "inline", fontSize: "21px", "fontWeight": "600" }}>Price:</p>
-                        <Col md={{ span: 8, offset: 3 }}>
-                            <InputGroup className="priceGroup mt-1">
-                                <InputGroup.Text className="priceDescription">{props.prod.price}</InputGroup.Text>
-                                <InputGroup.Text className="priceDescription">€</InputGroup.Text>
-                                <InputGroup.Text className="priceDescription">{props.prod.measure}</InputGroup.Text>
-                            </InputGroup>
-                        </Col>
-                        {/* <Button variant="primary" className="cartButton">{iconCart}</Button> */}
-                    </Col>
-                </Row>
-            </Card.Footer>
-        </Card>
+        <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }}>
+            <Accordion.Item eventKey="0">
+                <Card style={{ backgroundColor: "#FFEFD6" }}> {/*text-center*/}
+                    <Card.Img variant="top" className="m-0" src={props.prod.picture} />
+                    <Card.Body className="pb-0">
+                    <CustomToggle eventKey="1" className="mt-1 mb-1 "> 
+                        <Card.Header className="myTitle d-inline" style={{ fontSize: "23px", "fontWeight": "600" }}>{props.prod.name}
+                        </Card.Header>
+                        </CustomToggle>
+                        <Accordion.Collapse eventKey="1">
+                        <Card.Text className="p-3 pb-3 m-2 mt-3 cardDescription" >
+                            <p className="mt-0 mb-1 myText">Farmer: {props.farmerName}</p>
+                            <hr />
+                            <p className="mt-0 mb-1 myText">Category: {props.prod.category}</p>
+                            <hr />
+                            <p className="mt-0 mb-0 myText">Type of production: {props.prod.typeofproduction}</p>
+                            <hr />
+                            <Accordion flush>
+                                <Accordion.Item eventKey="1">
+                                    <Card className="border-0">
+                                        <CustomToggle eventKey="1" className="mt-1 mb-1 myText"> Description: </CustomToggle>
+                                        <Accordion.Collapse eventKey="1">
+                                            <Card.Body className="descriptionDiv mt-0 mb-0 cursive">{props.prod.description} </Card.Body>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion.Item>
+                            </Accordion>
+                        </Card.Text>
+                        </Accordion.Collapse>
+                    </Card.Body>
+                    <Card.Footer className="mt-3">
+                        <Container className="d-flex justify-content-between p-0">
+                            <p style={{ fontSize: "22px", "fontWeight": "600" }} className="my-auto">Price:</p>
+                            <InputGroup.Text className="priceDescription">{props.prod.price} €/{props.prod.measure}</InputGroup.Text>
+                             {props.logged === "client" && <Button variant="primary" className="cartButton">{iconCart}</Button>}
+                             {/* //FIXME */}
+                        </Container>
+                    </Card.Footer>
+                </Card>
+            </Accordion.Item>
+        </Accordion>
     );
 }
 
 function CustomToggle({ children, eventKey }) {
     const [closed, setClosed] = useState(true);
     const decoratedOnClick = useAccordionButton(eventKey, () =>
-       setClosed(old => !old)
+        setClosed(old => !old)
     );
 
     return (
-        <p className="mt-1 mb-1 myText" onClick={decoratedOnClick}>{closed? arrowdown : arrowup}{children}</p>
+        <p className="mt-1 mb-1 myText" onClick={decoratedOnClick}>{closed ? arrowdown : arrowup}{children}</p>
     );
 }

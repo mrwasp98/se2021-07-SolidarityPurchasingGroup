@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 
-import { Button, InputGroup} from "react-bootstrap";
+import { Button} from "react-bootstrap";
 import { home } from "./Icons";
 
 
@@ -9,10 +9,10 @@ export default function HomeButton(props) {
 
     const handleclick = ()=>{
         console.log("chiamata")
-        console.log(props.IsLogin)
-        if(props.IsLogin === "shopemployee"){
+        console.log(props.logged)
+        if(props.logged === "shopemployee"){
             history.push("/employeehome")
-        }else if(props.IsLogin === "client"){
+        }else if(props.logged === "client"){
             history.push("/clienthome")
         }
     }

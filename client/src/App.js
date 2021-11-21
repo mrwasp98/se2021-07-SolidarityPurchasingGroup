@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ProductsList from "./Components/ProductsList";
 import ProductRequest from "./Components/ProductRequest";
-import { Container, Row } from "react-bootstrap";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
 import { login, getUserInfo, logout, addPRequest, getAvailableProducts, getFarmers } from "./API/API.js";
@@ -16,6 +15,7 @@ import ClientHome from "./Components/ClientHome";
 import dayjs from "dayjs";
 
 function App() {
+  // eslint-disable-next-line
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]); //main categories of the products
 
   const [date, setDate] = useState(new Date());
@@ -24,6 +24,7 @@ function App() {
   const [farmers, setFarmers] = useState([]);
 
   const [logged, setLogged] = useState(''); //this state is used to store the type of the user logged
+  // eslint-disable-next-line
   const [username, setUsername] = useState(''); //this state saves the name of the logged user
 
   const [products, setProducts] = useState([]);
@@ -47,21 +48,12 @@ function App() {
       try {
         const user = await getUserInfo();
         setUsername(user.name);
-        setLogged(true);
+        setLogged(user.type);
       } catch (err) {
         console.error(err.error);
       }
     };
     checkAuth();
-  }, []);
-
-  //this use effect is used to fetch the farmers
-  useEffect(() => {
-    getFarmers().then((p) => {
-      //setTimeout(() => {
-      setFarmers(p);
-      //}, 1000);
-    });
   }, []);
 
   //this use effect is used to get the available products
@@ -145,10 +137,10 @@ function App() {
   return (
     <>
       <Router>
-        <Route path="/"> <MyNav IsLogin={logged} date={date} setDate={setDate} logout={logout} setLogged={setLogged} className="myNav" /></Route>
+        <Route path="/"> <MyNav logged={logged} date={date} setDate={setDate} logout={logout} setLogged={setLogged} className="myNav" /></Route>
 
         <Route exact path='/products' render={()=>
-          <ProductsList products={products} categories={categories} farmers={farmers} IsLogin={logged} />}
+          <ProductsList products={products} categories={categories} farmers={farmers} logged={logged} setFarmers={setFarmers}/>}
         />
 
         <Route exact path='/' render={() => <Home />} />
@@ -171,7 +163,7 @@ function App() {
             message={messageProductRequest}
             setMessage={setMessageProductRequest}
             setDirtyAvailability={setDirtyAvailability}
-            IsLogin={logged}
+            logged={logged}
             date={date}/>}
         />
         
@@ -183,7 +175,7 @@ function App() {
             setDirtyClients={setDirtyClients}
             orders={clientOrders}
             setOrders={setClientOrders} 
-            IsLogin={logged}
+            logged={logged}
             date={date}/>}
         />
         

@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import { Navbar, Container, Button, Modal, Row, Col } from "react-bootstrap";
 import { useState } from "react";
-import { clock, iconStar, iconPerson, iconCalendar } from "./Icons";
+import { clock, iconStar, iconPerson, iconCalendar, iconCart } from "./Icons";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Link } from 'react-router-dom';
@@ -105,8 +105,12 @@ export default function MyNav(props) {
           </div>
           <Navbar.Text>
             {iconPerson}{" "}
-            {props.IsLogin ? (
+            {props.logged ? (
+              <>
               <Button variant="link"  style={{color:"#ec9a2a", fontSize:"20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
+              {props.logged==="client" && <Button className="ml-2">{iconCart}</Button>}
+              {/* TODO: add the function to open the sidebar */}
+              </>
             ) : (
               <>
                 {" "}

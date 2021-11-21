@@ -1,5 +1,5 @@
 
-import { Carousel, Container, Row, Col, Button, Table } from "react-bootstrap";
+import { Carousel, Container, Row, Col, Button } from "react-bootstrap";
 
 export default function Handout(props) {
     return (
