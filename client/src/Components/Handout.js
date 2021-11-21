@@ -108,6 +108,7 @@ export default function Handout(props) {
                                 </Alert>
 
                         }
+                        <HomeButton IsLogin={props.IsLogin} />
                     </>
             }
         </>
