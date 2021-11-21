@@ -145,7 +145,7 @@ function App() {
   return (
     <>
       <Router>
-        <Route path="/"> <MyNav IsLogin={logged} logout={logout} setLogged={setLogged} className="myNav" /></Route>
+        <Route path="/"> <MyNav IsLogin={logged} date={date} setDate={setDate} logout={logout} setLogged={setLogged} className="myNav" /></Route>
 
         <Route exact path='/products' render={()=>
           <ProductsList products={products} categories={categories} farmers={farmers} IsLogin={logged} />}
