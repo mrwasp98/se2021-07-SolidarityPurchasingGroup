@@ -163,13 +163,15 @@ export default function ProductRequest(props) {
     }
     let sat9am;
     let sun23pm;
-    if (dayjs(props.date).format('dddd') == 'Saturday') {
+    if (dayjs(props.date).format('dddd') != 'Sunday') {
         sat9am = dayjs(props.date).endOf('week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         sun23pm = dayjs(props.date).endOf('week').add(1, 'day').subtract(59, 'minute').subtract(59, 'second')
     } else {
         sat9am = dayjs(props.date).endOf('week').subtract(1, 'week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         sun23pm = dayjs(props.date).endOf('week').subtract(1, 'week').add(1, 'day').subtract(59, 'minute').subtract(59, 'second')
     }
+    console.log(sat9am)
+    console.log(dayjs(props.date).isBefore(sat9am));
     return (<>
         {dayjs(props.date).isAfter(sat9am) && dayjs(props.date).isBefore(sun23pm) ?
             <Container className="containerProdRequest justify-content-center mt-3">
@@ -253,7 +255,17 @@ export default function ProductRequest(props) {
             </Container>
             :
             <>
+                {
+                    (dayjs(props.date).isBefore(sat9am)) ?
+                        <Alert variant="danger" style={{"fontWeight":"500"}}>
+                            Orders will be available after Saturday morning at 9 am
+                        </Alert>
+                        :
+                        <Alert variant="danger" style={{"fontWeight":"500"}}>
+                            Orders from clients are accepted until Sunday 23:00
+                        </Alert>
 
+                }
             </>
 
         }
