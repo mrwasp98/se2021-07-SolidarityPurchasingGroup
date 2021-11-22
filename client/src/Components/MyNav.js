@@ -6,13 +6,14 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Link } from 'react-router-dom';
 import dayjs from "dayjs";
+import Clock from "./Clock";
 
 export default function MyNav(props) {
   const history = useHistory();
   const [show, setShow] = useState(false);
   const [showHour, setShowHour] = useState(false);
   const toggleShow = () => setShow(!show);
-  const toggleShowHour = () => { 
+  const toggleShowHour = () => {
     setShow(false);
     setShowHour(!show)
   };
@@ -61,14 +62,14 @@ export default function MyNav(props) {
               {date.format('HH:mm')}
             </Button>
             {show ? (
-              <Calendar className="position-absolute priority react-calendar" onChange={handleCalendar} style={{color:"#0f8b8b"}}value={props.date}/>
+              <Calendar className="position-absolute priority react-calendar" onChange={handleCalendar} style={{ color: "#0f8b8b" }} value={props.date} />
             ) : (
               ""
             )}
             <Modal className="" show={showHour} onHide={() => !showHour} animation={false}>
               <Modal.Body>
                 <Row className="mt-3 ps-3 pe-3 mb-2">
-                  <Col className="col-3" style={{"fontWeight":"600"}}><p>Select hour: </p></Col>
+                  <Col className="col-3" style={{ "fontWeight": "600" }}><p>Select hour: </p></Col>
                   <Col className="col-9" ><input
                     className="input-hour"
                     type="number"
@@ -80,7 +81,7 @@ export default function MyNav(props) {
                   /></Col>
                 </Row>
                 <hr className="p-0 m-0 mb-3" />
-                <Row className="ps-3 pe-3" style={{"fontWeight":"600"}}>
+                <Row className="ps-3 pe-3" style={{ "fontWeight": "600" }}>
                   <Col className="col-3"><p>Select min: </p></Col>
                   <Col className="col-9"><input
                     className="input-hour"
@@ -92,6 +93,8 @@ export default function MyNav(props) {
                     onChange={e => setMin(e.target.value)}
                   /></Col>
                 </Row>
+                <hr className="p-0 mt-1" />
+                <Clock size={200} date={props.date} timeFormat="24hour" hourFormat="standard" />
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={() => { setShowHour(false) }} style={{ 'backgroundColor': "#143642" }}>
@@ -107,15 +110,15 @@ export default function MyNav(props) {
             {iconPerson}{" "}
             {props.logged ? (
               <>
-              <Button variant="link"  style={{color:"#ec9a2a", fontSize:"20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
-              {props.logged==="client" && <Button className="ml-2">{iconCart}</Button>}
-              {/* TODO: add the function to open the sidebar */}
+                <Button variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
+                {props.logged === "client" && <Button className="ml-2">{iconCart}</Button>}
+                {/* TODO: add the function to open the sidebar */}
               </>
             ) : (
               <>
                 {" "}
                 <Link to="/login">
-                  <Button variant="link" style={{ fontSize: "20px", color:"#ec9a2a" }} className="btn-login">Login</Button>
+                  <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-login">Login</Button>
                 </Link>
                 <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-reg">Register</Button>{" "}
               </>
