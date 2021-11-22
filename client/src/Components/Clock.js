@@ -4,7 +4,7 @@ export default class Clock extends React.Component {
    constructor(props) {
       super(props);
       console.log(this.props.date)
-      this.state = { time: new Date(this.props.date) };
+      this.state = { time: this.props.date };
       this.radius = this.props.size / 2;
       this.drawingContext = null;
       this.draw24hour = this.props.timeFormat.toLowerCase().trim() === "24hour";
@@ -28,7 +28,7 @@ export default class Clock extends React.Component {
    }
 
    tick() {
-      this.setState({ time: new Date() });
+      this.setState({ time: this.state.time });
       const radius = this.radius;
       let ctx = this.drawingContext;
       this.drawFace(ctx, radius);
