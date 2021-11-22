@@ -94,7 +94,7 @@ export default function MyNav(props) {
                   /></Col>
                 </Row>
                 <hr className="p-0 mt-1" />
-                <Clock size={200} date={props.date} timeFormat="24hour" hourFormat="standard" />
+                <Clock size={200} date={new Date(props.date.getFullYear(),props.date.getMonth(),props.date.getDate(),hour,min)} timeFormat="24hour" hourFormat="standard" />
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={() => { setShowHour(false) }} style={{ 'backgroundColor': "#143642" }}>
