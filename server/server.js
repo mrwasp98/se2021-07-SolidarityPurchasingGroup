@@ -96,6 +96,14 @@ app.get("/api/clients", async (req, res) => {
     .catch(() => res.status(500).end());
 });
 
+//get client by id
+app.get("/api/client/:clientid", async (req, res) => {
+  clientDao
+    .getClientById(req.params.clientid)
+    .then((client) => res.json(client))
+    .catch(() => res.status(500).end());
+});
+
 //insert new client
 app.post(
   "/api/client",
