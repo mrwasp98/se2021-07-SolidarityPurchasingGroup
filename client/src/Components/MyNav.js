@@ -49,8 +49,9 @@ export default function MyNav(props) {
       >
         <Container fluid>
           <Navbar.Brand style={{ fontSize: "25px" }}>
+          <a href="/" className="nounderline">
             {iconStar}
-            <span> SPG - Group 07</span>
+            <span> SPG - Group 07</span></a>
           </Navbar.Brand>
           < div className="">
             <Button variant="light" onClick={toggleShow} className="me-2 callandarButton" style={{ fontSize: "17px" }}>
