@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Button, Offcanvas, InputGroup, Form, Card, Container, Accordion } from "react-bootstrap";
+import { Row, Col, Button, Offcanvas, InputGroup, Form, Card, Container, Accordion, Alert } from "react-bootstrap";
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
-import { iconFilter, arrowdown, arrowup, iconCart } from "./Icons";
+import { iconFilter, arrowdown, arrowup, iconCart, iconSub, iconAdd, iconAddDisabled, iconSubDisabled } from "./Icons";
 import HomeButton from './HomeButton';
-import { getFarmers } from "../API/API.js";
+import { getFarmers, getAvailableProducts } from "../API/API.js";
 
 export default function ProductsList(props) {
-
     const [selected, setSelected] = useState("");
     const [show, setShow] = useState(false);
     // eslint-disable-next-line
@@ -14,20 +13,34 @@ export default function ProductsList(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     let categories = [...new Set(props.products.map(prod => prod.category))];
-    let farmersPresent = props.products.map(prod => prod.farmerid);
-    farmersPresent = props.farmers.filter(f => farmersPresent.includes(f.userid));
+    let [farmersPresent, setFarmersPresent] = useState([]);
+    const [inserted, setInserted] = useState(false);
 
-    //this use effect is used to fetch the farmers
-  useEffect(() => {
-      console.log("hi", props.logged)
-    getFarmers().then((p) => {
-      //setTimeout(() => {
-      props.setFarmers(p);
-      //}, 1000);
-    });
-  }, []);
+    //this use effect is used to get the available products
+    useEffect(() => {
+        if (props.dirtyAvailability) {
+            getAvailableProducts(props.date)
+                .then((res) => {
+                    console.log(res)
+                    props.setProducts(res)
+                    props.setDirtyAvailability(false)
+                    getFarmers()
+                        .then((p) => {
+                            props.setFarmers(p);
+                            setFarmersPresent(props.products.map(prod => prod.farmerid));
+                            setFarmersPresent(props.farmers.filter(f => farmersPresent.includes(f.userid)));
+                        });
+                })
+        }
+    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, setFarmersPresent]);
 
-   
+
+    useEffect(() => {
+        setTimeout(() => {
+            setInserted(false);
+        }, 5000);
+    }, [inserted]);
+
     return (
         <>
             <Row className="pt-0" style={{ "fontWeight": "600", "backgroundColor": "#FFDEAD" }}>
@@ -61,6 +74,12 @@ export default function ProductsList(props) {
                         </div>
                     </Col>
                 </Row>
+                {inserted && <Alert className="position-fixed" variant="success"
+                    style={{ bottom: '2rem', zIndex: '100', background: '#0C7373', color: "white" }}
+                    variant={"success"}>
+                    Product has been added to cart.
+                </Alert>
+                }
                 <HomeButton logged={props.logged} />
             </Container>
 
@@ -101,7 +120,11 @@ export default function ProductsList(props) {
                 <Row className="mt-0 p-0 justify-content-center">
                     {props.products.filter(p => (selected) ? p.category === selected : true).map((prod, index) =>
                         <Product
-                            prod={prod} key={index} farmerName={props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0].place}
+                            prod={prod}
+                            key={index}
+                            logged={props.logged}
+                            farmerName={props.farmers.filter(farmer => farmer.userid === prod.farmerid).place}
+                            setInserted={setInserted}
                         />)}
                 </Row>
             </Row>
@@ -110,45 +133,80 @@ export default function ProductsList(props) {
 }
 
 function Product(props) {
+
+    const [counter, setCounter] = useState(0);
+
+    //functions needed to select the quantity
+    function add() {
+        setCounter((c) => c + 1);
+    }
+    function sub() {
+        setCounter((c) => c - 1);
+    }
+
+    function addToBasket() {
+        props.setInserted(true);
+        props.prod.quantity-=counter;
+        setCounter(0);
+    }
+
     return (
         <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }}>
             <Accordion.Item eventKey="0">
                 <Card style={{ backgroundColor: "#FFEFD6" }}> {/*text-center*/}
                     <Card.Img variant="top" className="m-0" src={props.prod.picture} />
                     <Card.Body className="pb-0">
-                    <CustomToggle eventKey="1" className="mt-1 mb-1 "> 
-                        <Card.Header className="myTitle d-inline" style={{ fontSize: "23px", "fontWeight": "600" }}>{props.prod.name}
-                        </Card.Header>
+                        <CustomToggle eventKey="1" className="mt-1 mb-1 ">
+                            <Card.Header className="myTitle d-inline" style={{ fontSize: "23px", "fontWeight": "600" }}>{props.prod.name}
+                            </Card.Header>
                         </CustomToggle>
                         <Accordion.Collapse eventKey="1">
-                        <Card.Text className="p-3 pb-3 m-2 mt-3 cardDescription" >
-                            <p className="mt-0 mb-1 myText">Farmer: {props.farmerName}</p>
-                            <hr />
-                            <p className="mt-0 mb-1 myText">Category: {props.prod.category}</p>
-                            <hr />
-                            <p className="mt-0 mb-0 myText">Type of production: {props.prod.typeofproduction}</p>
-                            <hr />
-                            <Accordion flush>
-                                <Accordion.Item eventKey="1">
-                                    <Card className="border-0">
-                                        <CustomToggle eventKey="1" className="mt-1 mb-1 myText"> Description: </CustomToggle>
-                                        <Accordion.Collapse eventKey="1">
-                                            <Card.Body className="descriptionDiv mt-0 mb-0 cursive">{props.prod.description} </Card.Body>
-                                        </Accordion.Collapse>
-                                    </Card>
-                                </Accordion.Item>
-                            </Accordion>
-                        </Card.Text>
+                            <Card.Text className="p-3 pb-3 m-2 mt-3 cardDescription" >
+                                <p className="mt-0 mb-1 myText">Farmer: {props.farmerName}</p>
+                                <hr />
+                                <p className="mt-0 mb-1 myText">Category: {props.prod.category}</p>
+                                <hr />
+                                <p className="mt-0 mb-0 myText">Type of production: {props.prod.typeofproduction}</p>
+                                <hr />
+                                <Accordion flush>
+                                    <Accordion.Item eventKey="1">
+                                        <Card className="border-0">
+                                            <CustomToggle eventKey="1" className="mt-1 mb-1 myText"> Description: </CustomToggle>
+                                            <Accordion.Collapse eventKey="1">
+                                                <Card.Body className="descriptionDiv mt-0 mb-0 cursive">{props.prod.description} </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                    </Accordion.Item>
+                                </Accordion>
+                            </Card.Text>
                         </Accordion.Collapse>
                     </Card.Body>
                     <Card.Footer className="mt-3">
                         <Container className="d-flex justify-content-between p-0">
                             <p style={{ fontSize: "22px", "fontWeight": "600" }} className="my-auto">Price:</p>
                             <InputGroup.Text className="priceDescription">{props.prod.price} €/{props.prod.measure}</InputGroup.Text>
-                             {props.logged === "client" && <Button variant="primary" className="cartButton">{iconCart}</Button>}
-                             {/* //FIXME */}
                         </Container>
                     </Card.Footer>
+                    {props.logged === "client" &&
+                        <Card.Footer>
+                            <Container className="d-flex justify-content-between p-0">
+                                <InputGroup.Text className="priceDescription">
+                                    {counter === 0 ?
+                                        <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>
+                                        :
+                                        <span style={{ cursor: 'pointer' }} onClick={() => { sub() }}>{iconSub}</span>
+                                    }
+                                    <p className="px-2 m-0">{counter} {props.prod.measure}</p>
+                                    {counter >= props.prod.quantity ?
+                                        <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>
+                                        :
+                                        <span style={{ cursor: 'pointer' }} onClick={() => { add() }}>{iconAdd}</span>
+                                    }
+                                </InputGroup.Text>
+                                <Button variant="primary" className="cartButton" onClick={() => { addToBasket() }}>{iconCart}</Button>
+                            </Container>
+                        </Card.Footer>
+                    }
                 </Card>
             </Accordion.Item>
         </Accordion>

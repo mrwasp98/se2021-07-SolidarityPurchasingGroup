@@ -8,7 +8,7 @@ import ProductsList from "./Components/ProductsList";
 import ProductRequest from "./Components/ProductRequest";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
-import { login, getUserInfo, logout, addPRequest, getAvailableProducts, getFarmers } from "./API/API.js";
+import { login, getUserInfo, logout, addPRequest} from "./API/API.js";
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
@@ -18,7 +18,7 @@ function App() {
   // eslint-disable-next-line
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]); //main categories of the products
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date()); //virtual clock date
   const [dirty, setDirty] = useState(false); ///?????
 
   const [farmers, setFarmers] = useState([]);
@@ -55,14 +55,6 @@ function App() {
     };
     checkAuth();
   }, []);
-
-  //this use effect is used to get the available products
-  useEffect(() => {
-      getAvailableProducts(date)
-        .then((res) => setProducts(res));
-      setDirtyAvailability(false)
-  }, [dirtyAvailability,logged]);
-
 
 
   const [messageProductRequest, setMessageProductRequest] = useState({
@@ -138,7 +130,15 @@ function App() {
         <Route path="/"> <MyNav logged={logged} date={date} setDate={setDate} logout={logout} setLogged={setLogged} className="myNav" /></Route>
 
         <Route exact path='/products' render={()=>
-          <ProductsList products={products} categories={categories} farmers={farmers} logged={logged} setFarmers={setFarmers}/>}
+          <ProductsList 
+            products={products} 
+            setProducts={setProducts} 
+            categories={categories} 
+            farmers={farmers}
+            setFarmers={setFarmers}
+            logged={logged} date={date} 
+            dirtyAvailability={dirtyAvailability}
+            setDirtyAvailability={setDirtyAvailability}/>}
         />
 
         <Route exact path='/' render={() => <Home />} />
