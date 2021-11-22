@@ -4,10 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand",
+    "test": "jest --runInBand --coverage",
     "start": "node server.js"
   },
   "jest": {
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "testResultsProcessor": "jest-sonar-reporter",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
     "testPathIgnorePatterns": [
       "tests/api-products",
       "tests/api-requests",
@@ -32,6 +39,7 @@
   },
   "devDependencies": {
     "jest": "^27.3.1",
+    "jest-sonar-reporter": "^2.0.0",
     "supertest": "^6.1.6"
   }
 }

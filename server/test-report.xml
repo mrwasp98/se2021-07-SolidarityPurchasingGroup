@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-clients.test.js">
+    <testCase name="Testing GET on /api/clients It should respond with an array of clients" duration="442"/>
+    <testCase name="Testing POST on /api/clients It should respond with 200 status code" duration="135"/>
+    <testCase name="Testing POST on /api/clients It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="37"/>
+    <testCase name="Testing POST on /api/clients It should respond with 400 (Bad Request) status code Case of wrong &apos;name&apos; parameter type" duration="7"/>
+    <testCase name="Testing POST on /api/clients It should respond with 400 (Bad Request) status code Case of wrong &apos;surname&apos; parameter type" duration="9"/>
+    <testCase name="Testing POST on /api/clients It should respond with 400 (Bad Request) status code Case of wrong &apos;wallet&apos; parameter type" duration="9"/>
+    <testCase name="Testing POST on /api/clients It should respond with 400 (Bad Request) status code Case of wrong &apos;address&apos; parameter type" duration="7"/>
+    <testCase name="Testing PUT on /api/clients/:clientid It should respond with 200 status code" duration="27"/>
+  </file>
+</testExecutions>
