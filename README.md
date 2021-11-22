@@ -89,6 +89,19 @@
 * Request parameters: orderid
 * Response: `200 OK`, `err: PUT error` (generic error)
 
+### Top up wallet
+* URL: `api/clients/{clientid}/?ammount={ammount}`
+* HTTP method: PUT
+* Request body:
+``` JSON
+[{
+    "status": "completed"
+}]
+```
+* Description: Top up the wallet of the given client adding the given ammount 
+* Request parameters: clientid, ammount
+* Response: `200 OK`, `err: PUT error` (generic error)
+
 ## USER API
 
 - POST `/api/login`
