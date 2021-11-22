@@ -12,7 +12,7 @@ import { login, getUserInfo, logout, addPRequest, getAvailableProducts, getFarme
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
-import dayjs from "dayjs";
+
 
 function App() {
   // eslint-disable-next-line
@@ -58,12 +58,10 @@ function App() {
 
   //this use effect is used to get the available products
   useEffect(() => {
-    if (dirtyAvailability) {
-      getAvailableProducts()
+      getAvailableProducts(date)
         .then((res) => setProducts(res));
       setDirtyAvailability(false)
-    }
-  }, [dirtyAvailability]);
+  }, [dirtyAvailability,logged]);
 
 
 

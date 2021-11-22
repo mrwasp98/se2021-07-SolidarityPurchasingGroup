@@ -162,9 +162,9 @@ app.put("/api/orders/:orderid", async (req, res) => {
 });
 
 //Get all available products
-app.get("/api/products", async (req, res) => {
+app.get("/api/products/:date", async (req, res) => {
   productDao
-    .getProductsAvailable()
+    .getProductsAvailable(req.params.date)
     .then((products) => res.json(products))
     .catch(() => res.status(500).end());
 });

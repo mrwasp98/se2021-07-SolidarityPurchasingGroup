@@ -15,6 +15,8 @@
  * 
  * @returns 
  */
+ import dayjs from "dayjs";
+
 const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, products) => {
   return new Promise((resolve, reject) => {
     fetch('/api/requests', {
@@ -106,9 +108,10 @@ const addClient = async (name, surname, email, wallet, address) => {
 }
 
 /** STORY 3 **/
-const getAvailableProducts = async () => {
+const getAvailableProducts = async (date) => {
+  console.log(dayjs(date))
   return new Promise((resolve, reject) => {
-    fetch('/api/products', {
+    fetch('/api/products/' + dayjs(date).format('YYYY-MM-DD'), {
       method: "GET",
       headers: {
         "content-type": "application/json",
