@@ -183,6 +183,8 @@ describe('Testing GET on /api/products/:id', () => {
     afterAll(async() => {
         //clear (mock) product database
         await productDao.deleteAllProducts();
+
+        app.close(); //without that, jest won't exit
     });
 
     //remember: mock database should be pre-filled with

@@ -68,6 +68,10 @@ describe('Testing GET on /api/clients', () => {
         await clientDao.deleteAllClients();
     });
 
+    afterAll(()=>{
+        app.close(); //without that, jest won't exit
+    })
+
     /*remember: mock database should be pre-filled with
     fakeClient1 and fakeClient2 for this method to work*/
     test("It should respond with an array of clients", async () => {
@@ -98,6 +102,10 @@ describe('Testing POST on /api/clients', () => {
     afterEach(() => {
         clientDao.deleteAllClients();
     });
+
+    afterAll(()=>{
+        app.close(); //without that, jest won't exit
+    })
 
     test('It should respond with 200 status code', async () => {
         const response = await request(app).post('/api/client').send({
