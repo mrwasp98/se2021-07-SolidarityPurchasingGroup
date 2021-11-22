@@ -143,6 +143,7 @@ describe('Testing GET on /api/completeOrders', () => {
         await orderDao.deleteAllOrders();
         await orderlineDao.deleteAllOrderlines();
         await productDao.deleteAllProducts();
+        app.close(); //without that, jest won't exit
     });
 
     test('It should respond with an array of orders with products', async () => {

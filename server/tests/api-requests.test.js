@@ -100,6 +100,8 @@ describe('Testing POST on /api/requests', () => {
         await productDao.deleteAvailability();
         await orderDao.deleteAllOrders();
         await orderLineDao.deleteAllOrderlines();
+
+        app.close(); //without that, jest won't exit
     });
 
     test('It should respond with 406 status code', async () => {

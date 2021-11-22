@@ -42,6 +42,8 @@ describe('Testing POST on /login', () => {
 
     afterAll(async () => {
         await userDao.deleteAllUsers();
+
+        app.close(); //without that, jest won't exit
     });
 
     test('It should respond with 200 status code', async () => {
@@ -94,6 +96,8 @@ describe('Testing DELETE on /logout', () => {
 
     afterAll(async () => {
         await userDao.deleteAllUsers();
+
+        app.close(); //without that, jest won't exit
     });
 
     test("It should respond with a 200 status code", async () => {

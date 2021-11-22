@@ -63,6 +63,8 @@ describe('Testing PUT on /api/orders/:orderid', () => {
     afterAll(async () => {
         await clientDao.deleteAllClients();
         await orderDao.deleteAllOrders();
+
+        app.close(); //without that, jest won't exit
     })
 
     beforeEach(async () => {
