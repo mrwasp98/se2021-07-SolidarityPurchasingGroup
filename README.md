@@ -102,6 +102,20 @@
 * Request parameters: clientid, ammount
 * Response: `200 OK`, `err: PUT error` (generic error)
 
+### Add user
+* URL: `api/user`
+* HTTP method: POST
+* description: add a new user to the system
+* Request body:
+``` JSON
+[{ 
+    "username": "farmer1", 
+    "password": "$2a$12$vOxMHcRpzCj9vLDUahqcsOJ9g.kqzCmUrc2DXy4Fxtk99kfuNQXqO", 
+    "type": "farmer"
+}]
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
+
 ## USER API
 
 - POST `/api/login`

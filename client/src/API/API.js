@@ -204,7 +204,35 @@ async function topUpWallet(clientid, ammount) {
   } else return { message: "Couldn't top up the client's wallet." };
 };
 
+/** STORY 6 **/
+const addUser = async (username, password, type) => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/user', {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        type: type
+      })
+    })
+      .then((res) => {
+        if (!res.ok) {
+          const error = new Error(`${res.status}: ${res.statusText}`);
+          error.response = res;
+          throw error;
+        }
+        resolve(res.json());
+      })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
+}
 
+/*----- USER APIs ---*/
 async function login(credentials) {
   let response = await fetch('/login', {
     method: 'POST',
@@ -245,4 +273,4 @@ async function getUserInfo() {
 
 
 
-export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet}
+export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addUser}
