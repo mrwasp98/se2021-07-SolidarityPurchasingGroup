@@ -314,3 +314,42 @@ app.put("/api/clients/:clientid", async (req, res) => {
     res.status(503).json({ error: `Database error ${err}.` });
   }
 });
+
+//get client by id
+app.get("/api/client/:clientid", async (req, res) => {
+  clientDao
+    .getClientById(req.params.clientid)
+    .then((client) => res.json(client))
+    .catch(() => res.status(500).end());
+});
+
+//Post a new user
+app.post("/api/user",
+  [
+    check(["username"]).isString().isLength({ min: 2 }),
+    check(["password"]).isString().isLength({ min: 6 }),
+    check(["type"]).isString().isLength({ min: 6 }),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(422)
+        .json({ errors: errors.array() } + console.log(errors.array()));
+    }
+    const user = {
+      username: req.body.username,
+      password: req.body.password,
+      type: req.body.type
+    };
+
+    try {
+      const result = await userDao.insertUser(user);
+      res.json(result);
+    } catch (err) {
+      res.status(503).json({
+        error: `Database error during the creation of new client: ${err}.`,
+      });
+    }
+  }
+);

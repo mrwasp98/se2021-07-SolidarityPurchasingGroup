@@ -105,3 +105,70 @@ describe('Testing DELETE on /logout', () => {
     //TODO tests in case of failure
 
 });
+
+describe('Testing POST on /api/user', () => {
+
+    beforeEach(async () => {
+        await userDao.deleteAllUsers();
+    });
+
+    afterEach(() => {
+        userDao.deleteAllUsers();
+    });
+
+    test('It should respond with 200 status code', async () => {
+        const response = await request(app).post('/api/user').send({
+            username:"Hari",
+            password:"qwerty1",
+            type:"farmer"
+        })
+        expect(response.statusCode).toBe(200);
+    });
+
+    describe('It should respond with 400 (Bad Request) status code', () => {
+
+        test('Case of one parameter missing', async () => {
+            const obj = {
+                username:"Hari",
+                password:"qwerty"
+            };
+            for (let [key,value] of Object.entries(obj)) {
+                //at each iteration it will create an object with one parameter missing
+                const wrongObjArray = Object.entries(obj).filter(keyValue => JSON.stringify(keyValue)!==JSON.stringify([key,value]));
+                //need to convert from array to object
+                const wrongObj = Object.fromEntries(wrongObjArray);
+                const response = await request(app).post('/api/user').send(wrongObj);
+                expect(response.statusCode).toBe(422);
+            }
+        });
+
+        test("Case of wrong 'username' parameter type", async () => {
+            const response = await request(app).post('/api/user').send({
+                username:1,
+                password:"qwerty1",
+                type:"farmer"
+            });
+            expect(response.statusCode).toBe(422);
+        });
+
+        test("Case of wrong 'password' parameter type", async () => {
+            const response = await request(app).post('/api/user').send({
+                username:"Hari",
+                password:1,
+                type:"farmer"
+            });
+            expect(response.statusCode).toBe(422);
+        });
+
+        test("Case of wrong 'type' parameter type", async () => {
+            const response = await request(app).post('/api/user').send({
+                username:"Hari",
+                password:"qwerty1",
+                type:1
+            });
+            expect(response.statusCode).toBe(422);
+        });
+
+    }); //400 status code tests
+
+});
