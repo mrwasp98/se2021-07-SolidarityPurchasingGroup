@@ -212,7 +212,6 @@
 .btn-yellow {
     border: 0px solid #ec9a2a !important;
     background-color: #0C7373;
-    border: 1px solid #0C7373;
     color: white;
 }
 
@@ -250,7 +249,6 @@
 .yellowLink {
     border: 0px solid #ec9a2a !important;
     background-color: #0C7373;
-    border: 1px solid #0C7373;
     color: white;
 }
 

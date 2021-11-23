@@ -173,7 +173,7 @@ app.put("/api/orders/:orderid", async (req, res) => {
 app.get("/api/products/:date", async (req, res) => {
   productDao
     .getProductsAvailable(req.params.date)
-    .then((products) => res.json(products))
+    .then((products) => res.status(200).json(products))
     .catch(() => res.status(500).end());
 });
 
@@ -280,6 +280,7 @@ app.get("/api/sessions/current", (req, res) => {
   } else res.status(401).json({ error: "Unauthenticated user!" });
 });
 
+/*
 //get product given an id
 app.get("/api/products/:id", async (req, res) => {
   productDao
@@ -290,6 +291,7 @@ app.get("/api/products/:id", async (req, res) => {
     })
     .catch(() => res.status(500).end());
 });
+*/
 
 //get orders with products given a clientid
 app.get("/api/completeOrders", async (req, res) => {
