@@ -77,6 +77,29 @@ const getClients = async () => {
   });
 }
 
+
+const getClientById = async (clientid) => {
+  console.log("api"+ clientid);
+  return new Promise((resolve, reject) => {
+    fetch('/api/client/' + clientid , {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        const error = new Error(`${res.status}: ${res.statusText}`);
+        error.response = res;
+        throw error;
+      }
+      resolve(res.json());
+    })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
+}
+
 /** STORY 2 **/
 const addClient = async (name, surname, email, wallet, address) => {
   return new Promise((resolve, reject) => {
@@ -273,4 +296,4 @@ async function getUserInfo() {
 
 
 
-export { addPRequest, getClients, addClient, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addUser}
+export { addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addUser}
