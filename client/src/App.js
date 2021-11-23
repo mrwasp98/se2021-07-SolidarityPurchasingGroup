@@ -13,7 +13,6 @@ import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
 
-
 function App() {
   // eslint-disable-next-line
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]); //main categories of the products
@@ -34,13 +33,14 @@ function App() {
   const [dirtyClients, setDirtyClients] = useState(true);
   const [clientOrders, setClientOrders] = useState([]);
 
-  const [resultOrder, setResultOrder] = useState()
+  const [resultOrder, setResultOrder] = useState() //??????????????
 
   const [order, setOrder] = useState({});
 
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState(); //???????????????????
 
-  const [show, setShow] = useState(false);
+  const [showBasket, setShowBasket] = useState(false); //this state controls the basked offcanvas
+  const [dirtyBasket, setDirtyBasket] = useState(true); //this states controls the update of the basket in the offcanvas
 
   //this use effect checks whether the user logged in previously
   useEffect(() => {
@@ -127,7 +127,16 @@ function App() {
   return (
     <>
       <Router>
-        <Route path="/"> <MyNav logged={logged} date={date} setDate={setDate} logout={logout} setLogged={setLogged} className="myNav" /></Route>
+        <Route path="/"> 
+          <MyNav 
+            logged={logged} 
+            date={date} 
+            setDate={setDate} 
+            logout={logout} setLogged={setLogged} 
+            showBasket={showBasket} setShowBasket={setShowBasket}
+            dirtyBasket={dirtyBasket} 
+            className="myNav" />
+        </Route>
 
         <Route exact path='/products' render={()=>
           <ProductsList 
@@ -139,7 +148,9 @@ function App() {
             logged={logged} date={date} 
             dirtyAvailability={dirtyAvailability}
             setDirtyAvailability={setDirtyAvailability}
-            date={date}/>}
+            date={date}
+            setDirtyBasket={setDirtyBasket}
+            />}
         />
 
         <Route exact path='/' render={() => <Home />} />

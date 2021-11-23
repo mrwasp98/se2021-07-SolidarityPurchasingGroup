@@ -74,7 +74,7 @@ const clock = (
 );
 
 const iconFilter = (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-funnel-fill" viewBox="0 0 16 16">
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-funnel-fill" viewBox="0 0 16 16">
     <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
   </svg>
 );
@@ -110,4 +110,8 @@ const arrowup = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
 <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
 </svg>)
 
-export { clock, home, iconFilter, iconCart, iconStar, iconPerson, iconCalendar, iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket, arrowdown, arrowup };
+const cartFill = (<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-cart-fill" viewBox="0 0 16 16">
+<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+</svg>)
+
+export { clock, home, iconFilter, iconCart, iconStar, iconPerson, iconCalendar, iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket, arrowdown, arrowup, cartFill };

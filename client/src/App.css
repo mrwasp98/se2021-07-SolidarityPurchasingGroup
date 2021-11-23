@@ -16,9 +16,10 @@
     text-align: right;
     margin-right: 2rem;
 }
-.nounderline{
+
+.nounderline {
     text-decoration: none !important;
-    color:#ec9a2a !important;
+    color: #ec9a2a !important;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -72,12 +73,12 @@
     z-index: 100;
 }
 
-.btn-login{
+.btn-login {
     font-size: 20px;
     text-decoration: none;
 }
 
-.btn-reg{
+.btn-reg {
     font-size: 20px;
     text-decoration: none;
 }
@@ -107,11 +108,11 @@
 }
 
 .btn-hour,
- .btn-hour:hover,
- .btn-hour:focus,
- .btn-hour:active,
- .btn-hour:visited,
- .btn-hour:checked {
+.btn-hour:hover,
+.btn-hour:focus,
+.btn-hour:active,
+.btn-hour:visited,
+.btn-hour:checked {
     border: 0px solid #ec9a2a !important;
     background-color: #0f8b8b;
     font-size: 17px;
@@ -142,7 +143,7 @@
     color: #143642;
 }
 
-.input-hour{
+.input-hour {
     border: 1px solid #143642 !important;
 }
 
@@ -220,7 +221,6 @@
     background-color: #ec9a2a;
     border: 1px solid #143642;
 }
-
 
 .linkred {
     color: red;

@@ -37,7 +37,7 @@ export default function ProductsList(props) {
        }
     }, [props.dirtyAvailability, props.setFarmers, farmersPresent, setFarmersPresent, props.date]);
 
-
+    //this use effect is used to show a message when the cart button is clicked
     useEffect(() => {
         setTimeout(() => {
             setInserted(false);
@@ -53,8 +53,7 @@ export default function ProductsList(props) {
                             <Button className="btn-primary" id="main"
                                 onClick={() => {
                                     setSelected(cat);
-                                }}
-                            >
+                                }}>
                                 <>{cat}</>
                             </Button>
                         </div>
@@ -66,8 +65,7 @@ export default function ProductsList(props) {
                         <Button
                             className=" rounded-circle mt-3 "
                             onClick={() => { handleShow(); }}
-                            style={{
-                                right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', "backgroundColor": "#143642", color: "white"
+                            style={{right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', backgroundColor: "#0f8b8b", color: "white"
                             }}>{iconFilter} </Button>
 
                     </Col>
@@ -128,6 +126,7 @@ export default function ProductsList(props) {
                             logged={props.logged}
                             farmerName={props.farmers.filter(farmer => farmer.userid === prod.farmerid).place}
                             setInserted={setInserted}
+                            setDirtyBasket={props.setDirtyBasket}
                         />)}
                 </Row>
             </Row>
@@ -149,8 +148,23 @@ function Product(props) {
 
     function addToBasket() {
         props.setInserted(true);
+        let obj ={id: props.prod.id, name: props.prod.name, quantity: counter, subtotal: props.prod.price*counter} //TODO: controlla l'API per sapere cosa mettere qui
+        let list; 
+        //i only want to have a single list of product in the session storage. I check if it already exists
+        if (sessionStorage.length > 0) {
+            list = JSON.parse(sessionStorage.getItem("productList"))
+        }
+        if(list){
+            obj = [...list, obj]
+            sessionStorage.setItem("productList", JSON.stringify(obj))
+        }else{
+            sessionStorage.setItem("productList", JSON.stringify([obj]))
+
+        }
+
         props.prod.quantity-=counter;
         setCounter(0);
+        props.setDirtyBasket(true)
     }
 
     return (
@@ -159,8 +173,8 @@ function Product(props) {
                 <Card style={{ backgroundColor: "#FFEFD6" }}> {/*text-center*/}
                     <Card.Img variant="top" className="m-0" src={props.prod.picture} />
                     <Card.Body className="pb-0">
-                        <CustomToggle eventKey="1" className="mt-1 mb-1 ">
-                            <Card.Header className="myTitle d-inline" style={{ fontSize: "23px", "fontWeight": "600" }}>{props.prod.name}
+                        <CustomToggle eventKey="1" className="mt-1 mb-1">
+                            <Card.Header className="myTitle d-inline division " style={{ fontSize: "23px", fontWeight: "600" , backgroundColor: "#FFEFD6"}}>{props.prod.name}
                             </Card.Header>
                         </CustomToggle>
                         <Accordion.Collapse eventKey="1">
@@ -195,15 +209,15 @@ function Product(props) {
                             <Container className="d-flex justify-content-between p-0">
                                 <InputGroup.Text className="priceDescription">
                                     {counter === 0 ?
-                                        <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>
+                                        <Button className="p-0" variant="flat" style={{backgroundColor:"white", boxShadow: 'none' }}>{iconSubDisabled}</Button>
                                         :
-                                        <span style={{ cursor: 'pointer' }} onClick={() => { sub() }}>{iconSub}</span>
+                                        <Button className="p-0" variant="flat" style={{backgroundColor:"white", boxShadow: 'none' }} onClick={() => { sub() }}>{iconSub}</Button>
                                     }
                                     <p className="px-2 m-0">{counter} {props.prod.measure}</p>
                                     {counter >= props.prod.quantity ?
-                                        <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>
+                                        <Button className="p-0" variant="flat" style={{backgroundColor:"white", boxShadow: 'none' }}>{iconAddDisabled}</Button>
                                         :
-                                        <span style={{ cursor: 'pointer' }} onClick={() => { add() }}>{iconAdd}</span>
+                                        <Button className="p-0" variant="flat" style={{backgroundColor:"white", boxShadow: 'none' }} onClick={() => { add() }}>{iconAdd}</Button>
                                     }
                                 </InputGroup.Text>
                                 <Button variant="primary" className="cartButton" onClick={() => { addToBasket() }}>{iconCart}</Button>

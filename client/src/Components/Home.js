@@ -1,7 +1,7 @@
 
 import { Carousel, Container, Row, Col, Button } from "react-bootstrap";
 
-export default function Handout(props) {
+export default function Home(props) {
     return (
         <>
             <Carousel className="mb-3 d-none d-md-block" >
