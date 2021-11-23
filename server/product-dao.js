@@ -1,12 +1,18 @@
 'use strict'
 
 const dayjs = require('dayjs');
-
 const db = require('./database');
 
 exports.getProductsAvailable = (date) => {
-    console.log(date);
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!');
+    let thisSaturday9Am;
+    let lastSaturday9Am;
+    if (dayjs(date).format('dddd') !== 'Sunday') {
+        thisSaturday9Am = dayjs(date).endOf('week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        lastSaturday9Am = dayjs(thisSaturday9Am).subtract(1, 'week')
+    } else {
+        thisSaturday9Am = dayjs(date).endOf('week').subtract(1, 'week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        lastSaturday9Am = dayjs(thisSaturday9Am).subtract(1, 'week')
+    }
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM product AS P, availability AS A WHERE P.id=A.productid AND A.quantity<>0';
         db.all(sql, [], (err, rows) => {
@@ -15,7 +21,7 @@ exports.getProductsAvailable = (date) => {
                 return;
             }
             const products = rows.map((p) => ({id: p.id, name: p.name, description: p.description, farmerid: p.farmerid, price: p.price, measure: p.measure, category: p.category, typeofproduction: p.typeofproduction, picture: p.picture, dateavailability: p.dateavailability, quantity: p.quantity}))
-                            .filter((p) => {return ((dayjs(p.dateavailability)).isBefore(dayjs().format("YYYY-MM-DD")) || (dayjs(p.dateavailability).format("YYYY-MM-DD")) === (dayjs().format("YYYY-MM-DD")))});
+                            .filter((p) => {return ((dayjs(p.dateavailability)).isBefore(thisSaturday9Am) && (dayjs(p.dateavailability).isAfter(lastSaturday9Am)))});
             resolve(products);
         });
     });

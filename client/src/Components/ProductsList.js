@@ -4,6 +4,7 @@ import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import { iconFilter, arrowdown, arrowup, iconCart, iconSub, iconAdd, iconAddDisabled, iconSubDisabled } from "./Icons";
 import HomeButton from './HomeButton';
 import { getFarmers, getAvailableProducts } from "../API/API.js";
+import dayjs from "dayjs";
 
 export default function ProductsList(props) {
     const [selected, setSelected] = useState("");
@@ -15,10 +16,12 @@ export default function ProductsList(props) {
     let categories = [...new Set(props.products.map(prod => prod.category))];
     let [farmersPresent, setFarmersPresent] = useState([]);
     const [inserted, setInserted] = useState(false);
-
+    const [lastDate, setLastDate] = useState(dayjs(props.date));
     //this use effect is used to get the available products
     useEffect(() => {
-        if (props.dirtyAvailability) {
+        console.log(lastDate)
+        if ( props.dirtyAvailability || !lastDate.isSame(props.date) ){
+            setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
             getAvailableProducts(props.date)
                 .then((res) => {
                     console.log(res)
@@ -31,8 +34,8 @@ export default function ProductsList(props) {
                             setFarmersPresent(props.farmers.filter(f => farmersPresent.includes(f.userid)));
                         });
                 })
-        }
-    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, setFarmersPresent]);
+       }
+    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, setFarmersPresent, props.date]);
 
 
     useEffect(() => {

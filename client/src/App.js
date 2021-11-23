@@ -138,7 +138,8 @@ function App() {
             setFarmers={setFarmers}
             logged={logged} date={date} 
             dirtyAvailability={dirtyAvailability}
-            setDirtyAvailability={setDirtyAvailability}/>}
+            setDirtyAvailability={setDirtyAvailability}
+            date={date}/>}
         />
 
         <Route exact path='/' render={() => <Home />} />
