@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
-import { Navbar, Container, Button, Modal, Row, Col } from "react-bootstrap";
+import { Navbar, Container, Button, Modal, Row, Col, Table } from "react-bootstrap";
 import { useState } from "react";
-import { clock, iconStar, iconPerson, iconCalendar, iconCart, cartFill } from "./Icons";
+import { clock, iconStar, iconPerson, iconCalendar, iconCart, cartFill, cross, coin } from "./Icons";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Link } from 'react-router-dom';
@@ -10,6 +10,7 @@ import Clock from "./Clock";
 
 import { Offcanvas } from "react-bootstrap";
 import React from 'react';
+import { useEffect } from 'react';
 
 export default function MyNav(props) {
 
@@ -52,8 +53,7 @@ export default function MyNav(props) {
     console.log("chiamata!")
     props.setShowBasket(true)
   }
-  //function called to close the offcanvas
-  const handleClose = () => props.setShowBasket(false);
+
 
   return (
     <>
@@ -137,16 +137,82 @@ export default function MyNav(props) {
           </Navbar.Text>
         </Container>
       </Navbar>
-        <Offcanvas show={props.showBasket} placement="end" onHide={handleClose} {...props} style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
-          <Offcanvas.Header closeButton className="division">
-            <Offcanvas.Title className="d-flex align-items-center" style={{ fontSize: "28px" }}>
-              {cartFill} {'\u00A0'} This is your <strong>{'\u00A0'}basket</strong></Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Offcanvas.Title style={{ fontSize: "30px", "fontWeight": "600" }}>Selected Items</Offcanvas.Title>
-            <p>this is a test</p>
-          </Offcanvas.Body>
-        </Offcanvas>
+
+      <BasketOffCanvas showBasket={props.showBasket} setShowBasket={props.setShowBasket}
+        dirtyBasket={props.dirtyBasket} setDirtyBasket={props.setDirtyBasket} setDirtyQuantity={props.setDirtyQuantity}
+        userId={props.userId}
+      />
     </>
   );
+}
+
+function BasketOffCanvas(props) {
+
+  const [elements, setElements] = useState([]);
+
+  //function called to close the offcanvas
+  const handleClose = () => props.setShowBasket(false);
+
+  useEffect(() => {
+    if (props.dirtyBasket) {
+      if (sessionStorage.length > 0) {
+        setElements(JSON.parse(sessionStorage.getItem("productList")))
+      }
+      props.setDirtyBasket(false);
+    }
+
+  }, [props.dirtyBasket, props.setDirtyBasket])
+
+  function handleClick(id, quantity) {
+    if (sessionStorage.length > 0) {
+      let list = JSON.parse(sessionStorage.getItem("productList"));
+      let info = [id, quantity ]
+      list = list.filter((el) => el.productid !== id)
+      sessionStorage.setItem("productList", JSON.stringify(list))
+      props.setDirtyBasket(true)
+      props.setDirtyQuantity(info)
+    }
+  }
+
+  return (
+    <Offcanvas show={props.showBasket} placement="end" onHide={handleClose} {...props} style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
+      <Offcanvas.Header closeButton className="division">
+        <Offcanvas.Title className="d-flex align-items-center" style={{ fontSize: "28px" }}>
+          {cartFill} {'\u00A0'} This is your <strong>{'\u00A0'}basket</strong></Offcanvas.Title>
+      </Offcanvas.Header>
+      <Offcanvas.Body>
+        <Offcanvas.Title style={{ fontSize: "30px", "fontWeight": "600" }}>Selected Items</Offcanvas.Title>
+        {elements && elements.length > 0 ?
+          <Table hover size="sm" className="mt-3">
+            <tr>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+            </tr>
+
+            <tbody >
+              {elements.map((el, index) => {
+                return (
+                  <tr key={index}>
+                    {Object.keys(el).map((val, i) => {
+                      return val !== "productid" && val !== "measure" && val !== "price" &&
+                        <td key={i}>{el[val]}</td>
+                    })}
+                    <Button onClick={() => { handleClick(el.productid, el.quantity) }}>{cross}</Button>
+                  </tr>
+                )
+
+              })}
+
+            </tbody>
+          </Table>
+          :
+          <p className="mt-3">Your basket is currently empty.</p>
+        }
+        <Button className="order-btn fixed-bottom " style={{position: "absolute", left:"8.5rem", bottom:"1rem"}} variant="yellow">
+          <span style={{position: "relative", bottom:"0.1rem"}}>{coin}</span> Check and order</Button>
+
+      </Offcanvas.Body>
+    </Offcanvas>
+  )
 }

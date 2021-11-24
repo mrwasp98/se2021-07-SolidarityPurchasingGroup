@@ -20,7 +20,7 @@ export default function ProductsList(props) {
     //this use effect is used to get the available products
     useEffect(() => {
         console.log(lastDate)
-        if ( props.dirtyAvailability || !lastDate.isSame(props.date) ){
+        if (props.dirtyAvailability || !lastDate.isSame(props.date)) {
             setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
             getAvailableProducts(props.date)
                 .then((res) => {
@@ -34,7 +34,7 @@ export default function ProductsList(props) {
                             setFarmersPresent(props.farmers.filter(f => farmersPresent.includes(f.userid)));
                         });
                 })
-       }
+        }
     }, [props.dirtyAvailability, props.setFarmers, farmersPresent, setFarmersPresent, props.date]);
 
     //this use effect is used to show a message when the cart button is clicked
@@ -43,6 +43,19 @@ export default function ProductsList(props) {
             setInserted(false);
         }, 5000);
     }, [inserted]);
+
+    useEffect(() => {
+        if (props.dirtyQuantity.length > 0) {
+            let list = props.products.map(prod => {
+                return prod.id === props.dirtyQuantity[0] ?
+                    { ...prod, quantity: prod.quantity + props.dirtyQuantity[1] }
+                    : prod
+            })
+            props.setProducts(list)
+            props.setDirtyQuantity([]);
+        }
+    }
+    , [props.setDirtyQuantity, props.dirtyQuantity])
 
     return (
         <>
@@ -65,7 +78,8 @@ export default function ProductsList(props) {
                         <Button
                             className=" rounded-circle mt-3 "
                             onClick={() => { handleShow(); }}
-                            style={{right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', backgroundColor: "#0f8b8b", color: "white"
+                            style={{
+                                right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', backgroundColor: "#0f8b8b", color: "white"
                             }}>{iconFilter} </Button>
 
                     </Col>
@@ -147,24 +161,37 @@ function Product(props) {
     }
 
     function addToBasket() {
-        props.setInserted(true);
-        let obj ={id: props.prod.id, name: props.prod.name, quantity: counter, subtotal: props.prod.price*counter} //TODO: controlla l'API per sapere cosa mettere qui
-        let list; 
-        //i only want to have a single list of product in the session storage. I check if it already exists
-        if (sessionStorage.length > 0) {
-            list = JSON.parse(sessionStorage.getItem("productList"))
-        }
-        if(list){
-            obj = [...list, obj]
-            sessionStorage.setItem("productList", JSON.stringify(obj))
-        }else{
-            sessionStorage.setItem("productList", JSON.stringify([obj]))
+        if (counter > 0) {
+            props.setInserted(true);
+            let obj = { productid: props.prod.id, name: props.prod.name, quantity: counter, measure: props.prod.measure, price: props.prod.price, subtotal: props.prod.price * counter }
+            let list;
+            //i only want to have a single list of product in the session storage. I check if it already exists
+            if (sessionStorage.getItem("productList")) {
+                list = JSON.parse(sessionStorage.getItem("productList"))
+            } else {
+                //if the list doesn't exists, i create one empty
+                list = [];
+            }
+            //add to the list the new object. if the object has never been added i can simply add it
+            if (list.filter(el => el.productid === obj.productid).length === 0) {
+                list = [...list, obj]
+            } else {
+                //otherwise i need to sum the quantity and the subtotal
+                list = list.map(el => {
+                    return el.productid === obj.productid ?
+                        { ...el, quantity: el.quantity + obj.quantity, subtotal: el.subtotal + obj.subtotal }
+                        : el
+                })
+            }
 
-        }
+            //update the item in the sessionStorage
+            sessionStorage.setItem("productList", JSON.stringify(list))
 
-        props.prod.quantity-=counter;
-        setCounter(0);
-        props.setDirtyBasket(true)
+            //i update the local status
+            props.prod.quantity -= counter;
+            setCounter(0);
+            props.setDirtyBasket(true)
+        }
     }
 
     return (
@@ -174,7 +201,7 @@ function Product(props) {
                     <Card.Img variant="top" className="m-0" src={props.prod.picture} />
                     <Card.Body className="pb-0">
                         <CustomToggle eventKey="1" className="mt-1 mb-1">
-                            <Card.Header className="myTitle d-inline division " style={{ fontSize: "23px", fontWeight: "600" , backgroundColor: "#FFEFD6"}}>{props.prod.name}
+                            <Card.Header className="myTitle d-inline division " style={{ fontSize: "23px", fontWeight: "600", backgroundColor: "#FFEFD6" }}>{props.prod.name}
                             </Card.Header>
                         </CustomToggle>
                         <Accordion.Collapse eventKey="1">
@@ -201,7 +228,7 @@ function Product(props) {
                     <Card.Footer className="mt-3">
                         <Container className="d-flex justify-content-between p-0">
                             <p style={{ fontSize: "22px", "fontWeight": "600" }} className="my-auto">Price:</p>
-                            <InputGroup.Text className="priceDescription">{props.prod.price} €/{props.prod.measure}</InputGroup.Text>
+                            <InputGroup.Text className="priceDescription">{parseFloat(props.prod.price).toFixed(2)}€/{props.prod.measure}</InputGroup.Text>
                         </Container>
                     </Card.Footer>
                     {props.logged === "client" &&
@@ -209,15 +236,15 @@ function Product(props) {
                             <Container className="d-flex justify-content-between p-0">
                                 <InputGroup.Text className="priceDescription">
                                     {counter === 0 ?
-                                        <Button className="p-0" variant="flat" style={{backgroundColor:"white", boxShadow: 'none' }}>{iconSubDisabled}</Button>
+                                        <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconSubDisabled}</Button>
                                         :
-                                        <Button className="p-0" variant="flat" style={{backgroundColor:"white", boxShadow: 'none' }} onClick={() => { sub() }}>{iconSub}</Button>
+                                        <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { sub() }}>{iconSub}</Button>
                                     }
                                     <p className="px-2 m-0">{counter} {props.prod.measure}</p>
                                     {counter >= props.prod.quantity ?
-                                        <Button className="p-0" variant="flat" style={{backgroundColor:"white", boxShadow: 'none' }}>{iconAddDisabled}</Button>
+                                        <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconAddDisabled}</Button>
                                         :
-                                        <Button className="p-0" variant="flat" style={{backgroundColor:"white", boxShadow: 'none' }} onClick={() => { add() }}>{iconAdd}</Button>
+                                        <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { add() }}>{iconAdd}</Button>
                                     }
                                 </InputGroup.Text>
                                 <Button variant="primary" className="cartButton" onClick={() => { addToBasket() }}>{iconCart}</Button>

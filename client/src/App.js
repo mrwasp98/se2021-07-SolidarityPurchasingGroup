@@ -42,7 +42,8 @@ function App() {
   const [errorMessage, setErrorMessage] = useState(); //???????????????????
 
   const [showBasket, setShowBasket] = useState(false); //this state controls the basked offcanvas
-  const [dirtyBasket, setDirtyBasket] = useState(true); //this states controls the update of the basket in the offcanvas
+  const [dirtyBasket, setDirtyBasket] = useState(true); //this state controls the update of the basket in the offcanvas
+  const [dirtyQuantity, setDirtyQuantity] = useState([]); //this state is used to fix the local available quantity once the elements are deleted from the basket
 
   //this use effect checks whether the user logged in previously
   useEffect(() => {
@@ -145,22 +146,22 @@ function App() {
             setDate={setDate} 
             logout={logout} setLogged={setLogged} 
             showBasket={showBasket} setShowBasket={setShowBasket}
-            dirtyBasket={dirtyBasket} 
+            dirtyBasket={dirtyBasket} setDirtyBasket={setDirtyBasket}
+            userId={userId}
+            setDirtyQuantity={setDirtyQuantity}
             className="myNav" />
         </Route>
 
         <Route exact path='/products' render={()=>
           <ProductsList 
-            products={products} 
-            setProducts={setProducts} 
+            products={products} setProducts={setProducts} 
             categories={categories} 
-            farmers={farmers}
-            setFarmers={setFarmers}
+            farmers={farmers} setFarmers={setFarmers}
             logged={logged} date={date} 
-            dirtyAvailability={dirtyAvailability}
-            setDirtyAvailability={setDirtyAvailability}
+            dirtyAvailability={dirtyAvailability} setDirtyAvailability={setDirtyAvailability}
             date={date}
             setDirtyBasket={setDirtyBasket}
+            dirtyQuantity={dirtyQuantity} setDirtyQuantity={setDirtyQuantity}
             />}
         />
 
