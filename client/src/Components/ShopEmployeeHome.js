@@ -18,6 +18,11 @@ export default function ShopEmployeeHome() {
                                 Register new client
                             </Link>
                         </Button>
+                        <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="topup">
+                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/wallet" className="py-2 yellowLink">
+                                Top-up a client's wallet
+                            </Link>
+                        </Button>
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprod">
                             <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/products" className="py-2 yellowLink">
                                 Browse available products

@@ -12,6 +12,7 @@ import { login, getUserInfo, logout, addPRequest, getClientById} from "./API/API
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
+import Wallet from "./Components/Wallet";
 
 function App() {
   // eslint-disable-next-line
@@ -170,6 +171,15 @@ function App() {
         <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
         
         <Route exact path='/clienthome' render={()=><ClientHome/>}/>
+
+        <Route exact path='/wallet' render={()=><Wallet
+            clients={clients}
+            setClients={setClients}
+            dirtyClients={dirtyClients}
+            setDirtyClients={setDirtyClients}
+            logged={logged}
+            date={date}/>}
+        />
         
         <Route exact path='/productRequest' render={() =>
           <ProductRequest
