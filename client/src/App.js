@@ -8,7 +8,7 @@ import ProductsList from "./Components/ProductsList";
 import ProductRequest from "./Components/ProductRequest";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
-import { login, getUserInfo, logout, addPRequest} from "./API/API.js";
+import { login, getUserInfo, logout, addPRequest, getClientById} from "./API/API.js";
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
@@ -25,11 +25,13 @@ function App() {
   const [logged, setLogged] = useState(''); //this state is used to store the type of the user logged
   // eslint-disable-next-line
   const [username, setUsername] = useState(''); //this state saves the name of the logged user
+  const [userId, setUserId] = useState(''); //this state saves the id of the logged user
 
   const [products, setProducts] = useState([]);
   const [dirtyAvailability, setDirtyAvailability] = useState(true);
 
   const [clients, setClients] = useState([]);
+  const [client, setClient] = useState([]);
   const [dirtyClients, setDirtyClients] = useState(true);
   const [clientOrders, setClientOrders] = useState([]);
 
@@ -56,6 +58,15 @@ function App() {
     checkAuth();
   }, []);
 
+
+  useEffect(() => {
+    if(logged === "client"){
+           getClientById(userId)
+           .then((res) => setClient(res));
+           console.log("appjs");
+           console.log(client);
+       }
+     }, [logged, userId]);
 
   const [messageProductRequest, setMessageProductRequest] = useState({
     type: "",
@@ -191,7 +202,7 @@ function App() {
         
         <Route exact path="/registerClient" render={() => <Register setDirtyClients={setDirtyClients} />} />
         
-        <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} />} />
+        <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} setUserId={setUserId} />} />
       
       </Router>
     </>
