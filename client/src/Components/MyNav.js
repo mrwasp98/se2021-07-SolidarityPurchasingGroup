@@ -170,11 +170,11 @@ function BasketOffCanvas(props) {
   }, [props.dirtyBasket, props.setDirtyBasket])
 
   //this use effect does the cleanup if the date changes
-  useEffect(()=>{
-      sessionStorage.removeItem("productList")
-      setElements([])
-  }, props.date ) 
-
+  /*   useEffect(()=>{
+        sessionStorage.removeItem("productList")
+        setElements([])
+    }, props.date ) 
+   */
   //this is used to adjust the quantity if something is removed from the basket
   function handleClick(id, quantity) {
     if (sessionStorage.length > 0) {
@@ -217,7 +217,7 @@ function BasketOffCanvas(props) {
           props.setDirtyAvailability(true)
         }
       }).catch(err => { props.setMessage(["danger", err.message]) })
-      .finally(()=>{
+      .finally(() => {
         props.setShowBasket(false)
       })
 
@@ -234,7 +234,7 @@ function BasketOffCanvas(props) {
         {elements && elements.length > 0 ?
           <>
             <Table size="sm" className="mt-3" responsive>
-              <tr>
+              <tr className="mb-0" style={{ borderBottom: "2px solid black" }}>
                 <th>Name</th>
                 <th>Quantity</th>
               </tr>
@@ -243,14 +243,16 @@ function BasketOffCanvas(props) {
               {elements.map((el, index) => {
                 return (
                   <>
-                    <Row key={index} className="mt-2" style={{ borderBottom: "1px solid gray" }}>
+                    <Row key={index} className={index === 0 ? "" : "mt-2"} style={{ borderBottom: "1px solid gray" }}>
                       <Row className="p-0 m-0 w-100">
                         <Col xs={5}>{el.name}</Col>
-                        <Col>{el.quantity} {el.measure} </Col>
-                        <Col><Button variant="flat" className="py-auto d-flex align-items-center" onClick={() => { handleClick(el.productid, el.quantity) }}>{cross}</Button></Col>
+                        <Col style={{ paddingLeft: "0px" }}>{el.quantity} {el.measure} </Col>
+                        <Col className="text-center">
+                          <Button variant="flat" className="py-0 m-0" style={{ position: "relative", bottom:"0.2rem" }} onClick={() => { handleClick(el.productid, el.quantity) }}>{cross}</Button>
+                        </Col>
                       </Row>
                       <Row className="m-0 p-0 " style={{ fontSize: "0.7rem" }}>
-                        <span className="text-muted pb-1" style={{ position: "relative", left: "8rem", maxWidth: "7rem" }} > Subtotal: {parseFloat(el.subtotal).toFixed(2)} €</span>
+                        <span className="text-muted pb-1 p-0" style={{ position: "relative", left: "8rem", maxWidth: "7rem" }} > Subtotal: {parseFloat(el.subtotal).toFixed(2)} €</span>
                       </Row>
                     </Row>
                   </>
