@@ -13,6 +13,7 @@ import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
 import Wallet from "./Components/Wallet";
+import MyModal from "./Components/MyModal";
 
 function App() {
   // eslint-disable-next-line
@@ -27,6 +28,7 @@ function App() {
   // eslint-disable-next-line
   const [username, setUsername] = useState(''); //this state saves the name of the logged user
   const [userId, setUserId] = useState(''); //this state saves the id of the logged user
+  const [showTopUpWalletModal, setShowTopUpWalletModal] = useState(false);
 
   const [products, setProducts] = useState([]);
   const [dirtyAvailability, setDirtyAvailability] = useState(true);
@@ -61,14 +63,19 @@ function App() {
   }, []);
 
 
+  
   useEffect(() => {
-    if(logged === "client"){
-           getClientById(userId)
-           .then((res) => setClient(res));
-           console.log("appjs");
-           console.log(client);
-       }
-     }, [logged, userId]);
+    async function fetchdata() {
+      if (logged === "client") {
+        getClientById(userId).then((res) => setClient(res));
+
+        if (client.userid === userId && parseInt(client.wallet) < 30) {
+          setShowTopUpWalletModal(true);console.log(showTopUpWalletModal);
+        }
+      }
+    }
+    fetchdata();
+  }, [logged, userId]);
 
   const [messageProductRequest, setMessageProductRequest] = useState({
     type: "",
@@ -151,6 +158,10 @@ function App() {
             userId={userId}
             setDirtyQuantity={setDirtyQuantity}
             className="myNav" />
+          <MyModal
+            show={showTopUpWalletModal}
+            close={() => setShowTopUpWalletModal(false)}
+          />
         </Route>
 
         <Route exact path='/products' render={()=>
