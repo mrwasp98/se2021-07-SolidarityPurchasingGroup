@@ -236,6 +236,11 @@
     text-decoration: none;
 }
 
+.myGif{
+    height: 750px;
+    width: 500px;
+}
+
 .loginButton {
     position: relative;
     left: 300px;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Container, Form, ListGroup, ListGroupItem, Alert, Row, Col, Button } from "react-bootstrap";
+import { Card, Container, Image, Form, ListGroup, ListGroupItem, Alert, Row, Col, Button } from "react-bootstrap";
 import React from 'react'
 import Select from 'react-select'
 import { getClients, topUpWallet } from "../API/API"
@@ -12,7 +12,7 @@ export default function Wallet(props) {
     const [error, setError] = useState("");
     const [amount, setAmount] = useState(0);
     const [completed, setCompleted] = useState(false);
-
+    const [showGif, setShowGif] = useState(false);
     //this use Effect is used to load the clients when the component is loaded
     useEffect(() => {
         if (props.dirtyClients) {
@@ -29,6 +29,18 @@ export default function Wallet(props) {
         }
     }, [props]);
 
+    useEffect(() => {
+        if (completed) {
+            setTimeout(() => {
+                setShowGif(true);
+                setTimeout(() => {
+                    setCompleted(false);
+                    setShowGif(false);
+                }, 3500);
+            }, 500);
+        }
+    }, [completed]);
+
     //this function is called only when the client is selected to load their orders
     function handlechange(event) {
         let client = props.clients.filter(c => c.userid == event.value)
@@ -37,16 +49,14 @@ export default function Wallet(props) {
     }
 
     const submit = async (event) => {
-        console.log("lol");
         event.preventDefault();
         const form = event.currentTarget;
         if (!form.checkValidity()) {
             form.reportValidity();
-            console.log("lol");
         } else {
-            console.log("qua");
             topUpWallet(selectedClient.userid, amount)
                 .then((data) => {
+                    setSelectedClient();
                     setAmount(0);
                     setCompleted(true);
                     props.setDirtyClients(true);
@@ -54,10 +64,19 @@ export default function Wallet(props) {
                 .catch((errorObj) => { setError(errorObj) });
         }
     };
+
     return (
         <>
             <Container className="justify-content-center mt-3" >
                 <h1 className="text-center"> Top-up a client's wallet</h1>
+                {(completed === true && !error) ? (
+                    <Alert className="alert-success" variant={"success"}>
+                        The wallet has been updated!
+                    </Alert>
+                ) : (error) ? (
+                    <Alert variant="danger">An error as occurred: {error}</Alert>
+                ) : ""
+                }
                 <Card className="text-left mt-4">
                     <ListGroup className="list-group-flush">
                         <ListGroupItem className="p-0">
@@ -76,58 +95,53 @@ export default function Wallet(props) {
                                     <Card.Header>Then, select the amount <b>to add</b>.</Card.Header>
                                     <Card.Body>
                                         <Row className="">
-                                            <Col md={6}>
-                                                {(completed === true) ? (
-                                                    <Alert className="alert-success" key={160} variant={"success"}>
-                                                        The wallet has been updated!
-                                                    </Alert>
-                                                ) : (
-                                                    ""
-                                                )}
-                                                <Form className="" onSubmit={(event) => submit(event)}>
-                                                    <Form.Group as={Row} className="mb-2" controlId="formBasicWallet">
-                                                        <Form.Label column sm="3">
-                                                            Actual wallet:
-                                                        </Form.Label>
-                                                        <Col sm="9">
-                                                            <Form.Control
-                                                                plaintext
-                                                                readOnly
-                                                                value={"€ " + selectedClient.wallet}
-                                                            />
-                                                        </Col>
-                                                    </Form.Group>
+                                            <Form className="" onSubmit={(event) => submit(event)}>
+                                                <Form.Group as={Row} className="m-2" controlId="formBasicWallet">
+                                                    <Form.Label column sm="2">
+                                                        Actual wallet:
+                                                    </Form.Label>
+                                                    <Col sm="9">
+                                                        <Form.Control
+                                                            plaintext
+                                                            readOnly
+                                                            value={"€ " + selectedClient.wallet}
+                                                        />
+                                                    </Col>
+                                                </Form.Group>
 
-                                                    <Form.Group as={Row} className="mb-3" controlId="formBasicAmount">
-                                                        <Form.Label column sm="3">
-                                                            Amount to add:
-                                                        </Form.Label>
-                                                        <Col sm="9">
-                                                            {"€ "}
-                                                            <input
-                                                                className="input-amount"
-                                                                type="number"
-                                                                min={0}
-                                                                max={1000}
-                                                                step={0.01}
-                                                                value={amount}
-                                                                onChange={e => setAmount(e.target.value)}
-                                                            />
-                                                        </Col>
-                                                    </Form.Group>
-                                                </Form>
-                                            </Col>
-                                            <Container className="d-flex justify-content-center">
-                                                <Button variant="yellow" type="submit" className="submit-btn" style={{ fontSize: "18px" }}>Submit</Button>
-                                            </Container>
+                                                <Form.Group as={Row} className="m-2" controlId="formBasicAmount">
+                                                    <Form.Label column sm="2">
+                                                        Amount to add:
+                                                    </Form.Label>
+                                                    <Col sm="9">
+                                                        {"€ "}
+                                                        <input
+                                                            className="input-amount"
+                                                            type="number"
+                                                            min={1}
+                                                            max={1000}
+                                                            step={0.01}
+                                                            value={amount}
+                                                            onChange={e => setAmount(e.target.value)}
+                                                        />
+                                                    </Col>
+                                                </Form.Group>
+                                                <Button variant="yellow" type="submit" className="submit-btn m-3" style={{ fontSize: "18px" }}>Confirm</Button>
+                                            </Form>
                                         </Row>
                                     </Card.Body>
                                 </ListGroupItem>
                             </>
                         }
-                        {error && <Alert variant="danger">An error as occurred: {error}</Alert>}
                     </ListGroup>
                 </Card>
+                {(showGif === true) ? (
+                    <Row className="justify-content-center mt-3">
+                        <Image src="img/salvadanaio.gif" fluid className="myGif" />
+                    </Row>
+                ) : (
+                    ""
+                )}
                 <HomeButton logged={props.logged} />
             </Container >
         </>
