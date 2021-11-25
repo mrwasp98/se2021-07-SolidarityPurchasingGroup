@@ -98,7 +98,7 @@ export default function Wallet(props) {
                                             <Form className="" onSubmit={(event) => submit(event)}>
                                                 <Form.Group as={Row} className="m-2" controlId="formBasicWallet">
                                                     <Form.Label column sm="2">
-                                                        Actual wallet:
+                                                        Actual wallet import:
                                                     </Form.Label>
                                                     <Col sm="9">
                                                         <Form.Control
