@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { Card, Container, Form, ListGroup, ListGroupItem, Alert } from "react-bootstrap";
+import { Card, Container, Form, ListGroup, ListGroupItem, Alert, Row, Col, Button } from "react-bootstrap";
 import React from 'react'
 import Select from 'react-select'
-import { getClients } from "../API/API"
+import { getClients, topUpWallet } from "../API/API"
 import HomeButton from "./HomeButton";
+import { Link } from "react-router-dom";
 
 export default function Wallet(props) {
     const [selectedClient, setSelectedClient] = useState(""); //this state controls the Select input
     const [options, setOptions] = useState([]); //this state is used to store the information in props.clients in the format that works with the Select 
     const [error, setError] = useState("");
     const [amount, setAmount] = useState(0);
+    const [completed, setCompleted] = useState(false);
 
     //this use Effect is used to load the clients when the component is loaded
     useEffect(() => {
@@ -34,6 +36,24 @@ export default function Wallet(props) {
         setAmount(0.00)
     }
 
+    const submit = async (event) => {
+        console.log("lol");
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            console.log("lol");
+        } else {
+            console.log("qua");
+            topUpWallet(selectedClient.userid, amount)
+                .then((data) => {
+                    setAmount(0);
+                    setCompleted(true);
+                    props.setDirtyClients(true);
+                })
+                .catch((errorObj) => { setError(errorObj) });
+        }
+    };
     return (
         <>
             <Container className="justify-content-center mt-3" >
@@ -55,17 +75,52 @@ export default function Wallet(props) {
                                 <ListGroupItem className="p-0">
                                     <Card.Header>Then, select the amount <b>to add</b>.</Card.Header>
                                     <Card.Body>
-                                        Actual amount: {selectedClient.wallet}<br/>
-                                        Amount to add:
-                                        <input
-                                            className="input-amount"
-                                            type="number"
-                                            min={0}
-                                            max={1000}
-                                            step={0.01}
-                                            value={amount}
-                                            onChange={e => setAmount(e.target.value)}
-                                        />
+                                        <Row className="">
+                                            <Col md={6}>
+                                                {(completed === true) ? (
+                                                    <Alert className="alert-success" key={160} variant={"success"}>
+                                                        The wallet has been updated!
+                                                    </Alert>
+                                                ) : (
+                                                    ""
+                                                )}
+                                                <Form className="" onSubmit={(event) => submit(event)}>
+                                                    <Form.Group as={Row} className="mb-2" controlId="formBasicWallet">
+                                                        <Form.Label column sm="3">
+                                                            Actual wallet:
+                                                        </Form.Label>
+                                                        <Col sm="9">
+                                                            <Form.Control
+                                                                plaintext
+                                                                readOnly
+                                                                value={"€ " + selectedClient.wallet}
+                                                            />
+                                                        </Col>
+                                                    </Form.Group>
+
+                                                    <Form.Group as={Row} className="mb-3" controlId="formBasicAmount">
+                                                        <Form.Label column sm="3">
+                                                            Amount to add:
+                                                        </Form.Label>
+                                                        <Col sm="9">
+                                                            {"€ "}
+                                                            <input
+                                                                className="input-amount"
+                                                                type="number"
+                                                                min={0}
+                                                                max={1000}
+                                                                step={0.01}
+                                                                value={amount}
+                                                                onChange={e => setAmount(e.target.value)}
+                                                            />
+                                                        </Col>
+                                                    </Form.Group>
+                                                </Form>
+                                            </Col>
+                                            <Container className="d-flex justify-content-center">
+                                                <Button variant="yellow" type="submit" className="submit-btn" style={{ fontSize: "18px" }}>Submit</Button>
+                                            </Container>
+                                        </Row>
                                     </Card.Body>
                                 </ListGroupItem>
                             </>

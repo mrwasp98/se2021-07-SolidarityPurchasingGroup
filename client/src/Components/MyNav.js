@@ -86,7 +86,7 @@ export default function MyNav(props) {
                     className="input-hour"
                     type="number"
                     min={0}
-                    max={24}
+                    max={23}
                     step={1}
                     value={hour}
                     onChange={e => setHour(e.target.value)}
