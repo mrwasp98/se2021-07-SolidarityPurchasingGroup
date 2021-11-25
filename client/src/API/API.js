@@ -255,6 +255,28 @@ const addUser = async (username, password, type) => {
   });
 }
 
+//this API fetches the all the usernames available
+const getUsernames = async () => {
+  return new Promise((resolve, reject) => {
+    fetch( '/api/usernames', {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        const error = new Error(`${res.status}: ${res.statusText}`);
+        error.response = res;
+        throw error;
+      }
+      resolve(res.json());
+    })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
+}
+
 /*----- USER APIs ---*/
 async function login(credentials) {
   let response = await fetch('/login', {
@@ -296,4 +318,4 @@ async function getUserInfo() {
 
 
 
-export { addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addUser}
+export { addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addUser, getUsernames}

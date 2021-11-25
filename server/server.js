@@ -355,3 +355,13 @@ app.post("/api/user",
     }
   }
 );
+
+//get orders with products given a clientid
+app.get("/api/usernames", async (req, res) => {
+  try {
+    const usernames = await userDao.getUsers();
+    res.status(200).json(usernames);
+  } catch (err) {
+    res.status(500).end();
+  }
+});

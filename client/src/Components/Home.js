@@ -1,4 +1,4 @@
-
+import { Link } from 'react-router-dom';
 import { Carousel, Container, Row, Col, Button } from "react-bootstrap";
 
 export default function Home(props) {
@@ -63,7 +63,9 @@ export default function Home(props) {
                         <h2>What are you waiting for?</h2>
                     </Col>
                     <Col sm={12} md={6}>
-                        <Button variant="yellow" size="lg">Join us!</Button>
+                        <Link to="/user">
+                            <Button variant="yellow" size="lg">Join us!</Button>
+                        </Link>
                     </Col>
                 </Row>
             </Container>

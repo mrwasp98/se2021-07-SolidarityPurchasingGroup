@@ -47,6 +47,25 @@ exports.getUser = (username, password) => {
     });
 };
 
+exports.getUsers = () => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT usename FROM user";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (rows == undefined) {
+                resolve({ error: 'Users not found'});
+            }
+            else {
+                const products = rows.map((u) => ({username: u.usename}));
+                resolve(products)
+            }
+        });
+    });
+};
+
 /** JUST FOR THE TESTS **/
 exports.deleteAllUsers = () => {
     return new Promise((resolve, reject) => {

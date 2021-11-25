@@ -8,6 +8,7 @@ import ProductsList from "./Components/ProductsList";
 import ProductRequest from "./Components/ProductRequest";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
+import RegisterUser from "./Components/RegisterUser";
 import { login, getUserInfo, logout, addPRequest, getClientById} from "./API/API.js";
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
@@ -226,6 +227,8 @@ function App() {
         
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} setUserId={setUserId} />} />
       
+        <Route exact path="/user" render={() => <RegisterUser />} />
+
       </Router>
     </>
   );
