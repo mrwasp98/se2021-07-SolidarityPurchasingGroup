@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import { Navbar, Container, Button, Modal, Row, Col, Table } from "react-bootstrap";
+import { Navbar, Container, Button, Modal, Row, Col, Table, ListGroup, Alert } from "react-bootstrap";
 import { useState } from "react";
 import { clock, iconStar, iconPerson, iconCalendar, iconCart, cartFill, cross, coin } from "./Icons";
 import Calendar from "react-calendar";
@@ -7,6 +7,7 @@ import "react-calendar/dist/Calendar.css";
 import { Link } from 'react-router-dom';
 import dayjs from "dayjs";
 import Clock from "./Clock";
+import { addPRequest } from '../API/API';
 
 import { Offcanvas } from "react-bootstrap";
 import React from 'react';
@@ -21,6 +22,7 @@ export default function MyNav(props) {
   var date = dayjs(props.date)
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
+  const [message, setMessage] = useState([]);
 
   const toggleShowHour = () => {
     setShow(false);
@@ -49,11 +51,14 @@ export default function MyNav(props) {
   }
 
   //when the basket button in clicked, the offcanvas will show up
-  const handleShowBasket = () => {
-    console.log("chiamata!")
-    props.setShowBasket(true)
-  }
+  const handleShowBasket = () => { props.setShowBasket(true) }
 
+  //this use effect is used to show a message when the order is sent
+  useEffect(() => {
+    setTimeout(() => {
+      setMessage([]);
+    }, 5000);
+  }, [message]);
 
   return (
     <>
@@ -137,10 +142,10 @@ export default function MyNav(props) {
           </Navbar.Text>
         </Container>
       </Navbar>
-
+      {message.length > 0 && <Alert variant={message[0]}>{message[1]}</Alert>}
       <BasketOffCanvas showBasket={props.showBasket} setShowBasket={props.setShowBasket}
         dirtyBasket={props.dirtyBasket} setDirtyBasket={props.setDirtyBasket} setDirtyQuantity={props.setDirtyQuantity}
-        userId={props.userId}
+        userId={props.userId} date={props.date} setMessage={setMessage} setDirtyAvailability={props.setDirtyAvailability}
       />
     </>
   );
@@ -153,6 +158,7 @@ function BasketOffCanvas(props) {
   //function called to close the offcanvas
   const handleClose = () => props.setShowBasket(false);
 
+  //this use effect is used to update the basket!
   useEffect(() => {
     if (props.dirtyBasket) {
       if (sessionStorage.length > 0) {
@@ -163,15 +169,58 @@ function BasketOffCanvas(props) {
 
   }, [props.dirtyBasket, props.setDirtyBasket])
 
+  //this use effect does the cleanup if the date changes
+  useEffect(()=>{
+      sessionStorage.removeItem("productList")
+      setElements([])
+  }, props.date ) 
+
+  //this is used to adjust the quantity if something is removed from the basket
   function handleClick(id, quantity) {
     if (sessionStorage.length > 0) {
       let list = JSON.parse(sessionStorage.getItem("productList"));
-      let info = [id, quantity ]
+      let info = [id, quantity]
       list = list.filter((el) => el.productid !== id)
       sessionStorage.setItem("productList", JSON.stringify(list))
       props.setDirtyBasket(true)
       props.setDirtyQuantity(info)
     }
+  }
+
+  function getTotal() {
+    if (sessionStorage.length > 0) {
+      let list = JSON.parse(sessionStorage.getItem("productList"));
+      return parseFloat(
+        list.reduce((partial_sum, product) => {
+          return partial_sum + parseFloat(product.subtotal)
+        }, 0)).toFixed(2)
+    }
+  }
+
+  function checkAndOrder() {
+    addPRequest(props.userId,
+      props.date,
+      null,
+      null,
+      null,
+      null,
+      "pending",
+      elements)
+      .then(result => {
+        if (result.status !== undefined && result.status === 406) {
+          props.setMessage(["danger", result.listofProducts.map(x => x.name + " ").concat("are not available")])
+        }
+        else if (result.status !== undefined && result.status === 200) {
+          props.setMessage(["success", "Order received!"])
+          sessionStorage.removeItem("productList")
+          setElements([])
+          props.setDirtyAvailability(true)
+        }
+      }).catch(err => { props.setMessage(["danger", err.message]) })
+      .finally(()=>{
+        props.setShowBasket(false)
+      })
+
   }
 
   return (
@@ -180,38 +229,51 @@ function BasketOffCanvas(props) {
         <Offcanvas.Title className="d-flex align-items-center" style={{ fontSize: "28px" }}>
           {cartFill} {'\u00A0'} This is your <strong>{'\u00A0'}basket</strong></Offcanvas.Title>
       </Offcanvas.Header>
-      <Offcanvas.Body>
+      <Offcanvas.Body style={{ maxHeight: "75vh" }}>
         <Offcanvas.Title style={{ fontSize: "30px", "fontWeight": "600" }}>Selected Items</Offcanvas.Title>
         {elements && elements.length > 0 ?
-          <Table hover size="sm" className="mt-3">
-            <tr>
-              <th>Name</th>
-              <th>Quantity</th>
-              <th>Subtotal</th>
-            </tr>
-
-            <tbody >
+          <>
+            <Table size="sm" className="mt-3" responsive>
+              <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+              </tr>
+            </Table>
+            <ListGroup variant="flush">
               {elements.map((el, index) => {
                 return (
-                  <tr key={index}>
-                    {Object.keys(el).map((val, i) => {
-                      return val !== "productid" && val !== "measure" && val !== "price" &&
-                        <td key={i}>{el[val]}</td>
-                    })}
-                    <Button onClick={() => { handleClick(el.productid, el.quantity) }}>{cross}</Button>
-                  </tr>
+                  <>
+                    <Row key={index} className="mt-2" style={{ borderBottom: "1px solid gray" }}>
+                      <Row className="p-0 m-0 w-100">
+                        <Col xs={5}>{el.name}</Col>
+                        <Col>{el.quantity} {el.measure} </Col>
+                        <Col><Button variant="flat" className="py-auto d-flex align-items-center" onClick={() => { handleClick(el.productid, el.quantity) }}>{cross}</Button></Col>
+                      </Row>
+                      <Row className="m-0 p-0 " style={{ fontSize: "0.7rem" }}>
+                        <span className="text-muted pb-1" style={{ position: "relative", left: "8rem", maxWidth: "7rem" }} > Subtotal: {parseFloat(el.subtotal).toFixed(2)} €</span>
+                      </Row>
+                    </Row>
+                  </>
                 )
-
               })}
+            </ListGroup>
+          </>
 
-            </tbody>
-          </Table>
           :
           <p className="mt-3">Your basket is currently empty.</p>
         }
-        <Button className="order-btn fixed-bottom " style={{position: "absolute", left:"8.5rem", bottom:"1rem"}} variant="yellow">
-          <span style={{position: "relative", bottom:"0.1rem"}}>{coin}</span> Check and order</Button>
-
+        <Container className="fixed-bottom" style={{ position: "absolute", maxHeigh: "25vh" }}>
+          {elements && elements.length > 0 &&
+            <Row style={{ position: "relative", bottom: "3rem", left: "0.5rem" }} className="mb-3 division">
+              <Col><strong>Total:</strong></Col>
+              <Col><strong>{getTotal()} €</strong></Col>
+            </Row>}
+          <Button className="order-btn" style={{ position: "absolute", left: "8.5rem", bottom: "1rem" }}
+            disabled={!(elements && elements.length > 0)} variant="yellow"
+            onClick={() => checkAndOrder()}>
+            <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Check and order
+          </Button>
+        </Container>
       </Offcanvas.Body>
     </Offcanvas>
   )

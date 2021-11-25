@@ -278,3 +278,7 @@
 .division {
     border-bottom: 2px solid #ec9a2a;
 }
+
+.noborderbottom {
+    border-bottom: none;
+}

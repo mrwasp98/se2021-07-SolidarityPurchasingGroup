@@ -69,6 +69,9 @@ export default function Home(props) {
                     </Col>
                 </Row>
             </Container>
+            <Container>
+                <img src="/carousel/divider.png" alt="divider" className="d-block mx-auto my-2 w-100 h-80 mb-4" />
+            </Container>
         </>
     )
 }

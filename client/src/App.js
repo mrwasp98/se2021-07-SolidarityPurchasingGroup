@@ -48,7 +48,7 @@ function App() {
   const [showBasket, setShowBasket] = useState(false); //this state controls the basked offcanvas
   const [dirtyBasket, setDirtyBasket] = useState(true); //this state controls the update of the basket in the offcanvas
   const [dirtyQuantity, setDirtyQuantity] = useState([]); //this state is used to fix the local available quantity once the elements are deleted from the basket
-
+  
   //this use effect checks whether the user logged in previously
   useEffect(() => {
     const checkAuth = async () => {
@@ -158,7 +158,9 @@ function App() {
             dirtyBasket={dirtyBasket} setDirtyBasket={setDirtyBasket}
             userId={userId}
             setDirtyQuantity={setDirtyQuantity}
-            className="myNav" />
+            className="myNav"
+            setDirtyAvailability={setDirtyAvailability} 
+          />
           <MyModal
             show={showTopUpWalletModal}
             close={() => setShowTopUpWalletModal(false)}
@@ -175,8 +177,8 @@ function App() {
             date={date}
             setDirtyBasket={setDirtyBasket}
             dirtyQuantity={dirtyQuantity} setDirtyQuantity={setDirtyQuantity}
-            />}
-        />
+            />
+          }/>
 
         <Route exact path='/' render={() => <Home />} />
         
