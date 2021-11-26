@@ -30,15 +30,15 @@ exports.deleteAllClients = () => {
 
 exports.getNewUserId = function () {
     return new Promise((resolve, reject) => {
-      let sql = 'SELECT MAX(userid) AS result FROM client';
-      db.get(sql, [], (err, row) => {
-        if (err)
-          reject(err);
-        if (!row.result) resolve(1)
-        else resolve(row.result + 1)
-      });
+        let sql = 'SELECT MAX(userid) AS result FROM client';
+        db.get(sql, [], (err, row) => {
+            if (err)
+                reject(err);
+            if (!row.result) resolve(1)
+            else resolve(row.result + 1)
+        });
     });
-  }
+}
 
 exports.insertClient = (client) => {
     return new Promise((resolve, reject) => {
@@ -61,7 +61,7 @@ exports.topUp = (clientid, ammount) => {
                 reject(err);
                 return;
             }
-            if(this.changes===0) resolve(false);
+            if (this.changes === 0) resolve(false);
             else resolve(true);
         });
     });
@@ -75,12 +75,7 @@ exports.getClientById = (clientid) => {
                 reject(err);
                 return;
             }
-            if (row == undefined) {
-                resolve({ error: 'Client not found for id '+ clientid });
-            }
-            else {
-                resolve(row);
-            }
+            resolve(row); //manage in server.js in row is undefined or not
         });
     });
 };

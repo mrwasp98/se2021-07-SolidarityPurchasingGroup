@@ -28,10 +28,10 @@
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
-### Get client info
+### Get client given his id
 * URL: `api/client/<id>`
 * HTTP method: GET
-* Description: get client info given his id
+* Description: get client given his id
 * Request body: None
 * Response body: a client
 ``` JSON
@@ -43,7 +43,7 @@
     "address": "Corso Duca degli Abruzzi, 21, Torino"
 }
 ```
-* Response: `200 OK`, `500 Internal Server Error` (generic error)
+* Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
 
 ### Add client
 * URL: `api/client`
@@ -68,14 +68,14 @@
 * Request body: None
 * Response body: a list of orders
 ``` JSON
-]
+[
 {
     "id":2,
     "userid":5,
     "creationdate":"2021-11-12",
     "claimdate":"2021-11-10 12:30",
     "confirmationdate":"2021-11-09",
-    "deliveryaddress":null,
+    "deliveryaddress":"null",
     "status":"completed"
 },
 {
@@ -84,7 +84,7 @@
     "creationdate":"2021-11-12",
     "claimdate":"2021-11-10 12:30",
     "confirmationdate":"2021-11-09",
-    "deliveryaddress":null,
+    "deliveryaddress":"null",
     "status":"completed"
 }
 ]
@@ -98,56 +98,56 @@
 * Request body: None
 * Response body: a list of orders with products
 ``` JSON
-]
+[
 {
-      id:1,
-      userid: 4,
-      creationdate: "2021-11-09",
-      claimdate: "2021-11-10 12:30",
-      confirmationdate: "2021-11-09",
-      deliveryaddress: null,
-      deliveryid: null,
-      status: "confirmed",
-      products:[
+      "id":1,
+      "userid": 4,
+      "creationdate": "2021-11-09",
+      "claimdate": "2021-11-10 12:30",
+      "confirmationdate": "2021-11-09",
+      "deliveryaddress": "null",
+      "deliveryid": "null",
+      "status": "confirmed",
+      "products":[
                     {
-                        productid: 1,
-                        productname: "Onion",
-                        quantity: 3,
-                        measure: "kg",
-                        price: 12.10
+                        "productid": 1,
+                        "productname": "Onion",
+                        "quantity": 3,
+                        "measure": "kg",
+                        "price": 12.10
                     }, 
                     {
-                        productid: 2,
-                        productname: "Apple",
-                        quantity: 3,
-                        measure: "kg",
-                        price: 12.10
+                        "productid": 2,
+                        "productname": "Apple",
+                        "quantity": 3,
+                        "measure": "kg",
+                        "price": 12.10
                     }
                ]
 },
 {
-      id:2,
-      userid: 4,
-      creationdate: "2021-11-09",
-      claimdate: "2021-11-10 12:30",
-      confirmationdate: "2021-11-09",
-      deliveryaddress: null,
-      deliveryid: null,
-      status: "confirmed",
-      products:[
+      "id":2,
+      "userid": 4,
+      "creationdate": "2021-11-09",
+      "claimdate": "2021-11-10 12:30",
+      "confirmationdate": "2021-11-09",
+      "deliveryaddress": "null",
+      "deliveryid": "null",
+      "status": "confirmed",
+      "products":[
                     {
-                        productid: 1,
-                        productname: "Onion",
-                        quantity: 3,
-                        measure: "kg",
-                        price: 12.10
+                        "productid": 1,
+                        "productname": "Onion",
+                        "quantity": 3,
+                        "measure": "kg",
+                        "price": 12.10
                     }, 
                     {
-                        productid: 2,
-                        productname: "Apple",
-                        quantity: 3,
-                        measure: "kg",
-                        price: 12.10
+                        "productid": 2,
+                        "productname": "Apple",
+                        "quantity": 3,
+                        "measure": "kg",
+                        "price": 12.10
                     }
                ]
 }
@@ -237,26 +237,26 @@
     "creationdate":"2021-11-12",
     "claimdate":"2021-11-10 12:30",
     "confirmationdate":"2021-11-09",
-    "deliveryaddress":null,
-    deliveryid: null,
+    "deliveryaddress":"null",
+    "deliveryid": "null",
     "status":"pending",
     "products":
         [
             {
-            productid: 1, 
-            name: "Apple", 
-            quantity: 2, 
-            measure: "kg", 
-            price: 12, 
-            total: [product.price * product.quantity]
+            "productid": 1, 
+            "name": "Apple", 
+            "quantity": 2, 
+            "measure": "kg", 
+            "price": 12, 
+            "total": "product.price * product.quantity"
             },
             {
-            productid: 2, 
-            name: "Orange", 
-            quantity: 1, 
-            measure: "kg", 
-            price: 12, 
-            total: [product.price * product.quantity]
+            "productid": 2, 
+            "name": "Orange", 
+            "quantity": 1, 
+            "measure": "kg", 
+            "price": 12, 
+            "total": "product.price * product.quantity"
             }
         ]
 }
