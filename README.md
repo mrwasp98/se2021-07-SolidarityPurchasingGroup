@@ -31,52 +31,191 @@
 * Request body: None
 * Response body: an array with all the clients,
 ``` JSON
-[{
+[
+{
     "userid": 0, 
     "name": "John", 
     "surname": "Doe", 
     "wallet": 50.30, 
     "address": "Corso Duca degli Abruzzi, 21, Torino"
-}]
+},
+{
+    "userid": 1, 
+    "name": "Neil", 
+    "surname": "Watts", 
+    "wallet": 24.12, 
+    "address": "Corso Como, 2, Milano"
+}
+]
 ```
-* Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
+### Get client info
+* URL: `api/client/<id>`
+* HTTP method: GET
+* Description: get client info given his id
+* Request body: None
+* Response body: a client
+``` JSON
+{
+    "userid": 0, 
+    "name": "John", 
+    "surname": "Doe", 
+    "wallet": 50.30, 
+    "address": "Corso Duca degli Abruzzi, 21, Torino"
+}
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
 
 ### Add client
-* URL: `api/clients`
+* URL: `api/client`
 * HTTP method: POST
 * description: add a new client with a wallet and an address
 * Request body:
 ``` JSON
-[{
+{
     "name": "Grrmafa", 
     "surname": "Idcamcv", 
+    "email": "prova@prova.com",
     "wallet": 50.30, 
     "address": "Corso Duca degli Abruzzi, 21, Torino"
-}]
+}
 ```
-* Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
+* Response: `200 OK`, `503 Internal Server Error` (generic error),  `422 Unprocessable Entity` (wrong parameters)
+
+### Get client orders
+* URL: `api/orders?clientid=<id>`
+* HTTP method: GET
+* Description: get client orders given his id
+* Request body: None
+* Response body: a list of orders
+``` JSON
+]
+{
+    "id":2,
+    "userid":5,
+    "creationdate":"2021-11-12",
+    "claimdate":"2021-11-10 12:30",
+    "confirmationdate":"2021-11-09",
+    "deliveryaddress":null,
+    "status":"completed"
+},
+{
+    "id":3,
+    "userid":5,
+    "creationdate":"2021-11-12",
+    "claimdate":"2021-11-10 12:30",
+    "confirmationdate":"2021-11-09",
+    "deliveryaddress":null,
+    "status":"completed"
+}
+]
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
+### Get client orders with products
+* URL: `api/completeOrders?clientid=<id>`
+* HTTP method: GET
+* Description: get client orders with products given his id
+* Request body: None
+* Response body: a list of orders with products
+``` JSON
+]
+{
+      id:1,
+      userid: 4,
+      creationdate: "2021-11-09",
+      claimdate: "2021-11-10 12:30",
+      confirmationdate: "2021-11-09",
+      deliveryaddress: null,
+      deliveryid: null,
+      status: "confirmed",
+      products:[
+                    {
+                        productid: 1,
+                        productname: "Onion",
+                        quantity: 3,
+                        measure: "kg",
+                        price: 12.10
+                    }, 
+                    {
+                        productid: 2,
+                        productname: "Apple",
+                        quantity: 3,
+                        measure: "kg",
+                        price: 12.10
+                    }
+               ]
+},
+{
+      id:2,
+      userid: 4,
+      creationdate: "2021-11-09",
+      claimdate: "2021-11-10 12:30",
+      confirmationdate: "2021-11-09",
+      deliveryaddress: null,
+      deliveryid: null,
+      status: "confirmed",
+      products:[
+                    {
+                        productid: 1,
+                        productname: "Onion",
+                        quantity: 3,
+                        measure: "kg",
+                        price: 12.10
+                    }, 
+                    {
+                        productid: 2,
+                        productname: "Apple",
+                        quantity: 3,
+                        measure: "kg",
+                        price: 12.10
+                    }
+               ]
+}
+]
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
 
 ### Get available products
-* URL: `api/products`
+* URL: `api/products/<date>`
 * HTTP method: GET
-* Description: get from the table of all products those are available with a filtering query
+* Description: get from the table of all products which are available with a filtering query
 * Request body: None
-* Response body: an array with all available products,
+* Response body: an array with all available products given a date,
 ``` JSON
-[{
-    "id": 0, 
-    "name": "Artichoke", 
-    "farmerid": 0, 
-    "price": 2, 
-    "measure": "kg", 
-    "category": "Vegetables", 
-    "typeofproduction": "", 
-    "picture": ""
-}]
+[
+{
+    "id":46,
+    "name":"Garlic",
+    "description":"A description.",
+    "farmerid":2,
+    "price":12,
+    "measure":"kg",
+    "category":"Fruit and Vegetables",
+    "typeofproduction":"Biological agriculture",
+    "picture":"/img/garlic.png",
+    "dateavailability":"2021-11-21",
+    "quantity":12
+},
+{
+    "id":47,
+    "name":"Onion",
+    "description":"A description.",
+    "farmerid":2,
+    "price":12,
+    "measure":"kg",
+    "category":"Fruit and Vegetables",
+    "typeofproduction":"Biological agriculture",
+    "picture":"/img/onion.png",
+    "dateavailability":"2021-11-23",
+    "quantity":12
+}
+]
 ```
-* Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
 
-### Hand out product
+### Update order status
 * URL: `api/orders/{orderid}`
 * HTTP method: PUT
 * Request body:
@@ -85,9 +224,66 @@
     "status": "completed"
 }]
 ```
-* Description: send to backend the requestid 
+* Description: update an order status given the order's id 
 * Request parameters: orderid
-* Response: `200 OK`, `err: PUT error` (generic error)
+* Response: `200 OK`, `503 Service Unavailable` (generic error), `404 Not Found` (not present or unavailable)
+
+### Get all farmers' names (ACTUALLY it gives place and userid!!!)
+* URL: `api/farmers`
+* HTTP method: GET
+* Description: ---
+* Request body: None
+* Response body:
+``` JSON
+[
+{
+"place":"Cooperativa di Dr. Jekyll",
+"userid":1
+},
+{
+"place":"Azienda Agricola di Mr. Hyde",
+"userid":2
+}
+]
+```
+* Response: `500 Internal Server Error` (generic error), //TODO add 200 OK ?
+
+### Post the request to create an order by shop employee //TODO check if it corresponds with the actual implementation
+* URL: `api/requests`
+* HTTP method: POST
+* description: creates an order with its orderlines and updates quantities
+* Request body:
+``` JSON
+{
+    "userid":5,
+    "creationdate":"2021-11-12",
+    "claimdate":"2021-11-10 12:30",
+    "confirmationdate":"2021-11-09",
+    "deliveryaddress":null,
+    deliveryid: null,
+    "status":"pending",
+    "products":
+        [
+            {
+            productid: 1, 
+            name: "Apple", 
+            quantity: 2, 
+            measure: "kg", 
+            price: 12, 
+            total: [product.price * product.quantity]
+            },
+            {
+            productid: 2, 
+            name: "Orange", 
+            quantity: 1, 
+            measure: "kg", 
+            price: 12, 
+            total: [product.price * product.quantity]
+            }
+        ]
+}
+```
+* Response: `200 OK`, `503 Internal Server Error` (generic error),  `406 Unprocessable Entity` (some products not available)
 
 ### Top up wallet
 * URL: `api/clients/{clientid}/?ammount={ammount}`
@@ -100,7 +296,7 @@
 ```
 * Description: Top up the wallet of the given client adding the given ammount 
 * Request parameters: clientid, ammount
-* Response: `200 OK`, `err: PUT error` (generic error)
+* Response: `200 OK`, `503 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
 
 ### Add user
 * URL: `api/user`
@@ -114,7 +310,7 @@
     "type": "farmer"
 }]
 ```
-* Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
+* Response: `200 OK`, `503 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable) (ACTUALLY it gives 422)
 
 ## USER API
 
