@@ -28,10 +28,10 @@
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
-### Get client info
+### Get client given his id
 * URL: `api/client/<id>`
 * HTTP method: GET
-* Description: get client info given his id
+* Description: get client given his id
 * Request body: None
 * Response body: a client
 ``` JSON
@@ -43,7 +43,7 @@
     "address": "Corso Duca degli Abruzzi, 21, Torino"
 }
 ```
-* Response: `200 OK`, `500 Internal Server Error` (generic error)
+* Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
 
 ### Add client
 * URL: `api/client`
