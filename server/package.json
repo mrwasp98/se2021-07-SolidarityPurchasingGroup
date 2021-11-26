@@ -14,9 +14,7 @@
       "/node_modules/",
       "/tests/"
     ],
-    "testPathIgnorePatterns": [
-      
-    ]
+    "testPathIgnorePatterns": []
   },
   "author": "",
   "license": "ISC",
