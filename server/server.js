@@ -257,6 +257,7 @@ app.post("/api/requests", async (req, res) => {
         listofProducts: listProductsNotAvailability,
       });
   } catch (err) {
+    console.log(err)
     res.status(503).json({ error: `Database error ${err}.` });
   }
 });
