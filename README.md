@@ -75,7 +75,7 @@
     "creationdate":"2021-11-12",
     "claimdate":"2021-11-10 12:30",
     "confirmationdate":"2021-11-09",
-    "deliveryaddress":null,
+    "deliveryaddress":"null",
     "status":"completed"
 },
 {
@@ -84,7 +84,7 @@
     "creationdate":"2021-11-12",
     "claimdate":"2021-11-10 12:30",
     "confirmationdate":"2021-11-09",
-    "deliveryaddress":null,
+    "deliveryaddress":"null",
     "status":"completed"
 }
 ]
@@ -100,54 +100,54 @@
 ``` JSON
 ]
 {
-      id:1,
-      userid: 4,
-      creationdate: "2021-11-09",
-      claimdate: "2021-11-10 12:30",
-      confirmationdate: "2021-11-09",
-      deliveryaddress: null,
-      deliveryid: null,
-      status: "confirmed",
-      products:[
+      "id":1,
+      "userid": 4,
+      "creationdate": "2021-11-09",
+      "claimdate": "2021-11-10 12:30",
+      "confirmationdate": "2021-11-09",
+      "deliveryaddress": "null",
+      "deliveryid": "null",
+      "status": "confirmed",
+      "products":[
                     {
-                        productid: 1,
-                        productname: "Onion",
-                        quantity: 3,
-                        measure: "kg",
-                        price: 12.10
+                        "productid": 1,
+                        "productname": "Onion",
+                        "quantity": 3,
+                        "measure": "kg",
+                        "price": 12.10
                     }, 
                     {
-                        productid: 2,
-                        productname: "Apple",
-                        quantity: 3,
-                        measure: "kg",
-                        price: 12.10
+                        "productid": 2,
+                        "productname": "Apple",
+                        "quantity": 3,
+                        "measure": "kg",
+                        "price": 12.10
                     }
                ]
 },
 {
-      id:2,
-      userid: 4,
-      creationdate: "2021-11-09",
-      claimdate: "2021-11-10 12:30",
-      confirmationdate: "2021-11-09",
-      deliveryaddress: null,
-      deliveryid: null,
-      status: "confirmed",
-      products:[
+      "id":2,
+      "userid": 4,
+      "creationdate": "2021-11-09",
+      "claimdate": "2021-11-10 12:30",
+      "confirmationdate": "2021-11-09",
+      "deliveryaddress": "null",
+      "deliveryid": "null",
+      "status": "confirmed",
+      "products":[
                     {
-                        productid: 1,
-                        productname: "Onion",
-                        quantity: 3,
-                        measure: "kg",
-                        price: 12.10
+                        "productid": 1,
+                        "productname": "Onion",
+                        "quantity": 3,
+                        "measure": "kg",
+                        "price": 12.10
                     }, 
                     {
-                        productid: 2,
-                        productname: "Apple",
-                        quantity: 3,
-                        measure: "kg",
-                        price: 12.10
+                        "productid": 2,
+                        "productname": "Apple",
+                        "quantity": 3,
+                        "measure": "kg",
+                        "price": 12.10
                     }
                ]
 }
@@ -237,8 +237,8 @@
     "creationdate":"2021-11-12",
     "claimdate":"2021-11-10 12:30",
     "confirmationdate":"2021-11-09",
-    "deliveryaddress":null,
-    deliveryid: null,
+    "deliveryaddress":"null",
+    deliveryid: "null",
     "status":"pending",
     "products":
         [
