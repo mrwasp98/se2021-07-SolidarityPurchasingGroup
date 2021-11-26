@@ -68,7 +68,7 @@
 * Request body: None
 * Response body: a list of orders
 ``` JSON
-]
+[
 {
     "id":2,
     "userid":5,
@@ -98,7 +98,7 @@
 * Request body: None
 * Response body: a list of orders with products
 ``` JSON
-]
+[
 {
       "id":1,
       "userid": 4,
@@ -238,25 +238,25 @@
     "claimdate":"2021-11-10 12:30",
     "confirmationdate":"2021-11-09",
     "deliveryaddress":"null",
-    deliveryid: "null",
+    "deliveryid": "null",
     "status":"pending",
     "products":
         [
             {
-            productid: 1, 
-            name: "Apple", 
-            quantity: 2, 
-            measure: "kg", 
-            price: 12, 
-            total: [product.price * product.quantity]
+            "productid": 1, 
+            "name": "Apple", 
+            "quantity": 2, 
+            "measure": "kg", 
+            "price": 12, 
+            "total": "product.price * product.quantity"
             },
             {
-            productid: 2, 
-            name: "Orange", 
-            quantity: 1, 
-            measure: "kg", 
-            price: 12, 
-            total: [product.price * product.quantity]
+            "productid": 2, 
+            "name": "Orange", 
+            "quantity": 1, 
+            "measure": "kg", 
+            "price": 12, 
+            "total": "product.price * product.quantity"
             }
         ]
 }
