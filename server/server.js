@@ -100,7 +100,10 @@ app.get("/api/clients", async (req, res) => {
 app.get("/api/client/:clientid", async (req, res) => {
   clientDao
     .getClientById(req.params.clientid)
-    .then((client) => res.json(client))
+    .then((client) => {
+      if (client === undefined) res.status(404).end();
+      else res.status(200).json(client);
+    })
     .catch(() => res.status(500).end());
 });
 
@@ -266,7 +269,7 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
   // `req.user` contains the authenticated user.
   res.json(req.user);
 });
- 
+
 //DELETE /logout
 //logout
 app.delete("/logout", (req, res) => {
