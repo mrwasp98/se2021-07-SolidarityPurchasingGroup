@@ -101,7 +101,7 @@ const getClientById = async (clientid) => {
 }
 
 /** STORY 2 **/
-const addClient = async (name, surname, email, wallet, address) => {
+const addClient = async (name, surname, email, wallet, address, password, type) => {
   return new Promise((resolve, reject) => {
     fetch('/api/client', {
       method: "POST",
@@ -111,9 +111,11 @@ const addClient = async (name, surname, email, wallet, address) => {
       body: JSON.stringify({
         name: name,
         surname: surname,
-        email: email,
+        username: email,
         wallet: wallet,
-        address: address
+        address: address,
+        password: password,
+        type: type
       })
     })
       .then((res) => {
@@ -228,9 +230,9 @@ async function topUpWallet(clientid, ammount) {
 };
 
 /** STORY 6 **/
-const addUser = async (username, password, type) => {
+const addShopEmployee = async (username, password) => {
   return new Promise((resolve, reject) => {
-    fetch('/api/user', {
+    fetch('/api/shopemployee', {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -238,7 +240,64 @@ const addUser = async (username, password, type) => {
       body: JSON.stringify({
         username: username,
         password: password,
-        type: type
+        type: "shopemployee"
+      })
+    })
+      .then((res) => {
+        if (!res.ok) {
+          const error = new Error(`${res.status}: ${res.statusText}`);
+          error.response = res;
+          throw error;
+        }
+        resolve(res.json());
+      })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
+}
+
+const addFarmer = async (username, password, name, surname, place, address) => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/farmer', {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        name: name, 
+        surname: surname,
+        place: place,
+        address: address,
+        type: "farmer"
+      })
+    })
+      .then((res) => {
+        if (!res.ok) {
+          const error = new Error(`${res.status}: ${res.statusText}`);
+          error.response = res;
+          throw error;
+        }
+        resolve(res.json());
+      })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
+}
+
+const updatePassword = async (password, id) => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/password', {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        password: password,
+        id: id
       })
     })
       .then((res) => {
@@ -318,4 +377,4 @@ async function getUserInfo() {
 
 
 
-export { addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addUser, getUsernames}
+export { addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword}

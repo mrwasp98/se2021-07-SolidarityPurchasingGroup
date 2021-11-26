@@ -17,7 +17,7 @@ export default function Register(props) {
     if (!form.checkValidity()) {
       form.reportValidity();
     } else {
-      addClient(name, surname, email, wallet, address)
+      addClient(name, surname, email, wallet, address, "abc123","client-prov")
         .then((data) => {
           setInserted(true);
           setName("");

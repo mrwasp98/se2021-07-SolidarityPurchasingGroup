@@ -112,10 +112,12 @@ app.post(
   "/api/client",
   [
     check(["wallet"]).isFloat(),
-    check(["email"]).isEmail(),
+    check(["username"]).isString().isLength({ min: 2 }),
     check(["name"]).isString().isLength({ min: 2 }),
     check(["surname"]).isString().isLength({ min: 2 }),
     check(["address"]).isLength({ min: 3 }),
+    check(["password"]).isString().isLength({ min: 6 }),
+    check(["type"]).isString().isLength({ min: 6 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -125,9 +127,9 @@ app.post(
         .json({ errors: errors.array() } + console.log(errors.array()));
     }
     const user = {
-      username: req.body.email,
-      password: "abc123",
-      type: "client",
+      username: req.body.username,
+      password: req.body.password,
+      type: req.body.type,
     };
     const userId = await userDao.insertUser(user);
 
@@ -320,8 +322,8 @@ app.put("/api/clients/:clientid", async (req, res) => {
   }
 });
 
-//Post a new user
-app.post("/api/user",
+//Post a new shop employee
+app.post("/api/shopemployee",
   [
     check(["username"]).isString().isLength({ min: 2 }),
     check(["password"]).isString().isLength({ min: 6 }),
@@ -360,3 +362,72 @@ app.get("/api/usernames", async (req, res) => {
     res.status(500).end();
   }
 });
+
+//insert new farmer
+app.post(
+  "/api/farmer",
+  [
+    check(["place"]).isString().isLength({ min: 2 }),
+    check(["username"]).isString().isLength({ min: 2 }),
+    check(["name"]).isString().isLength({ min: 2 }),
+    check(["surname"]).isString().isLength({ min: 2 }),
+    check(["address"]).isLength({ min: 3 }),
+    check(["password"]).isString().isLength({ min: 6 }),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(422)
+        .json({ errors: errors.array() } + console.log(errors.array()));
+    }
+    const user = {
+      username: req.body.username,
+      password: req.body.password,
+      type: req.body.type,
+    };
+    const userId = await userDao.insertUser(user);
+
+    const client = {
+      userid: userId,
+      name: req.body.name,
+      surname: req.body.surname,
+      place: req.body.place,
+      address: req.body.address,
+    };
+
+    try {
+      const result = await farmerDao.insertFarmer(client);
+      res.json(result);
+    } catch (err) {
+      res.status(503).json({
+        error: `Database error during the creation of new client: ${err}.`,
+      });
+    }
+  }
+);
+
+//insert new farmer
+app.post(
+  "/api/password",
+  [
+    check(["id"]).isInt(),
+    check(["password"]).isString().isLength({ min: 6 }),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(422)
+        .json({ errors: errors.array() } + console.log(errors.array()));
+    }
+    try {
+      const result = await userDao.updatePassword(req.body.password, req.body.id);
+      res.json(result);
+    } catch (err) {
+      res.status(503).json({
+        error: `Database error during the update of the password: ${err}.`,
+      });
+    }
+  }
+);

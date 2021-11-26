@@ -49,7 +49,7 @@ exports.getUser = (username, password) => {
 
 exports.getUsers = () => {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT usename FROM user";
+        const sql = "SELECT * FROM user";
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
@@ -59,8 +59,8 @@ exports.getUsers = () => {
                 resolve({ error: 'Users not found'});
             }
             else {
-                const products = rows.map((u) => ({username: u.usename}));
-                resolve(products)
+                const usernames = rows.map((u) => ({username: u.usename, id: u.id, type: u.type}))
+                resolve(usernames)
             }
         });
     });
@@ -94,3 +94,18 @@ exports.insertUser =  (user) => {
     });
 };
 /** JUST FOR THE TESTS **/
+
+exports.updatePassword = (password, id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE user SET password=? WHERE id == ?';
+        const hash = bcrypt.hashSync(password, saltRounds);
+        db.run(sql, [hash, id], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (this.changes === 0) resolve(false);
+            else resolve(true);
+        });
+    });
+};
