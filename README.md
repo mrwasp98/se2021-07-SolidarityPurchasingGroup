@@ -2,28 +2,6 @@
 
 ## API
 
-### Add new product request
-* URL: `/api/requests`
-* HTTP method: POST
-* description: add a new product request of a client
-* Request body: 
-``` JSON
-[{
-    "userid": 0, 
-    "creationdate": "01/01/2021", 
-    "claimdate": "01/02/2021", 
-    "confirmationdate": "", 
-    "deliveryaddress": "Corso Duca degli Abruzzi, 21, Torino", 
-    "deliveryid": 1, 
-    "status":"", 
-    "productid": 0, 
-    "quantity": 2, 
-    "price": "3,50"
-}]
-
-```
-* Response: `200 OK`, `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
-
 ### Get available clients
 * URL: `api/clients`
 * HTTP method: GET
