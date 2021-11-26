@@ -22,7 +22,6 @@ export default function OrderToggle(props) {
         setError("");
         let res = await handOutProduct(props.chiave)
         if (res.message) {
-            console.log(res.message)
             setError(res.message)
         } else {
             setCompleted(true);

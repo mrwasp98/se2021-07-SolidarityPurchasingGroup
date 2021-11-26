@@ -24,7 +24,6 @@ export default function ProductsList(props) {
             setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
             getAvailableProducts(props.date)
                 .then((res) => {
-                    console.log(res)
                     props.setProducts(res)
                     props.setDirtyAvailability(false)
                     getFarmers()
