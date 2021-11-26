@@ -142,7 +142,7 @@ export default function MyNav(props) {
           </Navbar.Text>
         </Container>
       </Navbar>
-      {message.length > 0 && <Alert variant={message[0]}>{message[1]}</Alert>}
+      {message.length > 0 && <Alert className="m-0 w-100" style={{position:"absolute", zIndex:"2"}} variant={message[0]}>{message[1]}</Alert>}
       <BasketOffCanvas showBasket={props.showBasket} setShowBasket={props.setShowBasket}
         dirtyBasket={props.dirtyBasket} setDirtyBasket={props.setDirtyBasket} setDirtyQuantity={props.setDirtyQuantity}
         userId={props.userId} date={props.date} setMessage={setMessage} setDirtyAvailability={props.setDirtyAvailability}
@@ -170,11 +170,11 @@ function BasketOffCanvas(props) {
   }, [props.dirtyBasket, props.setDirtyBasket])
 
   //this use effect does the cleanup if the date changes
-  /*   useEffect(()=>{
-        sessionStorage.removeItem("productList")
-        setElements([])
-    }, props.date ) 
-   */
+  useEffect(() => {
+    sessionStorage.removeItem("productList")
+    setElements([])
+  }, [props.date])
+
   //this is used to adjust the quantity if something is removed from the basket
   function handleClick(id, quantity) {
     if (sessionStorage.length > 0) {
@@ -248,7 +248,7 @@ function BasketOffCanvas(props) {
                         <Col xs={5}>{el.name}</Col>
                         <Col style={{ paddingLeft: "0px" }}>{el.quantity} {el.measure} </Col>
                         <Col className="text-center">
-                          <Button variant="flat" className="py-0 m-0" style={{ position: "relative", bottom:"0.2rem" }} onClick={() => { handleClick(el.productid, el.quantity) }}>{cross}</Button>
+                          <Button variant="flat" className="py-0 m-0" style={{ position: "relative", bottom: "0.2rem" }} onClick={() => { handleClick(el.productid, el.quantity) }}>{cross}</Button>
                         </Col>
                       </Row>
                       <Row className="m-0 p-0 " style={{ fontSize: "0.7rem" }}>

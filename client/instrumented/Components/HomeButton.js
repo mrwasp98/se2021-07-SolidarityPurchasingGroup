@@ -8,8 +8,6 @@ export default function HomeButton(props) {
     const history = useHistory();
 
     const handleclick = ()=>{
-        console.log("chiamata")
-        console.log(props.logged)
         if(props.logged === "shopemployee"){
             history.push("/employeehome")
         }else if(props.logged === "client"){
