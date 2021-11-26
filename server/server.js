@@ -151,7 +151,7 @@ app.post(
 app.get("/api/orders", async (req, res) => {
   orderDao
     .getOrders(req.query.clientid)
-    .then((order) => res.json(order))
+    .then((orders) => res.status(200).json(orders))
     .catch(() => res.status(500).end());
 });
 
@@ -177,7 +177,7 @@ app.get("/api/products/:date", async (req, res) => {
     .catch(() => res.status(500).end());
 });
 
-//Get all farmers name
+//Get all farmers name (actually it gives place and userid)
 app.get("/api/farmers", async (req, res) => {
   farmerDao
     .getFarmers()
@@ -266,7 +266,7 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
   // `req.user` contains the authenticated user.
   res.json(req.user);
 });
-
+ 
 //DELETE /logout
 //logout
 app.delete("/logout", (req, res) => {
@@ -315,14 +315,6 @@ app.put("/api/clients/:clientid", async (req, res) => {
   } catch (err) {
     res.status(503).json({ error: `Database error ${err}.` });
   }
-});
-
-//get client by id
-app.get("/api/client/:clientid", async (req, res) => {
-  clientDao
-    .getClientById(req.params.clientid)
-    .then((client) => res.json(client))
-    .catch(() => res.status(500).end());
 });
 
 //Post a new user
