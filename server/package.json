@@ -15,9 +15,7 @@
       "/node_modules/",
       "/tests/"
     ],
-    "testPathIgnorePatterns": [
-      
-    ]
+    "testPathIgnorePatterns": []
   },
   "author": "",
   "license": "ISC",
@@ -34,6 +32,7 @@
   },
   "devDependencies": {
     "jest": "^27.3.1",
+    "jest-sonar-reporter": "^2.0.0",
     "supertest": "^6.1.6"
   }
 }
