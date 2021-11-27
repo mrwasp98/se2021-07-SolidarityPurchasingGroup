@@ -134,9 +134,11 @@ export default function MyNav(props) {
               <>
                 {" "}
                 <Link to="/login">
-                  <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-login">Login</Button>
+                  <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-login loginLink">Login</Button>
                 </Link>
+                <Link to="/user">
                 <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-reg">Register</Button>{" "}
+                </Link>
               </>
             )}{" "}
           </Navbar.Text>

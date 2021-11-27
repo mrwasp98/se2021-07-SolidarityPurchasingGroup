@@ -1,6 +1,6 @@
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { addUser, getUsernames } from "../API/API.js";
+import { addShopEmployee, getUsernames } from "../API/API.js";
 import { iconStar } from "./Icons";
 import { Link } from "react-router-dom";
 
@@ -73,7 +73,7 @@ export default function Register(props) {
 
       //console.log(valid);
       if (valid === true) {
-        addUser(username, password, type).then(() => {
+        addShopEmployee(username, password, type).then(() => {
           setInserted(true);
           setError(false);
         });
