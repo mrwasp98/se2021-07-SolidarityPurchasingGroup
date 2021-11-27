@@ -8,6 +8,8 @@ import ProductsList from "./Components/ProductsList";
 import ProductRequest from "./Components/ProductRequest";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
+import Type from "./Components/Type";
+import UpdatePassword from "./Components/UpdatePassword";
 import RegisterUser from "./Components/RegisterUser";
 import { login, getUserInfo, logout, addPRequest, getClientById } from "./API/API.js";
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
@@ -202,7 +204,15 @@ function App() {
 
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} setUserId={setUserId} />} />
 
-        <Route exact path="/user" render={() => <RegisterUser />} />
+        <Route exact path="/user" render={() => <Type/>} />
+
+        <Route exact path="/client" render={() => <RegisterUser st={1} type={"client"}/>} />
+
+        <Route exact path="/farmer" render={() => <RegisterUser st={2} type={"farmer"}/>} />
+
+        <Route exact path="/shopemployee" render={() => <RegisterUser st={3} type={"shopemployee"}/>} />
+
+        <Route exact path="/clientpassword" render={() => <UpdatePassword/>} />
 
       </Router>
     </>

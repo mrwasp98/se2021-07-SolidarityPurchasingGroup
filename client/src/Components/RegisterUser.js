@@ -1,106 +1,345 @@
-import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
-import { useState, useEffect } from "react";
-import { addShopEmployee, getUsernames } from "../API/API.js";
+import { Container, Form, Button, Row, Col, Alert, Card, ButtonGroup, Table } from "react-bootstrap";
+import { addShopEmployee, getUsernames, addClient, addFarmer } from "../API/API.js";
 import { iconStar } from "./Icons";
 import { Link } from "react-router-dom";
+import React, { Component } from 'react';
 
 function isAlphaNumeric(str) {
   var code, i, len, nNum = 0, nLett = 0;
 
   for (i = 0, len = str.length; i < len; i++) {
-      code = str.charCodeAt(i);
-      if (code > 47 && code < 58) {
-          nNum++;
-      }
-      if ((code > 64 && code < 91) || (code > 96 && code < 123)) {
-          nLett++;
-      }
+    code = str.charCodeAt(i);
+    if (code > 47 && code < 58) {
+      nNum++;
+    }
+    if ((code > 64 && code < 91) || (code > 96 && code < 123)) {
+      nLett++;
+    }
   }
   if (nNum === 0 || nLett === 0) {
-      return false;
+    return false;
   }
   return true;
 };
 
-export default function Register(props) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [cpassword, setCPassword] = useState("");
-  const [type, setType] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [inserted, setInserted] = useState(false);
-  const [error, setError] = useState(false);
-  const [usernames, setUsernames] = useState([]);
+class RegisterUser extends Component {
 
-  const submit = async (event) => {
+  state = {
+    step: this.props.st,
+    name: '',
+    surname: '',
+    username: '',
+    password: '',
+    cpassword: '',
+    address: '',
+    place: '',
+    wallet: 0,
+    type: this.props.type,
+    error: false,
+    messageError: '',
+    inserted: false,
+    usernames: []
+  }
+
+  submit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (!form.checkValidity()) {
       form.reportValidity();
     } else {
 
-      let valid=true;
-      //console.log(usernames);
-      //console.log(type);
-      //Control if has benn selected a type
-      if(type==="type" || type===""){
-          valid=false;
-          setErrorMessage("Select an account type");
-          setError(true);
-          //console.log("1")
+      let valid = true;
+      //Control if has been selected a type
+      //console.log(this.state.username);
+      //console.log(this.state.name);
+      //console.log(this.state.password);
+      //console.log(this.state.cpassword);
+      //console.log(this.state.usernames);
+      //console.log(this.state.type);
+      if (this.state.password !== this.state.cpassword) {
+        valid = false;
+        this.setState({ error: true })
+        this.setState({ messageError: "Passwords are not equal" })
+        console.log("Err");
+      } else if (this.state.password === '' || this.state.password.length < 6 || isAlphaNumeric(this.state.password) === false) {
+        valid = false;
+        this.setState({ error: true })
+        this.setState({ messageError: "The password must be at least 6 characters long and must contain both alphabetic and numerical values." })
       }
-      //Control if the two passwords are equal
-      if(password!==cpassword) {
-        valid=false;
-        setError(true);
-        setErrorMessage("Wrong password");
-        //console.log("2")
-      } else if(password === '' || password.length < 6 || isAlphaNumeric(password) === false){
-        valid=false;
-        setErrorMessage("The password must be at least 6 caracters long ad must contain at least one number");
-        setError(true);
-      }
-      //console.log(username);
-      //Control if the coosen username is already in the database
-      usernames.map((us) => {
-        if(us.username===username) {
-          valid=false;
-          setErrorMessage("Username already used");
-          setError(true);
-          //console.log(3);
-        }
-      })
 
-      //console.log(valid);
-      if (valid === true) {
-        addShopEmployee(username, password, type).then(() => {
-          setInserted(true);
-          setError(false);
+      this.state.usernames.map((us) => {
+        if (us.username === this.state.username) {
+          valid = false;
+          this.setState({ messageError: "Username already used" });
+          this.setState({ error: true });
+        }
+      });
+
+      if (this.state.type === "shopemployee" && valid === true) {
+        console.log("Shopp----");
+        this.setState({ inserted: true });
+        addShopEmployee(this.state.username, this.state.password).then(() => {
+          this.setState({ inserted: true });
+          this.setState({ error: false });
         });
       }
 
+      if (this.state.type === "farmer" && valid === true) {
+        addFarmer(this.state.username, this.state.password, this.state.name, this.state.surname, this.state.place, this.state.address).then(() => {
+          this.setState({ inserted: true });
+          this.setState({ error: false });
+        });
+      }
+
+      if (this.state.type === "client" && valid === true) {
+        addClient(this.state.name, this.state.surname, this.state.username, this.state.wallet, this.state.address, this.state.password, this.state.type).then(() => {
+          this.setState({ inserted: true });
+          this.setState({ error: false });
+        });
+      }
     }
   };
 
-  useEffect(() => {
-    getUsernames().then( (users) => {
-      setUsernames(users);
+  componentDidMount() {
+    getUsernames().then((users) => {
+      this.setState({ usernames: users })
     })
-  }, []);
+  };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setInserted(false);
-      setError(false);
-    }, 5000);
-  }, [inserted]);
+  nextStep = () => {
+    const { step } = this.state
+    this.setState({
+      step: step + 1
+    })
+  }
 
-  return (
-    <Container className='login-form text-warning'>
-      <Row className=" justify-content-center">
-        <Col md={10}>
+  nextNextStep = () => {
+    const { step } = this.state
+    this.setState({
+      step: step + 2
+    })
+  }
+
+  prevStep = () => {
+    const { step } = this.state
+    this.setState({
+      step: step - 1
+    })
+  }
+
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
+
+  render() {
+    const { step, name, surname, username, password, cpassword, address, place, wallet, type } = this.state;
+    const inputValues = { name, surname, username, password, cpassword, address, place, wallet, type };
+    switch (step) {
+      case 1:
+        return <UserDetails
+          nextStep={this.nextStep}
+          nextNextStep={this.nextNextStep}
+          handleChange={this.handleChange}
+          inputValues={inputValues}
+        />
+      case 2:
+        return <AddressDetails
+          nextStep={this.nextStep}
+          prevStep={this.prevStep}
+          handleChange={this.handleChange}
+          inputValues={inputValues}
+        />
+      case 3:
+        return <Confirmation
+          nextStep={this.nextStep}
+          prevStep={this.prevStep}
+          inputValues={inputValues}
+          handleChange={this.handleChange}
+          submit={this.submit}
+          error={this.state.error}
+          messageError={this.state.messageError}
+          inserted={this.state.inserted}
+        />
+    }
+
+  }
+}
+
+class UserDetails extends Component {
+
+  back = (e) => {
+    e.preventDefault();
+    this.props.prevStep();
+  }
+
+  notNew = (e) => {
+    e.preventDefault();
+    this.props.nextNextStep();
+  };
+
+  saveAndContinue = (e) => {
+    e.preventDefault();
+    this.props.nextStep();
+  };
+
+
+  render() {
+    return (
+      <Container className="justify-content-center">
+        <Card className="mt-4">
+          <Card.Header as="h5">Already in?</Card.Header>
+          <Card.Body className="mb-2">
+            <ButtonGroup vertical aria-label="Directions" className="d-flex" >
+              <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprodreq" onClick={this.notNew}>
+                <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/clientpassword" className="py-2 yellowLink">
+                  Yes, create a new password
+                </Link>
+              </Button>
+              <Button variant="yellow" className="mx-auto p-0 mb-4 py-2 yellowLink text-center" size="lg" id="toprodreq" onClick={this.saveAndContinue}>
+                No, I'm new
+              </Button>
+            </ButtonGroup>
+          </Card.Body>
+        </Card>
+      </Container>
+    );
+  }
+}
+
+class AddressDetails extends Component {
+
+  back = (e) => {
+    e.preventDefault();
+    this.props.prevStep();
+  }
+
+  saveAndContinue = (e) => {
+    e.preventDefault();
+    this.props.nextStep();
+  };
+
+
+  render() {
+    return (
+      <>
+        <Container className='login-form text-warning'>
+          <Col>
+            <h1 align="center">{iconStar}&nbsp;About you</h1>
+            {""}
+            <Form className="mt-5 ">
+              <Table className="mb-3 color">
+                <Form.Group as={Row} className="mb-3" controlId="formBasicName">
+                  <Row md={3}>
+                    <Form.Label className='text-warning myText' column sm="2">
+                      Name:
+                    </Form.Label>
+                    <Col sm="10" md={8}>
+                      <Form.Control
+                        placeholder="name"
+                        type="text"
+                        name="name"
+                        required
+                        onChange={this.props.handleChange}
+                      />
+                    </Col>
+                  </Row>
+                </Form.Group>
+
+                <Form.Group as={Row} className="mb-3" controlId="formBasicSurname">
+                  <Row md={3}>
+                    <Form.Label className='text-warning myText' column sm="2">
+                      Surname:
+                    </Form.Label>
+                    <Col sm="10" md={8}>
+                      <Form.Control
+                        placeholder="surname"
+                        type="text"
+                        name="surname"
+                        required
+                        onChange={this.props.handleChange}
+                      />
+                    </Col>
+                  </Row>
+                </Form.Group>
+
+                {(this.props.inputValues.type === "farmer") ?
+                  <Form.Group as={Row} className="mb-3" controlId="formBasicPlace">
+                    <Row md={3}>
+                      <Form.Label className='text-warning myText' column sm="2">
+                        Place:
+                      </Form.Label>
+                      <Col sm="10" md={8}>
+                        <Form.Control
+                          placeholder="place"
+                          type="text"
+                          name="place"
+                          required
+                          onChange={this.props.handleChange}
+                        />
+                      </Col>
+                    </Row>
+                  </Form.Group>
+                  :
+                  <>
+                  </>
+                }
+
+                <Form.Group as={Row} className="mb-3" controlId="formBasicAddress">
+                  <Row md={3}>
+                    <Form.Label className='text-warning myText' column sm="2">
+                      Address:
+                    </Form.Label>
+                    <Col sm="10" md={8}>
+                      <Form.Control
+                        placeholder="address"
+                        type="text"
+                        name="address"
+                        required
+                        onChange={this.props.handleChange}
+                      />
+                    </Col>
+                  </Row>
+                </Form.Group>
+              </Table>
+              {(this.props.inputValues.type === "client") ?
+                <Container className="d-flex justify-content-between my-4">
+                  <Button variant="secondary" className="mb-2 text-white loginbutton" onClick={this.back}>Back</Button>
+                  <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton" onClick={this.saveAndContinue}>Next</Button>
+                </Container>
+                :
+                <Container className="d-flex justify-content-end my-4">
+                  <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton" onClick={this.saveAndContinue}>Next</Button>
+                </Container>
+              }
+              {' '}
+            </Form>
+          </Col>
+        </Container>
+      </>
+    );
+  }
+}
+class Confirmation extends Component {
+
+  back = (e) => {
+    e.preventDefault();
+    this.props.prevStep();
+  }
+
+  saveAndContinue = (e) => {
+    e.preventDefault();
+    this.props.nextStep();
+  };
+
+  render() {
+    const { inputValues: { name, surname, username, password, cpassword, address, place, wallet, type } } = this.props;
+
+    return (
+      <Container className='login-form text-warning'>
+        <Col>
+          <h2 align="center">{iconStar}&nbsp;Confirm</h2>
           {" "}
-          {inserted ? (
+          {this.props.inserted ? (
             <Alert className="alert-success" key={155} variant={"success"}>
               The user has been created
             </Alert>
@@ -108,97 +347,103 @@ export default function Register(props) {
             ""
           )}
           {" "}
-          {error ? (
+          {this.props.error ? (
             <Alert className="alert-danger" key={156} variant={"danger"}>
-              {errorMessage}
+              {this.props.messageError}
             </Alert>
           ) : (
             ""
           )}
-          <h2 align="center">{iconStar}&nbsp;Join us</h2>
-          <Form className="mt-5 " onSubmit={(event) => submit(event)}>
-            
-            <Form.Group as={Row} className="mb-3" controlId="formBasicType">
-              <Row md={3}>
-                <Form.Label column sm="2">
-                    Account type:
-                </Form.Label>
-                <Col sm="10" md={8}>
-                    <Form.Select aria-label="Default select example" 
-                    onChange={(ev) => setType(ev.target.value)}
-                    value={type}>
-                        <option value="type">Type</option>
-                        <option value="client">Client</option>
-                        <option value="farmer">Farmer</option>
-                        <option value="shopemployee">Employee</option>
-                    </Form.Select>
+          {/*(this.props.inputValues.type === "client" || this.props.inputValues.type === "farmer") ?
+            <Row className=" justify-content-center">
+              <Table className="mb-3 color">
+                <Col md={8}>
+                  <p className='text-warning myText'>Name: {name}</p>
+                  <p className='text-warning myText'>Surname: {surname}</p>
+                  {(this.props.inputValues.type === "client") ?
+                    <p className='text-warning myText'>Wallet: {wallet}</p>
+                    :
+                    <p className='text-warning myText'>Place: {place}</p>
+                  }
+                  <p className='text-warning myText'> Adress: {address}</p>
                 </Col>
+              </Table>
+            </Row>
+            :
+            <>
+            </>
+                */}
+          <Form className="mt-5 " onSubmit={(event) => this.props.submit(event)}>
+            <Table className="mb-3 color">
+              <Form.Group as={Row} className="mb-3" controlId="formBasicUsername">
+                <Row md={3}>
+                  <Form.Label className='text-warning myText' column sm="2">
+                    Username:
+                  </Form.Label>
+                  <Col sm="10" md={8}>
+                    <Form.Control
+                      placeholder="username"
+                      type="text"
+                      name="username"
+                      required
+                      onChange={this.props.handleChange}
+                    />
+                  </Col>
                 </Row>
-            </Form.Group>
-           
-            <Form.Group as={Row} className="mb-3" controlId="formBasicUsername">
-              <Row md={3}>
-              <Form.Label column sm="2">
-                Username:
-              </Form.Label>
-              <Col sm="10" md={8}>
-                <Form.Control
-                  type="text"
-                  placeholder="Username"
-                  required
-                  className="username-input"
-                  onChange={(ev) => setUsername(ev.target.value)}
-                  value={username}
-                />
-              </Col>
-              </Row>
-            </Form.Group>
+              </Form.Group>
 
-            <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
-              <Row md={3}>
-                <Form.Label column sm="2">
-                  Choose a password:
-                </Form.Label>
-                <Col sm="10" md={8}>
-                  <Form.Control
-                    type="password"
-                    placeholder="Password"
-                    required
-                    className="password-input"
-                    onChange={(ev) => setPassword(ev.target.value)}
-                    value={password}
-                  />
-                </Col>
-              </Row>
-            </Form.Group>
+              <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
+                <Row md={3}>
+                  <Form.Label className='text-warning myText' column sm="2">
+                    Choose password:
+                  </Form.Label>
+                  <Col sm="10" md={8}>
+                    <Form.Control
+                      placeholder="password"
+                      type="password"
+                      name="password"
+                      required
+                      onChange={this.props.handleChange}
+                    />
+                  </Col>
+                </Row>
+              </Form.Group>
 
-            <Form.Group as={Row} className="mb-3" controlId="formBasicCPassword">
-              <Row md={3}>
-              <Form.Label column sm="2">
-                Confirm password:
-              </Form.Label>
-              <Col sm="10" md={8}>
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  required
-                  className="CPassword-input"
-                  onChange={(ev) => setCPassword(ev.target.value)}
-                  value={cpassword}
-                />
-              </Col>
-              </Row>
-            </Form.Group>
+              <Form.Group as={Row} className="mb-3" controlId="formBasicCPassword">
+                <Row md={3}>
+                  <Form.Label className='text-warning myText' column sm="2">
+                    Confirm password:
+                  </Form.Label>
+                  <Col sm="10" md={8}>
+                    <Form.Control
+                      placeholder="password"
+                      type="password"
+                      name="cpassword"
+                      required
+                      onChange={this.props.handleChange}
+                    />
+                  </Col>
+                </Row>
+              </Form.Group>
+            </Table>
 
-            <Container className="d-flex justify-content-between my-4">
-              <Link style={{ textDecoration: "none", hover: "black" }} to="/" className="linkred">
-                <Button variant="outline-danger" type="submit" className="back-btn">Back</Button>
-              </Link>
-              <Button variant="yellow" type="submit" className="submit-btn">Submit</Button>
-            </Container>
+
+            {(this.props.inputValues.type === "client" || this.props.inputValues.type === "farmer") ?
+              <Container className="d-flex justify-content-between my-4">
+                <Button variant="secondary" className="mb-2 text-white loginbutton" onClick={this.back}>Back</Button>
+                <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton">Confirm</Button>
+              </Container>
+              :
+              <Container className="d-flex justify-content-end my-4">
+                <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton">Confirm</Button>
+              </Container>
+            }
+            {' '}
           </Form>
         </Col>
-      </Row>
-    </Container>
-  );
+      </Container>
+    )
+  }
 }
+
+export default RegisterUser;
