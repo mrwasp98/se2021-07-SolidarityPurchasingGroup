@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+
 <testExecutions version="1">
   <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-users.test.js">
     <testCase name="Testing POST on /login It should respond with 200 status code" duration="169"/>
