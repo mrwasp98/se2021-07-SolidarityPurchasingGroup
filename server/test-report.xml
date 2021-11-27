@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-users.test.js">
-    <testCase name="Testing POST on /login It should respond with 200 status code" duration="201"/>
-    <testCase name="Testing POST on /login It should respond with 401 (Unauthorized) status code Case of wrong username" duration="32"/>
-    <testCase name="Testing POST on /login It should respond with 401 (Unauthorized) status code Case of wrong password" duration="103"/>
-    <testCase name="Testing DELETE on /logout It should respond with a 200 status code" duration="142"/>
-    <testCase name="Testing POST on /api/shopemployee It should respond with 200 status code" duration="130"/>
-    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="70"/>
-    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;username&apos; parameter type" duration="64"/>
-    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;password&apos; parameter type" duration="46"/>
-    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;type&apos; parameter type" duration="50"/>
+    <testCase name="Testing POST on /login It should respond with 200 status code" duration="208"/>
+    <testCase name="Testing POST on /login It should respond with 401 (Unauthorized) status code Case of wrong username" duration="33"/>
+    <testCase name="Testing POST on /login It should respond with 401 (Unauthorized) status code Case of wrong password" duration="112"/>
+    <testCase name="Testing DELETE on /logout It should respond with a 200 status code" duration="128"/>
+    <testCase name="Testing POST on /api/shopemployee It should respond with 200 status code" duration="128"/>
+    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="71"/>
+    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;username&apos; parameter type" duration="71"/>
+    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;password&apos; parameter type" duration="49"/>
+    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;type&apos; parameter type" duration="45"/>
   </file>
   <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-clients.test.js">
-    <testCase name="Testing GET on /api/clients It should respond with an array of clients" duration="514"/>
-    <testCase name="Testing POST on /api/client It should respond with 200 status code" duration="172"/>
-    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="141"/>
-    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;name&apos; parameter type" duration="43"/>
-    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;surname&apos; parameter type" duration="40"/>
-    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;wallet&apos; parameter type" duration="51"/>
-    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;address&apos; parameter type" duration="44"/>
-    <testCase name="Testing PUT on /api/clients/:clientid It should respond with 200 status code" duration="47"/>
+    <testCase name="Testing GET on /api/clients It should respond with an array of clients" duration="420"/>
+    <testCase name="Testing POST on /api/client It should respond with 200 status code" duration="142"/>
+    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="97"/>
+    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;name&apos; parameter type" duration="36"/>
+    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;surname&apos; parameter type" duration="32"/>
+    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;wallet&apos; parameter type" duration="30"/>
+    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;address&apos; parameter type" duration="48"/>
+    <testCase name="Testing PUT on /api/clients/:clientid It should respond with 200 status code" duration="45"/>
   </file>
   <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-requests.test.js">
-    <testCase name="Testing POST on /api/requests It should respond with 406 status code" duration="27"/>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-orders.test.js">
-    <testCase name="Testing PUT on /api/orders/:orderid It should respond with 200 status code" duration="49"/>
-    <testCase name="Testing GET on /api/orders It should respond with an array of orders" duration="33"/>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-completeOrders.test.js">
-    <testCase name="Testing GET on /api/completeOrders It should respond with an array of orders with products" duration="18"/>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-products.test.js">
-    <testCase name="Testing GET on /api/products It should respond with an array of products" duration="24"/>
-    <testCase name="Testing GET on /api/products It should respond with a 200 status code" duration="17"/>
+    <testCase name="Testing POST on /api/requests It should respond with 406 status code" duration="33"/>
   </file>
   <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-farmers.test.js">
-    <testCase name="Testing GET on /api/farmers It should respond with an array of farmers" duration="29"/>
-    <testCase name="Testing GET on /api/farmers It should respond with a 200 status code" duration="20"/>
-    <testCase name="Testing GET on /api/farmers It should respond with a 404 status code" duration="150"/>
+    <testCase name="Testing GET on /api/farmers It should respond with an array of farmers" duration="19"/>
+    <testCase name="Testing GET on /api/farmers It should respond with a 200 status code" duration="13"/>
+    <testCase name="Testing GET on /api/farmers It should respond with a 404 status code" duration="28"/>
+  </file>
+  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-completeOrders.test.js">
+    <testCase name="Testing GET on /api/completeOrders It should respond with an array of orders with products" duration="22"/>
+  </file>
+  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-orders.test.js">
+    <testCase name="Testing PUT on /api/orders/:orderid It should respond with 200 status code" duration="48"/>
+    <testCase name="Testing GET on /api/orders It should respond with an array of orders" duration="16"/>
+  </file>
+  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-products.test.js">
+    <testCase name="Testing GET on /api/products It should respond with an array of products" duration="19"/>
+    <testCase name="Testing GET on /api/products It should respond with a 200 status code" duration="33"/>
   </file>
 </testExecutions>
