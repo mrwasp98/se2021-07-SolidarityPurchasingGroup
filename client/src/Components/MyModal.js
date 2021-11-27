@@ -1,4 +1,4 @@
-import { Modal, Button,Container } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import { topUpWallet } from "./Icons";
 
 export default function MyModal(props) {
@@ -10,16 +10,10 @@ export default function MyModal(props) {
             <Modal.Title>Not suficient budget {topUpWallet}</Modal.Title>
           </Modal.Header>
           <Modal.Body>Do you want to increase your wallet!? </Modal.Body>
-          <Modal.Footer>
-          <Container className="d-flex justify-content-between my-4">
-            
+          <Modal.Footer>          
           <Button variant="secondary" className="float-left" onClick={props.close}>
               Close
-            </Button>
-            <Button variant="primary" onClick={props.close}>
-              Top Up Your Wallet
-            </Button>
-            </Container>
+            </Button>     
           </Modal.Footer>
         </Modal>
       </>

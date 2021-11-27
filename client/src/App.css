@@ -280,3 +280,15 @@
 .noborderbottom {
     border-bottom: none;
 }
+
+
+
+
+/* CSS used here will be applied after bootstrap.css */
+.mynotify {
+    z-index: 999999;
+    right: 10px;
+    background-color: #edeaea;
+}
+
+

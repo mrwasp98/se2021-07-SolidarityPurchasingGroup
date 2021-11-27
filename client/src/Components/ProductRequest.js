@@ -241,7 +241,7 @@ export default function ProductRequest(props) {
                             })} variant="danger" dismissible>{message.text}</Alert>}
                             {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal(productsSelected)}€</Alert>}
                             <div className="d-flex justify-content-between mb-4">
-                                <Link to="/"><Button variant="danger" className="back-btn">Back</Button></Link>
+                                <Link to="/employeehome"><Button variant="danger" className="back-btn">Back</Button></Link>
                                 <Button className="order-btn" variant="yellow" onClick={() => handleOrder()}>Check and order</Button>
                             </div>
                         </>

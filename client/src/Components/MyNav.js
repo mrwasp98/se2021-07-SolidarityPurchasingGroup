@@ -1,12 +1,13 @@
 import { useHistory } from 'react-router-dom';
-import { Navbar, Container, Button, Modal, Row, Col, Table, ListGroup, Alert } from "react-bootstrap";
+import { Navbar, Container, Button, Modal, Row, Col, Table, ListGroup, Alert, Toast } from "react-bootstrap";
 import { useState } from "react";
-import { clock, iconStar, iconPerson, iconCalendar, iconCart, cartFill, cross, coin } from "./Icons";
+import { clock, iconStar, iconCalendar, iconCart, cartFill, cross, coin } from "./Icons";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Link } from 'react-router-dom';
 import dayjs from "dayjs";
 import Clock from "./Clock";
+import MyNotifications from "./MyNotifications";
 import { addPRequest } from '../API/API';
 
 import { Offcanvas } from "react-bootstrap";
@@ -23,6 +24,7 @@ export default function MyNav(props) {
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
   const [message, setMessage] = useState([]);
+
 
   const toggleShowHour = () => {
     setShow(false);
@@ -124,19 +126,22 @@ export default function MyNav(props) {
             </Modal>
           </div>
           <Navbar.Text>
-            {iconPerson}{" "}
             {props.logged ? (
               <>
-                <Button variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
+                <Button variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>             
+                {props.logged === "client" && props.topUpWallet ? <MyNotifications message={"Please add money in your wallet!"}/> : ""}
+                {" "}
                 {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
               </>
             ) : (
               <>
                 {" "}
                 <Link to="/login">
-                  <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-login">Login</Button>
+                  <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-login loginLink">Login</Button>
                 </Link>
+                <Link to="/user">
                 <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-reg">Register</Button>{" "}
+                </Link>
               </>
             )}{" "}
           </Navbar.Text>
@@ -280,3 +285,4 @@ function BasketOffCanvas(props) {
     </Offcanvas>
   )
 }
+

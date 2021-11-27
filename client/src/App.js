@@ -30,6 +30,7 @@ function App() {
   const [username, setUsername] = useState(''); //this state saves the name of the logged user
   const [userId, setUserId] = useState(''); //this state saves the id of the logged user
   const [showTopUpWalletModal, setShowTopUpWalletModal] = useState(false);
+  const [notify, setNotify] = useState(false);
 
   const [products, setProducts] = useState([]);
   const [dirtyAvailability, setDirtyAvailability] = useState(true); //state used to indicate if the availability of some product has been changed
@@ -70,8 +71,9 @@ function App() {
         getClientById(userId).then((res) => setClient(res));
 
         if (client.userid === userId && parseInt(client.wallet) < 30) {
-          setShowTopUpWalletModal(true); console.log(showTopUpWalletModal);
-        }
+          setShowTopUpWalletModal(true); 
+          setNotify(true);
+        }else setNotify(false);
       }
     }
     fetchdata();
@@ -130,6 +132,7 @@ function App() {
             setDirtyQuantity={setDirtyQuantity}
             className="myNav"
             setDirtyAvailability={setDirtyAvailability}
+            topUpWallet ={notify}
           />
           <MyModal
             show={showTopUpWalletModal}
