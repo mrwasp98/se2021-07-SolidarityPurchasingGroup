@@ -110,7 +110,7 @@ describe('Testing DELETE on /logout', () => {
 
 });
 
-describe('Testing POST on /api/user', () => {
+describe('Testing POST on /api/shopemployee', () => {
 
     beforeEach(async () => {
         await userDao.deleteAllUsers();
@@ -121,7 +121,7 @@ describe('Testing POST on /api/user', () => {
     });
 
     test('It should respond with 200 status code', async () => {
-        const response = await request(app).post('/api/user').send({
+        const response = await request(app).post('/api/shopemployee').send({
             username:"Hari",
             password:"qwerty1",
             type:"farmer"
@@ -141,13 +141,13 @@ describe('Testing POST on /api/user', () => {
                 const wrongObjArray = Object.entries(obj).filter(keyValue => JSON.stringify(keyValue)!==JSON.stringify([key,value]));
                 //need to convert from array to object
                 const wrongObj = Object.fromEntries(wrongObjArray);
-                const response = await request(app).post('/api/user').send(wrongObj);
+                const response = await request(app).post('/api/shopemployee').send(wrongObj);
                 expect(response.statusCode).toBe(422);
             }
         });
 
         test("Case of wrong 'username' parameter type", async () => {
-            const response = await request(app).post('/api/user').send({
+            const response = await request(app).post('/api/shopemployee').send({
                 username:1,
                 password:"qwerty1",
                 type:"farmer"
@@ -156,7 +156,7 @@ describe('Testing POST on /api/user', () => {
         });
 
         test("Case of wrong 'password' parameter type", async () => {
-            const response = await request(app).post('/api/user').send({
+            const response = await request(app).post('/api/shopemployee').send({
                 username:"Hari",
                 password:1,
                 type:"farmer"
@@ -165,7 +165,7 @@ describe('Testing POST on /api/user', () => {
         });
 
         test("Case of wrong 'type' parameter type", async () => {
-            const response = await request(app).post('/api/user').send({
+            const response = await request(app).post('/api/shopemployee').send({
                 username:"Hari",
                 password:"qwerty1",
                 type:1

@@ -97,7 +97,7 @@ describe('Testing GET on /api/clients', () => {
 
 
 
-describe('Testing POST on /api/clients', () => {
+describe('Testing POST on /api/client', () => {
 
     afterEach(() => {
         clientDao.deleteAllClients();
@@ -110,11 +110,13 @@ describe('Testing POST on /api/clients', () => {
     test('It should respond with 200 status code', async () => {
         const response = await request(app).post('/api/client').send({
             userid: userId1,
-            name: 'Grrmafa',
-            surname: 'Idcamcv',
-            email: 'Idcamcv@gmail.com',
-            wallet: 50.30,
-            address: 'Corso Duca degli Abruzzi, 21, Torino'
+            name: "Grrmafa", 
+            surname: "Idcamcv", 
+            username: "prova@prova.com",
+            wallet: 50.30, 
+            address: "Corso Duca degli Abruzzi, 21, Torino",
+            password: "1234567",
+            type: "farmer"
         })
         expect(response.statusCode).toBe(200);
     });
@@ -133,53 +135,53 @@ describe('Testing POST on /api/clients', () => {
                 const wrongObjArray = Object.entries(obj).filter(keyValue => JSON.stringify(keyValue)!==JSON.stringify([key,value]));
                 //need to convert from array to object
                 const wrongObj = Object.fromEntries(wrongObjArray);
-                const response = await request(app).post('/api/clients').send(wrongObj);
-                expect(response.statusCode).toBe(404);
+                const response = await request(app).post('/api/client').send(wrongObj);
+                expect(response.statusCode).toBe(422);
             }
         });
 
         test("Case of wrong 'name' parameter type", async () => {
-            const response = await request(app).post('/api/clients').send({
+            const response = await request(app).post('/api/client').send({
                 userid: userId1,
                 name: 1,
                 surname: 'Idcamcv',
                 wallet: 50.30,
                 address: 'Corso Duca degli Abruzzi, 21, Torino'
             });
-            expect(response.statusCode).toBe(404);
+            expect(response.statusCode).toBe(422);
         });
 
         test("Case of wrong 'surname' parameter type", async () => {
-            const response = await request(app).post('/api/clients').send({
+            const response = await request(app).post('/api/client').send({
                 userid: userId1,
                 name: 'Grrmafa',
                 surname: 1,
                 wallet: 50.30,
                 address: 'Corso Duca degli Abruzzi, 21, Torino'
             });
-            expect(response.statusCode).toBe(404);
+            expect(response.statusCode).toBe(422);
         });
 
         test("Case of wrong 'wallet' parameter type", async () => {
-            const response = await request(app).post('/api/clients').send({
+            const response = await request(app).post('/api/client').send({
                 userid: userId1,
                 name: 'Grrmafa',
                 surname: 'Idcamcv',
                 wallet: 'a',
                 address: 'Corso Duca degli Abruzzi, 21, Torino'
             });
-            expect(response.statusCode).toBe(404);
+            expect(response.statusCode).toBe(422);
         });
 
         test("Case of wrong 'address' parameter type", async () => {
-            const response = await request(app).post('/api/clients').send({
+            const response = await request(app).post('/api/client').send({
                 userid: userId1,
                 name: 'Grrmafa',
                 surname: 'Idcamcv',
                 wallet: 'a',
                 address: 1
             });
-            expect(response.statusCode).toBe(404);
+            expect(response.statusCode).toBe(422);
         });
 
     }); //400 status code tests

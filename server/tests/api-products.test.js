@@ -15,7 +15,7 @@ Change the database in database.js before running tests
 const fakeProduct1 = {
     id: 0,
     name: 'Artichoke',
-    description: 'Description artichoke',
+    description: 'prova description1',
     farmerid: 1,
     price: 1,
     measure: 'kg',
@@ -26,7 +26,7 @@ const fakeProduct1 = {
 const fakeProduct2 = {
     id: 1,
     name: 'Banana',
-    description: 'Description banana',
+    description: 'prova description2',
     farmerid: 2,
     price: 15.00,
     measure: 'kg',
@@ -37,7 +37,7 @@ const fakeProduct2 = {
 const fakeProduct3 = {
     id: 2,
     name: 'Mele',
-    description: 'Description mele',
+    description: 'prova description3',
     farmerid: 3,
     price: 11.00,
     measure: 'kg',
