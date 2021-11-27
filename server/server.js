@@ -34,18 +34,18 @@ passport.use(
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
-}),
-  //starting from the data in the session, we extract the current (logged-id) user
-  passport.deserializeUser((id, done) => {
-    userDao
-      .getUserById(id)
-      .then((user) => {
-        done(null, user); //This will be available in req.user
-      })
-      .catch((err) => {
-        done(err, null);
-      });
-  });
+});
+//starting from the data in the session, we extract the current (logged-id) user
+passport.deserializeUser((id, done) => {
+  userDao
+    .getUserById(id)
+    .then((user) => {
+      done(null, user); //This will be available in req.user
+    })
+    .catch((err) => {
+      done(err, null);
+    });
+});
 
 // init express
 const app = new express();
