@@ -15,7 +15,7 @@ Change the database in database.js before running tests
 const fakeProduct1 = {
     id: 0,
     name: 'Artichoke',
-    description: 'prova description1',
+    description: 'Description artichoke',
     farmerid: 1,
     price: 1,
     measure: 'kg',
@@ -26,7 +26,7 @@ const fakeProduct1 = {
 const fakeProduct2 = {
     id: 1,
     name: 'Banana',
-    description: 'prova description2',
+    description: 'Description banana',
     farmerid: 2,
     price: 15.00,
     measure: 'kg',
@@ -37,7 +37,7 @@ const fakeProduct2 = {
 const fakeProduct3 = {
     id: 2,
     name: 'Mele',
-    description: 'prova description3',
+    description: 'Description mele',
     farmerid: 3,
     price: 11.00,
     measure: 'kg',
@@ -143,62 +143,5 @@ describe('Testing GET on /api/products', () => {
         const response = await request(app).get('/api/products/2021-09-11');
         expect(response.statusCode).toBe(200);
     });
-    /*
-        test("It should respond with a 404 status code", async () => {
-            const response = await request(app).get('/api/products/2021-09-11');
-            expect(response.statusCode).toBe(404);
-        });
-    */
+   
 });
-
-//we don't have this route anymore
-/*
-describe.skip('Testing GET on /api/products/:id', () => {
-
-    beforeAll(async () => {
-        //clear and fill (mock) product database with fakeProduct1 and fakeProduct2
-        await productDao.deleteAllProducts();
-        await farmerDao.deleteAllFarmers();
-        await productDao.deleteAvailability();
-
-        await farmerDao.insertFarmer(fakeFarmer1);
-        await farmerDao.insertFarmer(fakeFarmer2);
-        await farmerDao.insertFarmer(fakeFarmer3);
-
-        await productDao.insertProduct(fakeProduct1);
-        await productDao.insertProduct(fakeProduct2);
-        await productDao.insertProduct(fakeProduct3);
-
-        await productDao.insertAvailability(fakeAvailability1);
-        await productDao.insertAvailability(fakeAvailability2);
-        await productDao.insertAvailability(fakeAvailability3);
-    });
-
-    afterAll(async () => {
-        //clear (mock) product database
-        await productDao.deleteAllProducts();
-        await farmerDao.deleteAllFarmers();
-        await productDao.deleteAvailability();
-
-        app.close(); //without that, jest won't exit
-    });
-
-    //remember: mock database should be pre-filled with
-    //fakeProduct1 and fakeProduct2 for this method to work
-    test("It should respond with a product", async () => {
-        const response = await request(app).get('/api/products/1');
-        expect(response.body).toEqual(fakeProduct2);
-    });
-
-    test("It should respond with a 200 status code", async () => {
-        const response = await request(app).get('/api/products/1');
-        expect(response.statusCode).toBe(200);
-    });
-
-    test("It should respond with a 404 status code", async () => {
-        const response = await request(app).get('/api/products/10');
-        expect(response.statusCode).toBe(404);
-    });
-    
-});
-*/

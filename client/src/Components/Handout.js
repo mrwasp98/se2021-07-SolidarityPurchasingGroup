@@ -26,12 +26,12 @@ export default function Handout(props) {
                     setError(err.message);
                 })
         }
-        if(props.clients.length!==0){
+        if (props.clients.length !== 0) {
             setOptions(props.clients.map((e) => {
                 return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
             }))
         }
-        
+
     }, [props]);
 
     //this function is called only when the client is selected to load their orders
@@ -100,17 +100,9 @@ export default function Handout(props) {
                     </Container >
                     :
                     <>
-                        {
-                            (dayjs(props.date).isBefore(wedMorning)) ?
-                                <Alert variant="danger" style={{ "fontWeight": "500" }}>
-                                    Pickups take place from Wednesday morning until Friday evening
-                                </Alert>
-                                :
-                                <Alert variant="danger" style={{ "fontWeight": "500" }}>
-                                    Pickups take place from Wednesday morning until Friday evening
-                                </Alert>
-
-                        }
+                        <Alert variant="danger" style={{ "fontWeight": "500" }}>
+                            Pickups take place from Wednesday morning until Friday evening
+                        </Alert>
                         <HomeButton logged={props.logged} />
                     </>
             }
