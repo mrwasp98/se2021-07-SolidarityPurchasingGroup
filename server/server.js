@@ -286,19 +286,6 @@ app.get("/api/sessions/current", (req, res) => {
   } else res.status(401).json({ error: "Unauthenticated user!" });
 });
 
-/*
-//get product given an id
-app.get("/api/products/:id", async (req, res) => {
-  productDao
-    .getProductById(req.params.id)
-    .then((product) => {
-      if (product === undefined) res.status(404).end();
-      else res.status(200).json(product);
-    })
-    .catch(() => res.status(500).end());
-});
-*/
-
 //get orders with products given a clientid
 app.get("/api/completeOrders", async (req, res) => {
   try {
