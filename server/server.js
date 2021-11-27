@@ -143,7 +143,7 @@ app.post(
 
     try {
       const result = await clientDao.insertClient(client);
-      res.json(result);
+      res.status(200).json(result);
     } catch (err) {
       res.status(503).json({
         error: `Database error during the creation of new client: ${err}.`,

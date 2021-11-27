@@ -43,7 +43,7 @@ describe('Testing GET on /api/farmers', () => {
         await farmerDao.deleteAllFarmers();
 
         app.close(); //without that, jest won't exit
-    });
+    }); 
 
     //remember: mock database should be pre-filled with
     //fakeProduct1 and fakeProduct2 for this method to work
