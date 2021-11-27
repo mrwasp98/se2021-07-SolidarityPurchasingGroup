@@ -48,15 +48,17 @@
 ### Add client
 * URL: `api/client`
 * HTTP method: POST
-* description: add a new client with a wallet and an address
+* description: add a new client and user
 * Request body:
 ``` JSON
 {
     "name": "Grrmafa", 
     "surname": "Idcamcv", 
-    "email": "prova@prova.com",
+    "username": "prova@prova.com",
     "wallet": 50.30, 
-    "address": "Corso Duca degli Abruzzi, 21, Torino"
+    "address": "Corso Duca degli Abruzzi, 21, Torino",
+    "password": "123",
+    "type": "farmer"
 }
 ```
 * Response: `200 OK`, `503 Internal Server Error` (generic error),  `422 Unprocessable Entity` (wrong parameters)
