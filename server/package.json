@@ -11,6 +11,12 @@
     "testEnvironment": "node",
     "collectCoverage": true,
     "testResultsProcessor": "jest-sonar-reporter",
+    "reporters": ["default",  ["jest-sonar", {
+      "outputDirectory": ".",
+      "outputName": "test-report.xml",
+      "reportedFilePath": "absolute",
+      "relativeRootDir":"."
+  }]],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/tests/"
@@ -32,6 +38,7 @@
   },
   "devDependencies": {
     "jest": "^27.3.1",
+    "jest-sonar": "^0.2.12",
     "jest-sonar-reporter": "^2.0.0",
     "supertest": "^6.1.6"
   }
