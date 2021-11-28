@@ -361,6 +361,7 @@ app.post(
     check(["surname"]).isString().isLength({ min: 2 }),
     check(["address"]).isLength({ min: 3 }),
     check(["password"]).isString().isLength({ min: 6 }),
+    check(["type"]).isString().isLength({ min: 6 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
