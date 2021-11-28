@@ -26,13 +26,13 @@ const addPRequest = async (userid, creationdate, claimdate, confirmationdate, de
       },
       body: JSON.stringify({
         userId: userid,
-        creationdate: creationdate,
+        creationdate: dayjs(creationdate).format("YYYY-MM-DD HH:mm"),
         claimdate: claimdate,
         confirmationdate: confirmationdate,
         deliveryaddress: deliveryaddress,
         deliveryid: deliveryid,
         status: status,
-        products: products
+        products: products,
       })
     })
       .then((res) => {

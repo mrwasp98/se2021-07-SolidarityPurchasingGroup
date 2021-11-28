@@ -199,7 +199,7 @@ function BasketOffCanvas(props) {
 
   function checkAndOrder() {
     addPRequest(props.userId,
-      props.date,
+      dayjs(props.date).format("YYYY-MM-DD HH:mm"),
       null,
       null,
       null,

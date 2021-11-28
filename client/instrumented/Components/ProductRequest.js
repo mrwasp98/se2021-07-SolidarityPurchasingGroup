@@ -132,11 +132,12 @@ export default function ProductRequest(props) {
     }
 
     const handleOrder = () => {
+        console.log("creation: ", props.date)
         const newOrder = {
             userid: selectedClient,
-            creationdate: dayjs().format('YYYY-MM-DD').toString(),
+            creationdate: props.date,
             claimdate: "2021-11-10 12:30",
-            confirmationdate: "2021-11-09",
+            confirmationdate: null,
             deliveryaddress: null,
             deliveryid: null,
             status: "pending",

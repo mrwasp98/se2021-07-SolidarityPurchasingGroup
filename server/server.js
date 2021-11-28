@@ -194,7 +194,7 @@ app.get("/api/farmers", async (req, res) => {
 app.post("/api/requests", async (req, res) => {
   try {
     // Get the products availability in the magazine
-    let productsAvailability = await productDao.getProductsAvailable();
+    let productsAvailability = await productDao.getProductsAvailable(req.body.creationdate);
 
     // Verify the request (check the quantitiy)
     let products = req.body.products; // Copy the list of products

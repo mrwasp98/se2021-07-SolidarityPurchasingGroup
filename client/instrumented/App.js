@@ -94,7 +94,8 @@ function App() {
           order.deliveryaddress,
           order.deliveryid,
           order.status,
-          order.products).then(result => {
+          order.products,
+          date).then(result => {
             // A few products are not availability
             //console.log(res.listofProducts);  The list of products non availability "res.listofProducts"
             if (result.status !== undefined && result.status === 406)
