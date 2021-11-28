@@ -206,13 +206,9 @@ function App() {
 
         <Route exact path="/user" render={() => <Type/>} />
 
-        <Route exact path="/client" render={() => <RegisterUser st={1} type={"client"}/>} />
+        <Route exact path="/user/:type" render={({match}) => <RegisterUser st={(match.params.type==="client") ? 1 : (match.params.type === "farmer") ? 2 : 3} type={match.params.type}/>} />
 
-        <Route exact path="/farmer" render={() => <RegisterUser st={2} type={"farmer"}/>} />
-
-        <Route exact path="/shopemployee" render={() => <RegisterUser st={3} type={"shopemployee"}/>} />
-
-        <Route exact path="/clientpassword" render={() => <UpdatePassword/>} />
+        <Route exact path="/user/client/password" render={() => <UpdatePassword/>} />
 
       </Router>
     </>

@@ -395,7 +395,7 @@ app.post(
   }
 );
 
-//insert new farmer
+//update password
 app.post(
   "/api/password",
   [
@@ -411,7 +411,8 @@ app.post(
     }
     try {
       const result = await userDao.updatePassword(req.body.password, req.body.id);
-      res.json(result);
+      const result1 = await userDao.updateType(req.body.id);
+      res.json(result1);
     } catch (err) {
       res.status(503).json({
         error: `Database error during the update of the password: ${err}.`,

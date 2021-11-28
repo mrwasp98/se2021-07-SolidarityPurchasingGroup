@@ -109,3 +109,17 @@ exports.updatePassword = (password, id) => {
         });
     });
 };
+
+exports.updateType= (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE user SET type=? WHERE id == ?';
+        db.run(sql, ["client", id], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (this.changes === 0) resolve(false);
+            else resolve(true);
+        });
+    });
+};

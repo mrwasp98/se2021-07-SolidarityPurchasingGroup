@@ -30,7 +30,6 @@ export default function UpdatePassword(props) {
   const [inserted, setInserted] = useState(false);
   const [error, setError] = useState(false);
   const [messageError, setMessageError] = useState("");
-  const [id, setId] = useState("");
 
 
   const submit = async (event) => {
@@ -41,8 +40,16 @@ export default function UpdatePassword(props) {
     } else {
         let valid=false;
         let validPass= true;
+        let nid;
 
-        if(this.state.password!==this.state.cpassword) {
+        usernames.forEach((us) => {
+          if (us.username === username && us.type==="client-prov") {
+            valid = true;
+            nid=us.id;
+          }
+      });
+
+        if(password!==cpassword) {
             validPass=false;
             setError(true);
             setMessageError("Passwords are not equal");
@@ -52,15 +59,8 @@ export default function UpdatePassword(props) {
             setMessageError("The password must be at least 6 characters long and must contain both alphabetic and numerical values.");
           }
 
-        usernames.map((us) => {
-            if (us.username === username && us.type==="client-prov") {
-              valid = true;
-              setId(us.id);
-            }
-        });
-
-        if(valid===true) {
-            updatePassword(password, id).then(() =>{
+        if(valid===true && validPass===true) {
+            await updatePassword(password, nid).then(() =>{
                 setInserted(true);
                 setError(false);
             });
@@ -160,7 +160,7 @@ export default function UpdatePassword(props) {
               </Form.Group>
               </Table>
               <Container className="d-flex justify-content-between my-4">
-                <Link  to="/client">
+                <Link  to="/user/client">
                   <Button type='submit' variant='secondary' className="mb-2 text-white loginbutton">Back</Button>
                 </Link>
                 <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton">Confirm</Button>

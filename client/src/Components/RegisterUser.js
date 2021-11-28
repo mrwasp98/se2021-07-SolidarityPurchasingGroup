@@ -49,13 +49,7 @@ class RegisterUser extends Component {
     } else {
 
       let valid = true;
-      //Control if has been selected a type
-      //console.log(this.state.username);
-      //console.log(this.state.name);
-      //console.log(this.state.password);
-      //console.log(this.state.cpassword);
-      //console.log(this.state.usernames);
-      //console.log(this.state.type);
+  
       if (this.state.password !== this.state.cpassword) {
         valid = false;
         this.setState({ error: true })
@@ -113,13 +107,6 @@ class RegisterUser extends Component {
     })
   }
 
-  nextNextStep = () => {
-    const { step } = this.state
-    this.setState({
-      step: step + 2
-    })
-  }
-
   prevStep = () => {
     const { step } = this.state
     this.setState({
@@ -138,7 +125,6 @@ class RegisterUser extends Component {
       case 1:
         return <UserDetails
           nextStep={this.nextStep}
-          nextNextStep={this.nextNextStep}
           handleChange={this.handleChange}
           inputValues={inputValues}
         />
@@ -172,11 +158,6 @@ class UserDetails extends Component {
     this.props.prevStep();
   }
 
-  notNew = (e) => {
-    e.preventDefault();
-    this.props.nextNextStep();
-  };
-
   saveAndContinue = (e) => {
     e.preventDefault();
     this.props.nextStep();
@@ -190,8 +171,8 @@ class UserDetails extends Component {
           <Card.Header as="h5">Already in?</Card.Header>
           <Card.Body className="mb-2">
             <ButtonGroup vertical aria-label="Directions" className="d-flex" >
-              <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprodreq" onClick={this.notNew}>
-                <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/clientpassword" className="py-2 yellowLink">
+              <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprodreq">
+                <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/user/client/password" className="py-2 yellowLink">
                   Yes, create a new password
                 </Link>
               </Button>
@@ -235,7 +216,7 @@ class AddressDetails extends Component {
                     </Form.Label>
                     <Col sm="10" md={8}>
                       <Form.Control
-                        placeholder="name"
+                        placeholder="Name"
                         type="text"
                         name="name"
                         required
@@ -252,7 +233,7 @@ class AddressDetails extends Component {
                     </Form.Label>
                     <Col sm="10" md={8}>
                       <Form.Control
-                        placeholder="surname"
+                        placeholder="Surname"
                         type="text"
                         name="surname"
                         required
@@ -270,7 +251,7 @@ class AddressDetails extends Component {
                       </Form.Label>
                       <Col sm="10" md={8}>
                         <Form.Control
-                          placeholder="place"
+                          placeholder="Place"
                           type="text"
                           name="place"
                           required
@@ -291,7 +272,7 @@ class AddressDetails extends Component {
                     </Form.Label>
                     <Col sm="10" md={8}>
                       <Form.Control
-                        placeholder="address"
+                        placeholder="Address"
                         type="text"
                         name="address"
                         required
@@ -382,7 +363,7 @@ class Confirmation extends Component {
                   </Form.Label>
                   <Col sm="10" md={8}>
                     <Form.Control
-                      placeholder="username"
+                      placeholder="Username"
                       type="text"
                       name="username"
                       required
@@ -399,7 +380,7 @@ class Confirmation extends Component {
                   </Form.Label>
                   <Col sm="10" md={8}>
                     <Form.Control
-                      placeholder="password"
+                      placeholder="Password"
                       type="password"
                       name="password"
                       required
@@ -416,7 +397,7 @@ class Confirmation extends Component {
                   </Form.Label>
                   <Col sm="10" md={8}>
                     <Form.Control
-                      placeholder="password"
+                      placeholder="Password"
                       type="password"
                       name="cpassword"
                       required
