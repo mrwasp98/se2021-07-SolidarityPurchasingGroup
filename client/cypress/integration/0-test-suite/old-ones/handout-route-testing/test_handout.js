@@ -20,10 +20,4 @@ describe('SPG handout page', () => {
         cy.contains('Then, select the order.')
     })
     
-    it('back to home', () => {
-        cy.visit('http://localhost:3000/products')
-        cy.get('.rounded-circle').click()
-        cy.url().should('include', '/')
-    })
-
 })

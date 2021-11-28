@@ -14,7 +14,7 @@ export default function ShopEmployeeHome() {
                             </Link>
                         </Button>
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toregcl">
-                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/registerClient"className="py-2 yellowLink">
+                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/registerClient" className="py-2 yellowLink">
                                 Register new client
                             </Link>
                         </Button>
