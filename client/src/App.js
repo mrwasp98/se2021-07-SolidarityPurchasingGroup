@@ -73,9 +73,9 @@ function App() {
         getClientById(userId).then((res) => setClient(res));
 
         if (client.userid === userId && parseInt(client.wallet) < 30) {
-          setShowTopUpWalletModal(true); 
+          setShowTopUpWalletModal(true);
           setNotify(true);
-        }else setNotify(false);
+        } else setNotify(false);
       }
     }
     fetchdata();
@@ -134,7 +134,7 @@ function App() {
             setDirtyQuantity={setDirtyQuantity}
             className="myNav"
             setDirtyAvailability={setDirtyAvailability}
-            topUpWallet ={notify}
+            topUpWallet={notify}
           />
           <MyModal
             show={showTopUpWalletModal}
@@ -200,15 +200,16 @@ function App() {
             date={date} />}
         />
 
-        <Route exact path="/registerClient" render={() => <Register setDirtyClients={setDirtyClients} />} />
+        <Route exact path="/registerClient" render={() => <Register setDirtyClients={setDirtyClients} logged={logged}
+        />} />
 
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} setUserId={setUserId} />} />
 
-        <Route exact path="/user" render={() => <Type/>} />
+        <Route exact path="/user" render={() => <Type />} />
 
-        <Route exact path="/user/:type" render={({match}) => <RegisterUser st={(match.params.type==="client") ? 1 : (match.params.type === "farmer") ? 2 : 3} type={match.params.type}/>} />
+        <Route exact path="/user/:type" render={({ match }) => <RegisterUser st={(match.params.type === "client") ? 1 : (match.params.type === "farmer") ? 2 : 3} type={match.params.type} />} />
 
-        <Route exact path="/user/client/password" render={() => <UpdatePassword/>} />
+        <Route exact path="/user/client/password" render={() => <UpdatePassword />} />
 
       </Router>
     </>

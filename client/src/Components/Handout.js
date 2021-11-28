@@ -101,7 +101,7 @@ export default function Handout(props) {
                     :
                     <>
                         <Alert variant="danger" style={{ "fontWeight": "500" }}>
-                            Pickups take place from Wednesday morning until Friday evening
+                            Pickups take place from Wednesday morning at 9 am until Friday evening at 7 pm 
                         </Alert>
                         <HomeButton logged={props.logged} />
                     </>

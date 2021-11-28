@@ -101,7 +101,7 @@ export default function ProductsList(props) {
                 <Row className="p-0 w-100">
                     <Col className="col-12 col-md-3 text-center">
                         <Button
-                            className=" rounded-circle mt-3 "
+                            className=" rounded-circle mt-3 farmers-filter"
                             onClick={() => { handleShow(); }}
                             style={{
                                 right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', backgroundColor: "#0f8b8b", color: "white"
@@ -219,7 +219,7 @@ function Product(props) {
     }
 
     return (
-        <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }}>
+        <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }} className="another-product">
             <Accordion.Item eventKey="0">
                 <Card style={{ backgroundColor: "#FFEFD6" }}> {/*text-center*/}
                     <Card.Img variant="top" className="m-0" src={props.prod.picture} />

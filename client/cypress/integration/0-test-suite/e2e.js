@@ -15,6 +15,9 @@ describe('SPG navbar', () => {
         cy.get('.myNav')
         cy.contains('SPG - Group 07')
     })
+})
+
+describe('SPG virtual clock', () => {
 
     it('has the right label and date', () => {
         cy.get('.callandarButton')
@@ -33,6 +36,9 @@ describe('SPG navbar', () => {
         cy.contains('5').click()
         cy.get('.callandarButton').should("contain", "Fri 05 Nov")
     })
+})
+
+describe('SPG login', () => {
 
     it('goes to login page', () => {
         cy.get('.loginLink').click()
@@ -100,14 +106,14 @@ describe('SPG login (shopemployee)', () => {
 //testing the navigational steps for the shop employee
 describe('SPG shop employee routes', () => {
 
+    afterEach(() => {
+        cy.get('.home-here').click()
+        cy.url().should('include', '/employeehome')
+    })
+
     it('goes to product request page', () => {
         cy.get('#toprodreq').click()
         cy.url().should('include', '/productRequest')
-    })
-
-    afterEach(() => {
-        cy.get('.test-back-btn').click()
-        cy.url().should('include', '/employeehome')
     })
 
     it('goes to register client page', () => {
@@ -187,7 +193,7 @@ describe('SPG register page', () => {
     })
 
     it('type a invalid wallet', () => {
-        cy.get('.email-input').type('antonioVes@poli.it')
+        cy.get('.email-input').type('antonioVes' + Math.random() + '@poli.it')
         cy.get('.submit-btn').click()
         cy.contains('The user has been created').should('not.exist')
     })
@@ -208,16 +214,19 @@ describe('SPG register page', () => {
         cy.contains('The user has been created').should('exist')
     })
 
-    it('go back', () => {
-        cy.get('.back-btn').click()
+    it('back to home', () => {
+        cy.get('.home-here').click()
         cy.url().should('include', '/')
     })
 })
 
 //testing wallet page
 describe('SPG wallet page', () => {
+    
     it('open route', () => {
+        cy.contains('Logout')
         cy.get('#topup').click()
+        cy.contains('Logout')
         cy.url().should('include', '/wallet')
     })
 
@@ -228,16 +237,14 @@ describe('SPG wallet page', () => {
     })
 
     it('type a valid user, select amount', () => {
-        cy.visit('http://localhost:3000/wallet')
         cy.get('.client-here').click().type('Loren')
         cy.get('.css-1n7v3ny-option').click()
         cy.get('.submit-btn').click()
     })
 
     it('type a valid user with a valid amount', () => {
-        cy.visit('http://localhost:3000/wallet')
         cy.get('.client-here').click().type('Loren')
-        cy.get('.css-1n7v3ny-option').click()
+        cy.get('.css-9gakcf-option').click()
         cy.get('.input-amount').clear().type('1')
         cy.get('.submit-btn').click()
     })
@@ -258,27 +265,28 @@ describe('SPG product show page', () => {
     it('gets more products', () => {
         cy.get('.callandarButton').click()
         cy.get('.react-calendar')
-        cy.contains('2').click()
-        cy.get('.callandarButton').should("contain", " 05 Nov")
+        cy.contains('23').click()
+        cy.get('.callandarButton').should("contain", " 23 Nov")
     })
 
     it('filter farmers button present', () => {
-
-        cy.contains('Select Farmers')
+        cy.get('.farmers-filter')
     })
     it('filter navbar', () => {
-        cy.get('.myCard').its('length').should('be.gte', 1)
-        cy.contains('Dairy').click()
-        cy.get('.myCard').its('length').should('eq', 6)
-        cy.get('.myCard').should('contain', 'Dairy')
-        cy.get('.myCard').should('not.contain', 'Salame')
+        cy.get('.another-product').its('length').should('be.gte', 1)
+        cy.get('.another-product').its('length').should('eq', 4)
+        cy.contains('Fruit and Vegetables').click()
+        cy.get('.another-product').its('length').should('eq', 1)
+        cy.contains('All').click()
+        cy.get('.another-product').its('length').should('eq', 4)
+        //cy.get('.another-product').should('not.contain', 'Dairy')
     })
     it('selected category', () => {
-        cy.contains('Dairy').click()
-        cy.get('.selected-items').should('contain', 'Dairy')
+        cy.contains('Fruit and Vegetables').click()
+        cy.get('.selected-items').should('contain', 'Fruit and Vegetables')
     })
     it('back to home', () => {
-        cy.get('.rounded-circle').click()
+        cy.get('.home-here').click()
         cy.url().should('include', '/')
     })
 })
