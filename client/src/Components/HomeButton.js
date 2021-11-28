@@ -12,6 +12,8 @@ export default function HomeButton(props) {
             history.push("/employeehome")
         }else if(props.logged === "client"){
             history.push("/clienthome")
+        }else if(props.logged === 'false'){
+            history.push("/")
         }
     }
 

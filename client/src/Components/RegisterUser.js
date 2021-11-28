@@ -179,6 +179,11 @@ class UserDetails extends Component {
               <Button variant="yellow" className="mx-auto p-0 mb-4 py-2 yellowLink text-center" size="lg" id="toprodreq" onClick={this.saveAndContinue}>
                 No, I'm new
               </Button>
+              <Button variant="secondary" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprodreq">
+                <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/user" className="py-2 greyLink">
+                  Back to choices
+                </Link>
+              </Button>
             </ButtonGroup>
           </Card.Body>
         </Card>
@@ -288,7 +293,10 @@ class AddressDetails extends Component {
                   <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton" onClick={this.saveAndContinue}>Next</Button>
                 </Container>
                 :
-                <Container className="d-flex justify-content-end my-4">
+                <Container className="d-flex justify-content-between my-4">
+                  <Link  to="/user">
+                    <Button type='submit' variant='secondary' className="mb-2 text-white loginbutton">Back</Button>
+                  </Link>
                   <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton" onClick={this.saveAndContinue}>Next</Button>
                 </Container>
               }
@@ -415,7 +423,10 @@ class Confirmation extends Component {
                 <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton">Confirm</Button>
               </Container>
               :
-              <Container className="d-flex justify-content-end my-4">
+              <Container className="d-flex justify-content-between my-4">
+                <Link  to="/user">
+                  <Button type='submit' variant='secondary' className="mb-2 text-white loginbutton">Back</Button>
+                </Link>
                 <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton">Confirm</Button>
               </Container>
             }
