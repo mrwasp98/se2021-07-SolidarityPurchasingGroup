@@ -47,6 +47,23 @@ describe('SPG navbar', () => {
     })
 })
 
+//testing the client home
+describe('SPG client home', () => {
+    it('open route', () => {
+        cy.visit('http://localhost:3000/clienthome')
+    })
+    
+    afterEach(() => {
+            cy.visit('http://localhost:3000/clienthome')
+        })
+
+    it('goes to products page', () => {
+        cy.get('#toprodreq').click()
+        cy.url().should('include', '/products')
+    })
+
+})
+
 //testing the shop employee login
 describe('SPG login (shopemployee)', () => {
     it('open route', () => {
@@ -106,6 +123,11 @@ describe('SPG shop employee routes', () => {
     it('goes to handout page', () => {
         cy.get('#tohand').click()
         cy.url().should('include', '/handout')
+    })
+
+    it('goes to wallet page', () => {
+        cy.get('#topup').click()
+        cy.url().should('include', '/wallet')
     })
 })
 
@@ -192,6 +214,75 @@ describe('SPG register page', () => {
     })
 })
 
+//testing wallet page
+describe('SPG wallet page', () => {
+    it('open route', () => {
+        cy.get('#topup').click()
+        cy.url().should('include', '/wallet')
+    })
+
+    it('type a invalid user', () => {
+        cy.get('.client-here')
+            .type('unknown').should('have.value', '')
+        cy.contains('No option')
+    })
+
+    it('type a valid user, select amount', () => {
+        cy.visit('http://localhost:3000/wallet')
+        cy.get('.client-here').click().type('Loren')
+        cy.get('.css-1n7v3ny-option').click()
+        cy.get('.submit-btn').click()
+    })
+
+    it('type a valid user with a valid amount', () => {
+        cy.visit('http://localhost:3000/wallet')
+        cy.get('.client-here').click().type('Loren')
+        cy.get('.css-1n7v3ny-option').click()
+        cy.get('.input-amount').clear().type('1')
+        cy.get('.submit-btn').click()
+    })
+
+    it('back to home', () => {
+        cy.get('.home-here').click()
+        cy.url().should('include', '/')
+    })
+})
+
+//testing products page
+describe('SPG product show page', () => {
+    it('open route', () => {
+        cy.get('#toprod').click()
+        cy.url().should('include', '/products')
+    })
+
+    it('gets more products', () => {
+        cy.get('.callandarButton').click()
+        cy.get('.react-calendar')
+        cy.contains('2').click()
+        cy.get('.callandarButton').should("contain", " 05 Nov")
+    })
+
+    it('filter farmers button present', () => {
+
+        cy.contains('Select Farmers')
+    })
+    it('filter navbar', () => {
+        cy.get('.myCard').its('length').should('be.gte', 1)
+        cy.contains('Dairy').click()
+        cy.get('.myCard').its('length').should('eq', 6)
+        cy.get('.myCard').should('contain', 'Dairy')
+        cy.get('.myCard').should('not.contain', 'Salame')
+    })
+    it('selected category', () => {
+        cy.contains('Dairy').click()
+        cy.get('.selected-items').should('contain', 'Dairy')
+    })
+    it('back to home', () => {
+        cy.get('.rounded-circle').click()
+        cy.url().should('include', '/')
+    })
+})
+
 //testing handout page
 describe('SPG handout page', () => {
     it('open route', () => {
@@ -232,40 +323,6 @@ describe('SPG handout page', () => {
         cy.url().should('include', '/employeehome')
     })
 
-})
-
-describe('SPG product show page', () => {
-    it('open route', () => {
-        cy.get('#toprod').click()
-        cy.url().should('include', '/products')
-    })
-
-    it('gets more products', () => {
-        cy.get('.callandarButton').click()
-        cy.get('.react-calendar')
-        cy.contains('2').click()
-        cy.get('.callandarButton').should("contain", " 05 Nov")
-    })
-
-    it('filter farmers button present', () => {
-
-        cy.contains('Select Farmers')
-    })
-    it('filter navbar', () => {
-        cy.get('.myCard').its('length').should('be.gte', 1)
-        cy.contains('Dairy').click()
-        cy.get('.myCard').its('length').should('eq', 6)
-        cy.get('.myCard').should('contain', 'Dairy')
-        cy.get('.myCard').should('not.contain', 'Salame')
-    })
-    it('selected category', () => {
-        cy.contains('Dairy').click()
-        cy.get('.selected-items').should('contain', 'Dairy')
-    })
-    it('back to home', () => {
-        cy.get('.rounded-circle').click()
-        cy.url().should('include', '/')
-    })
 })
 
 
