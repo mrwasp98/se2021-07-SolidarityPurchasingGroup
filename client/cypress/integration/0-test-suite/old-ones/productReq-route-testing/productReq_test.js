@@ -9,12 +9,6 @@ describe('SPG product request page', () => {
         cy.contains('No option')
     })
 
-    it('type a valid user, back', () => {
-        cy.get('.client-here').click().type('{enter}')
-        cy.get('.back-btn').click()
-        cy.url().should('include', '/')
-    })
-
     it('type a valid user, press add', () => {
         cy.visit('http://localhost:3000/productRequest')
         cy.get('.client-here').click().type('Loren')
@@ -26,5 +20,10 @@ describe('SPG product request page', () => {
     it('type a valid user, press sub', () => {
         cy.get('.sub-btn-0').click()
         cy.contains('.alert-total').should('not.exist')
+    })
+
+    it('back to home', () => {
+        cy.get('.home-here').click()
+        cy.url().should('include', '/')
     })
 })
