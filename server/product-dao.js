@@ -18,7 +18,6 @@ exports.getProductsAvailable = (date) => {
         db.all(sql, [], (err, rows) => {
             if(err) {
                 reject(err);
-                return;
             }
             const products = rows.map((p) => ({id: p.id, name: p.name, description: p.description, farmerid: p.farmerid, price: p.price, measure: p.measure, category: p.category, typeofproduction: p.typeofproduction, picture: p.picture, dateavailability: p.dateavailability, quantity: p.quantity}))
                             .filter((p) => {return ((dayjs(p.dateavailability)).isBefore(thisSaturday9Am) && (dayjs(p.dateavailability).isAfter(lastSaturday9Am)))});
@@ -34,7 +33,6 @@ exports.updateProductsQuantity = (productid, quantity) => {
         db.get(sql, [quantity, productid], (err, row) => {
             if (err) {
                 reject(err);
-                return;
             }
             resolve(row);
         });
@@ -47,7 +45,6 @@ exports.getProductById = (id) => {
         db.get(sql, [id], (err, row) => {
             if(err) {
                 reject(err);
-                return;
             }
             if(row==undefined){
                 reject({ error: 'Product not found for id ' + id });
@@ -64,7 +61,6 @@ exports.deleteAllProducts = () => {
         db.run(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             else resolve();
         });
@@ -77,7 +73,6 @@ exports.insertProduct = (product) => {
         db.run(sql, [product.id, product.name, product.description, product.farmerid, product.price, product.measure, product.category, product.typeofproduction, product.picture], function (err) {
             if (err) {
                 reject(err);
-                return;
             }
             resolve(this.lastID);
         });
@@ -90,7 +85,6 @@ exports.deleteAvailability = () => {
         db.run(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             else resolve();
         });
@@ -103,7 +97,6 @@ exports.insertAvailability = (availability) => {
         db.run(sql, [availability.productid, availability.dateavailability, availability.quantity, availability.status], function (err) {
             if (err) {
                 reject(err);
-                return;
             }
             resolve(this.lastID);
         });

@@ -8,7 +8,6 @@ exports.getClients = () => {
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             resolve(rows);
         });
@@ -21,7 +20,6 @@ exports.deleteAllClients = () => {
         db.run(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             else resolve();
         });
@@ -46,7 +44,6 @@ exports.insertClient = (client) => {
         db.run(sql, [client.userid, client.name, client.surname, client.wallet, client.address], function (err) {
             if (err) {
                 reject(err);
-                return;
             }
             resolve(this.lastID);
         });
@@ -59,7 +56,6 @@ exports.topUp = (clientid, ammount) => {
         db.run(sql, [ammount, clientid], function (err) {
             if (err) {
                 reject(err);
-                return;
             }
             if (this.changes === 0) resolve(false);
             else resolve(true);
@@ -73,7 +69,6 @@ exports.getClientById = (clientid) => {
         db.get(sql, [clientid], (err, row) => {
             if (err) {
                 reject(err);
-                return;
             }
             resolve(row); //manage in server.js in row is undefined or not
         });

@@ -124,7 +124,7 @@ app.post(
     if (!errors.isEmpty()) {
       return res
         .status(422)
-        .json({ errors: errors.array() } + console.log(errors.array()));
+        .json({ errors: errors.array() });
     }
     const user = {
       username: req.body.username,
@@ -322,7 +322,7 @@ app.post("/api/shopemployee",
     if (!errors.isEmpty()) {
       return res
         .status(422)
-        .json({ errors: errors.array() } + console.log(errors.array()));
+        .json({ errors: errors.array() });
     }
     const user = {
       username: req.body.username,
