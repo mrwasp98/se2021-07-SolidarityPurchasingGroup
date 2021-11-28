@@ -88,7 +88,7 @@ export default function MyNav(props) {
                 <Row className="mt-3 ps-3 pe-3 mb-2">
                   <Col className="col-3" style={{ "fontWeight": "600" }}><p>Select hour: </p></Col>
                   <Col className="col-9" ><input
-                    className="input-hour"
+                    className="input-hour "
                     type="number"
                     min={0}
                     max={23}
@@ -101,7 +101,7 @@ export default function MyNav(props) {
                 <Row className="ps-3 pe-3" style={{ "fontWeight": "600" }}>
                   <Col className="col-3"><p>Select min: </p></Col>
                   <Col className="col-9"><input
-                    className="input-hour"
+                    className="input-min"
                     type="number"
                     min={0}
                     max={60}

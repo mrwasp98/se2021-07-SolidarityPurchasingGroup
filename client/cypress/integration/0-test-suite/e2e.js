@@ -175,6 +175,13 @@ describe('SPG register page', () => {
         cy.url().should('include', '/registerClient')
     })
 
+    beforeEach(()=>{
+        cy.visit('http://localhost:3000/registerClient')
+        cy.get('.btn-hour').click()
+        cy.get('.input-hour').click()
+
+    })
+
     it('type a invalid name', () => {
         cy.get('.submit-btn').click()
         cy.contains('The user has been created').should('not.exist')
