@@ -8,7 +8,6 @@ exports.getOrders = (clientId) => {
         db.all(sql, [clientId], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             if (rows == undefined) {
                 resolve({ error: 'Order not found for clientid '+clientId });
@@ -26,7 +25,6 @@ exports.updateOrderStatus = (orderId, status) => {
         db.run(sql, [status, orderId], (err) => {
             if (err) {
                 reject(err);
-                return;
             }
             if(this.changes===0) resolve(false);
             else resolve(true);
@@ -40,7 +38,6 @@ exports.deleteOrder = (orderid) => {
         db.run(sql, [orderid], (err, rows) => {
             if(err) {
                 reject(err)
-                return;
             }
             resolve()
         })
@@ -53,7 +50,6 @@ exports.deleteAllOrders = () => {
         db.run(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             else resolve();
         });
@@ -66,7 +62,6 @@ exports.insertOrder = (order) => {
         db.run(sql, [order.userid, order.creationdate, order.claimdate, order.confirmationdate, order.deliveryaddress, order.status], function (err) {
             if (err) {
                 reject(err);
-                return;
             }
             resolve(this.lastID);
         });
@@ -79,7 +74,6 @@ exports.getOrder = (orderid) => {
         db.get(sql, [orderid], (err, row) => {
             if (err) {
                 reject(err);
-                return;
             }
             if (row == undefined) {
                 resolve({ error: 'Order not found for id '+orderid });

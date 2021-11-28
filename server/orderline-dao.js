@@ -5,16 +5,15 @@ const db = require('./database');
 exports.getOrderLines = (orderid) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM orderline WHERE orderid=?';
-        db.get(sql, [orderid], (err, row) => {
+        db.all(sql, [orderid], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
-            if (row == undefined) {
+            if (rows == undefined) {
                 resolve({ error: 'Orderline not found.' });
             }
             else {
-                resolve(row);
+                resolve(rows);
             }
         });
     });
@@ -26,7 +25,6 @@ exports.insertOrderLine = (line) => {
         db.run(sql, [line.orderid, line.productid, line.quantity, line.price], function(err) {
             if(err) {
                 reject(err);
-                return;
             }
             resolve(this.lastID);
         });
@@ -39,7 +37,6 @@ exports.getOrderLinesWithProducts = (orderid) => {
         db.all(sql, [orderid], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             if (rows == undefined) {
                 resolve({ error: 'Orderline not found.' });
@@ -57,7 +54,6 @@ exports.deleteAllOrderlines = () => {
         db.run(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             else resolve();
         });

@@ -17,25 +17,26 @@ REMEMBER
 Change the database in database.js before running tests
 */
 
+const fakeUser1 = {
+    username: 'group07@gmail.com',
+    password: 'abc123',
+    type: 'client'
+};
+
+const fakeUser2 = {
+    username: 'group07-1@gmail.com',
+    password: 'abc123',
+    type: 'farmer'
+};
+
+const fakeUser3 = {
+    username: 'group07-2@gmail.com',
+    password: 'abc123',
+    type: 'client'
+};
+
 describe('Testing GET on /api/clients', () => {
 
-    const fakeUser1 = {
-        username: 'group07@gmail.com',
-        password: 'abc123',
-        type: 'client'
-    };
-
-    const fakeUser2 = {
-        username: 'group07-1@gmail.com',
-        password: 'abc123',
-        type: 'farmer'
-    };
-
-    const fakeUser3 = {
-        username: 'group07-2@gmail.com',
-        password: 'abc123',
-        type: 'client'
-    };
     beforeEach(async () => {
         //clear and fill (mock) client database with fakeClient1 and fakeClient2
         await userDao.deleteAllUsers();
@@ -95,7 +96,51 @@ describe('Testing GET on /api/clients', () => {
 
 });
 
+describe('Testing GET on api/client/:clientid', () => {
 
+    beforeEach(async ()=>{
+        await userDao.deleteAllUsers();
+        await clientDao.deleteAllClients();
+    });
+
+    afterAll(() => {
+        app.close(); //without that, jest won't exit
+    })
+
+    test("It should respond with the right client", async () => {
+        const userId1 = await userDao.insertUser(fakeUser1);
+        const fakeClient1 = {
+            userid: userId1,
+            name: 'John',
+            surname: 'Doe',
+            wallet: 50.30,
+            address: 'Corso Duca degli Abruzzi, 21, Torino'
+        }
+        await clientDao.insertClient(fakeClient1);
+        const response = await request(app).get('/api/client/'+userId1);
+        expect(response.body).toStrictEqual(fakeClient1);
+    });
+
+    test("It should respond with 200 status", async () => {
+        const userId1 = await userDao.insertUser(fakeUser1);
+        const fakeClient1 = {
+            userid: userId1,
+            name: 'John',
+            surname: 'Doe',
+            wallet: 50.30,
+            address: 'Corso Duca degli Abruzzi, 21, Torino'
+        }
+        await clientDao.insertClient(fakeClient1);
+        const response = await request(app).get('/api/client/'+userId1);
+        expect(response.status).toBe(200);
+    });
+
+    test("It should respond with 404 status", async () => {
+        const response = await request(app).get('/api/client/'+1);
+        expect(response.status).toBe(404);
+    });
+
+});
 
 describe('Testing POST on /api/client', () => {
 
