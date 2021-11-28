@@ -226,7 +226,7 @@ function App() {
             date={date}/>}
         />
         
-        <Route exact path="/registerClient" render={() => <Register setDirtyClients={setDirtyClients} />} />
+        <Route exact path="/registerClient" render={() => <Register setDirtyClients={setDirtyClients} logged={logged}/>} />
         
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} setUserId={setUserId} />} />
       

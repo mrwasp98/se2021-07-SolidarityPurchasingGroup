@@ -96,14 +96,14 @@ export default function Handout(props) {
                                 {error && <Alert variant="danger">An error as occurred: {error}</Alert>}
                             </ListGroup>
                         </Card>
-                        <HomeButton logged={props.logged} />
+                        <HomeButton className="home-here" logged={props.logged} />
                     </Container >
                     :
                     <>
                         <Alert variant="danger" style={{ "fontWeight": "500" }}>
                             Pickups take place from Wednesday morning until Friday evening
                         </Alert>
-                        <HomeButton logged={props.logged} />
+                        <HomeButton className="home-here" logged={props.logged} />
                     </>
             }
         </>

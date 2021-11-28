@@ -1,4 +1,5 @@
 import { Card, Button, ButtonGroup, Container } from "react-bootstrap";
+import HomeButton from './HomeButton';
 import { Link } from "react-router-dom";
 
 export default function Type() {
@@ -26,6 +27,7 @@ export default function Type() {
                     </ButtonGroup>
                 </Card.Body>
             </Card>
+            <HomeButton logged={"false"} />
         </Container>
     );
 }
