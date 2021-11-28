@@ -26,18 +26,6 @@ exports.deleteAllClients = () => {
     });
 };
 
-exports.getNewUserId = function () {
-    return new Promise((resolve, reject) => {
-        let sql = 'SELECT MAX(userid) AS result FROM client';
-        db.get(sql, [], (err, row) => {
-            if (err)
-                reject(err);
-            if (!row.result) resolve(1)
-            else resolve(row.result + 1)
-        });
-    });
-}
-
 exports.insertClient = (client) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO client(userid, name, surname, wallet, address) VALUES(?,?,?,?,?)';

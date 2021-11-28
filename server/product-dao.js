@@ -29,7 +29,6 @@ exports.getProductsAvailable = (date) => {
 exports.updateProductsQuantity = (productid, quantity) => {
     return new Promise((resolve, reject ) => {
         const sql = 'UPDATE availability SET quantity = quantity - ? WHERE productid == ?;';
-
         db.get(sql, [quantity, productid], (err, row) => {
             if (err) {
                 reject(err);

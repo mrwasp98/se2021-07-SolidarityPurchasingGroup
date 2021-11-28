@@ -42,7 +42,7 @@ exports.deleteOrder = (orderid) => {
             resolve()
         })
     })
-}
+} 
 
 exports.deleteAllOrders = () => {
     return new Promise((resolve, reject) => {
@@ -75,12 +75,7 @@ exports.getOrder = (orderid) => {
             if (err) {
                 reject(err);
             }
-            if (row == undefined) {
-                resolve({ error: 'Order not found for id '+orderid });
-            }
-            else {
-                resolve(row);
-            }
+            resolve(row); //the caller should check if it is undefined or not
         });
     });
 };

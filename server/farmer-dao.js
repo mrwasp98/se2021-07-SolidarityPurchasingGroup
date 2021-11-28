@@ -8,7 +8,6 @@ exports.getFarmers = () => {
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             resolve(rows);
         });
@@ -23,7 +22,6 @@ exports.deleteAllFarmers = () => {
         db.run(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             else resolve();
         });
@@ -36,7 +34,6 @@ exports.insertFarmer = (farmer) => {
         db.run(sql, [farmer.userid, farmer.name, farmer.surname, farmer.place, farmer.address], function (err) {
             if (err) {
                 reject(err);
-                return;
             }
             resolve(this.lastID);
         });

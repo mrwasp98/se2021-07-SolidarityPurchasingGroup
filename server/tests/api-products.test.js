@@ -33,7 +33,7 @@ const fakeProduct2 = {
     category: 'Fruit',
     typeofproduction: 'Bio',
     picture: ''
-}
+} 
 const fakeProduct3 = {
     id: 2,
     name: 'Mele',

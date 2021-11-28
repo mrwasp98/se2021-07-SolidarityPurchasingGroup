@@ -7,7 +7,6 @@ const saltRounds = 10;
 
 exports.getUserById = (id) => {
     return new Promise((resolve, reject) => {
-        
         const sql = 'SELECT * FROM user WHERE id = ?';
         db.get(sql, [id], (err,row) => {
             if(err){
@@ -53,7 +52,6 @@ exports.getUsers = () => {
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             if (rows == undefined) {
                 resolve({ error: 'Users not found'});
@@ -73,7 +71,6 @@ exports.deleteAllUsers = () => {
         db.run(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
-                return;
             }
             else resolve();
         });
@@ -87,7 +84,6 @@ exports.insertUser =  (user) => {
         db.run(sql, [user.username, hash , user.type], function (err) {
             if (err) {
                 reject(err);
-                return;
             }
             resolve(this.lastID);
         });
@@ -102,7 +98,6 @@ exports.updatePassword = (password, id) => {
         db.run(sql, [hash, id], function (err) {
             if (err) {
                 reject(err);
-                return;
             }
             if (this.changes === 0) resolve(false);
             else resolve(true);
@@ -116,7 +111,6 @@ exports.updateType= (id) => {
         db.run(sql, ["client", id], function (err) {
             if (err) {
                 reject(err);
-                return;
             }
             if (this.changes === 0) resolve(false);
             else resolve(true);
