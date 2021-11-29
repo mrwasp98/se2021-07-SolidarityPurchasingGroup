@@ -163,7 +163,7 @@ export default function UpdatePassword(props) {
                 <Link  to="/user/client">
                   <Button type='submit' variant='secondary' className="mb-2 text-white loginbutton">Back</Button>
                 </Link>
-                <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton">Confirm</Button>
+                <Button type='submit' variant='warning' className="cartButton mb-2 text-white confirm-btn">Confirm</Button>
               </Container>
             </Form>
           </Col>

@@ -9,17 +9,17 @@ export default function Type() {
                 <Card.Header as="h5">Choose the account type</Card.Header>
                 <Card.Body className="mb-2">
                     <ButtonGroup vertical aria-label="Directions" className="d-flex" >
-                        <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprodreq">
+                        <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toCreateClient">
                             <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/user/client" className="py-2 yellowLink">
                                 Client
                             </Link>
                         </Button>
-                        <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toregcl">
+                        <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toCreateFarmer">
                             <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/user/farmer"className="py-2 yellowLink">
                                 Farmer
                             </Link>
                         </Button>
-                        <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="topup">
+                        <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toCreateShopEmployee">
                             <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/user/shopemployee" className="py-2 yellowLink">
                                 Shop Employee
                             </Link>

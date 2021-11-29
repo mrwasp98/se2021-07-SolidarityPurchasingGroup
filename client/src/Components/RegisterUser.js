@@ -171,15 +171,15 @@ class UserDetails extends Component {
           <Card.Header as="h5">Already in?</Card.Header>
           <Card.Body className="mb-2">
             <ButtonGroup vertical aria-label="Directions" className="d-flex" >
-              <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprodreq">
+              <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toCreatePassword">
                 <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/user/client/password" className="py-2 yellowLink">
                   Yes, create a new password
                 </Link>
               </Button>
-              <Button variant="yellow" className="mx-auto p-0 mb-4 py-2 yellowLink text-center" size="lg" id="toprodreq" onClick={this.saveAndContinue}>
+              <Button variant="yellow" className="mx-auto p-0 mb-4 py-2 yellowLink text-center" size="lg" id="toCreateClient" onClick={this.saveAndContinue}>
                 No, I'm new
               </Button>
-              <Button variant="secondary" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprodreq">
+              <Button variant="secondary" className="mx-auto d-flex p-0 mb-4" size="lg" id="toBacktoChoices">
                 <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/user" className="py-2 greyLink">
                   Back to choices
                 </Link>
@@ -289,13 +289,13 @@ class AddressDetails extends Component {
               </Table>
               {(this.props.inputValues.type === "client") ?
                 <Container className="d-flex justify-content-between my-4">
-                  <Button variant="secondary" className="mb-2 text-white loginbutton" onClick={this.back}>Back</Button>
+                  <Button variant="secondary" className="mb-2 text-white back-btn" onClick={this.back}>Back</Button>
                   <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton" onClick={this.saveAndContinue}>Next</Button>
                 </Container>
                 :
                 <Container className="d-flex justify-content-between my-4">
-                  <Link  to="/user">
-                    <Button type='submit' variant='secondary' className="mb-2 text-white loginbutton">Back</Button>
+                  <Link to="/user">
+                    <Button type='submit' variant='secondary' className="mb-2 text-white back-btn">Back</Button>
                   </Link>
                   <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton" onClick={this.saveAndContinue}>Next</Button>
                 </Container>
@@ -364,7 +364,7 @@ class Confirmation extends Component {
                 */}
           <Form className="mt-5 " onSubmit={(event) => this.props.submit(event)}>
             <Table className="mb-3 color">
-              <Form.Group as={Row} className="mb-3" controlId="formBasicUsername">
+              <Form.Group as={Row} className="mb-3" controlId="formUsername">
                 <Row md={3}>
                   <Form.Label className='text-warning myText' column sm="2">
                     Username:
@@ -381,7 +381,7 @@ class Confirmation extends Component {
                 </Row>
               </Form.Group>
 
-              <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
+              <Form.Group as={Row} className="mb-3" controlId="formPassword">
                 <Row md={3}>
                   <Form.Label className='text-warning myText' column sm="2">
                     Choose password:
@@ -419,15 +419,15 @@ class Confirmation extends Component {
 
             {(this.props.inputValues.type === "client" || this.props.inputValues.type === "farmer") ?
               <Container className="d-flex justify-content-between my-4">
-                <Button variant="secondary" className="mb-2 text-white loginbutton" onClick={this.back}>Back</Button>
-                <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton">Confirm</Button>
+                <Button variant="secondary" className="mb-2 text-white back-btn" onClick={this.back}>Back</Button>
+                <Button type='submit' variant='warning' className="cartButton mb-2 text-white confirm-btn">Confirm</Button>
               </Container>
               :
               <Container className="d-flex justify-content-between my-4">
                 <Link  to="/user">
-                  <Button type='submit' variant='secondary' className="mb-2 text-white loginbutton">Back</Button>
+                  <Button type='submit' variant='secondary' className="mb-2 text-white back-btn">Back</Button>
                 </Link>
-                <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton">Confirm</Button>
+                <Button type='submit' variant='warning' className="cartButton mb-2 text-white confirm-btn">Confirm</Button>
               </Container>
             }
             {' '}
