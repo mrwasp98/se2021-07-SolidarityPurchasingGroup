@@ -43,8 +43,8 @@ describe('SPG register user', () => {
     })
 })
 
-//testing registration client
-describe('SPG registration client', () => {
+//testing registration client-prov
+describe('SPG registration client-prov', () => {
     it('go to register page', () => {
         cy.get('.btn-reg').click()
         cy.url().should('include', '/user')
@@ -88,7 +88,6 @@ describe('SPG registration client', () => {
         cy.get('.confirm-btn').click()
         cy.contains('Password updated').should('exist')
     })
-
 
 })
 
