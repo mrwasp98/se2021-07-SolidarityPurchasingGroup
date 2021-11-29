@@ -24,6 +24,9 @@ export default function MyNav(props) {
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
   const [message, setMessage] = useState([]);
+  const [notifyMessage, setNotifyMessage]= useState({
+    topUpWallet: props.topUpWallet
+  });
 
 
   const toggleShowHour = () => {
@@ -57,6 +60,10 @@ export default function MyNav(props) {
 
   //this use effect is used to show a message when the order is sent
   useEffect(() => {
+
+    // setNotifyMessage({
+    //   topUpWallet: props.topUpWallet
+    // });
     setTimeout(() => {
       setMessage([]);
     }, 5000);
@@ -129,7 +136,7 @@ export default function MyNav(props) {
             {props.logged ? (
               <>
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>             
-                {props.logged === "client" && props.topUpWallet ? <MyNotifications message={"Please add money in your wallet!"}/> : ""}
+                {props.logged === "client"  ? <MyNotifications message={notifyMessage}/> : ""}
                 {" "}
                 {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
               </>

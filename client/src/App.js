@@ -73,7 +73,7 @@ function App() {
       if (logged === "client") {
         let res = await getClientById(userId);
         setClient(res);
-        if (res.userid === userId && parseInt(res.wallet) < 30) {
+        if (res.userid === userId && parseInt(res.wallet) < 10) {
           setShowTopUpWalletModal(true);
           console.log("qua3")
           setNotify(true);

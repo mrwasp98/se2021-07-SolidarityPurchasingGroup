@@ -1,10 +1,19 @@
 import { bell } from "./Icons";
 import { Button, Toast } from "react-bootstrap";
 import { useState } from "react";
+import { useEffect } from "react";
 
 export default function MyNotifications(props) {
   const [showB, setShowB] = useState(false);
   const toggleShowB = () => setShowB(!showB);
+  const [message,setMessage]=useState();
+
+  useEffect(() => {
+    console.log("props.message.topUpWallet");
+    console.log(props.message.topUpWallet);
+    if(props.message.topUpWallet)
+      setMessage("Please add money in your wallet!");
+  }, []);
 
   return (
     <>
@@ -18,7 +27,7 @@ export default function MyNotifications(props) {
         <Toast.Header>
           <strong className="me-auto">Notifications</strong>
         </Toast.Header>
-        <Toast.Body>{props.message}</Toast.Body>
+        <Toast.Body>{message}</Toast.Body>
       </Toast>
     </>
   );
