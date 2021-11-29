@@ -12,7 +12,7 @@ export default function MyModal(props) {
         </Modal.Header>
         <Modal.Body>If you want to top up your wallet, go to the SPG office and ask a shop employee to do so. In order to do this, show: </Modal.Body>
         <Container className="mb-4 d-flex justify-content-center">
-          <QRCode value={"http://localhost:3000/wallet?" + props.userid} />
+          <QRCode value={`http://localhost:3000/wallet/${props.userid}`} />
         </Container>
         <Modal.Footer>
           <Button variant="secondary" className="float-left" onClick={props.close}>

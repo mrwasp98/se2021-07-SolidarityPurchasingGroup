@@ -4,10 +4,12 @@ import React from 'react'
 import Select from 'react-select'
 import { getClients, topUpWallet } from "../API/API"
 import HomeButton from "./HomeButton";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function Wallet(props) {
-    const [selectedClient, setSelectedClient] = useState(""); //this state controls the Select input
+    let { id } = useParams();
+
+    const [selectedClient, setSelectedClient] = useState(id); //this state controls the Select input
     const [options, setOptions] = useState([]); //this state is used to store the information in props.clients in the format that works with the Select 
     const [error, setError] = useState("");
     const [amount, setAmount] = useState(0);
