@@ -137,6 +137,7 @@ function App() {
             topUpWallet={notify}
           />
           <MyModal
+            userid={client.userid}
             show={showTopUpWalletModal}
             close={() => setShowTopUpWalletModal(false)}
           />
