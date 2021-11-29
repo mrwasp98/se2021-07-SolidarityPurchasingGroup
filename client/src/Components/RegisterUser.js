@@ -66,7 +66,6 @@ class RegisterUser extends Component {
           valid = false;
           this.setState({ messageError: "Username already used" });
           this.setState({ error: true });
-          return;
         }
       });
 
