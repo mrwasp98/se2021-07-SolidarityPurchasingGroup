@@ -165,7 +165,7 @@ function App() {
 
         <Route exact path='/clienthome' render={() => <ClientHome />} />
 
-        <Route exact path='/wallet' render={() => <Wallet
+        <Route path='/wallet/:id' render={() => <Wallet
           clients={clients}
           setClients={setClients}
           dirtyClients={dirtyClients}

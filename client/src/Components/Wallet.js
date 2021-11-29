@@ -87,7 +87,7 @@ export default function Wallet(props) {
                             </Card.Header>
                             <Card.Body>
                                 <Form className="client-here">
-                                    <Select options={options} onChange={(event) => handlechange(event)} />
+                                    <Select options={options} onChange={(event) => handlechange(event)}/>
                                 </Form>
                             </Card.Body>
                         </ListGroupItem>
