@@ -9,6 +9,89 @@ var isoWeek = require('dayjs/plugin/isoWeek')
 
 dayjs.extend(isoWeek)
 
+
+//testing register page
+describe('SPG register user', () => {
+    it('open route', () => {
+        cy.visit('http://localhost:3000/')
+    })
+
+    it('go to register page', () => {
+        cy.get('.btn-reg').click()
+        cy.url().should('include', '/user')
+    })
+
+    it('go to register client', () => {
+        cy.get('#toCreateClient').click()
+        cy.url().should('include', '/user/client')
+        cy.get('#toBacktoChoices').click()
+        cy.url().should('include', '/user')
+    })
+
+    it('go to register farmer', () => {
+        cy.get('#toCreateFarmer').click()
+        cy.url().should('include', '/user/farmer')
+        cy.get('.back-btn').click()
+        cy.url().should('include', '/user')
+    })
+
+    it('go to register shop employee', () => {
+        cy.get('#toCreateShopEmployee').click()
+        cy.url().should('include', '/user/shopemployee')
+        cy.get('.back-btn').click()
+        cy.url().should('include', '/user')
+    })
+})
+
+//testing registration client
+describe('SPG registration client', () => {
+    it('go to register page', () => {
+        cy.get('.btn-reg').click()
+        cy.url().should('include', '/user')
+        cy.get('#toCreateClient').click()
+        cy.url().should('include', '/user/client')
+    })
+
+    it('go to create password', () => {
+        cy.get('#toCreatePassword').click()
+        cy.url().should('include', '/user/client/password')
+    })
+
+
+    it('type a password empty', () => {
+        cy.get('#formBasicUsername').clear().type('Ajeje')
+        cy.get('.confirm-btn').click()
+        cy.contains('The user has been created').should('not.exist')
+    })
+
+    it('type a invalid username', () => {
+        cy.get('#formBasicUsername').clear().type('Ajeje')
+        cy.get('#formBasicPassword').clear().type('Ajeje')
+        cy.get('#formBasicCPassword').clear().type('Ajeje')
+        cy.get('.confirm-btn').click()
+        cy.contains('No username found').should('exist')
+    })
+
+    it('type a bad password', () => {
+        cy.get('#formBasicUsername').clear().type('Brazorf1@3u1g.it')
+        cy.get('#formBasicPassword').clear().type('Ajeje')
+        cy.get('#formBasicCPassword').clear().type('Ajeje')
+        cy.get('.confirm-btn').click()
+        cy.contains('The password must be at least 6 characters long and must contain both alphabetic and numerical values.').should('exist')
+    })
+
+
+    it('type a valid username', () => {
+        cy.get('#formBasicUsername').clear().type('Brazorf1@3u1g.it')
+        cy.get('#formBasicPassword').clear().type('Ajeje123')
+        cy.get('#formBasicCPassword').clear().type('Ajeje123')
+        cy.get('.confirm-btn').click()
+        cy.contains('Password updated').should('exist')
+    })
+
+
+})
+
 //testing the navbar
 describe('SPG navbar', () => {
     it('open route', () => {
@@ -359,7 +442,6 @@ describe('SPG client home', () => {
     })
 
 })
-
 
 
 

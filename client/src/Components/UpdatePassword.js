@@ -64,7 +64,7 @@ export default function UpdatePassword(props) {
                 setInserted(true);
                 setError(false);
             });
-        } else {
+        } else if(valid === false){
             setMessageError("No username found");
             setError(true);
         }
@@ -163,7 +163,7 @@ export default function UpdatePassword(props) {
                 <Link  to="/user/client">
                   <Button type='submit' variant='secondary' className="mb-2 text-white loginbutton">Back</Button>
                 </Link>
-                <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton">Confirm</Button>
+                <Button type='submit' variant='warning' className="cartButton mb-2 text-white confirm-btn">Confirm</Button>
               </Container>
             </Form>
           </Col>
