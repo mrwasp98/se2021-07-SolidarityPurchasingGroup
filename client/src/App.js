@@ -30,7 +30,7 @@ function App() {
   const [logged, setLogged] = useState(''); //this state is used to store the type of the user logged
   // eslint-disable-next-line
   const [username, setUsername] = useState(''); //this state saves the name of the logged user
-  const [userId, setUserId] = useState(''); //this state saves the id of the logged user
+  const [userId, setUserId] = useState(0); //this state saves the id of the logged user
   const [showTopUpWalletModal, setShowTopUpWalletModal] = useState(false);
   const [notify, setNotify] = useState(false);
 
@@ -69,11 +69,13 @@ function App() {
   //this use effect is used to show the modal when the client logs in  
   useEffect(() => {
     async function fetchdata() {
+      console.log(logged);
       if (logged === "client") {
-        getClientById(userId).then((res) => setClient(res));
-
-        if (client.userid === userId && parseInt(client.wallet) < 30) {
+        let res = await getClientById(userId);
+        setClient(res);
+        if (res.userid === userId && parseInt(res.wallet) < 30) {
           setShowTopUpWalletModal(true);
+          console.log("qua3")
           setNotify(true);
         } else setNotify(false);
       }
@@ -112,7 +114,7 @@ function App() {
                 show: true,
                 text: "Order received!" //this message won't be used. I don't remove it for consistency
               })
-          }).catch(err => { })
+          }).catch(err => { console.log(err); })
         setDirty(false);
       }
     }
@@ -137,6 +139,7 @@ function App() {
             topUpWallet={notify}
           />
           <MyModal
+            userid={client.userid}
             show={showTopUpWalletModal}
             close={() => setShowTopUpWalletModal(false)}
           />
