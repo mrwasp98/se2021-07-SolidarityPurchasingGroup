@@ -112,7 +112,7 @@ function App() {
                 show: true,
                 text: "Order received!" //this message won't be used. I don't remove it for consistency
               })
-          }).catch(err => { console.log(err); })
+          }).catch(err => { })
         setDirty(false);
       }
     }
