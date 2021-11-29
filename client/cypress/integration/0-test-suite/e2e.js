@@ -86,7 +86,56 @@ describe('SPG registration client-prov', () => {
         cy.get('#formBasicPassword').clear().type('Ajeje123')
         cy.get('#formBasicCPassword').clear().type('Ajeje123')
         cy.get('.confirm-btn').click()
-        cy.contains('Password updated').should('exist')
+        cy.get('.alert-success')
+    })
+
+})
+
+
+//testing registration client
+describe('SPG registration client', () => {
+    it('open route', () => {
+        cy.visit('http://localhost:3000/user')
+    })
+
+    it('go to register page', () => {
+        cy.get('#toCreateClient').click()
+        cy.url().should('include', '/user/client')
+    })
+
+    it('go to create client page', () => {
+        cy.get('#toCreateNewClient').click()
+        cy.url().should('include', '/user/client')
+        cy.get('#formBasicName').clear().type('Ajeje')
+        cy.get('#formBasicSurname').clear().type('Brazorf')
+        cy.get('#formBasicAddress').clear().type('Corso Francia 34')
+        cy.get('.next-btn').click()
+    })
+
+
+    it('type a username that just exists', () => {
+        cy.get('#formBasicUsername').clear().type('Brazorf1@3u1g.it')
+        cy.get('#formBasicPassword').clear().type('Ajeje')
+        cy.get('#formBasicCPassword').clear().type('Ajeje')
+        cy.get('.confirm-btn').click()
+        cy.contains('Username already used').should('exist')
+    })
+
+    it('type a bad password', () => {
+        cy.get('#formBasicUsername').clear().type('CuginoDiBrazorf@3u1g.it')
+        cy.get('#formBasicPassword').clear().type('Ajeje')
+        cy.get('#formBasicCPassword').clear().type('Ajeje')
+        cy.get('.confirm-btn').click()
+        cy.contains('The password must be at least 6 characters long and must contain both alphabetic and numerical values.').should('exist')
+    })
+
+
+    it('type a valid username', () => {
+        cy.get('#formBasicUsername').clear().type('CuginoDiBrazorf@3u1g.it')
+        cy.get('#formBasicPassword').clear().type('Ajeje123')
+        cy.get('#formBasicCPassword').clear().type('Ajeje123')
+        cy.get('.confirm-btn').click()
+        cy.contains('The user has been created').should('exist')
     })
 
 })
@@ -119,7 +168,8 @@ describe('SPG virtual clock', () => {
     it('changes the date correctly', () => {
         cy.get('.callandarButton').click()
         cy.get('.react-calendar')
-        cy.contains('19').click()
+        cy.contains('23').click()
+        cy.get('.callandarButton').should("contain", " 23 Nov")
     })
 })
 
@@ -210,6 +260,10 @@ describe('SPG product request page', () => {
     it('open route', () => {
         cy.get('#toprodreq').click()
         cy.url().should('include', '/productRequest')
+        cy.get('.callandarButton').click()
+        cy.get('.react-calendar')
+        cy.contains('28').click()
+        cy.get('.callandarButton').should("contain", " 28 Nov")
     })
 
     it('type a invalid user', () => {
@@ -244,7 +298,8 @@ describe('SPG register page', () => {
         cy.url().should('include', '/registerClient')
         cy.get('.callandarButton').click()
         cy.get('.react-calendar')
-        cy.contains('19').click()
+        cy.contains('23').click()
+        cy.get('.callandarButton').should("contain", " 23 Nov")
         cy.get('.btn-hour').click()
         cy.get('.input-hour').clear().type('12')
         cy.get('.input-min').clear().type('00')
@@ -342,8 +397,8 @@ describe('SPG product show page', () => {
     it('gets more products', () => {
         cy.get('.callandarButton').click()
         cy.get('.react-calendar')
-        cy.contains('23').click()
-        cy.get('.callandarButton').should("contain", " 23 Nov")
+        cy.contains('30').click()
+        cy.get('.callandarButton').should("contain", " 30 Nov")
     })
 
     it('filter farmers button present', () => {
@@ -382,7 +437,8 @@ describe('SPG handout page', () => {
         it('changes the date', () => {
             cy.get('.callandarButton').click()
             cy.get('.react-calendar')
-            cy.contains('19').click()
+            cy.contains('25').click()
+            cy.get('.callandarButton').should("contain", " 25 Nov")
         })
     }
 

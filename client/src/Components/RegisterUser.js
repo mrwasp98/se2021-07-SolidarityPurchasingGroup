@@ -176,7 +176,7 @@ class UserDetails extends Component {
                   Yes, create a new password
                 </Link>
               </Button>
-              <Button variant="yellow" className="mx-auto p-0 mb-4 py-2 yellowLink text-center" size="lg" id="toCreateClient" onClick={this.saveAndContinue}>
+              <Button variant="yellow" className="mx-auto p-0 mb-4 py-2 yellowLink text-center" size="lg" id="toCreateNewClient" onClick={this.saveAndContinue}>
                 No, I'm new
               </Button>
               <Button variant="secondary" className="mx-auto d-flex p-0 mb-4" size="lg" id="toBacktoChoices">
@@ -290,14 +290,14 @@ class AddressDetails extends Component {
               {(this.props.inputValues.type === "client") ?
                 <Container className="d-flex justify-content-between my-4">
                   <Button variant="secondary" className="mb-2 text-white back-btn" onClick={this.back}>Back</Button>
-                  <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton" onClick={this.saveAndContinue}>Next</Button>
+                  <Button type='submit' variant='warning' className="cartButton mb-2 text-white next-btn" onClick={this.saveAndContinue}>Next</Button>
                 </Container>
                 :
                 <Container className="d-flex justify-content-between my-4">
                   <Link to="/user">
                     <Button type='submit' variant='secondary' className="mb-2 text-white back-btn">Back</Button>
                   </Link>
-                  <Button type='submit' variant='warning' className="cartButton mb-2 text-white loginbutton" onClick={this.saveAndContinue}>Next</Button>
+                  <Button type='submit' variant='warning' className="cartButton mb-2 text-white next-btn" onClick={this.saveAndContinue}>Next</Button>
                 </Container>
               }
               {' '}
