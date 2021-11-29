@@ -77,7 +77,11 @@ function App() {
           setShowTopUpWalletModal(true);
           console.log("qua3")
           setNotify(true);
-        } else setNotify(false);
+        } else {
+          console.log("nofyfalse");
+          setNotify(false);
+          console.log(notify);
+        }
       }
     }
     fetchdata();

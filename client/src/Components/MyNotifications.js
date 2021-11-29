@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export default function MyNotifications(props) {
   const [showB, setShowB] = useState(false);
   const toggleShowB = () => setShowB(!showB);
-  const [message,setMessage]=useState();
+  const [message,setMessage]=useState("There isn't any unread message");
 
   useEffect(() => {
     console.log("props.message.topUpWallet");
