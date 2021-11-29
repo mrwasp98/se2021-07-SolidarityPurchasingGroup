@@ -116,10 +116,10 @@ export default function MyNav(props) {
                 <Clock size={200} date={new Date(props.date.getFullYear(), props.date.getMonth(), props.date.getDate(), hour, min)} timeFormat="24hour" hourFormat="standard" />
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={() => { setShowHour(false) }} style={{ 'backgroundColor': "#143642" }}>
+                <Button className="close-btn" variant="secondary" onClick={() => { setShowHour(false) }} style={{ 'backgroundColor': "#143642" }}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={handleModal} style={{ fontSize: "17px", "fontWeight": "500" }}>
+                <Button className="save-btn" variant="primary" onClick={handleModal} style={{ fontSize: "17px", "fontWeight": "500" }}>
                   Save Changes
                 </Button>
               </Modal.Footer>
@@ -128,7 +128,7 @@ export default function MyNav(props) {
           <Navbar.Text>
             {props.logged ? (
               <>
-                <Button variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>             
+                <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>             
                 {props.logged === "client" && props.topUpWallet ? <MyNotifications message={"Please add money in your wallet!"}/> : ""}
                 {" "}
                 {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}

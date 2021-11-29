@@ -3,6 +3,14 @@ describe('SPG product request page', () => {
         cy.visit('http://localhost:3000/productRequest')
     })
 
+    before(()=>{
+        cy.visit('http://localhost:3000/productRequest')
+        cy.get('.btn-hour').click()
+        cy.get('.input-hour').clear().type('09')
+        cy.get('.input-min').clear().type('01')
+        cy.get('.submit-btn').click()
+    })
+
     it('type a invalid user', () => {
         cy.get('.client-here')
             .type('unknown').should('have.value', '')

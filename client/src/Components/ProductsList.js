@@ -120,7 +120,7 @@ export default function ProductsList(props) {
                     Product has been added to cart.
                 </Alert>
                 }
-                <HomeButton logged={props.logged} />
+                <HomeButton className="home-here" logged={props.logged} />
             </Container>
 
             <Offcanvas show={show} onHide={handleClose} {...props} className="p-2" style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>

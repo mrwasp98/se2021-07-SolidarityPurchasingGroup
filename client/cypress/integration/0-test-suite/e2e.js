@@ -5,6 +5,10 @@ import dayjs from 'dayjs'
 import 'cypress-react-selector'
 const today = dayjs(new Date).format("DD/MM/YYYY");
 
+var isoWeek = require('dayjs/plugin/isoWeek')
+
+dayjs.extend(isoWeek)
+
 //testing the navbar
 describe('SPG navbar', () => {
     it('open route', () => {
@@ -33,8 +37,7 @@ describe('SPG virtual clock', () => {
     it('changes the date correctly', () => {
         cy.get('.callandarButton').click()
         cy.get('.react-calendar')
-        cy.contains('5').click()
-        cy.get('.callandarButton').should("contain", "Fri 05 Nov")
+        cy.contains('19').click()
     })
 })
 
@@ -51,23 +54,6 @@ describe('SPG login', () => {
         cy.get('.loginbutton').click();
         cy.contains('Logout')
     })
-})
-
-//testing the client home
-describe('SPG client home', () => {
-    it('open route', () => {
-        cy.visit('http://localhost:3000/clienthome')
-    })
-    
-    afterEach(() => {
-            cy.visit('http://localhost:3000/clienthome')
-        })
-
-    it('goes to products page', () => {
-        cy.get('#toprodreq').click()
-        cy.url().should('include', '/products')
-    })
-
 })
 
 //testing the shop employee login
@@ -162,25 +148,27 @@ describe('SPG product request page', () => {
         cy.contains('.alert-total').should('not.exist')
     })
 
-    it('go back', () => {
-        cy.get('.back-btn').click()
+    it('back to home', () => {
+        cy.get('.home-here').click()
         cy.url().should('include', '/')
     })
 })
 
 //testing register page
 describe('SPG register page', () => {
-    it('open route', () => {
+
+    before(()=>{
         cy.get('#toregcl').click()
         cy.url().should('include', '/registerClient')
-    })
-
-    beforeEach(()=>{
-        cy.visit('http://localhost:3000/registerClient')
+        cy.get('.callandarButton').click()
+        cy.get('.react-calendar')
+        cy.contains('19').click()
         cy.get('.btn-hour').click()
-        cy.get('.input-hour').click()
-
+        cy.get('.input-hour').clear().type('12')
+        cy.get('.input-min').clear().type('00')
+        cy.get('.save-btn').click()
     })
+
 
     it('type a invalid name', () => {
         cy.get('.submit-btn').click()
@@ -307,7 +295,7 @@ describe('SPG handout page', () => {
 
     if (today.day !== "Friday") {
         it('shows a error message', () => {
-            cy.contains('Pickups take place from Wednesday morning until Friday evening')
+            cy.contains('Pickups take place from Wednesday morning at 9 am until Friday evening at 7 pm')
         })
         it('changes the date', () => {
             cy.get('.callandarButton').click()
@@ -336,6 +324,38 @@ describe('SPG handout page', () => {
     it('back to home', () => {
         cy.get('.test-back-btn').click()
         cy.url().should('include', '/employeehome')
+    })
+
+    after(() => {
+        cy.get('.logoutButton').click();
+        cy.url().should('include', '/')
+    })
+})
+
+
+//testing the client home
+describe('SPG client home', () => {
+    it('open route', () => {
+        cy.visit('http://localhost:3000/login')
+        cy.get('.emailfield').type("client1");
+        cy.get('.passwordfield').type('qwerty123')
+        cy.get('.loginbutton').click(); 
+        cy.url().should('include', '/clienthome')
+    })
+
+    it('goes to product page', () => {
+        cy.get('#toprod').click()
+        cy.url().should('include', '/products')
+    })
+
+    it('goes to home client', () => {
+        cy.get('.home-here').click()
+        cy.url().should('include', '/clienthome')
+    })
+
+    after(()=>{
+        cy.get('.logoutButton').click();
+        cy.url().should('include', '/')
     })
 
 })
