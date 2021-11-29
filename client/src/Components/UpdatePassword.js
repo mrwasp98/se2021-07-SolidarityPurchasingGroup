@@ -64,7 +64,7 @@ export default function UpdatePassword(props) {
                 setInserted(true);
                 setError(false);
             });
-        } else {
+        } else if(valid === false){
             setMessageError("No username found");
             setError(true);
         }

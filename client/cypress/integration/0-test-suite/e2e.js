@@ -58,22 +58,35 @@ describe('SPG registration client', () => {
     })
 
 
-    it('type a invalid username', () => {
+    it('type a password empty', () => {
+        cy.get('#formBasicUsername').clear().type('Ajeje')
         cy.get('.confirm-btn').click()
         cy.contains('The user has been created').should('not.exist')
     })
 
-    it('type a password empty', () => {
-        cy.get('#formUsername').clear().type('Ajeje')
+    it('type a invalid username', () => {
+        cy.get('#formBasicUsername').clear().type('Ajeje')
+        cy.get('#formBasicPassword').clear().type('Ajeje')
+        cy.get('#formBasicCPassword').clear().type('Ajeje')
         cy.get('.confirm-btn').click()
-        cy.contains('The user has been created').should('not.exist')
+        cy.contains('No username found').should('exist')
     })
 
     it('type a bad password', () => {
-        cy.get('#formUsername').clear().type('Ajeje')
-        cy.get('#formPassword').clear().type('Ajeje')
+        cy.get('#formBasicUsername').clear().type('Brazorf1@3u1g.it')
+        cy.get('#formBasicPassword').clear().type('Ajeje')
+        cy.get('#formBasicCPassword').clear().type('Ajeje')
         cy.get('.confirm-btn').click()
-        cy.contains('The user has been created').should('not.exist')
+        cy.contains('The password must be at least 6 characters long and must contain both alphabetic and numerical values.').should('exist')
+    })
+
+
+    it('type a valid username', () => {
+        cy.get('#formBasicUsername').clear().type('Brazorf1@3u1g.it')
+        cy.get('#formBasicPassword').clear().type('Ajeje123')
+        cy.get('#formBasicCPassword').clear().type('Ajeje123')
+        cy.get('.confirm-btn').click()
+        cy.contains('Password updated').should('exist')
     })
 
 

@@ -364,7 +364,7 @@ class Confirmation extends Component {
                 */}
           <Form className="mt-5 " onSubmit={(event) => this.props.submit(event)}>
             <Table className="mb-3 color">
-              <Form.Group as={Row} className="mb-3" controlId="formUsername">
+              <Form.Group as={Row} className="mb-3" controlId="formBasicUsername">
                 <Row md={3}>
                   <Form.Label className='text-warning myText' column sm="2">
                     Username:
@@ -381,7 +381,7 @@ class Confirmation extends Component {
                 </Row>
               </Form.Group>
 
-              <Form.Group as={Row} className="mb-3" controlId="formPassword">
+              <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
                 <Row md={3}>
                   <Form.Label className='text-warning myText' column sm="2">
                     Choose password:
