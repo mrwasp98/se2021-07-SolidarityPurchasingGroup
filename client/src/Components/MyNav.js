@@ -60,10 +60,6 @@ export default function MyNav(props) {
 
   //this use effect is used to show a message when the order is sent
   useEffect(() => {
-
-    // setNotifyMessage({
-    //   topUpWallet: props.topUpWallet
-    // });
     setTimeout(() => {
       setMessage([]);
     }, 5000);

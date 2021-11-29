@@ -75,12 +75,9 @@ function App() {
         setClient(res);
         if (res.userid === userId && parseInt(res.wallet) < 10) {
           setShowTopUpWalletModal(true);
-          console.log("qua3")
           setNotify(true);
         } else {
-          console.log("nofyfalse");
           setNotify(false);
-          console.log(notify);
         }
       }
     }
