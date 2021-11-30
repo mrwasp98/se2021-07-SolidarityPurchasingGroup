@@ -22,7 +22,7 @@ export default function MyNotifications(props) {
         onClose={toggleShowB}
         show={showB}
         animation={false}
-        className="position-absolute mynotify"
+        className="position-absolute mynotify mt-3"
       >
         <Toast.Header>
           <strong className="me-auto">Notifications</strong>

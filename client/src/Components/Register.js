@@ -132,7 +132,7 @@ export default function Register(props) {
               </Col>
             </Form.Group>
 
-            <Container className="d-flex justify-content-between my-4">
+            <Container className="d-flex justify-content-end my-4">
               <Button variant="yellow" type="submit" className="submit-btn">Submit</Button>
             </Container>
           </Form>
