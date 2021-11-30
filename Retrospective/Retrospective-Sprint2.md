@@ -29,14 +29,15 @@ sections:
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
-| _#0_   |         |    -   |            |              |
-| n      |         |        |            |              |
+| _#0_   |    14   |    -   |      40h   |     56h30m   |
+|*#1*    |     3   |   3    |      5h    |     4h30m    |
+|*#2*    |     3   |   5    |      9h    |     11h50m   |
+|*#3*    |     3   |  21    |      36h   |     9h30m    |
+|*#4*    |     3   |   8    |      13h   |     26h50m   |
+|*#5*    |     3   |   5    |      9h    |      0h      |
 
-
-> place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
-
-- Hours per task (average, standard deviation)
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent from previous table
+- Hours per task (average, standard deviation): 3h 43m
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent from previous table: 1,03
 
   
 ## QUALITY MEASURES 
