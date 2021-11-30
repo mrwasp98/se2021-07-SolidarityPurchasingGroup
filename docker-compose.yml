@@ -11,6 +11,7 @@ services:
         - webappnetwork
       volumes: 
        - sqlite3db:/server/db/db
+      image: softengp07/solidarity-purchasing-group07:release1server
     client:
       depends_on:
       - server
@@ -23,6 +24,7 @@ services:
         - server
       networks:
       - webappnetwork
+      image: softengp07/solidarity-purchasing-group07:release1client
 volumes: 
   sqlite3db:
 
