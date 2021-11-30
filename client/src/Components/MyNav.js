@@ -89,7 +89,9 @@ export default function MyNav(props) {
         {date.format('HH:mm')}
           </Button>
         {show?(
-          <Calendar className="position-absolute priority react-calendar" onChange={handleCalendar} style={{ color: "#0f8b8b" }} value={props.date} />
+          <Container  style={{ zIndex: "100"}}>
+            <Calendar className="position-absolute priority react-calendar mt-5" onChange={handleCalendar} style={{ color: "#0f8b8b" }} value={props.date} />
+          </Container>
         ): (
           ""
         )}
