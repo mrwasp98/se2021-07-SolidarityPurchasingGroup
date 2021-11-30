@@ -146,7 +146,7 @@ export default function Wallet(props) {
                 </Card>
                 {(showGif === true) ? (
                     <Row className="justify-content-center mt-3">
-                        <Image src="img/salvadanaio.gif" fluid className="myGif" />
+                        <Image src="/img/salvadanaio.gif" fluid className="myGif" />
                     </Row>
                 ) : (
                     ""

@@ -70,7 +70,6 @@ class RegisterUser extends Component {
       });
 
       if (this.state.type === "shopemployee" && valid === true) {
-        console.log("Shopp----");
         this.setState({ inserted: true });
         addShopEmployee(this.state.username, this.state.password).then(() => {
           this.setState({ inserted: true });
@@ -91,7 +90,8 @@ class RegisterUser extends Component {
           this.setState({ error: false });
         });
       }
-    }
+      
+      }
   };
 
   componentDidMount() {
@@ -222,6 +222,7 @@ class AddressDetails extends Component {
                     <Col sm="10" md={8}>
                       <Form.Control
                         placeholder="Name"
+                        defaultValue={this.props.inputValues.name}
                         type="text"
                         name="name"
                         required
@@ -239,6 +240,7 @@ class AddressDetails extends Component {
                     <Col sm="10" md={8}>
                       <Form.Control
                         placeholder="Surname"
+                        defaultValue={this.props.inputValues.surname}
                         type="text"
                         name="surname"
                         required
@@ -257,6 +259,7 @@ class AddressDetails extends Component {
                       <Col sm="10" md={8}>
                         <Form.Control
                           placeholder="Place"
+                          defaultValue={this.props.inputValues.place}
                           type="text"
                           name="place"
                           required
@@ -278,6 +281,7 @@ class AddressDetails extends Component {
                     <Col sm="10" md={8}>
                       <Form.Control
                         placeholder="Address"
+                        defaultValue={this.props.inputValues.address}
                         type="text"
                         name="address"
                         required
@@ -372,6 +376,7 @@ class Confirmation extends Component {
                   <Col sm="10" md={8}>
                     <Form.Control
                       placeholder="Username"
+                      defaultValue={this.props.inputValues.username}
                       type="text"
                       name="username"
                       required
@@ -389,6 +394,7 @@ class Confirmation extends Component {
                   <Col sm="10" md={8}>
                     <Form.Control
                       placeholder="Password"
+                      defaultValue={this.props.inputValues.password}
                       type="password"
                       name="password"
                       required
@@ -406,6 +412,7 @@ class Confirmation extends Component {
                   <Col sm="10" md={8}>
                     <Form.Control
                       placeholder="Password"
+                      defaultValue={this.props.inputValues.cpassword}
                       type="password"
                       name="cpassword"
                       required
