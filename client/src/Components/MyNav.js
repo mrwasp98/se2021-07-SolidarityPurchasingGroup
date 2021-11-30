@@ -67,7 +67,7 @@ export default function MyNav(props) {
 
   return (
     <>
-      <Navbar className="justify-content-between NavBar-Background text-warning myNav" expand="sm">
+      <Navbar className="justify-content-between NavBar-Background text-warning myNav" variant="dark" expand="sm">
         <Container fluid>
 
           <Navbar.Brand style={{ fontSize: "25px" }}>
@@ -78,7 +78,13 @@ export default function MyNav(props) {
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="navbarScroll" className="justify-content-end" >
-
+          {show?(
+          <div>
+            <Calendar className="position-absolute priority react-calendar" onChange={handleCalendar} style={{ color: "#0f8b8b"}} value={props.date} />
+          </div>
+        ): (
+          ""
+        )}
           <Button variant="light" onClick={toggleShow} className="me-2 callandarButton" style={{ fontSize: "17px" }}>
         {iconCalendar}
         {date.format('ddd DD MMM')}
@@ -88,13 +94,7 @@ export default function MyNav(props) {
         {clock}
         {date.format('HH:mm')}
           </Button>
-        {show?(
-          <Container  style={{ zIndex: "100"}}>
-            <Calendar className="position-absolute priority react-calendar mt-5" onChange={handleCalendar} style={{ color: "#0f8b8b" }} value={props.date} />
-          </Container>
-        ): (
-          ""
-        )}
+        
           <Modal className="" show={showHour} onHide={() => !showHour} animation={false}>
           <Modal.Body>
           <Row className="mt-3 ps-3 pe-3 mb-2">
