@@ -112,7 +112,7 @@ export default function UpdatePassword(props) {
                   </Form.Label>
                   <Col sm="10" md={8}>
                     <Form.Control
-                      placeholder="username"
+                      placeholder="Username"
                       type="text"
                       name="username"
                       required
@@ -130,7 +130,7 @@ export default function UpdatePassword(props) {
                   </Form.Label>
                   <Col sm="10" md={8}>
                     <Form.Control
-                      placeholder="password"
+                      placeholder="Password"
                       type="password"
                       name="password"
                       required
@@ -148,7 +148,7 @@ export default function UpdatePassword(props) {
                   </Form.Label>
                   <Col sm="10" md={8}>
                     <Form.Control
-                      placeholder="password"
+                      placeholder="Password"
                       type="password"
                       name="cpassword"
                       required
