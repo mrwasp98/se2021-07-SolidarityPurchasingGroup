@@ -145,7 +145,7 @@ export default function Wallet(props) {
                     </ListGroup>
                 </Card>
                 {(showGif === true) ? (
-                    <Row className="justify-content-center mt-3">
+                    <Row className="justify-content-center mt-2">
                         <Image src="/img/salvadanaio.gif" fluid className="myGif" />
                     </Row>
                 ) : (

@@ -162,7 +162,7 @@ export default function ProductsList(props) {
                             prod={prod}
                             key={index}
                             logged={props.logged}
-                            farmerName={farmersPresent.length > 0 && farmersPresent.filter(farmer => farmer.userid === prod.farmerid)[0].place}
+                            farmerName={farmersPresent.length > 0 && farmersPresent.filter(farmer => farmer.userid === prod.farmerid)[0] && farmersPresent.filter(farmer => farmer.userid === prod.farmerid)[0].place}
                             setInserted={setInserted}
                             setDirtyBasket={props.setDirtyBasket}
                         />)}
