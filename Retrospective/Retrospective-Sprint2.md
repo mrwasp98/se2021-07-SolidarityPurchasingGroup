@@ -18,10 +18,10 @@ sections:
 
 **Remember**  a story is done ONLY if it fits the Definition of Done:
 
-- Unit Tests passing: 
-- Code review completed: 
-- Code present on VCS: 
-- End-to-End tests performed:
+- Unit Tests passing
+- Code review completed
+- Code present on VCS
+- End-to-End tests performed
 
 > Our DoD: A story is done when the backed tests performed by `jest` ends successfully and when the frontend tests performed by `cypress` are correctly completed.
 
@@ -43,24 +43,27 @@ sections:
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated
-  - Total hours spent
-  - Nr of automated unit test cases 
-  - Coverage (if available)
+  - Total hours estimated: 2h (backend)
+  - Total hours spent: 13h 10m (backend)
+  - Nr of automated unit test cases: 49 (backend)
+  - Coverage: 79.9% (backend)
 - E2E testing:
   - Total hours estimated
   - Total hours spent
 - Code review 
-  - Total hours estimated 
-  - Total hours spent
+  - Total hours estimated: included in Technical Debt management
+  - Total hours spent: included in Technical Debt management
 - Technical Debt management:
-  - Total hours estimated 
-  - Total hours spent
+  - Total hours estimated: 1h
+  - Total hours spent: 3h 30m
   - Hours estimated for remediation by SonarQube
   - Hours estimated for remediation by SonarQube only for the selected and planned issues 
   - Hours spent on remediation 
-  - debt ratio (as reported by SonarQube under "Measures-Maintainability")
-  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability )
+  - debt ratio: 2.3% (with cypress reports analysis included)
+  - rating for each quality characteristic reported in SonarQube under "Measures" (before including cypress reports analysis) : 
+    - Reliability: A
+    - Security: A
+    - Maintainability: A 
   
 
 
