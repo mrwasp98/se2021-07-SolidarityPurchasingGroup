@@ -43,22 +43,22 @@ sections:
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated: 2h (backend)
-  - Total hours spent: 13h 10m (backend)
+  - Total hours estimated: 9h (backend)
+  - Total hours spent: 4h30m (backend)
   - Nr of automated unit test cases: 49 (backend)
   - Coverage: 79.9% (backend)
 - E2E testing:
-  - Total hours estimated
-  - Total hours spent
+  - Total hours estimated: 8h
+  - Total hours spent: 9h30m
 - Code review 
   - Total hours estimated: included in Technical Debt management
   - Total hours spent: included in Technical Debt management
 - Technical Debt management:
-  - Total hours estimated: 1h
-  - Total hours spent: 3h 30m
-  - Hours estimated for remediation by SonarQube
-  - Hours estimated for remediation by SonarQube only for the selected and planned issues 
-  - Hours spent on remediation 
+  - Total hours estimated: 5h
+  - Total hours spent: 11h55m
+  - Hours estimated for remediation by SonarCloud: 5h
+  - Hours estimated for remediation by SonarCLoud only for the selected and planned issues: 3h 
+  - Hours spent on remediation: 10h
   - debt ratio: 2.3% (with cypress reports analysis included)
   - rating for each quality characteristic reported in SonarQube under "Measures" (before including cypress reports analysis) : 
     - Reliability: A
