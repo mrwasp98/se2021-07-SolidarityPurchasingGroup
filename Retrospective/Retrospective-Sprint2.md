@@ -70,15 +70,19 @@ sections:
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
+  We thought that the price to pay for skipping the technical debt would have been way less. This caused us not to finish the last story.
 
 - What lessons did you learn (both positive and negative) in this sprint?
+  We learnt that it's important to progess with technical debt in a parallel way with the coding. We should never let the coding surpass the technical debt management.
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
+  We managed to both improve technical debt management and code revision.
   
 - Which ones you were not able to achieve? Why?
+  None.
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-
-> Propose one or two
+  We want to get better at writing the documentation for our project. 
 
 - One thing you are proud of as a Team!!
+  In the last sprint the cooperation increased a lot! We always strive to do our best to be statisfied of our work.
