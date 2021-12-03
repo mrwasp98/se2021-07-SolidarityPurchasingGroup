@@ -71,6 +71,7 @@ sections:
 
 - What caused your errors in estimation (if any)?
   We thought that the price to pay for skipping the technical debt would have been way less. This caused us not to finish the last story.
+  The other error was in story 3 because we estimated it to be very difficult but was assigned to a person that had experience. So it took less than expected.
 
 - What lessons did you learn (both positive and negative) in this sprint?
   We learnt that it's important to progess with technical debt in a parallel way with the coding. We should never let the coding surpass the technical debt management.
