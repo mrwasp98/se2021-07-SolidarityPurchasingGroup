@@ -17,6 +17,7 @@ import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
 import Wallet from "./Components/Wallet";
 import MyModal from "./Components/MyModal";
+import ManageOrders from "./Components/ManageOrders";
 
 function App() {
   // eslint-disable-next-line
@@ -42,11 +43,8 @@ function App() {
   const [dirtyClients, setDirtyClients] = useState(true); //state used to indicate if a new user has been added
   const [clientOrders, setClientOrders] = useState([]);
 
-  const [resultOrder, setResultOrder] = useState() //??????????????
-
   const [order, setOrder] = useState({}); //??????????????????????????
-
-  const [errorMessage, setErrorMessage] = useState(); //???????????????????
+  const [failedOrders, setFailedOrders] = useState([]);
 
   const [showBasket, setShowBasket] = useState(false); //this state controls the basked offcanvas
   const [dirtyBasket, setDirtyBasket] = useState(true); //this state controls the update of the basket in the offcanvas
@@ -190,6 +188,17 @@ function App() {
             setDirtyAvailability={setDirtyAvailability}
             logged={logged}
             date={date} />}
+        />
+
+        <Route exact path="/manageOrders" render={() =>
+          <ManageOrders
+            clients={clients}
+            orders={clientOrders}
+            logged={logged}
+            date={date}
+            failedOrders = {failedOrders}
+            setFailedOrders = {setFailedOrders}
+          />}
         />
 
         <Route exact path="/handout" render={() =>

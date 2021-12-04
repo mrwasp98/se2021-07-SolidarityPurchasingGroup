@@ -33,6 +33,11 @@ export default function ShopEmployeeHome() {
                                 Record products handout
                             </Link>
                         </Button>
+                        <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="tohand">
+                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/manageOrders" className="py-2 yellowLink">
+                                Manage orders pending cancelation
+                            </Link>
+                        </Button>
                     </ButtonGroup>
                 </Card.Body>
             </Card>

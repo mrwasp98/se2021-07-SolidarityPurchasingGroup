@@ -55,6 +55,29 @@ const addPRequest = async (userid, creationdate, claimdate, confirmationdate, de
   });
 }
 
+//GET all orders of that status
+const getOrdersByStatus = async (status) => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/orders/status/' + status, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        const error = new Error(`${res.status}: ${res.statusText}`);
+        error.response = res;
+        throw error;
+      }
+      resolve(res.json());
+    })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
+}
+
+
 //GET all clients
 const getClients = async () => {
   return new Promise((resolve, reject) => {
@@ -377,4 +400,4 @@ async function getUserInfo() {
 
 
 
-export { addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword}
+export { getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword}
