@@ -426,8 +426,7 @@ app.post(
 app.get("/api/orders/status/:status", async (req, res) => {
   try {
     const orders = await orderDao.getOrdersByStatus(req.params.status);
-    if (orders.length !== 0) res.status(200).json(orders);
-    else res.status(404).end();
+    res.status(200).json(orders);
   } catch (err) {
     res.status(500).end();
   }

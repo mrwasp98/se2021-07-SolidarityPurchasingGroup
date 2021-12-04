@@ -178,9 +178,9 @@ describe('Testing GET on /api/orders/status/:status', () => {
         expect(result).toEqual([fakeOrderPending1, fakeOrderPending2]);
     });
 
-    test('It should respond with 404 (not found) status code', async () => {
+    test('It should respond with an empty array', async () => {
         const response = await request(app).get('/api/orders/status/notexistingstatus');
-        expect(response.status).toBe(404);
+        expect(response.body).toStrictEqual([]);
     });
 
 });
