@@ -292,6 +292,36 @@
 ```
 * Response: `200 OK`, `503 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable) (ACTUALLY it gives 422)
 
+### Get orders by status
+* URL: `api/orders/status/:status`
+* HTTP method: GET
+* Description: get all the orders which have the given status
+* Request body: None
+* Response body: an array with all orders with the given status (empty array if there aren't any)
+``` JSON
+[
+{
+    "id":2,
+    "userid":5,
+    "creationdate":"2021-11-12",
+    "claimdate":"2021-11-10 12:30",
+    "confirmationdate":"2021-11-09",
+    "deliveryaddress":"null",
+    "status":"completed"
+},
+{
+    "id":3,
+    "userid":5,
+    "creationdate":"2021-11-12",
+    "claimdate":"2021-11-10 12:30",
+    "confirmationdate":"2021-11-09",
+    "deliveryaddress":"null",
+    "status":"completed"
+}
+]
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
 ## USER API
 
 - POST `/api/login`
