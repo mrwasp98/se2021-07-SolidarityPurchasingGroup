@@ -50,6 +50,14 @@
     color: #61dafb;
 }
 
+.completed-pill{
+    background-color: #20566A !important;
+}
+
+.pending-pill{
+    background-color: #F3BD72 !important;
+}
+
 .NavBar-Background {
     background-color: #143642;
 }

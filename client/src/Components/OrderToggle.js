@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Accordion, Container, Table, Button, Alert } from "react-bootstrap";
+import { Accordion, Container, Table, Button, Alert, Badge, Col } from "react-bootstrap";
 import { handOutProduct } from '../API/API'
+import { handout } from './Icons'
 
 export default function OrderToggle(props) {
 
@@ -33,8 +34,13 @@ export default function OrderToggle(props) {
             <Accordion.Item key={props.chiave} className="mb-3">
                 <Accordion.Header >
                     <Container className="d-flex justify-content-between flex-column flex-md-row">
-                        <div>Order created on the: <strong>{props.order.creationdate}</strong> </div>
-                        <span><strong>Total price: {totalprice()}€</strong></span>
+                        <Col>Order created on the: <strong>{props.order.creationdate}</strong></Col>
+                        {(props.order.status === "completed" || completed) ?
+                            <Col><div className="d-flex justify-content-center"><Badge pill className="completed-pill">completed</Badge></div></Col>
+                            :
+                            <Col><div className="d-flex justify-content-center"><Badge pill className="pending-pill">pending</Badge></div></Col>
+                        }
+                        <Col><div className="d-flex justify-content-center"><strong>Total price: {totalprice()}€</strong></div></Col>
                     </Container>
 
                 </Accordion.Header>
@@ -44,9 +50,9 @@ export default function OrderToggle(props) {
                             {props.order.products && props.order.products.map((p, i) => {
                                 return (
                                     <tr key={i} >
-                                        <td >{p.name}</td>
-                                        <td>{p.quantity} {p.measure}</td>
-                                        <td>{parseFloat(p.price).toFixed(2)}€</td>
+                                        <td style={{ "width": "33%", "text-align": "center" }}>{p.name}</td>
+                                        <td style={{ "width": "33%", "text-align": "center" }}>{p.quantity} {p.measure}</td>
+                                        <td style={{ "width": "33%", "text-align": "center" }}>{parseFloat(p.price).toFixed(2)}€</td>
                                     </tr>
                                 )
                             })}
@@ -54,8 +60,11 @@ export default function OrderToggle(props) {
                     </Table>
                     <Container className={"d-flex " + (error ? "justify-content-between" : "justify-content-end")}>
                         {error && <Alert variant="danger" className=" mb-2 py-0 my-auto mr-2">An error has occurred: {error}</Alert>}
-                        <Button variant="yellow" className="py-0 mb-2" onClick={handleConfirm}
-                            disabled={props.order.status === "completed" || completed} >Confirm Handout</Button>
+                        {(props.order.status === "completed" || completed) ?
+                            ""
+                            :
+                            <Button variant="yellow" className="py-0 mb-2" onClick={handleConfirm}>Confirm Handout {handout}</Button>
+                        }
                     </Container>
                 </ Accordion.Body>
 

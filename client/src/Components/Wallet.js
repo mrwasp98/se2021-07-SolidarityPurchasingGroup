@@ -4,6 +4,7 @@ import React from 'react'
 import Select from 'react-select'
 import { getClients, topUpWallet } from "../API/API"
 import HomeButton from "./HomeButton";
+import {piggy} from "./Icons";
 import { useParams } from "react-router-dom";
 
 export default function Wallet(props) {
@@ -135,7 +136,7 @@ export default function Wallet(props) {
                                                         />
                                                     </Col>
                                                 </Form.Group>
-                                                <Button variant="yellow" type="submit" className="submit-btn m-3" style={{ fontSize: "18px" }}>Confirm</Button>
+                                                <Button variant="yellow" type="submit" className="submit-btn m-3" style={{ fontSize: "18px" }}>Confirm {piggy}</Button>
                                             </Form>
                                         </Row>
                                     </Card.Body>
