@@ -100,6 +100,7 @@ describe('Testing GET on /api/orders', () => {
     afterAll(async () => {
         await orderDao.deleteAllOrders();
         await clientDao.deleteAllClients();
+        app.close();
     });
 
     test('It should respond with an array of orders', async () => {
@@ -116,4 +117,70 @@ describe('Testing GET on /api/orders', () => {
         //test equality
         expect(result).toEqual([fakeOrder1, fakeOrder2]);
     });
+});
+
+describe('Testing GET on /api/orders/status/:status', () => {
+
+    const fakeOrderPending1 = {
+        userid: 1,
+        creationdate: 'prova',
+        claimdate: 'prova',
+        confirmationdate: 'prova',
+        deliveryaddress: 'prova',
+        status: 'pending'
+    };
+    const fakeOrderPending2 = {
+        userid: 2,
+        creationdate: 'prova',
+        claimdate: 'prova',
+        confirmationdate: 'prova',
+        deliveryaddress: 'prova',
+        status: 'pending'
+    };
+    const fakeOrderConfirmed1 = {
+        userid: 2,
+        creationdate: 'prova',
+        claimdate: 'prova',
+        confirmationdate: 'prova',
+        deliveryaddress: 'prova',
+        status: 'confirmed'
+    };
+
+    beforeAll(async () => {
+        //clear and fill (mock) order database with fakeOrder1 and fakeOrder2 and client db with fakeClient1
+        await clientDao.deleteAllClients();
+        await clientDao.insertClient(fakeClient1);
+        await clientDao.insertClient(fakeClient2);
+        await orderDao.deleteAllOrders();
+        await orderDao.insertOrder(fakeOrderPending1);
+        await orderDao.insertOrder(fakeOrderPending2);
+        await orderDao.insertOrder(fakeOrderConfirmed1);
+    });
+
+    afterAll(async () => {
+        await orderDao.deleteAllOrders();
+        await clientDao.deleteAllClients();
+        app.close();
+    });
+
+    test('It should respond with an array of orders with status Pending', async () => {
+        const response = await request(app).get('/api/orders/status/pending');
+        //remove id field from order before testing equality
+        const result = response.body.map((order) => ({
+            userid: order.userid,
+            creationdate: order.creationdate,
+            claimdate: order.claimdate,
+            confirmationdate: order.confirmationdate,
+            deliveryaddress: order.deliveryaddress,
+            status: order.status
+        }));
+        //test equality
+        expect(result).toEqual([fakeOrderPending1, fakeOrderPending2]);
+    });
+
+    test('It should respond with 404 (not found) status code', async () => {
+        const response = await request(app).get('/api/orders/status/notexistingstatus');
+        expect(response.status).toBe(404);
+    });
+
 });

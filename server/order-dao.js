@@ -79,3 +79,15 @@ exports.getOrder = (orderid) => {
         });
     });
 };
+
+exports.getOrdersByStatus = (status) => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM 'order' WHERE status=?";
+        db.all(sql, [status], (err, rows) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(rows); //the caller should check if it is undefined or not
+        });
+    });
+};

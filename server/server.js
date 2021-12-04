@@ -421,3 +421,14 @@ app.post(
     }
   }
 );
+
+//get orders by their status -ant
+app.get("/api/orders/status/:status", async (req, res) => {
+  try {
+    const orders = await orderDao.getOrdersByStatus(req.params.status);
+    if (orders.length !== 0) res.status(200).json(orders);
+    else res.status(404).end();
+  } catch (err) {
+    res.status(500).end();
+  }
+});
