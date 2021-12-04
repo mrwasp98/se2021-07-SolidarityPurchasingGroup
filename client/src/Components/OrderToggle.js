@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Accordion, Container, Table, Button, Alert, Badge, Col } from "react-bootstrap";
 import { handOutProduct } from '../API/API'
-import { handout } from './Icons'
+import { handout, order } from './Icons'
 
 export default function OrderToggle(props) {
 
@@ -32,9 +32,9 @@ export default function OrderToggle(props) {
     return (
         <Accordion defaultActiveKey="0" >
             <Accordion.Item key={props.chiave} className="mb-3">
-                <Accordion.Header style={{background:"grey"}}>
+                <Accordion.Header className="accHeader">
                     <Container className="d-flex justify-content-between flex-column flex-md-row">
-                        <Col>Order created on the: <strong>{props.order.creationdate}</strong></Col>
+                        <Col>{order} Order created on the: <strong>{props.order.creationdate}</strong></Col>
                         {(props.order.status === "completed" || completed) ?
                             <Col><div className="d-flex justify-content-center"><Badge pill className="completed-pill">completed</Badge></div></Col>
                             :
