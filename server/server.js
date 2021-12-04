@@ -112,7 +112,7 @@ app.post(
   "/api/client",
   [
     check(["wallet"]).isFloat(),
-    check(["username"]).isString().isLength({ min: 2 }),
+    check(["username"]).isEmail(),
     check(["name"]).isString().isLength({ min: 2 }),
     check(["surname"]).isString().isLength({ min: 2 }),
     check(["address"]).isLength({ min: 3 }),
@@ -313,7 +313,7 @@ app.put("/api/clients/:clientid", async (req, res) => {
 //Post a new shop employee
 app.post("/api/shopemployee",
   [
-    check(["username"]).isString().isLength({ min: 2 }),
+    check(["username"]).isEmail(),
     check(["password"]).isString().isLength({ min: 6 }),
     check(["type"]).isString().isLength({ min: 6 }),
   ],
@@ -356,7 +356,7 @@ app.post(
   "/api/farmer",
   [
     check(["place"]).isString().isLength({ min: 2 }),
-    check(["username"]).isString().isLength({ min: 2 }),
+    check(["username"]).isEmail(),
     check(["name"]).isString().isLength({ min: 2 }),
     check(["surname"]).isString().isLength({ min: 2 }),
     check(["address"]).isLength({ min: 3 }),

@@ -3,6 +3,7 @@ import { addShopEmployee, getUsernames, addClient, addFarmer } from "../API/API.
 import { iconStar } from "./Icons";
 import { Link } from "react-router-dom";
 import React, { Component } from 'react';
+import { withRouter } from "react-router";
 
 function isAlphaNumeric(str) {
   var code, i, len, nNum = 0, nLett = 0;
@@ -74,6 +75,7 @@ class RegisterUser extends Component {
         addShopEmployee(this.state.username, this.state.password).then(() => {
           this.setState({ inserted: true });
           this.setState({ error: false });
+          this.props.history.push('/login');
         });
       }
 
@@ -81,6 +83,7 @@ class RegisterUser extends Component {
         addFarmer(this.state.username, this.state.password, this.state.name, this.state.surname, this.state.place, this.state.address).then(() => {
           this.setState({ inserted: true });
           this.setState({ error: false });
+          this.props.history.push('/login');
         });
       }
 
@@ -88,6 +91,7 @@ class RegisterUser extends Component {
         addClient(this.state.name, this.state.surname, this.state.username, this.state.wallet, this.state.address, this.state.password, this.state.type).then(() => {
           this.setState({ inserted: true });
           this.setState({ error: false });
+          this.props.history.push('/login');
         });
       }
       
@@ -371,13 +375,13 @@ class Confirmation extends Component {
               <Form.Group as={Row} className="mb-3" controlId="formBasicUsername">
                 <Row md={3}>
                   <Form.Label className='text-warning myText' column sm="2">
-                    Username:
+                    Email:
                   </Form.Label>
                   <Col sm="10" md={8}>
                     <Form.Control
-                      placeholder="Username"
+                      placeholder="Email"
                       defaultValue={this.props.inputValues.username}
-                      type="text"
+                      type="email"
                       name="username"
                       required
                       onChange={this.props.handleChange}
@@ -444,5 +448,6 @@ class Confirmation extends Component {
     )
   }
 }
+const RegisterUserR  = withRouter(RegisterUser);
 
-export default RegisterUser;
+export default RegisterUserR;

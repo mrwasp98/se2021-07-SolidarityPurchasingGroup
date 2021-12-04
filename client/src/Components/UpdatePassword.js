@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getUsernames, updatePassword } from "../API/API.js";
 import { iconStar } from "./Icons";
+import { useHistory } from 'react-router-dom';
 
 function isAlphaNumeric(str) {
     var code, i, len, nNum = 0, nLett = 0;
@@ -23,6 +24,7 @@ function isAlphaNumeric(str) {
   };
 
 export default function UpdatePassword(props) {
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
@@ -63,6 +65,7 @@ export default function UpdatePassword(props) {
             await updatePassword(password, nid).then(() =>{
                 setInserted(true);
                 setError(false);
+                history.push("/login")
             });
         } else if(valid === false){
             setMessageError("No username found");
@@ -108,12 +111,12 @@ export default function UpdatePassword(props) {
               <Form.Group as={Row} className="mb-3" controlId="formBasicUsername">
                 <Row md={3}>
                   <Form.Label className='text-warning myText' column sm="2">
-                    Username:
+                    Email:
                   </Form.Label>
                   <Col sm="10" md={8}>
                     <Form.Control
-                      placeholder="Username"
-                      type="text"
+                      placeholder="Email"
+                      type="email"
                       name="username"
                       required
                       onChange={(ev) => setUsername(ev.target.value)}
