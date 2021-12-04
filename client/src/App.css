@@ -221,6 +221,14 @@
     color: white;
 }
 
+.accordion-button{
+    background-color:#EDEDED !important;
+}
+
+.accordion-button:hover, .accordion-button:focus{
+    background-color:#19E6E6 !important;
+}
+
 .btn-yellow:hover,
 .btn-yellow:focus {
     background-color: #ec9a2a;

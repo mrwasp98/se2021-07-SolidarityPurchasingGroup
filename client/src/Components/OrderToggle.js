@@ -32,7 +32,7 @@ export default function OrderToggle(props) {
     return (
         <Accordion defaultActiveKey="0" >
             <Accordion.Item key={props.chiave} className="mb-3">
-                <Accordion.Header >
+                <Accordion.Header style={{background:"grey"}}>
                     <Container className="d-flex justify-content-between flex-column flex-md-row">
                         <Col>Order created on the: <strong>{props.order.creationdate}</strong></Col>
                         {(props.order.status === "completed" || completed) ?
