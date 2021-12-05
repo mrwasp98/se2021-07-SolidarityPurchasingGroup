@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import MyNav from "./Components/MyNav";
 import { LoginForm } from "./Components/LoginForm";
-import { BrowserRouter as Router, Route, } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ProductsList from "./Components/ProductsList";
 import ProductRequest from "./Components/ProductRequest";
@@ -163,14 +163,22 @@ function App() {
 
         <Route exact path='/clienthome' render={() => <ClientHome />} />
 
-        <Route path='/wallet/:id' render={() => <Wallet
+        <Route path='/wallet/:id' render={() => 
+        <> 
+        { logged==="shopemployee" ? 
+          <Wallet
           clients={clients}
           setClients={setClients}
           dirtyClients={dirtyClients}
           setDirtyClients={setDirtyClients}
           logged={logged}
-          date={date} />}
-        />
+          date={date} />
+          :
+          <Redirect to="/login" />
+        }
+        
+        </>
+        }/>
 
         <Route exact path='/productRequest' render={() =>
           <ProductRequest
