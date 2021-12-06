@@ -17,10 +17,9 @@ export default function ProductsList(props) {
     const [inserted, setInserted] = useState(false);
     const [lastDate, setLastDate] = useState(dayjs(props.date));
     const [flag, setFlag] = useState(true)
-
     //this use effect is used to get the available products and the farmers
     useEffect(() => {
-        if (props.dirtyAvailability || flag) {
+        if (props.dirtyAvailability || !lastDate.isSame(props.date) || flag) {
             let list;
             setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
             getAvailableProducts(props.date)
@@ -38,7 +37,7 @@ export default function ProductsList(props) {
                 })
             setFlag(false)
         }
-    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, props.date,]);
+    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, props.date, flag]);
 
     //this use effect is used to show a message when the cart button is clicked
     useEffect(() => {
@@ -220,7 +219,7 @@ function Product(props) {
     }
 
     return (
-        <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }} className="another-product">
+        <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }} className="another-product mb-2 ">
             <Accordion.Item eventKey="0">
                 <Card style={{ backgroundColor: "#FFEFD6" }}> {/*text-center*/}
                     <Card.Img variant="top" className="m-0" src={props.prod.picture} />
