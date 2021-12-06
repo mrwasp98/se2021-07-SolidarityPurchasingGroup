@@ -16,28 +16,28 @@ export default function ProductsList(props) {
     const [selectedFarmers, setSelectedFarmers] = useState([]);
     const [inserted, setInserted] = useState(false);
     const [lastDate, setLastDate] = useState(dayjs(props.date));
-
+    const [flag, setFlag] = useState(true)
     //this use effect is used to get the available products and the farmers
     useEffect(() => {
-        if (props.dirtyAvailability || !lastDate.isSame(props.date)) {
+        if (props.dirtyAvailability || !lastDate.isSame(props.date) || flag) {
+            let list;
             setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
             getAvailableProducts(props.date)
                 .then((res) => {
                     props.setProducts(res)
-                    console.log(res)
                     props.setDirtyAvailability(false)
+                    list = res.map(prod => prod.farmerid)
+                    setSelectedFarmers(list)
                 }).then(() => {
                     getFarmers()
                         .then((p) => {
                             props.setFarmers(p);
+                            setFarmersPresent(p.filter(f => list.includes(f.userid)))
                         });
-                }).then(() => {
-                    let list = props.products.map(prod => prod.farmerid)
-                    setFarmersPresent(props.farmers.filter(f => list.includes(f.userid)))
-                    setSelectedFarmers(list)
                 })
+            setFlag(false)
         }
-    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, props.date,]);
+    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, props.date, flag]);
 
     //this use effect is used to show a message when the cart button is clicked
     useEffect(() => {
@@ -63,12 +63,12 @@ export default function ProductsList(props) {
 
     function showFarmer(id) {
         if (!selectedFarmers.includes(id)) {
-            setSelectedFarmers(old => [...old, id] )
+            setSelectedFarmers(old => [...old, id])
         }
     }
     function hideFarmer(id) {
         if (selectedFarmers.includes(id)) {
-            setSelectedFarmers(old => old.filter(el=> el !== id))
+            setSelectedFarmers(old => old.filter(el => el !== id))
         }
     }
 
@@ -219,7 +219,7 @@ function Product(props) {
     }
 
     return (
-        <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }} className="another-product">
+        <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }} className="another-product mb-2 ">
             <Accordion.Item eventKey="0">
                 <Card style={{ backgroundColor: "#FFEFD6" }}> {/*text-center*/}
                     <Card.Img variant="top" className="m-0" src={props.prod.picture} />

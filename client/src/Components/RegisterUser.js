@@ -70,6 +70,30 @@ class RegisterUser extends Component {
         }
       });
 
+      if(this.state.address === "") {
+        valid = false;
+        this.setState({ messageError: "Address missing" });
+        this.setState({ error: true });
+      }
+
+      if(this.state.place === "" && this.state.type === "farmer") {
+        valid = false;
+        this.setState({ messageError: "Place missing" });
+        this.setState({ error: true });
+      }
+
+      if(this.state.surname === "") {
+        valid = false;
+        this.setState({ messageError: "Surname missing" });
+        this.setState({ error: true });
+      }
+
+      if(this.state.name === "") {
+        valid = false;
+        this.setState({ messageError: "Name missing" });
+        this.setState({ error: true });
+    }
+
       if (this.state.type === "shopemployee" && valid === true) {
         this.setState({ inserted: true });
         addShopEmployee(this.state.username, this.state.password).then(() => {
