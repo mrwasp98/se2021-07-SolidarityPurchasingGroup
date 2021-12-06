@@ -20,21 +20,20 @@ export default function ProductsList(props) {
     //this use effect is used to get the available products and the farmers
     useEffect(() => {
         if (props.dirtyAvailability || !lastDate.isSame(props.date)) {
+            let list;
             setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
             getAvailableProducts(props.date)
                 .then((res) => {
                     props.setProducts(res)
-                    console.log(res)
                     props.setDirtyAvailability(false)
+                    list = res.map(prod => prod.farmerid)
+                    setSelectedFarmers(list)
                 }).then(() => {
                     getFarmers()
                         .then((p) => {
                             props.setFarmers(p);
+                            setFarmersPresent(p.filter(f => list.includes(f.userid)))
                         });
-                }).then(() => {
-                    let list = props.products.map(prod => prod.farmerid)
-                    setFarmersPresent(props.farmers.filter(f => list.includes(f.userid)))
-                    setSelectedFarmers(list)
                 })
         }
     }, [props.dirtyAvailability, props.setFarmers, farmersPresent, props.date,]);
@@ -63,12 +62,12 @@ export default function ProductsList(props) {
 
     function showFarmer(id) {
         if (!selectedFarmers.includes(id)) {
-            setSelectedFarmers(old => [...old, id] )
+            setSelectedFarmers(old => [...old, id])
         }
     }
     function hideFarmer(id) {
         if (selectedFarmers.includes(id)) {
-            setSelectedFarmers(old => old.filter(el=> el !== id))
+            setSelectedFarmers(old => old.filter(el => el !== id))
         }
     }
 
