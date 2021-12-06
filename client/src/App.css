@@ -242,12 +242,19 @@
 .login-form {
     padding: 2%;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
-    width: 40%;
-    height: 70%;
     margin: 100px auto;
     border-radius: 10px;
     background-color: #143642;
     text-decoration: none;
+    display: flex;
+}
+
+@media only screen and (min-width: 1300px){
+    .login-form{
+        width: 40%;
+        height: 70%;
+    }
+
 }
 
 .myGif{
@@ -309,9 +316,6 @@
     border-bottom: none;
 }
 
-
-
-
 /* CSS used here will be applied after bootstrap.css */
 .mynotify {
     z-index: 999999;
@@ -319,4 +323,11 @@
     background-color: #edeaea;
 }
 
+.form_wrapper{
+    margin: 0px 20px;
+}
 
+.col{
+    margin-left: 15px;
+    margin-right: 15px;
+}
