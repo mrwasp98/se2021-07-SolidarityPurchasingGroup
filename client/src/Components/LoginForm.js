@@ -80,9 +80,9 @@ function LoginForm(props) {
     };
 
     return (
-        <>
+        <div className="form_wrapper">
             <Container className='login-form text-warning'>
-                <Col>
+                <Col className="col">
                   <h2 align="center">{iconStar}&nbsp;Login</h2>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Table className="mb-3 color">
@@ -109,7 +109,7 @@ function LoginForm(props) {
                     </Form>
                 </Col>
             </Container>
-        </>
+        </div>
     )
 }
 

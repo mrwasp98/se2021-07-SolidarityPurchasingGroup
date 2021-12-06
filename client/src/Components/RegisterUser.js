@@ -211,9 +211,9 @@ class AddressDetails extends Component {
 
   render() {
     return (
-      <>
+      <div className="form_wrapper">
         <Container className='login-form text-warning'>
-          <Col>
+          <Col className="col">
             <h1 align="center">{iconStar}&nbsp;About you</h1>
             {""}
             <Form className="mt-5 ">
@@ -312,7 +312,7 @@ class AddressDetails extends Component {
             </Form>
           </Col>
         </Container>
-      </>
+      </div>
     );
   }
 }
@@ -332,8 +332,9 @@ class Confirmation extends Component {
     const { inputValues: { name, surname, username, password, cpassword, address, place, wallet, type } } = this.props;
 
     return (
+      <div className="form_wrapper">
       <Container className='login-form text-warning'>
-        <Col>
+        <Col className="col">
           <h2 align="center">{iconStar}&nbsp;Confirm</h2>
           {" "}
           {this.props.inserted ? (
@@ -445,6 +446,7 @@ class Confirmation extends Component {
           </Form>
         </Col>
       </Container>
+      </div>
     )
   }
 }

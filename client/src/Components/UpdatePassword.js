@@ -87,8 +87,9 @@ export default function UpdatePassword(props) {
   }, [inserted]);
 
   return (
+    <div className="form_wrapper">
     <Container className='login-form text-warning'>
-        <Col>
+        <Col className="col">
           <h2 align="center">{iconStar}&nbsp;New Password</h2>
                {" "}
             {inserted ? (
@@ -172,5 +173,6 @@ export default function UpdatePassword(props) {
           </Col>
 
       </Container>
+      </div>
   );
 }
