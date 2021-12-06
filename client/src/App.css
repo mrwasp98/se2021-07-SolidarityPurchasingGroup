@@ -225,8 +225,25 @@
     background-color:#EDEDED !important;
 }
 
+.alertAccHeader{
+    
+}
+
 .accordion-button:hover, .accordion-button:focus{
     background-color:#75F0F0 !important;
+}
+
+.alertHeader{
+    background-color: #FFB3B3;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.contactButton{
+    background-color: #0C7373;
+    color: white;
+    font-weight: 400;
+    font-size: 18;
 }
 
 .btn-yellow:hover,
