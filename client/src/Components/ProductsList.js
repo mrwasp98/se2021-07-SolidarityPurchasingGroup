@@ -16,10 +16,11 @@ export default function ProductsList(props) {
     const [selectedFarmers, setSelectedFarmers] = useState([]);
     const [inserted, setInserted] = useState(false);
     const [lastDate, setLastDate] = useState(dayjs(props.date));
+    const [flag, setFlag] = useState(true)
 
     //this use effect is used to get the available products and the farmers
     useEffect(() => {
-        if (props.dirtyAvailability || !lastDate.isSame(props.date)) {
+        if (props.dirtyAvailability || flag) {
             let list;
             setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
             getAvailableProducts(props.date)
@@ -35,6 +36,7 @@ export default function ProductsList(props) {
                             setFarmersPresent(p.filter(f => list.includes(f.userid)))
                         });
                 })
+            setFlag(false)
         }
     }, [props.dirtyAvailability, props.setFarmers, farmersPresent, props.date,]);
 
