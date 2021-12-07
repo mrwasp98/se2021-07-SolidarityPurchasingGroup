@@ -173,6 +173,8 @@ class RegisterUser extends Component {
           messageError={this.state.messageError}
           inserted={this.state.inserted}
         />
+      default:
+        return <></>
     }
 
   }
@@ -352,6 +354,7 @@ class Confirmation extends Component {
   };
 
   render() {
+    // eslint-disable-next-line 
     const { inputValues: { name, surname, username, password, cpassword, address, place, wallet, type } } = this.props;
 
     return (

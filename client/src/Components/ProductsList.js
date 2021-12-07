@@ -37,7 +37,7 @@ export default function ProductsList(props) {
                 })
             setFlag(false)
         }
-    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, props.date, flag]);
+    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, props.date, props.setProducts, flag, lastDate]);
 
     //this use effect is used to show a message when the cart button is clicked
     useEffect(() => {
@@ -59,7 +59,7 @@ export default function ProductsList(props) {
             props.setDirtyQuantity([]);
         }
     }
-        , [props.setDirtyQuantity, props.dirtyQuantity])
+        , [props.setDirtyQuantity, props.dirtyQuantity, props.products, props.setProducts])
 
     function showFarmer(id) {
         if (!selectedFarmers.includes(id)) {
@@ -115,8 +115,7 @@ export default function ProductsList(props) {
                     </Col>
                 </Row>
                 {inserted && <Alert className="position-fixed" variant="success"
-                    style={{ bottom: '2rem', zIndex: '100', background: '#0C7373', color: "white" }}
-                    variant={"success"}>
+                    style={{ bottom: '2rem', zIndex: '100', background: '#0C7373', color: "white" }}>
                     Product has been added to cart.
                 </Alert>
                 }

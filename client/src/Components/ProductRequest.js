@@ -126,7 +126,7 @@ export default function ProductRequest(props) {
                 })
                 setFlag(false)    
         }
-    }, [props]);
+    }, [props, flag, lastDate]);
 
     const calculateTotal = (elements) => {
         let total = parseFloat(0)

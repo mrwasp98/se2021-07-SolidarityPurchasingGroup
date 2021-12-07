@@ -150,7 +150,6 @@ function App() {
             farmers={farmers} setFarmers={setFarmers}
             logged={logged} date={date}
             dirtyAvailability={dirtyAvailability} setDirtyAvailability={setDirtyAvailability}
-            date={date}
             setDirtyBasket={setDirtyBasket}
             dirtyQuantity={dirtyQuantity} setDirtyQuantity={setDirtyQuantity}
           />

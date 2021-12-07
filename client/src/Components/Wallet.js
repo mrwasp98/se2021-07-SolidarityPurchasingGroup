@@ -16,7 +16,7 @@ export default function Wallet(props) {
     const [showGif, setShowGif] = useState(false);
     //this use Effect is used to load the clients when the component is loaded
     useEffect(() => {
-        let client = props.clients.filter(c => c.userid == id)[0];
+        let client = props.clients.filter(c => c.userid === id)[0];
         setSelectedClient(client);
         if (props.dirtyClients) {
             getClients()
@@ -30,7 +30,7 @@ export default function Wallet(props) {
                 return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
             }))
         }
-    }, [props]);
+    }, [props, id]);
 
     useEffect(() => {
         if (completed) {
@@ -46,7 +46,7 @@ export default function Wallet(props) {
 
     //this function is called only when the client is selected to load their orders
     function handlechange(event) {
-        let client = props.clients.filter(c => c.userid == event.value)
+        let client = props.clients.filter(c => c.userid === event.value)
         setSelectedClient(client[0]);
         setAmount(0.00)
     }

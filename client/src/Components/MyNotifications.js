@@ -10,7 +10,7 @@ export default function MyNotifications(props) {
   useEffect(() => {
     if(props.message.topUpWallet)
       setMessage("Please add money in your wallet!");
-  }, []);
+  }, [props.message.topUpWallet]);
 
   return (
     <>
