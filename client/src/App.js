@@ -174,7 +174,7 @@ function App() {
           logged={logged}
           date={date} />
           :
-          <Redirect to="/login" />
+          <LoginForm login={login} setLogged={setLogged} setUser={setUsername} setUserId={setUserId} wallet={true}/>
         }
         
         </>

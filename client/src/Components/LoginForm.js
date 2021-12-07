@@ -40,7 +40,11 @@ function LoginForm(props) {
         props.setUser(user.username);
         props.setUserId(user.id);
         if(user.type === "shopemployee"){
-            history.push("/employeehome")
+            if(props.wallet){
+                history.push("/wallet/0")
+            } else {
+                history.push("/employeehome")
+            }
         }else if(user.type === "client"){
             history.push("/clienthome")
         }
