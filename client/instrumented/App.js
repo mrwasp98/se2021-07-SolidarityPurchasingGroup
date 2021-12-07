@@ -9,7 +9,7 @@ import ProductRequest from "./Components/ProductRequest";
 import Handout from "./Components/Handout";
 import Register from "./Components/Register";
 import RegisterUser from "./Components/RegisterUser";
-import { login, getUserInfo, logout, addPRequest, getClientById} from "./API/API.js";
+import { login, getUserInfo, logout, addPRequest, getClientById } from "./API/API.js";
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
@@ -39,16 +39,12 @@ function App() {
   const [dirtyClients, setDirtyClients] = useState(true);
   const [clientOrders, setClientOrders] = useState([]);
 
-  const [resultOrder, setResultOrder] = useState() //??????????????
-
   const [order, setOrder] = useState({});
-
-  const [errorMessage, setErrorMessage] = useState(); //???????????????????
 
   const [showBasket, setShowBasket] = useState(false); //this state controls the basked offcanvas
   const [dirtyBasket, setDirtyBasket] = useState(true); //this state controls the update of the basket in the offcanvas
   const [dirtyQuantity, setDirtyQuantity] = useState([]); //this state is used to fix the local available quantity once the elements are deleted from the basket
-  
+
   //this use effect checks whether the user logged in previously
   useEffect(() => {
     const checkAuth = async () => {
@@ -64,14 +60,14 @@ function App() {
   }, []);
 
 
-  
+
   useEffect(() => {
     async function fetchdata() {
       if (logged === "client") {
         getClientById(userId).then((res) => setClient(res));
 
         if (client.userid === userId && parseInt(client.wallet) < 30) {
-          setShowTopUpWalletModal(true);console.log(showTopUpWalletModal);
+          setShowTopUpWalletModal(true);
         }
       }
     }
@@ -149,18 +145,18 @@ function App() {
   return (
     <>
       <Router>
-        <Route path="/"> 
-          <MyNav 
-            logged={logged} 
-            date={date} 
-            setDate={setDate} 
-            logout={logout} setLogged={setLogged} 
+        <Route path="/">
+          <MyNav
+            logged={logged}
+            date={date}
+            setDate={setDate}
+            logout={logout} setLogged={setLogged}
             showBasket={showBasket} setShowBasket={setShowBasket}
             dirtyBasket={dirtyBasket} setDirtyBasket={setDirtyBasket}
             userId={userId}
             setDirtyQuantity={setDirtyQuantity}
             className="myNav"
-            setDirtyAvailability={setDirtyAvailability} 
+            setDirtyAvailability={setDirtyAvailability}
           />
           <MyModal
             show={showTopUpWalletModal}
@@ -168,34 +164,34 @@ function App() {
           />
         </Route>
 
-        <Route exact path='/products' render={()=>
-          <ProductsList 
-            products={products} setProducts={setProducts} 
-            categories={categories} 
+        <Route exact path='/products' render={() =>
+          <ProductsList
+            products={products} setProducts={setProducts}
+            categories={categories}
             farmers={farmers} setFarmers={setFarmers}
-            logged={logged} date={date} 
+            logged={logged} date={date}
             dirtyAvailability={dirtyAvailability} setDirtyAvailability={setDirtyAvailability}
             date={date}
             setDirtyBasket={setDirtyBasket}
             dirtyQuantity={dirtyQuantity} setDirtyQuantity={setDirtyQuantity}
-            />
-          }/>
+          />
+        } />
 
         <Route exact path='/' render={() => <Home />} />
-        
-        <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
-        
-        <Route exact path='/clienthome' render={()=><ClientHome/>}/>
 
-        <Route exact path='/wallet' render={()=><Wallet
-            clients={clients}
-            setClients={setClients}
-            dirtyClients={dirtyClients}
-            setDirtyClients={setDirtyClients}
-            logged={logged}
-            date={date}/>}
+        <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
+
+        <Route exact path='/clienthome' render={() => <ClientHome />} />
+
+        <Route exact path='/wallet' render={() => <Wallet
+          clients={clients}
+          setClients={setClients}
+          dirtyClients={dirtyClients}
+          setDirtyClients={setDirtyClients}
+          logged={logged}
+          date={date} />}
         />
-        
+
         <Route exact path='/productRequest' render={() =>
           <ProductRequest
             farmers={farmers}
@@ -204,6 +200,7 @@ function App() {
             dirtyClients={dirtyClients}
             setDirtyClients={setDirtyClients}
             products={products}
+            setProducts={setProducts}
             order={order}
             setOrder={setOrder}
             setDirty={() => setDirty(true)}
@@ -211,9 +208,9 @@ function App() {
             setMessage={setMessageProductRequest}
             setDirtyAvailability={setDirtyAvailability}
             logged={logged}
-            date={date}/>}
+            date={date} />}
         />
-        
+
         <Route exact path="/handout" render={() =>
           <Handout
             clients={clients}
@@ -221,15 +218,15 @@ function App() {
             dirtyClients={dirtyClients}
             setDirtyClients={setDirtyClients}
             orders={clientOrders}
-            setOrders={setClientOrders} 
+            setOrders={setClientOrders}
             logged={logged}
-            date={date}/>}
+            date={date} />}
         />
-        
-        <Route exact path="/registerClient" render={() => <Register setDirtyClients={setDirtyClients} logged={logged}/>} />
-        
+
+        <Route exact path="/registerClient" render={() => <Register setDirtyClients={setDirtyClients} logged={logged} />} />
+
         <Route exact path="/login" render={() => <LoginForm login={login} setLogged={setLogged} setUser={setUsername} setUserId={setUserId} />} />
-      
+
         <Route exact path="/user" render={() => <RegisterUser />} />
 
       </Router>

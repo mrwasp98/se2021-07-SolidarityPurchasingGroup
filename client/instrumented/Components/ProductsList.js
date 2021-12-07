@@ -9,8 +9,6 @@ import dayjs from "dayjs";
 export default function ProductsList(props) {
     const [selected, setSelected] = useState("");
     const [show, setShow] = useState(false);
-    // eslint-disable-next-line
-    const [rand, setRand] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     let categories = [...new Set(props.products.map(prod => prod.category))];
@@ -19,7 +17,6 @@ export default function ProductsList(props) {
     const [lastDate, setLastDate] = useState(dayjs(props.date));
     //this use effect is used to get the available products
     useEffect(() => {
-        console.log(lastDate)
         if (props.dirtyAvailability || !lastDate.isSame(props.date)) {
             setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
             getAvailableProducts(props.date)
@@ -54,7 +51,7 @@ export default function ProductsList(props) {
             props.setDirtyQuantity([]);
         }
     }
-    , [props.setDirtyQuantity, props.dirtyQuantity])
+        , [props.setDirtyQuantity, props.dirtyQuantity])
 
     return (
         <>
@@ -112,11 +109,10 @@ export default function ProductsList(props) {
                                     <Row className="w-100 mt-1 ms-2" key={index} style={{ fontSize: "22px", color: "#8D570C", "fontWeight": "500", }}>
                                         <Form.Check
                                             key={`row-farmer-${index}`}
-                                            className=""
                                             type="checkbox"
                                             label={farmer.place}
-                                            defaultChecked={true}
-                                            onChange={(e) => { e.target.checked ? setRand(true) : setRand(false) }}
+                                            defaultChecked={selectedFarmers.includes(farmer.userid)}
+                                            onChange={(e) => { e.target.checked ? showFarmer(farmer.userid) : hideFarmer(farmer.userid) }}
                                         />
                                     </Row>
                                 );
@@ -137,7 +133,7 @@ export default function ProductsList(props) {
                             prod={prod}
                             key={index}
                             logged={props.logged}
-                            farmerName={props.farmers.lenght >0 && props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0] && props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0].place}
+                            farmerName={props.farmers.lenght > 0 && props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0] && props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0].place}
                             setInserted={setInserted}
                             setDirtyBasket={props.setDirtyBasket}
                         />)}
