@@ -188,6 +188,7 @@ function App() {
             dirtyClients={dirtyClients}
             setDirtyClients={setDirtyClients}
             products={products}
+            setProducts={setProducts}
             order={order}
             setOrder={setOrder}
             setDirty={() => setDirty(true)}

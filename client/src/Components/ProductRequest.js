@@ -4,7 +4,7 @@ import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket } from "./Icons";
 import dayjs from "dayjs";
 import { Link } from 'react-router-dom'
-import { getClients } from "../API/API.js";
+import { getClients,getAvailableProducts } from "../API/API.js";
 import HomeButton from "./HomeButton";
 
 function ModalEnd(props) {
@@ -42,13 +42,13 @@ function ProductLine(props) {
     (quantity !== 0 && !props.productsSelected.length) && setQuantity(0)
 
     const add = () => {
-        let x = quantity + 1;
+        let x = quantity + 0.5;
         handleProducts(x)
     }
 
     const sub = () => {
         if (quantity > 0) {
-            let x = quantity - 1;
+            let x = quantity - 0.5;
             handleProducts(x)
         }
     }
@@ -84,7 +84,7 @@ function ProductLine(props) {
                 <Col className="d-none d-md-block colBasket">{basket}: <b>{quantity + " " + product.measure}</b></Col>
             </Row>
         </td>
-        <td className="align-middle" style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}><p style={{ fontSize: "18pt" }}>{product.price}€</p></td>
+        <td className="align-middle" style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}><p style={{ fontSize: "18pt" }}>{parseFloat(product.price).toFixed(2)}€</p></td>
         <td className="align-middle">{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
             {quantity !== 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
@@ -101,6 +101,8 @@ export default function ProductRequest(props) {
     const [productsSelected, setProductsSelected] = useState([]);
     const [summary, setSummary] = useState([])
     const [product, setProduct] = useState("");
+    const [lastDate, setLastDate] = useState(dayjs(props.date));
+    const [flag, setFlag] = useState(true)
 
     // eslint-disable-next-line
     const [showModal, setShowModal] = useState(false);
@@ -116,11 +118,15 @@ export default function ProductRequest(props) {
                     props.setDirtyClients(false);
                 })
         }
+        if(!lastDate.isSame(props.date)|| flag){
+            setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
+            getAvailableProducts(props.date)
+                .then((res) => {
+                    props.setProducts(res)
+                })
+                setFlag(false)    
+        }
     }, [props]);
-
-    useEffect(() => {
-
-    }, [product])
 
     const calculateTotal = (elements) => {
         let total = parseFloat(0)
@@ -128,7 +134,7 @@ export default function ProductRequest(props) {
         for (let i = 0; i < elements.length; i++) {
             total = parseFloat(total) + parseFloat(elements[i].total)
         }
-        return total;
+        return total.toFixed(2);
     }
 
     const handleOrder = () => {
@@ -173,7 +179,7 @@ export default function ProductRequest(props) {
     }
     return (<>
         {dayjs(props.date).isAfter(sat9am) && dayjs(props.date).isBefore(sun23pm) ?
-            <Container className="containerProdRequest justify-content-center mt-3">
+            <Container className="justify-content-center mt-3">
                 <h1>Enter a new product request</h1>
                 <Card className="text-left mt-4">
                     <ListGroup className="list-group-flush">
