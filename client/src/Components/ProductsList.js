@@ -178,10 +178,10 @@ function Product(props) {
 
     //functions needed to select the quantity
     function add() {
-        setCounter((c) => c + 1);
+        setCounter((c) => c + 0.5);
     }
     function sub() {
-        setCounter((c) => c - 1);
+        setCounter((c) => c - 0.5);
     }
 
     function addToBasket() {
@@ -264,7 +264,7 @@ function Product(props) {
                                         :
                                         <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { sub() }}>{iconSub}</Button>
                                     }
-                                    <p className="px-2 m-0">{counter} {props.prod.measure}</p>
+                                    <p className="px-2 m-0">{parseFloat(counter).toFixed(1)} {props.prod.measure}</p>
                                     {counter >= props.prod.quantity ?
                                         <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconAddDisabled}</Button>
                                         :

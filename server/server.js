@@ -193,6 +193,7 @@ app.get("/api/farmers", async (req, res) => {
 // Post: post the request by shop employee
 app.post("/api/requests", async (req, res) => {
   try {
+    console.log(req.body.creationdate)
     // Get the products availability in the magazine
     let productsAvailability = await productDao.getProductsAvailable(req.body.creationdate);
 
@@ -204,10 +205,12 @@ app.post("/api/requests", async (req, res) => {
       let singleProduct = productsAvailability.filter(
         (p) => p.id === product.productid
       );
-
-      if (!singleProduct.length || singleProduct[0].quantity < product.quantity)
-        listProductsNotAvailability.push(product); // Quantity request not availability
+      if (!singleProduct.length || singleProduct[0].quantity < product.quantity){
+        listProductsNotAvailability.push(product); // Quantity requested not available
+      }
     });
+
+    console.log(listProductsNotAvailability.length)
 
     if (!listProductsNotAvailability.length) {
       // All products are availability. Create new order
@@ -219,6 +222,7 @@ app.post("/api/requests", async (req, res) => {
         deliveryaddress: req.body.deliveryaddress,
         status: req.body.status,
       };
+      console.log(order)
 
       let numberId = await orderDao.insertOrder(order);
 
