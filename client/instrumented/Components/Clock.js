@@ -3,7 +3,6 @@ import React from "react";
 export default class Clock extends React.Component {
    constructor(props) {
       super(props);
-      console.log(this.props.date)
       this.state = { time: this.props.date };
       this.radius = this.props.size / 2;
       this.drawingContext = null;

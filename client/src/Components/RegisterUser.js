@@ -21,7 +21,7 @@ function isAlphaNumeric(str) {
     return false;
   }
   return true;
-};
+}
 
 class RegisterUser extends Component {
 
@@ -55,7 +55,6 @@ class RegisterUser extends Component {
         valid = false;
         this.setState({ error: true })
         this.setState({ messageError: "Passwords are not equal" })
-        console.log("Err");
       } else if (this.state.password === '' || this.state.password.length < 6 || isAlphaNumeric(this.state.password) === false) {
         valid = false;
         this.setState({ error: true })
@@ -126,7 +125,7 @@ class RegisterUser extends Component {
     getUsernames().then((users) => {
       this.setState({ usernames: users })
     })
-  };
+  }
 
   nextStep = () => {
     const { step } = this.state

@@ -1,18 +1,13 @@
-import { useHistory } from 'react-router-dom';
-import { Navbar, Container, Button, Modal, Row, Col, Table, ListGroup, Alert, Nav } from "react-bootstrap";
-import { useState } from "react";
+import { useHistory, Link } from 'react-router-dom';
+import { Navbar, Container, Button, Modal, Row, Col, Table, ListGroup, Alert, Offcanvas } from "react-bootstrap";
+import { useState, useEffect, React } from "react";
 import { clock, iconStar, iconCalendar, iconCart, cartFill, cross, coin } from "./Icons";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { Link } from 'react-router-dom';
 import dayjs from "dayjs";
 import Clock from "./Clock";
 import MyNotifications from "./MyNotifications";
 import { addPRequest } from '../API/API';
-
-import { Offcanvas } from "react-bootstrap";
-import React from 'react';
-import { useEffect } from 'react';
 
 export default function MyNav(props) {
 

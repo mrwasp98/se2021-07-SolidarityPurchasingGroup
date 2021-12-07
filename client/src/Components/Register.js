@@ -1,7 +1,6 @@
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { addClient } from "../API/API.js";
-import { Link } from "react-router-dom";
 import HomeButton from "./HomeButton";
 
 export default function Register(props) {

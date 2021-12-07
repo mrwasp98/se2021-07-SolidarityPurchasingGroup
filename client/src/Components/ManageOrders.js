@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState , React} from "react";
 import { Card, ListGroup, ListGroupItem, Col, Table, Accordion, Container } from "react-bootstrap";
-import React from 'react'
-import Select from 'react-select'
 import { getOrdersByStatus } from "../API/API"
 import HomeButton from "./HomeButton";
 // import ContactClient from "./ContactClient";
@@ -15,7 +13,6 @@ export default function ManageOrders(props) {
                 .then((orders) => {
                     props.setFailedOrders(orders);
                     setOldLength(orders.length);
-                    console.log(orders);
                 }); //deve essere cambiato nella giusta dicitura , es "canceled"
         }
     }, [props.failedOrders]);

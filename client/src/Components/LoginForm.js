@@ -24,7 +24,7 @@ function isAlphaNumeric(str) {
 };
 
 function LoginForm(props) {
-    const history = useHistory();
+    const history = useHistory()
 
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();

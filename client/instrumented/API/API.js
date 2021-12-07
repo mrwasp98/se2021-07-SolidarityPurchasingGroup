@@ -2935,7 +2935,6 @@ cov_13m4bttpk5().s[21]++;
 const getClientById = async clientid => {
   cov_13m4bttpk5().f[8]++;
   cov_13m4bttpk5().s[22]++;
-  console.log("api" + clientid);
   cov_13m4bttpk5().s[23]++;
   return new Promise((resolve, reject) => {
     cov_13m4bttpk5().f[9]++;
@@ -3028,7 +3027,6 @@ cov_13m4bttpk5().s[40]++;
 const getAvailableProducts = async date => {
   cov_13m4bttpk5().f[16]++;
   cov_13m4bttpk5().s[41]++;
-  console.log(dayjs(date));
   cov_13m4bttpk5().s[42]++;
   return new Promise((resolve, reject) => {
     cov_13m4bttpk5().f[17]++;

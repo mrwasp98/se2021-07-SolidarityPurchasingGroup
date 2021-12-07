@@ -1,9 +1,8 @@
 import { Container, Form, Button, Row, Col, Alert, Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getUsernames, updatePassword } from "../API/API.js";
 import { iconStar } from "./Icons";
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 function isAlphaNumeric(str) {
     var code, i, len, nNum = 0, nLett = 0;
@@ -21,7 +20,7 @@ function isAlphaNumeric(str) {
       return false;
     }
     return true;
-  };
+  }
 
 export default function UpdatePassword(props) {
   const history = useHistory();

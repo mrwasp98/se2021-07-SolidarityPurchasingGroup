@@ -102,7 +102,6 @@ const getClients = async () => {
 
 
 const getClientById = async (clientid) => {
-  console.log("api"+ clientid);
   return new Promise((resolve, reject) => {
     fetch('/api/client/' + clientid , {
       method: "GET",
@@ -157,7 +156,6 @@ const addClient = async (name, surname, email, wallet, address, password, type) 
 
 /** STORY 3 **/
 const getAvailableProducts = async (date) => {
-  console.log(dayjs(date))
   return new Promise((resolve, reject) => {
     fetch('/api/products/' + dayjs(date).format('YYYY-MM-DD'), {
       method: "GET",
@@ -214,7 +212,7 @@ async function handOutProduct(orderid) {
   if(response.ok) {
       return response.status;
   } else return { message: "Couldn't mark the order as completed." };
-};
+}
 
 //this API fetches the orders of a specific client
 const getClientOrders = async (clientid) => {
@@ -250,7 +248,7 @@ async function topUpWallet(clientid, ammount) {
   if(response.ok) {
       return response.status;
   } else return { message: "Couldn't top up the client's wallet." };
-};
+}
 
 /** STORY 6 **/
 const addShopEmployee = async (username, password) => {
@@ -369,11 +367,9 @@ async function login(credentials) {
     body: JSON.stringify(credentials),
   });
   if (response.ok) {
-    const user = await response.json();
-    return user;
+    return await response.json();
   } else {
-    const errDetails = await response.text();
-    throw errDetails;
+    throw await response.text();
   }
 }
 

@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, React } from "react";
 import { Card, Container, Form, ListGroup, ListGroupItem, Alert } from "react-bootstrap";
-import React from 'react'
 import Select from 'react-select'
 import { getClients, getClientOrders } from "../API/API"
 import OrderToggle from "./OrderToggle";

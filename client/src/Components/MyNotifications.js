@@ -1,7 +1,6 @@
 import { bell } from "./Icons";
 import { Button, Toast } from "react-bootstrap";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function MyNotifications(props) {
   const [showB, setShowB] = useState(false);
@@ -9,8 +8,6 @@ export default function MyNotifications(props) {
   const [message,setMessage]=useState("There isn't any unread message");
 
   useEffect(() => {
-    console.log("props.message.topUpWallet");
-    console.log(props.message.topUpWallet);
     if(props.message.topUpWallet)
       setMessage("Please add money in your wallet!");
   }, []);

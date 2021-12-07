@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import MyNav from "./Components/MyNav";
 import { LoginForm } from "./Components/LoginForm";
-import { BrowserRouter as Router, Route, Redirect} from "react-router-dom";
+import { BrowserRouter as Router, Route} from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ProductsList from "./Components/ProductsList";
 import ProductRequest from "./Components/ProductRequest";
@@ -67,7 +67,6 @@ function App() {
   //this use effect is used to show the modal when the client logs in  
   useEffect(() => {
     async function fetchdata() {
-      console.log(logged);
       if (logged === "client") {
         let res = await getClientById(userId);
         setClient(res);
