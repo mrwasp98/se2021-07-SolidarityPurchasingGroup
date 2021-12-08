@@ -15,6 +15,10 @@ const session = require("express-session"); //enable sessions
 const userDao = require("./user-dao"); //module fo accessing the users in the DB
 var path = require("path");
 
+
+var multer = require('multer')
+
+
 /*** Set up Passport ***/
 
 //Inizializa and configure passport
@@ -77,6 +81,17 @@ app.use(
 //Then init passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+//PER LE FOTO
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader( 
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  )
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+  next()
+})
 
 /*TEST GET route */
 app.get("/api/test", (req, res) => {
@@ -430,4 +445,26 @@ app.get("/api/orders/status/:status", async (req, res) => {
   } catch (err) {
     res.status(500).end();
   }
+});
+
+
+
+var storage = destinazione => multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, `public/${destinazione}`)
+  },
+  filename: function (req, file, cb) {
+      cb(null, file.originalname )
+  }
+});
+
+var uploadFoto = multer({ storage: storage('img/') }).array('file');
+
+app.post('/api/img',function(req, res) {
+  uploadFoto(req, res, err => {
+      if (err) {
+          return res.status(500).json(err);
+      }
+      return res.status(200).json(req.file);
+  });
 });

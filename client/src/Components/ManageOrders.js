@@ -2,7 +2,7 @@ import { useEffect, useState , React} from "react";
 import { Card, ListGroup, ListGroupItem, Col, Table, Accordion, Container } from "react-bootstrap";
 import { getOrdersByStatus } from "../API/API"
 import HomeButton from "./HomeButton";
-// import ContactClient from "./ContactClient";
+//import ContactClient from "./ContactClient";
 import { fail, order } from "./Icons";
 
 export default function ManageOrders(props) {
@@ -63,7 +63,7 @@ function FailedOrder(props) {
                         <Col>{order} Order created on the: <strong>{props.order.creationdate}</strong></Col>
                         <Col>{order} Order expiration on the: <strong>{props.order.creationdate}</strong></Col>
                         <Col><div className="d-flex justify-content-center"><strong>Total price: {totalprice()}€</strong></div></Col>
-                        {/* <Col><ContactClient /> </Col> */}
+                        {/*{<Col><ContactClient /> </Col>*/}
                     </Container>
 
                 </Accordion.Header>

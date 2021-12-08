@@ -47,6 +47,8 @@ function LoginForm(props) {
             }
         }else if(user.type === "client"){
             history.push("/clienthome")
+        }else if(user.type === "farmer"){
+            history.push("/farmerhome")  //this if is used to story9
         }
       })
         .catch (err=>{
