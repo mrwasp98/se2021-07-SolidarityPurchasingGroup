@@ -11,7 +11,7 @@ import Register from "./Components/Register";
 import Type from "./Components/Type";
 import UpdatePassword from "./Components/UpdatePassword";
 import RegisterUserR from "./Components/RegisterUser";
-import { login, getUserInfo, logout, addPRequest, getClientById } from "./API/API.js";
+import { login, getUserInfo, logout, getClientById } from "./API/API.js";
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
@@ -22,11 +22,9 @@ import ManageOrders from "./Components/ManageOrders";
 function App() {
   // eslint-disable-next-line
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]); //main categories of the products
-
   const [date, setDate] = useState(new Date()); //virtual clock date
-  const [dirty, setDirty] = useState(false); ///?????
 
-  const [farmers, setFarmers] = useState([]);
+  const [farmers, setFarmers] = useState([]); //farmers present in the system
 
   const [logged, setLogged] = useState(''); //this state is used to store the type of the user logged
   // eslint-disable-next-line
@@ -43,7 +41,6 @@ function App() {
   const [dirtyClients, setDirtyClients] = useState(true); //state used to indicate if a new user has been added
   const [clientOrders, setClientOrders] = useState([]);
 
-  const [order, setOrder] = useState({}); //??????????????????????????
   const [failedOrders, setFailedOrders] = useState([]);
 
   const [showBasket, setShowBasket] = useState(false); //this state controls the basked offcanvas
@@ -80,44 +77,6 @@ function App() {
     }
     fetchdata();
   }, [logged, userId]);
-
-  const [messageProductRequest, setMessageProductRequest] = useState({
-    type: "",
-    show: false,
-    text: ""
-  })
-
-  useEffect(() => {
-    async function fetchdata() {
-      if (dirty) {
-        addPRequest(order.userid,
-          order.creationdate,
-          order.claimdate,
-          order.confirmationdate,
-          order.deliveryaddress,
-          order.deliveryid,
-          order.status,
-          order.products).then(result => {
-            // A few products are not availability
-            //console.log(res.listofProducts);  The list of products non availability "res.listofProducts"
-            if (result.status !== undefined && result.status === 406)
-              setMessageProductRequest({
-                type: "error",
-                show: true,
-                text: result.listofProducts.map(x => x.name + " ").concat("are not available")
-              })
-            else if (result.status !== undefined && result.status === 200)
-              setMessageProductRequest({
-                type: "done",
-                show: true,
-                text: "Order received!" //this message won't be used. I don't remove it for consistency
-              })
-          }).catch(err => { console.log(err); })
-        setDirty(false);
-      }
-    }
-    fetchdata();
-  }, [dirty, order]);
 
   return (
     <>
@@ -187,11 +146,6 @@ function App() {
             setDirtyClients={setDirtyClients}
             products={products}
             setProducts={setProducts}
-            order={order}
-            setOrder={setOrder}
-            setDirty={() => setDirty(true)}
-            message={messageProductRequest}
-            setMessage={setMessageProductRequest}
             setDirtyAvailability={setDirtyAvailability}
             logged={logged}
             date={date} />}

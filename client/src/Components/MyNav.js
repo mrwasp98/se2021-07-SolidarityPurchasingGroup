@@ -73,83 +73,83 @@ export default function MyNav(props) {
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="navbarScroll" className="justify-content-end" >
-          {show?(
-          <div>
-            <Calendar className="position-absolute priority react-calendar" onChange={handleCalendar} style={{ color: "#0f8b8b"}} value={props.date} />
-          </div>
-        ): (
-          ""
-        )}
-          <Button variant="light" onClick={toggleShow} className="me-2 callandarButton" style={{ fontSize: "17px" }}>
-        {iconCalendar}
-        {date.format('ddd DD MMM')}
-          </Button>
+            {show ? (
+              <div>
+                <Calendar className="position-absolute priority react-calendar" onChange={handleCalendar} style={{ color: "#0f8b8b" }} value={props.date} />
+              </div>
+            ) : (
+              ""
+            )}
+            <Button variant="light" onClick={toggleShow} className="me-2 callandarButton" style={{ fontSize: "17px" }}>
+              {iconCalendar}
+              {date.format('ddd DD MMM')}
+            </Button>
 
-          <Button variant="light" onClick={toggleShowHour} className="btn-hour">
-        {clock}
-        {date.format('HH:mm')}
-          </Button>
-        
-          <Modal className="" show={showHour} onHide={() => !showHour} animation={false}>
-          <Modal.Body>
-          <Row className="mt-3 ps-3 pe-3 mb-2">
-          <Col className="col-3" style={{ "fontWeight": "600" }}><p>Select hour: </p></Col>
-          <Col className="col-9" ><input
-          className="input-hour"
-          type ="number"
-          min={0}
-          max={23}
-          step={1}
-          value={hour}
-          onChange={e => setHour(e.target.value)}
-          /></Col>
-          </Row>
-          <hr className="p-0 m-0 mb-3" />
-          <Row className="ps-3 pe-3" style={{ "fontWeight": "600" }}>
-          <Col className="col-3"><p>Select min: </p></Col>
-          <Col className="col-9"><input
-          className="input-min"
-          type ="number"
-          min={0}
-          max={60}
-          step={1}
-          value={min}
-          onChange={e => setMin(e.target.value)}
-          /></Col>
-          </Row>
-          <hr className="p-0 mt-1" />
-          <Clock size={200} date={new Date(props.date.getFullYear(), props.date.getMonth(), props.date.getDate(), hour, min)} timeFormat="24hour" hourFormat="standard" />
-          </Modal.Body>
-          <Modal.Footer>
-          <Button className="close-btn" variant="secondary" onClick={() => { setShowHour(false) }} style={{ 'backgroundColor': "#143642" }}>
-          Close
-          </Button>
-          <Button className="save-btn" variant="primary" onClick={handleModal} style={{ fontSize: "17px", "fontWeight": "500" }}>
-          Save Changes
-          </Button>
-          </Modal.Footer>
-          </Modal>
+            <Button variant="light" onClick={toggleShowHour} className="btn-hour">
+              {clock}
+              {date.format('HH:mm')}
+            </Button>
+
+            <Modal className="" show={showHour} onHide={() => !showHour} animation={false}>
+              <Modal.Body>
+                <Row className="mt-3 ps-3 pe-3 mb-2">
+                  <Col className="col-3" style={{ "fontWeight": "600" }}><p>Select hour: </p></Col>
+                  <Col className="col-9" ><input
+                    className="input-hour"
+                    type="number"
+                    min={0}
+                    max={23}
+                    step={1}
+                    value={hour}
+                    onChange={e => setHour(e.target.value)}
+                  /></Col>
+                </Row>
+                <hr className="p-0 m-0 mb-3" />
+                <Row className="ps-3 pe-3" style={{ "fontWeight": "600" }}>
+                  <Col className="col-3"><p>Select min: </p></Col>
+                  <Col className="col-9"><input
+                    className="input-min"
+                    type="number"
+                    min={0}
+                    max={60}
+                    step={1}
+                    value={min}
+                    onChange={e => setMin(e.target.value)}
+                  /></Col>
+                </Row>
+                <hr className="p-0 mt-1" />
+                <Clock size={200} date={new Date(props.date.getFullYear(), props.date.getMonth(), props.date.getDate(), hour, min)} timeFormat="24hour" hourFormat="standard" />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button className="close-btn" variant="secondary" onClick={() => { setShowHour(false) }} style={{ 'backgroundColor': "#143642" }}>
+                  Close
+                </Button>
+                <Button className="save-btn" variant="primary" onClick={handleModal} style={{ fontSize: "17px", "fontWeight": "500" }}>
+                  Save Changes
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </Navbar.Collapse>
           <Navbar.Collapse id="navbarScroll" className="justify-content-end" >
 
-        {props.logged?(
-          <>
-          <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
-        {props.logged === "client"?<MyNotifications message={notifyMessage} />: ""}
-        {" "}
-        {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
-          </>
-        ): (
-          <>
-        {" "}
-          <Link to="/login">
-          <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-login loginLink">Login</Button>
-          </Link>
-          <Link to="/user">
-          <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-reg">Register</Button>{" "}
-          </Link>
-          </>
-        )}{" "}
+            {props.logged ? (
+              <>
+                <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
+                {props.logged === "client" ? <MyNotifications message={notifyMessage} /> : ""}
+                {" "}
+                {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
+              </>
+            ) : (
+              <>
+                {" "}
+                <Link to="/login">
+                  <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-login loginLink">Login</Button>
+                </Link>
+                <Link to="/user">
+                  <Button variant="link" style={{ fontSize: "20px", color: "#ec9a2a" }} className="btn-reg">Register</Button>{" "}
+                </Link>
+              </>
+            )}{" "}
 
           </Navbar.Collapse>
         </Container>
