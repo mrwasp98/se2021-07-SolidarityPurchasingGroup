@@ -1,3 +1,7 @@
+/*
+This component is used to inform the client that their order has been recorded into the system.
+*/
+
 import { Form, Button, Modal, Alert} from "react-bootstrap";
 
 export default function ModalEnd(props) {

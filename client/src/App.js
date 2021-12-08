@@ -19,6 +19,10 @@ import Wallet from "./Components/Wallet";
 import MyModal from "./Components/MyModal";
 import ManageOrders from "./Components/ManageOrders";
 
+//temp
+import ModalClaimDate from "./Components/ModalClaimDate"
+
+
 function App() {
   // eslint-disable-next-line
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]); //main categories of the products
@@ -100,6 +104,7 @@ function App() {
             show={showTopUpWalletModal}
             close={() => setShowTopUpWalletModal(false)}
           />
+          {/* <ModalClaimDate/> */}
         </Route>
 
         <Route exact path='/products' render={() =>
