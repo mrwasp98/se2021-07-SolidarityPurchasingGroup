@@ -1,8 +1,7 @@
 import {Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import { useEffect, useState, Sonnet} from "react";
-import Select from 'react-select'
-import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket } from "./Icons";
+import { useEffect, useState} from "react";
+import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import HomeButton from './HomeButton'
 import "../App.css";
 
@@ -130,16 +129,22 @@ export default function ReportAvailability(props){
                             Your products
                         </ListGroup.Item>
                         <ListGroup.Item action href="#link2">
-                            Manage the availability
+                            Expected availability
                         </ListGroup.Item>
                     </ListGroup>
                     </Col>
                     <Col sm={9}>
                     <Tab.Content>
                         <Tab.Pane eventKey="#link1">
-                            <h3>These are all your products</h3>
-                            <Link to={{pathname: "/addProduct"}}><Button>Add product</Button></Link>
-                            <Table striped bordered hover>
+                            <Row >
+                                <Col>
+                                    <h3>These are all your products</h3>
+                                </Col>
+                                <Col className="d-flex justify-content-end">
+                                    <Link to={{pathname: "/addProduct"}}><Button>Add product</Button></Link>
+                                </Col>
+                            </Row> 
+                            <Table className="mt-4" striped bordered hover>
                                 <thead>
                                     <tr>
                                         <th>Name</th>

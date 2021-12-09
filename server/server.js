@@ -449,10 +449,6 @@ app.get("/api/orders/status/:status", async (req, res) => {
 
 
 const fs = require('fs')
-const { promisify } = require('util')
-
-const unlinkAsync = promisify(fs.unlink)
-
 
 var storage = destinazione => multer.diskStorage({
   destination: function (req, file, cb) {
@@ -464,7 +460,6 @@ var storage = destinazione => multer.diskStorage({
 });
 
 var uploadFoto = multer({ storage: storage('img/') }).single('file');
-var deleteFoto = multer({ storage: storage('img/') }).array('file');
 
 app.post('/api/img',function(req, res) {
   uploadFoto(req, res, err => {

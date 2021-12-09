@@ -169,8 +169,6 @@ export default function ProductForm(props){
                         </Card>
                      </Col>               
                 </Row>
-
-
             </Form.Group>
             <div className="d-flex justify-content-between mb-4 mt-4">
                 <Link to="/farmerhome"><Button variant='danger'>Cancel</Button></Link>
