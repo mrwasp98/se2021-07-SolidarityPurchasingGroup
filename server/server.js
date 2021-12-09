@@ -448,6 +448,11 @@ app.get("/api/orders/status/:status", async (req, res) => {
 });
 
 
+const fs = require('fs')
+const { promisify } = require('util')
+
+const unlinkAsync = promisify(fs.unlink)
+
 
 var storage = destinazione => multer.diskStorage({
   destination: function (req, file, cb) {
@@ -458,7 +463,8 @@ var storage = destinazione => multer.diskStorage({
   }
 });
 
-var uploadFoto = multer({ storage: storage('img/') }).array('file');
+var uploadFoto = multer({ storage: storage('img/') }).single('file');
+var deleteFoto = multer({ storage: storage('img/') }).array('file');
 
 app.post('/api/img',function(req, res) {
   uploadFoto(req, res, err => {
@@ -467,4 +473,28 @@ app.post('/api/img',function(req, res) {
       }
       return res.status(200).json(req.file);
   });
+});
+
+
+
+app.delete('/api/img/:picture',function (req, res) {
+    if (!req.params.picture) {
+        console.log("No file received");
+        message = "Error! in image delete.";
+        return res.status(500).json('error in delete');
+    
+      } else {
+        console.log('file received');
+        console.log(req.params.picture);
+        try {
+            fs.unlinkSync('public/img/' + req.params.picture);
+            console.log('successfully deleted');
+            return res.status(200).send('Successfully! Image has been Deleted');
+          } catch (err) {
+            // handle the error
+            return res.status(400).send(err);
+          }
+        
+      }
+ 
 });
