@@ -364,7 +364,7 @@ async function insertProduct(product) {
       method: "POST",
       headers: {
         body: JSON.stringify({
-          productid: product.id,
+          id: product.id,
           name: product.name,
           description: product.description,
           farmerid: product.farmerid,
