@@ -15,7 +15,7 @@
  * 
  * @returns 
  */
- import dayjs from "dayjs";
+import dayjs from "dayjs";
 
 const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, products) => {
   return new Promise((resolve, reject) => {
@@ -103,7 +103,7 @@ const getClients = async () => {
 
 const getClientById = async (clientid) => {
   return new Promise((resolve, reject) => {
-    fetch('/api/client/' + clientid , {
+    fetch('/api/client/' + clientid, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -203,21 +203,21 @@ const getFarmers = async () => {
 //productid is equal to the one optained before!
 async function handOutProduct(orderid) {
   const response = await fetch('/api/orders/' + orderid, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        status: 'completed'
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      status: 'completed'
     })
   });
-  if(response.ok) {
-      return response.status;
+  if (response.ok) {
+    return response.status;
   } else return { message: "Couldn't mark the order as completed." };
 }
 
 //this API fetches the orders of a specific client
 const getClientOrders = async (clientid) => {
   return new Promise((resolve, reject) => {
-    fetch( '/api/completeOrders?clientid='+clientid, {
+    fetch('/api/completeOrders?clientid=' + clientid, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -239,14 +239,14 @@ const getClientOrders = async (clientid) => {
 /** STORY 5 **/
 async function topUpWallet(clientid, ammount) {
   const response = await fetch('/api/clients/' + clientid + '/?ammount=' + ammount, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        status: 'completed'
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      status: 'completed'
     })
   });
-  if(response.ok) {
-      return response.status;
+  if (response.ok) {
+    return response.status;
   } else return { message: "Couldn't top up the client's wallet." };
 }
 
@@ -288,7 +288,7 @@ const addFarmer = async (username, password, name, surname, place, address) => {
       body: JSON.stringify({
         username: username,
         password: password,
-        name: name, 
+        name: name,
         surname: surname,
         place: place,
         address: address,
@@ -338,7 +338,7 @@ const updatePassword = async (password, id) => {
 //this API fetches the all the usernames available
 const getUsernames = async () => {
   return new Promise((resolve, reject) => {
-    fetch( '/api/usernames', {
+    fetch('/api/usernames', {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -356,6 +356,39 @@ const getUsernames = async () => {
       });
   });
 }
+
+/* --- Story 9 --- */
+async function insertProduct(product) {
+  return new Promise((resolve, reject) => {
+    fetch('/api/product', {
+      method: "POST",
+      headers: {
+        body: JSON.stringify({
+          productid: product.id,
+          name: product.name,
+          description: product.description,
+          farmerid: product.farmerid,
+          price: product.price,
+          measure: product.measure,
+          category: product.category,
+          typeofproduction: product.typeofproduction,
+          picture: product.picture
+        })
+          .then((res) => {
+            if (!res.ok) {
+              const error = new Error(`${res.status}: ${res.statusText}`);
+              error.response = res;
+              throw error;
+            }
+            resolve(res.json())
+              .catch((err) => {
+                reject({ message: err.message })
+              })
+          })
+      }
+    })
+  })
+};
 
 /*----- USER APIs ---*/
 async function login(credentials) {
@@ -396,4 +429,4 @@ async function getUserInfo() {
 
 
 
-export { getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword}
+export { getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword }
