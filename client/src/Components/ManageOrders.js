@@ -1,8 +1,8 @@
-import { useEffect, useState , React} from "react";
+import { useEffect, useState, React } from "react";
 import { Card, ListGroup, ListGroupItem, Col, Table, Accordion, Container } from "react-bootstrap";
 import { getOrdersByStatus } from "../API/API"
 import HomeButton from "./HomeButton";
-//import ContactClient from "./ContactClient";
+import ContactClient from "./ContactClient";
 import { fail, order } from "./Icons";
 
 export default function ManageOrders(props) {
@@ -59,29 +59,13 @@ function FailedOrder(props) {
         <Accordion defaultActiveKey="0" className="alertAccHeader">
             <Accordion.Item key={props.chiave} className="mb-3">
                 <Accordion.Header className="alertAccHeader">
-                    <Container className="d-flex justify-content-between flex-column flex-md-row">
-                        <Col>{order} Order created on the: <strong>{props.order.creationdate}</strong></Col>
-                        <Col>{order} Order expiration on the: <strong>{props.order.creationdate}</strong></Col>
-                        <Col><div className="d-flex justify-content-center"><strong>Total price: {totalprice()}€</strong></div></Col>
-                        {/*{<Col><ContactClient /> </Col>*/}
+                    <Container className="p-0 d-flex flex-column flex-md-row" style={{"font-size":"18px"}}>
+                        <Col className="mt-2">{order} Order creation: <strong>{props.order.creationdate}</strong></Col>
+                        <Col className="mt-2">{order} Claim date: <strong>{props.order.claimdate}</strong></Col>
+                        <Col><div className="d-flex justify-content-center"><ContactClient /></div></Col>
                     </Container>
 
                 </Accordion.Header>
-                <Accordion.Body className="p-0">
-                    <Table striped >
-                        <tbody>
-                            {props.order.products && props.order.products.map((p, i) => {
-                                return (
-                                    <tr key={i} >
-                                        <td style={{ "width": "33%", "text-align": "center" }}>{p.name}</td>
-                                        <td style={{ "width": "33%", "text-align": "center" }}>{p.quantity} {p.measure}</td>
-                                        <td style={{ "width": "33%", "text-align": "center" }}>{parseFloat(p.price).toFixed(2)}€</td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </Table>
-                </ Accordion.Body>
 
             </Accordion.Item>
         </Accordion>
