@@ -90,38 +90,6 @@ function App() {
     text: ""
   })
 
-  useEffect(() => {
-    async function fetchdata() {
-      if (dirty) {
-        addPRequest(order.userid,
-          order.creationdate,
-          order.claimdate,
-          order.confirmationdate,
-          order.deliveryaddress,
-          order.deliveryid,
-          order.status,
-          order.products).then(result => {
-            // A few products are not availability
-            //console.log(res.listofProducts);  The list of products non availability "res.listofProducts"
-            if (result.status !== undefined && result.status === 406)
-              setMessageProductRequest({
-                type: "error",
-                show: true,
-                text: result.listofProducts.map(x => x.name + " ").concat("are not available")
-              })
-            else if (result.status !== undefined && result.status === 200)
-              setMessageProductRequest({
-                type: "done",
-                show: true,
-                text: "Order received!" //this message won't be used. I don't remove it for consistency
-              })
-          }).catch(err => { console.log(err); })
-        setDirty(false);
-      }
-    }
-    fetchdata();
-  }, [dirty, order]);
-
   const editProduct = (product) => {
     //updateProduct(product).then(()=>setDirty(true));
   }
