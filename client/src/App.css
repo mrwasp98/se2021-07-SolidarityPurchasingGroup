@@ -192,6 +192,14 @@
     background-color: #C1260B !important;
 }
 
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #FFF4C7;
+ }
+
+ .table-striped > tbody {
+    font-weight: 500;
+ }
+
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
@@ -231,7 +239,9 @@
 }
 
 .alertAccHeader >.accordion-button:hover,
-.accordion-button:focus {
+.alertAccHeader >.accordion-button:focus,
+.alertAccHeader >.accordion-button:active,
+.alertAccHeader >.accordion-button:visited {
     background-color: #FFCCCC !important;
 }
 
@@ -250,7 +260,7 @@
     background-color: #0C7373;
     color: white;
     font-weight: 400;
-    font-size: 17;
+    font-size: 17u;
 }
 
 .btn-yellow:hover,

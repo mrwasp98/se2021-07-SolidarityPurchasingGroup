@@ -180,6 +180,9 @@ function App() {
         <Route exact path="/manageOrders" render={() =>
           <ManageOrders
             clients={clients}
+            setClients={setClients}
+            dirtyClients={dirtyClients}
+            setDirtyClients={setDirtyClients}
             orders={clientOrders}
             logged={logged}
             date={date}
