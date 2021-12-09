@@ -1,9 +1,10 @@
-import {Container, Table, ListGroup, InputGroup, Row, Col, Form, Button, Image} from 'react-bootstrap'
+import {Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import { useEffect, useState } from "react";
+import { useEffect, useState, Sonnet} from "react";
 import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket } from "./Icons";
 import HomeButton from './HomeButton'
+import "../App.css";
 
 function ProductAction(props){
     return (<>
@@ -118,43 +119,64 @@ export default function ReportAvailability(props){
         console.log(productsAvailable);
     }
 
-    return( <Container className="justify-content-center" style={{width: "70%"}}>
-                
+    return( <Container className="justify-content-center">
                 <h1>Hello {props.username}!</h1>
-                <h3>These are all your products</h3>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Image</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {products.map(product => <ProductRow key={product.id} product={product}></ProductRow>)}
-                    </tbody>
-                </Table>
                 <hr></hr>
-                <h3>Select the availability for the next week</h3>
-                <Table className="mt-3" striped bordered hover responsive>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Image</th>
-                            <th>Quantity</th>
-                            <th>Available</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {products.map(product => <ProductAvailableRow key={product.id} product={product} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
-                    </tbody>
-                </Table>
-                <div className="d-flex justify-content-between mb-4">
-                    <Link to="/employeehome"><Button variant="danger" className="back-btn">Back</Button></Link>
-                    <Button className="order-btn" variant="yellow" onClick={() => handleReport()}>Send report</Button>
-                </div>
+                <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
+                <Row>
+                    <Col sm={3} style={{backgroundColor: '#f2f2f2'}}>
+                    <ListGroup variant="flush" className="mt-3">
+                        <ListGroup.Item action href="#link1">
+                            Your products
+                        </ListGroup.Item>
+                        <ListGroup.Item action href="#link2">
+                            Manage the availability
+                        </ListGroup.Item>
+                    </ListGroup>
+                    </Col>
+                    <Col sm={9}>
+                    <Tab.Content>
+                        <Tab.Pane eventKey="#link1">
+                            <h3>These are all your products</h3>
+                            <Link to={{pathname: "/addProduct"}}><Button>Add product</Button></Link>
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Image</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {products.map(product => <ProductRow key={product.id} product={product}></ProductRow>)}
+                                </tbody>
+                            </Table>
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="#link2">
+                            <h3>Select the availability for the next week</h3>
+                            <Table className="mt-3" striped bordered hover responsive>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Image</th>
+                                        <th>Quantity</th>
+                                        <th>Available</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {products.map(product => <ProductAvailableRow key={product.id} product={product} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
+                                </tbody>
+                            </Table>
+                            <div className="d-flex justify-content-center mb-4">
+                                <Button className="order-btn" variant="yellow" onClick={() => handleReport()}>Send report</Button>
+                            </div>
+                        </Tab.Pane>
+                    </Tab.Content>
+                    </Col>
+                </Row>
+                </Tab.Container>
                 <HomeButton  logged={props.logged} />
 
             </Container>)
