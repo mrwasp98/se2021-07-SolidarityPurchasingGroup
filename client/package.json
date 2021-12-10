@@ -50,7 +50,7 @@
     },
     "proxy": "http://localhost:3001",
     "devDependencies": {
-        "@cypress/code-coverage": "^3.9.11",
+        "@cypress/code-coverage": "^3.9.12",
         "babel-plugin-istanbul": "^6.1.1",
         "cypress": "^9.1.0",
         "cypress-react-selector": "^2.3.13",
