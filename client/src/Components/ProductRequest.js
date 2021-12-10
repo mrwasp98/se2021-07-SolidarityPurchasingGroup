@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { getClients, getAvailableProducts, addPRequest } from "../API/API.js";
 import HomeButton from "./HomeButton";
 import ModalEnd from "./ModalEnd"
+import ModalClaimDate from "./ModalClaimDate"
 
 function ProductLine(props) {
     const { product } = props;
@@ -77,6 +78,9 @@ export default function ProductRequest(props) {
     const [product, setProduct] = useState("");
     const [lastDate, setLastDate] = useState(dayjs(props.date));
     const [flag, setFlag] = useState(true)
+
+    
+
     const [messageProductRequest, setMessageProductRequest] = useState({
         type: "",
         show: false,
@@ -84,6 +88,10 @@ export default function ProductRequest(props) {
     })
     // eslint-disable-next-line
     const [showModal, setShowModal] = useState(false);
+
+    const [showModalClaim, setShowModalClaim] = useState(false)
+
+
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
 
@@ -116,7 +124,6 @@ export default function ProductRequest(props) {
     }
 
     const handleOrder = () => {
-        console.log("sono pronto!")
         if (productsSelected.length === 0) {
             props.setMessage({
                 type: "error",
@@ -174,9 +181,6 @@ export default function ProductRequest(props) {
         sat9am = dayjs(props.date).endOf('week').subtract(1, 'week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         sun23pm = dayjs(props.date).endOf('week').subtract(1, 'week').add(1, 'day').subtract(59, 'minute').subtract(59, 'second')
     }
-
-
-
 
     return (<>
         {dayjs(props.date).isAfter(sat9am) && dayjs(props.date).isBefore(sun23pm) ?
@@ -251,8 +255,10 @@ export default function ProductRequest(props) {
                             {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal(productsSelected)}€</Alert>}
                             <div className="d-flex justify-content-between mb-4">
                                 <Link to="/employeehome"><Button variant="danger" className="back-btn">Back</Button></Link>
-                                <Button className="order-btn" variant="yellow" onClick={() => handleOrder()}>Check and order</Button>
+                                <Button className="order-btn" variant="yellow" onClick={() => setShowModalClaim(old => !old)}>Check and order</Button>
                             </div>
+                            {setShowModalClaim && < ModalClaimDate show={showModalClaim} setShow={setShowModalClaim}/>}
+
                         </>
                             :
                             <Alert className="mt-3" variant="primary">There are no available products</Alert>}

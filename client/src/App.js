@@ -21,10 +21,6 @@ import ManageOrders from "./Components/ManageOrders";
 import ReportAvailability from "./Components/ReportAvailability";
 import ProductForm from "./Components/ProductForm";
 
-//temp
-import ModalClaimDate from "./Components/ModalClaimDate"
-
-
 function App() {
   // eslint-disable-next-line
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]); //main categories of the products
@@ -121,7 +117,6 @@ function App() {
             show={showTopUpWalletModal}
             close={() => setShowTopUpWalletModal(false)}
           />
-          {/* <ModalClaimDate/> */}
         </Route>
 
         <Route exact path='/products' render={() =>
