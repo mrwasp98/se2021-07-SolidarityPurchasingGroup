@@ -9,6 +9,7 @@ import Clock from "./Clock";
 import MyNotifications from "./MyNotifications";
 import { addPRequest } from '../API/API';
 import ModalClaimDate from "./ModalClaimDate"
+import ModalEnd from './ModalEnd';
 
 export default function MyNav(props) {
 
@@ -168,9 +169,17 @@ export default function MyNav(props) {
 
 function BasketOffCanvas(props) {
 
-  const [elements, setElements] = useState([]);
+  const [elements, setElements] = useState([]); //these are the selected products
   const [claimdate, setClaimdate] = useState(new Date());
   const [showModalClaim, setShowModalClaim] = useState(false) //this is used for the "claim date modal", shows up after clicking "continue"
+
+  const [messageProductRequest, setMessageProductRequest] = useState({
+    type: "",
+    show: false,
+    text: ""
+  })
+  const [showModal, setShowModal] = useState(false); //this is used for the "recap modal", shows up at the confirmation of the order
+
 
   //function called to close the offcanvas
   const handleClose = () => props.setShowBasket(false);
@@ -215,7 +224,7 @@ function BasketOffCanvas(props) {
   }
 
   function checkAndOrder() {
-    console.log("chiamata!")
+
     addPRequest(props.userId,
       props.date,
       dayjs(claimdate).format("dd-mm-yyyy HH:mm"),
@@ -249,6 +258,8 @@ function BasketOffCanvas(props) {
           claimdate={claimdate}
           setClaimdate={setClaimdate}
           handleOrder={checkAndOrder} />}
+
+
 
       <Offcanvas show={props.showBasket} placement="end" onHide={handleClose} {...props} style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
         <Offcanvas.Header closeButton className="division">

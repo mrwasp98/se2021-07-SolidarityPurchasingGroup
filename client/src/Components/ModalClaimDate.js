@@ -35,7 +35,7 @@ export default function ModalClaimDate(props) {
     return (
         <>
             <Modal show={props.show} onHide={handleClose} backdrop="static" keyboard={false} centered>
-                <Modal.Header>
+                <Modal.Header closeButton>
                     <Modal.Title>Please, select date and time to pick up your order</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
