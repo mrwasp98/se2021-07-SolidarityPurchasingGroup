@@ -194,13 +194,14 @@
     background-color: #C1260B !important;
 }
 
-.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+.table-striped>tbody>tr:nth-child(2n+1)>td,
+.table-striped>tbody>tr:nth-child(2n+1)>th {
     background-color: #FFF4C7;
- }
+}
 
- .table-striped > tbody {
+.table-striped>tbody {
     font-weight: 500;
- }
+}
 
 @keyframes App-logo-spin {
     from {
@@ -240,10 +241,10 @@
     background-color: #EDEDED !important;
 }
 
-.alertAccHeader >.accordion-button:hover,
-.alertAccHeader >.accordion-button:focus,
-.alertAccHeader >.accordion-button:active,
-.alertAccHeader >.accordion-button:visited {
+.alertAccHeader>.accordion-button:hover,
+.alertAccHeader>.accordion-button:focus,
+.alertAccHeader>.accordion-button:active,
+.alertAccHeader>.accordion-button:visited {
     background-color: #FFCCCC !important;
 }
 
@@ -262,7 +263,7 @@
     background-color: #0C7373;
     color: white;
     font-weight: 400;
-    font-size: 17u;
+    font-size: 17px;
 }
 
 .btn-yellow:hover,
@@ -367,21 +368,4 @@
 .col {
     margin-left: 15px;
     margin-right: 15px;
-}
-
-
-/* modal claim date */
-
-.ui.small.icon.button {
-    width: 2em;
-    height: 2em;
-    border: 1px solid #143642;
-}
-
-.ui.ui.small.icon.button::before {
-    content: "\f067";
-    font-family: FontAwesome;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
 }
