@@ -206,14 +206,20 @@ export default function ProductRequest(props) {
 
                 {selectedClient &&
                     <>
+                        {/* STUB */}
                         {(products.filter(p => p.quantity > 0).length !== 0) ? <>
-                            <ModalEnd showModal={messageProductRequest.show && messageProductRequest.type === "done"} setShowModal={() => {
-                                setMessageProductRequest({
-                                    type: messageProductRequest.type,
-                                    show: false,
-                                    text: messageProductRequest.text
-                                })
-                            }} handleCloseModal={handleCloseModal} handleShowModal={handleShowModal} products={{ summary: summary, total: calculateTotal(summary) }} setDirtyAvailability={props.setDirtyAvailability} />
+                            <ModalEnd showModal={messageProductRequest.show && messageProductRequest.type === "done"}
+                                setShowModal={() => {
+                                    setMessageProductRequest({
+                                        type: messageProductRequest.type,
+                                        show: false,
+                                        text: messageProductRequest.text
+                                    })
+                                }}
+                                handleCloseModal={handleCloseModal} 
+                                handleShowModal={handleShowModal}
+                                products={{ summary: summary, total: calculateTotal(summary) }} 
+                                setDirtyAvailability={props.setDirtyAvailability} />
                             <Row>
                                 <Col className="d-none d-md-block">
                                 </Col>
@@ -260,7 +266,7 @@ export default function ProductRequest(props) {
                                     setShow={setShowModalClaim}
                                     claimdate={claimdate}
                                     setClaimdate={setClaimdate}
-                                    handleOrder={handleOrder}/>}
+                                    handleOrder={handleOrder} />}
                         </>
                             :
                             <Alert className="mt-3" variant="primary">There are no available products</Alert>}

@@ -24,7 +24,8 @@ export default function ModalEnd(props) {
                     <Button onClick={() => {
                         props.setShowModal(false)
                         props.setDirtyAvailability(true)
-                    }}>Ok</Button>
+                        props.handleCloseModal()
+                        }}>Ok</Button>
                 </Modal.Footer>
             </Form>
         </Modal>

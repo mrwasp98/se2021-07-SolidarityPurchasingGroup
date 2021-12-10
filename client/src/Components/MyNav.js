@@ -168,21 +168,23 @@ export default function MyNav(props) {
 }
 
 function BasketOffCanvas(props) {
-
   const [elements, setElements] = useState([]); //these are the selected products
   const [claimdate, setClaimdate] = useState(new Date());
   const [showModalClaim, setShowModalClaim] = useState(false) //this is used for the "claim date modal", shows up after clicking "continue"
-
-  const [messageProductRequest, setMessageProductRequest] = useState({
-    type: "",
-    show: false,
-    text: ""
-  })
   const [showModal, setShowModal] = useState(false); //this is used for the "recap modal", shows up at the confirmation of the order
-
-
+  let total;
   //function called to close the offcanvas
   const handleClose = () => props.setShowBasket(false);
+
+  //function called to close the end modal
+  const handleCloseModal = () => {
+    console.log("chiamata!")
+    //clean up of everything:
+    sessionStorage.removeItem("productList")
+    setElements([])
+    props.setDirtyAvailability(true)
+  }
+
 
   //this use effect is used to update the basket!
   useEffect(() => {
@@ -216,15 +218,15 @@ function BasketOffCanvas(props) {
   function getTotal() {
     if (sessionStorage.length > 0) {
       let list = JSON.parse(sessionStorage.getItem("productList"));
-      return parseFloat(
-        list.reduce((partial_sum, product) => {
-          return partial_sum + parseFloat(product.subtotal)
-        }, 0)).toFixed(2)
+      let tot = parseFloat(list.reduce((partial_sum, product) => {
+        return partial_sum + parseFloat(product.subtotal)
+      }, 0)).toFixed(2)
+      total = tot
     }
+    return total
   }
 
   function checkAndOrder() {
-
     addPRequest(props.userId,
       props.date,
       dayjs(claimdate).format("dd-mm-yyyy HH:mm"),
@@ -239,9 +241,7 @@ function BasketOffCanvas(props) {
         }
         else if (result.status !== undefined && result.status === 200) {
           props.setMessage(["success", "Order received!"])
-          sessionStorage.removeItem("productList")
-          setElements([])
-          props.setDirtyAvailability(true)
+          setShowModal(true);
         }
       }).catch(err => { props.setMessage(["danger", err.message]) })
       .finally(() => {
@@ -257,9 +257,16 @@ function BasketOffCanvas(props) {
           setShow={setShowModalClaim}
           claimdate={claimdate}
           setClaimdate={setClaimdate}
-          handleOrder={checkAndOrder} />}
+          handleOrder={checkAndOrder}
+        />}
 
-
+      {showModal &&
+        <ModalEnd
+          showModal={showModal} setShowModal={setShowModal}
+          handleCloseModal={handleCloseModal}
+          products={{ summary: elements, total: getTotal() }}
+          setDirtyAvailability={props.setDirtyAvailability}
+        />}
 
       <Offcanvas show={props.showBasket} placement="end" onHide={handleClose} {...props} style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
         <Offcanvas.Header closeButton className="division">
@@ -307,10 +314,10 @@ function BasketOffCanvas(props) {
                 <Col><strong>Total:</strong></Col>
                 <Col><strong>{getTotal()} €</strong></Col>
               </Row>}
-            <Button className="order-btn" style={{ position: "absolute", left: "8.5rem", bottom: "1rem" }}
+            <Button className="order-btn" style={{ position: "absolute", left: "12rem", bottom: "1rem" }}
               disabled={!(elements && elements.length > 0)} variant="yellow"
               onClick={() => setShowModalClaim(true)}>
-              <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Check and order
+              <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Done!
             </Button>
           </Container>
         </Offcanvas.Body>
