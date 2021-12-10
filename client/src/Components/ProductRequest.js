@@ -76,10 +76,9 @@ export default function ProductRequest(props) {
     const [productsSelected, setProductsSelected] = useState([]);
     const [summary, setSummary] = useState([])
     const [product, setProduct] = useState("");
-    const [lastDate, setLastDate] = useState(dayjs(props.date));
+    const [lastDate, setLastDate] = useState(dayjs(props.date)); //everytime the date changes, the product must be loaded again
     const [flag, setFlag] = useState(true)
-
-    
+    const [claimdate, setClaimdate] = useState(new Date());
 
     const [messageProductRequest, setMessageProductRequest] = useState({
         type: "",
@@ -87,9 +86,9 @@ export default function ProductRequest(props) {
         text: ""
     })
     // eslint-disable-next-line
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(false); //this is used for the "recap modal", shows up at the confirmation of the order
 
-    const [showModalClaim, setShowModalClaim] = useState(false)
+    const [showModalClaim, setShowModalClaim] = useState(false) //this is used for the "claim date modal", shows up after clicking "continue"
 
 
     const handleCloseModal = () => setShowModal(false);
@@ -125,7 +124,7 @@ export default function ProductRequest(props) {
 
     const handleOrder = () => {
         if (productsSelected.length === 0) {
-            props.setMessage({
+            setMessageProductRequest({
                 type: "error",
                 show: true,
                 text: "Select the amount of at least one product"
@@ -133,11 +132,10 @@ export default function ProductRequest(props) {
         } else {
             console.log(productsSelected)
             setSummary(productsSelected);
-            console.log(selectedClient, props.date, null, null, null, null, "pending")
             //add the order in the db
             addPRequest(selectedClient,
                 props.date,
-                null,
+                dayjs(claimdate).format("dd-mm-yyyy HH:mm"),
                 null,
                 null,
                 null,
@@ -255,10 +253,14 @@ export default function ProductRequest(props) {
                             {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal(productsSelected)}€</Alert>}
                             <div className="d-flex justify-content-between mb-4">
                                 <Link to="/employeehome"><Button variant="danger" className="back-btn">Back</Button></Link>
-                                <Button className="order-btn" variant="yellow" onClick={() => setShowModalClaim(old => !old)}>Check and order</Button>
+                                <Button className="order-btn" variant="yellow" onClick={() => setShowModalClaim(old => !old)}>Continue</Button>
                             </div>
-                            {setShowModalClaim && < ModalClaimDate show={showModalClaim} setShow={setShowModalClaim}/>}
-
+                            {showModalClaim &&
+                                <ModalClaimDate show={showModalClaim}
+                                    setShow={setShowModalClaim}
+                                    claimdate={claimdate}
+                                    setClaimdate={setClaimdate}
+                                    handleOrder={handleOrder}/>}
                         </>
                             :
                             <Alert className="mt-3" variant="primary">There are no available products</Alert>}

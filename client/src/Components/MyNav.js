@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import Clock from "./Clock";
 import MyNotifications from "./MyNotifications";
 import { addPRequest } from '../API/API';
+import ModalClaimDate from "./ModalClaimDate"
 
 export default function MyNav(props) {
 
@@ -159,6 +160,8 @@ export default function MyNav(props) {
         dirtyBasket={props.dirtyBasket} setDirtyBasket={props.setDirtyBasket} setDirtyQuantity={props.setDirtyQuantity}
         userId={props.userId} date={props.date} setMessage={setMessage} setDirtyAvailability={props.setDirtyAvailability}
       />
+
+
     </>
   );
 }
@@ -166,6 +169,8 @@ export default function MyNav(props) {
 function BasketOffCanvas(props) {
 
   const [elements, setElements] = useState([]);
+  const [claimdate, setClaimdate] = useState(new Date());
+  const [showModalClaim, setShowModalClaim] = useState(false) //this is used for the "claim date modal", shows up after clicking "continue"
 
   //function called to close the offcanvas
   const handleClose = () => props.setShowBasket(false);
@@ -210,9 +215,10 @@ function BasketOffCanvas(props) {
   }
 
   function checkAndOrder() {
+    console.log("chiamata!")
     addPRequest(props.userId,
       props.date,
-      null,
+      dayjs(claimdate).format("dd-mm-yyyy HH:mm"),
       null,
       null,
       null,
@@ -236,60 +242,69 @@ function BasketOffCanvas(props) {
   }
 
   return (
-    <Offcanvas show={props.showBasket} placement="end" onHide={handleClose} {...props} style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
-      <Offcanvas.Header closeButton className="division">
-        <Offcanvas.Title className="d-flex align-items-center" style={{ fontSize: "28px" }}>
-          {cartFill} {'\u00A0'} This is your <strong>{'\u00A0'}basket</strong></Offcanvas.Title>
-      </Offcanvas.Header>
-      <Offcanvas.Body style={{ maxHeight: "75vh" }}>
-        <Offcanvas.Title style={{ fontSize: "30px", "fontWeight": "600" }}>Selected Items</Offcanvas.Title>
-        {elements && elements.length > 0 ?
-          <>
-            <Table size="sm" className="mt-3" responsive>
-              <tr className="mb-0" style={{ borderBottom: "2px solid black" }}>
-                <th>Name</th>
-                <th>Quantity</th>
-              </tr>
-            </Table>
-            <ListGroup variant="flush">
-              {elements.map((el, index) => {
-                return (
-                  <>
-                    <Row key={index} className={index === 0 ? "" : "mt-2"} style={{ borderBottom: "1px solid gray" }}>
-                      <Row className="p-0 m-0 w-100">
-                        <Col xs={5}>{el.name}</Col>
-                        <Col style={{ paddingLeft: "0px" }}>{el.quantity} {el.measure} </Col>
-                        <Col className="text-center">
-                          <Button variant="flat" className="py-0 m-0" style={{ position: "relative", bottom: "0.2rem" }} onClick={() => { handleClick(el.productid, el.quantity) }}>{cross}</Button>
-                        </Col>
-                      </Row>
-                      <Row className="m-0 p-0 " style={{ fontSize: "0.7rem" }}>
-                        <span className="text-muted pb-1 p-0" style={{ position: "relative", left: "8rem", maxWidth: "7rem" }} > Subtotal: {parseFloat(el.subtotal).toFixed(2)} €</span>
-                      </Row>
-                    </Row>
-                  </>
-                )
-              })}
-            </ListGroup>
-          </>
+    <>
+      {showModalClaim &&
+        <ModalClaimDate show={showModalClaim}
+          setShow={setShowModalClaim}
+          claimdate={claimdate}
+          setClaimdate={setClaimdate}
+          handleOrder={checkAndOrder} />}
 
-          :
-          <p className="mt-3">Your basket is currently empty.</p>
-        }
-        <Container className="fixed-bottom" style={{ position: "absolute", maxHeigh: "25vh" }}>
-          {elements && elements.length > 0 &&
-            <Row style={{ position: "relative", bottom: "3rem", left: "0.5rem" }} className="mb-3 division">
-              <Col><strong>Total:</strong></Col>
-              <Col><strong>{getTotal()} €</strong></Col>
-            </Row>}
-          <Button className="order-btn" style={{ position: "absolute", left: "8.5rem", bottom: "1rem" }}
-            disabled={!(elements && elements.length > 0)} variant="yellow"
-            onClick={() => checkAndOrder()}>
-            <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Check and order
-          </Button>
-        </Container>
-      </Offcanvas.Body>
-    </Offcanvas>
+      <Offcanvas show={props.showBasket} placement="end" onHide={handleClose} {...props} style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
+        <Offcanvas.Header closeButton className="division">
+          <Offcanvas.Title className="d-flex align-items-center" style={{ fontSize: "28px" }}>
+            {cartFill} {'\u00A0'} This is your <strong>{'\u00A0'}basket</strong></Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body style={{ maxHeight: "75vh" }}>
+          <Offcanvas.Title style={{ fontSize: "30px", "fontWeight": "600" }}>Selected Items</Offcanvas.Title>
+          {elements && elements.length > 0 ?
+            <>
+              <Table size="sm" className="mt-3" responsive>
+                <tr className="mb-0" style={{ borderBottom: "2px solid black" }}>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                </tr>
+              </Table>
+              <ListGroup variant="flush">
+                {elements.map((el, index) => {
+                  return (
+                    <>
+                      <Row key={index} className={index === 0 ? "" : "mt-2"} style={{ borderBottom: "1px solid gray" }}>
+                        <Row className="p-0 m-0 w-100">
+                          <Col xs={5}>{el.name}</Col>
+                          <Col style={{ paddingLeft: "0px" }}>{el.quantity} {el.measure} </Col>
+                          <Col className="text-center">
+                            <Button variant="flat" className="py-0 m-0" style={{ position: "relative", bottom: "0.2rem" }} onClick={() => { handleClick(el.productid, el.quantity) }}>{cross}</Button>
+                          </Col>
+                        </Row>
+                        <Row className="m-0 p-0 " style={{ fontSize: "0.7rem" }}>
+                          <span className="text-muted pb-1 p-0" style={{ position: "relative", left: "8rem", maxWidth: "7rem" }} > Subtotal: {parseFloat(el.subtotal).toFixed(2)} €</span>
+                        </Row>
+                      </Row>
+                    </>
+                  )
+                })}
+              </ListGroup>
+            </>
+
+            :
+            <p className="mt-3">Your basket is currently empty.</p>
+          }
+          <Container className="fixed-bottom" style={{ position: "absolute", maxHeigh: "25vh" }}>
+            {elements && elements.length > 0 &&
+              <Row style={{ position: "relative", bottom: "3rem", left: "0.5rem" }} className="mb-3 division">
+                <Col><strong>Total:</strong></Col>
+                <Col><strong>{getTotal()} €</strong></Col>
+              </Row>}
+            <Button className="order-btn" style={{ position: "absolute", left: "8.5rem", bottom: "1rem" }}
+              disabled={!(elements && elements.length > 0)} variant="yellow"
+              onClick={() => setShowModalClaim(true)}>
+              <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Check and order
+            </Button>
+          </Container>
+        </Offcanvas.Body>
+      </Offcanvas>
+    </>
   )
 }
 

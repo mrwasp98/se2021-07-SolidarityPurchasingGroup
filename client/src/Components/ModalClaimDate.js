@@ -7,13 +7,13 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function ModalClaimDate(props) {
-    const [date, setDate] = useState(new Date());
-
-    const handleCalendarClose = () => console.log("Calendar closed");
-    const handleCalendarOpen = () => console.log("Calendar opened");
-
-    const handleClose = () => props.setShow(false);
-    const handleShow = () => props.setShow(true);
+    const handleClose = () => {
+        if(!(props.claimdate.getDay() ==0 ||props.claimdate.getDay() ==1 ||props.claimdate.getDay() ==2|| props.claimdate.getDay() ==6 )){
+            props.handleOrder()
+            props.setShow(false)
+        }
+        
+    };
 
     const notSelectableDates = (date) => {
         const day = date.getDay();
@@ -48,11 +48,11 @@ export default function ModalClaimDate(props) {
                     </div>
                     <Row className="text-center mt-3 mb-2 ">
                         <DatePicker
-                            selected={date}
-                            onChange={(date) => setDate(date)}
+                            selected={props.claimdate}
+                            onChange={(date) => props.setClaimdate(date)}
                             filterDate={notSelectableDates}
                             filterTime={notSelectableTimes}
-                            dateFormat="dd/mm/yyyy HH:mm"
+                            dateFormat="dd-mm-yyyy HH:mm"
                             showTimeSelect
                             timeFormat="HH:mm"
                         />
@@ -60,12 +60,14 @@ export default function ModalClaimDate(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Col>
-                        <Button variant="secondary" onClick={handleClose}>
+                        {/* <Button variant="secondary" onClick={handleClose}>
                             Close
-                        </Button>
+                        </Button> */}
                     </Col>
                     <Col className="d-flex justify-content-end">
-                        <Button variant="primary">Check and Order</Button>
+                        <Button variant="primary" onClick={handleClose}
+                        disabled={props.claimdate.getDay() ==0 ||props.claimdate.getDay() ==1 ||props.claimdate.getDay() ==2|| props.claimdate.getDay() ==6}
+                        >Check and Order</Button>
                     </Col>
                 </Modal.Footer>
             </Modal>
