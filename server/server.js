@@ -85,7 +85,7 @@ app.use(passport.session());
 //PER LE FOTO
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader( 
+  res.setHeader(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   )
@@ -189,6 +189,12 @@ app.put("/api/orders/:orderid", async (req, res) => {
   }
 });
 
+// Insert new product in the db
+app.post('/api/product', async (req, res) => {
+  productDao.insertProduct()
+})
+
+
 //Get all available products
 app.get("/api/products/:date", async (req, res) => {
   productDao
@@ -205,6 +211,21 @@ app.get("/api/farmers", async (req, res) => {
     .catch(() => res.staus(500).end());
 });
 
+app.post('/api/product', async (req, res) => {
+  try{
+  let numberId = await productDao.insertProduct(req.body);
+
+  res.status(200).json({
+    status: 200
+  })
+}catch(err){
+  res.status(500).json({
+    status: 500,
+    argoment: req.body
+  })
+}
+})
+
 // Post: post the request by shop employee
 app.post("/api/requests", async (req, res) => {
   try {
@@ -219,7 +240,7 @@ app.post("/api/requests", async (req, res) => {
       let singleProduct = productsAvailability.filter(
         (p) => p.id === product.productid
       );
-      if (!singleProduct.length || singleProduct[0].quantity < product.quantity){
+      if (!singleProduct.length || singleProduct[0].quantity < product.quantity) {
         listProductsNotAvailability.push(product); // Quantity requested not available
       }
     });
@@ -234,7 +255,6 @@ app.post("/api/requests", async (req, res) => {
         deliveryaddress: req.body.deliveryaddress,
         status: req.body.status,
       };
-      console.log(order)
 
       let numberId = await orderDao.insertOrder(order);
 
@@ -452,44 +472,44 @@ const fs = require('fs')
 
 var storage = destinazione => multer.diskStorage({
   destination: function (req, file, cb) {
-      cb(null, `public/${destinazione}`)
+    cb(null, `public/${destinazione}`)
   },
   filename: function (req, file, cb) {
-      cb(null, file.originalname )
+    cb(null, file.originalname)
   }
 });
 
 var uploadFoto = multer({ storage: storage('img/') }).single('file');
 
-app.post('/api/img',function(req, res) {
+app.post('/api/img', function (req, res) {
   uploadFoto(req, res, err => {
-      if (err) {
-          return res.status(500).json(err);
-      }
-      return res.status(200).json(req.file);
+    if (err) {
+      return res.status(500).json(err);
+    }
+    return res.status(200).json(req.file);
   });
 });
 
 
 
-app.delete('/api/img/:picture',function (req, res) {
-    if (!req.params.picture) {
-        console.log("No file received");
-        message = "Error! in image delete.";
-        return res.status(500).json('error in delete');
-    
-      } else {
-        console.log('file received');
-        console.log(req.params.picture);
-        try {
-            fs.unlinkSync('public/img/' + req.params.picture);
-            console.log('successfully deleted');
-            return res.status(200).send('Successfully! Image has been Deleted');
-          } catch (err) {
-            // handle the error
-            return res.status(400).send(err);
-          }
-        
-      }
- 
+app.delete('/api/img/:picture', function (req, res) {
+  if (!req.params.picture) {
+    console.log("No file received");
+    message = "Error! in image delete.";
+    return res.status(500).json('error in delete');
+
+  } else {
+    console.log('file received');
+    console.log(req.params.picture);
+    try {
+      fs.unlinkSync('public/img/' + req.params.picture);
+      console.log('successfully deleted');
+      return res.status(200).send('Successfully! Image has been Deleted');
+    } catch (err) {
+      // handle the error
+      return res.status(400).send(err);
+    }
+
+  }
+
 });
