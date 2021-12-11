@@ -9,6 +9,7 @@ Welcome to Solidarity Purchansing Group, a project developed during the Software
 - [Testing](#testing)
 - [API](#API)
 - [React client application routes](#React-client-application-routes)
+- [Users credentials](#User-credentials)
 ---
 ## The team:
 - Mostafa Asadollahy
