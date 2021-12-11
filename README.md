@@ -404,7 +404,7 @@ We check the quality of our code relying on SonarCloud analysis.
 ``` JSON
 [{
     "orderid":1,
-    "productid:2,
+    "productid":2,
     "status": "packaged"
 }]
 ```
