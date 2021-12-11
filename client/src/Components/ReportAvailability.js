@@ -16,6 +16,16 @@ function ProductAction(props){
     )
 }
 
+function OrderAction(props){
+    const action = () => {
+        console.log(props.orderid);
+        console.log(props.productid);
+    };
+    return (<>
+            <Button onClick={action}>Confirm</Button>
+        </>
+    )
+}
 
 function ProductRow(props){  
     const {product} = props;
@@ -90,6 +100,16 @@ function ProductRow(props){
     )
   }
 
+  function ConfirmRow(props){  
+    const {order} = props;
+
+    return( <tr>
+              <td>{order.name}</td>
+              <td>{order.quantity}</td>
+              <td><OrderAction orderid={order.orderid} productid={order.productid}/></td>
+            </tr>
+    )
+  }
 
 export default function ReportAvailability(props){
     const [products, setProducts] = useState([{
@@ -102,11 +122,24 @@ export default function ReportAvailability(props){
             category: "Fruit and Vegetables",
             typeofproduction: "Local farm",
             picture: "/img/carote.jfif"}]);
+
+    const [orders, setOrders] = useState([{
+                orderid: 1,
+                productid: 4,
+                name: "Carrots",
+                quantity: "2"},
+            {
+                orderid: 2,
+                productid: 3,
+                name: "Choccolate",
+                quantity: "3"
+            }]);
     
     const [productsAvailable, setProductsAvailable] = useState([]);
     const [dirty, setDirty] = useState(false)
 
     //this use effect is used to get the products of a farmer
+    //and also for the orders
     useEffect(() => {
         //getProductsByFarmer when it will be implemented
         if(dirty){
@@ -130,6 +163,9 @@ export default function ReportAvailability(props){
                         </ListGroup.Item>
                         <ListGroup.Item action href="#link2">
                             Expected availability
+                        </ListGroup.Item>
+                        <ListGroup.Item action href="#link3">
+                            Confirm preparation
                         </ListGroup.Item>
                     </ListGroup>
                     </Col>
@@ -177,6 +213,21 @@ export default function ReportAvailability(props){
                             <div className="d-flex justify-content-center mb-4">
                                 <Button className="order-btn" variant="yellow" onClick={() => handleReport()}>Send report</Button>
                             </div>
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="#link3">
+                            <h3>Confirm the preparation of a booked orders</h3>
+                            <Table className="mt-3" striped bordered hover responsive>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {orders.map(order => <ConfirmRow order={order}/>)}
+                                </tbody>
+                            </Table>
                         </Tab.Pane>
                     </Tab.Content>
                     </Col>
