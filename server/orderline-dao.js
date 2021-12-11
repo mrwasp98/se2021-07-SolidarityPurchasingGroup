@@ -1,5 +1,6 @@
 'use strict';
 
+const dayjs = require('dayjs');
 const db = require('./database');
 
 exports.getOrderLines = (orderid) => {
@@ -56,6 +57,70 @@ exports.deleteAllOrderlines = () => {
                 reject(err);
             }
             else resolve();
+        });
+    });
+};
+
+/*
+get orders (orderlines) related to a farmer in a date range with info on the related product
+-ant
+*/
+exports.getOrderLinesByFarmerAndDateWithProductInfo = (farmerid, date) => {
+    return new Promise((resolve, reject) => {
+        /*
+        for the date, consider the creationdate of the order and see in what range should 'date' (the param) be.
+        it should be between the previous saturday 9 am to sunday 23 pm, that is the period in which clients can
+        make new orders
+
+        Remember: dayjs has sunday as start of week and saturday as end of week
+
+        */
+        let lastSaturday9, lastSunday23;
+        if(dayjs(date).format('dddd') === 'Sunday'){
+            //'date' is sunday, so I take saturday9 and sunday23 from the current week
+            lastSaturday9=dayjs(date).subtract(1,'day').hour(9).format('YYYY-MM-DD HH:mm');
+            lastSunday23=dayjs(date).hour(23).format('YYYY-MM-DD HH:mm');
+        }
+        else{
+            //the request is made during the week after saturday-sunday, so I take them from the previous one
+            lastSaturday9=dayjs(date).startOf('week').subtract(1,'day').hour(9).format('YYYY-MM-DD HH:mm');
+            lastSunday23=dayjs(date).startOf('week').hour(23).format('YYYY-MM-DD HH:mm');
+        }
+        const sql = "SELECT ol.orderid, ol.productid, p.name, ol.quantity, p.measure, ol.price FROM 'order' AS o, orderline AS ol, product AS p WHERE o.id=ol.orderid AND ol.productid=p.id AND p.farmerid=? AND o.creationdate>=? AND o.creationdate<=?";
+        db.all(sql, [farmerid,lastSaturday9,lastSunday23], (err, rows) => {
+            if (err) {
+                reject(err);
+            }
+            console.log(rows)
+            resolve(rows); //the caller should check if undefined or not
+        });
+    });
+};
+
+
+//change orderline status
+//-ant
+exports.updateOrderLineStatus = (orderid, productid, status) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE orderline SET status = ? WHERE orderid == ? AND productid == ?';
+        db.run(sql, [status, orderid, productid], (err, rows) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(true); 
+        });
+    });
+};
+
+//-ant
+exports.getOrderLine = (orderid,productid) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM orderline WHERE orderid=? AND productid=?';
+        db.get(sql, [orderid,productid], (err, row) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(row); //the caller should manage if undefined
         });
     });
 };

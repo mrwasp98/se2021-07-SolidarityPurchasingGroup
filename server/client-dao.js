@@ -62,3 +62,18 @@ exports.getClientById = (clientid) => {
         });
     });
 };
+
+//function to subtract an amout from a client's wallet after the confirmation of the order
+//antmat99
+exports.subtractFromWallet = (clientid, amount) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE client SET wallet = wallet - ? WHERE userid == ?';
+        db.run(sql, [amount, clientid], function (err) {
+            if (err) {
+                reject(err);
+            }
+            if (this.changes === 0) resolve(false);
+            else resolve(true);
+        });
+    });
+};
