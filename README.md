@@ -368,6 +368,49 @@ We check the quality of our code relying on SonarCloud analysis.
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
+### Get orderlines (with product info) by farmer and date
+* URL: `api/orders/farmers?farmerid=xxx&date=yyy`
+* HTTP method: GET
+* Description: get the orderlines of the week related to a specific farmer (since the user can buy items from different farmers in a single order, the farmer who wants to know
+    his ordered products should receive a list of orderlines from different orders)
+* Request body: None
+* Response body: an array of orderlines and product info
+``` JSON
+[
+{
+    "orderid":1,
+    "productid":1,
+    "name":"Apple",
+    "quantity":3,
+    "measure":"kg",
+    "price":4
+},
+{
+    "orderid":2,
+    "productid":3,
+    "name":"Banana",
+    "quantity":1.5,
+    "measure":"kg",
+    "price":10
+}
+]
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
+### Update orderline status
+* URL: `api/orderlines/`
+* HTTP method: PUT
+* Request body:
+``` JSON
+[{
+    "orderid":1,
+    "productid:2,
+    "status": "packaged"
+}]
+```
+* Description: update an orderline status given the related orderid and productid. Then it checks if this orderline update should affect the orderline's order status. If so, it updates it. 
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
 ## USER API
 
 - POST `/api/login`
