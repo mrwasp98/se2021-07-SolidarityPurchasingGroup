@@ -175,12 +175,12 @@ describe('SPG handout page', () => {
 
     it('handout', () => {
         let value;
-        cy.get('button:contains("Total price: 44.31")').click()
-        cy.get('button:contains("Confirm Handout")').then(($buts) =>{
-            value = $buts.length
+        cy.get('.accordion-button').find('span:contains("pending")').then((el) =>{
+            value = Cypress.$(el).length
         })
+        cy.get('span:contains("pending")').first().click()
         cy.get('button:contains("Confirm Handout")').first().click()
-        cy.get('button:contains("Confirm Handout")').should('have.length', value-1)
+        cy.get('button:contains("Confirm Handout")').should('have.length', value)
     })
 
     it('back to home', () => {
