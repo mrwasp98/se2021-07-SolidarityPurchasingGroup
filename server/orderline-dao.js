@@ -91,7 +91,6 @@ exports.getOrderLinesByFarmerAndDateWithProductInfo = (farmerid, date) => {
             if (err) {
                 reject(err);
             }
-            console.log(rows)
             resolve(rows); //the caller should check if undefined or not
         });
     });
