@@ -9,7 +9,7 @@ Welcome to Solidarity Purchansing Group, a project developed during the Software
 - [Testing](#testing)
 - [API](#API)
 - [React client application routes](#React-client-application-routes)
-- [Users credentials](#User-credentials)
+- [Users credentials](#Users-credentials)
 ---
 ## The team:
 - Mostafa Asadollahy
@@ -432,7 +432,7 @@ We check the quality of our code relying on SonarCloud analysis.
 - OrderLine (orderid, productid, quantity, price, status)
 
 ---
-## Users Credentials 
+## Users credentials 
 
 | Type | Username | Password |
 |---|---|---|
