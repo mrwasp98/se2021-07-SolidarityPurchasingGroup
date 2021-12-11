@@ -388,7 +388,7 @@ async function insertProduct(product) {
       }
     })
   })
-};
+}
 
 /*----- USER APIs ---*/
 async function login(credentials) {

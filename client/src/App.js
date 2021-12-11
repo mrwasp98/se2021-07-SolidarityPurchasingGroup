@@ -10,7 +10,7 @@ import Handout from "./Components/Handout";
 import Register from "./Components/Register";
 import Type from "./Components/Type";
 import UpdatePassword from "./Components/UpdatePassword";
-import RegisterUserR from "./Components/RegisterUser";
+import RegisterUser from "./Components/RegisterUser";
 import { login, getUserInfo, logout, getClientById } from "./API/API.js";
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
@@ -205,7 +205,7 @@ function App() {
 
         <Route exact path="/user" render={() => <Type />} />
 
-        <Route exact path="/user/:type" render={({ match }) => <RegisterUserR st={(match.params.type === "client") ? 1 : (match.params.type === "farmer") ? 2 : 3} type={match.params.type} />} />
+        <Route exact path="/user/:type" render={({ match }) => <RegisterUser st={(match.params.type === "client") ? 1 : (match.params.type === "farmer") ? 2 : 3} type={match.params.type} />} />
 
         <Route exact path="/user/client/password" render={() => <UpdatePassword />} />
 

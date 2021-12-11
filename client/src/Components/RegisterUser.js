@@ -23,7 +23,7 @@ function isAlphaNumeric(str) {
   return true;
 }
 
-class RegisterUser extends Component {
+class RegisterUserR extends Component {
 
   state = {
     step: this.props.st,
@@ -69,7 +69,7 @@ class RegisterUser extends Component {
         }
       });
 
-      if(this.state.address === "") {
+      if(this.state.address === "" && this.state.type!=="shopemployee") {
         valid = false;
         this.setState({ messageError: "Address missing" });
         this.setState({ error: true });
@@ -81,13 +81,13 @@ class RegisterUser extends Component {
         this.setState({ error: true });
       }
 
-      if(this.state.surname === "") {
+      if(this.state.surname === "" && this.state.type!=="shopemployee") {
         valid = false;
         this.setState({ messageError: "Surname missing" });
         this.setState({ error: true });
       }
 
-      if(this.state.name === "") {
+      if(this.state.name === "" && this.state.type!=="shopemployee") {
         valid = false;
         this.setState({ messageError: "Name missing" });
         this.setState({ error: true });
@@ -354,8 +354,6 @@ class Confirmation extends Component {
   };
 
   render() {
-    // eslint-disable-next-line 
-    const { inputValues: { name, surname, username, password, cpassword, address, place, wallet, type } } = this.props;
 
     return (
       <div className="form_wrapper">
@@ -378,25 +376,6 @@ class Confirmation extends Component {
           ) : (
             ""
           )}
-          {/*(this.props.inputValues.type === "client" || this.props.inputValues.type === "farmer") ?
-            <Row className=" justify-content-center">
-              <Table className="mb-3 color">
-                <Col md={8}>
-                  <p className='text-warning myText'>Name: {name}</p>
-                  <p className='text-warning myText'>Surname: {surname}</p>
-                  {(this.props.inputValues.type === "client") ?
-                    <p className='text-warning myText'>Wallet: {wallet}</p>
-                    :
-                    <p className='text-warning myText'>Place: {place}</p>
-                  }
-                  <p className='text-warning myText'> Adress: {address}</p>
-                </Col>
-              </Table>
-            </Row>
-            :
-            <>
-            </>
-                */}
           <Form className="mt-5 " onSubmit={(event) => this.props.submit(event)}>
             <Table className="mb-3 color">
               <Form.Group as={Row} className="mb-3" controlId="formBasicUsername">
@@ -476,6 +455,6 @@ class Confirmation extends Component {
     )
   }
 }
-const RegisterUserR  = withRouter(RegisterUser);
+const RegisterUser  = withRouter(RegisterUserR);
 
-export default RegisterUserR;
+export default RegisterUser;
