@@ -518,3 +518,31 @@ app.delete('/api/img/:picture', function (req, res) {
   }
 
 });
+
+
+//GET: get orders (orderlines) given a farmerid and a date -ant
+app.get("/api/orders/farmers", async (req, res) => {
+  /*
+    Since the user can buy items from different farmers in a single order, the farmer who wants to know
+    his ordered products should receive a list of orderlines from different orders (in a date range)
+  */
+  try {
+    const orderlines = await orderlineDao.getOrderLinesByFarmerAndDateWithProductInfo(req.query.farmerid, req.query.date);
+    res.status(200).json(orderlines); //manage empty list case
+  } catch (err) {
+    res.status(500).end();
+  }
+});
+
+
+//PUT: change an orderline status (given orderid and productid and status in body) -ant
+app.put("/api/orderlines", async (req, res) => {
+  try {
+    await orderlineDao.updateOrderLineStatus(req.body.orderid, req.body.productid, req.body.status);
+    //check if this change in orderline should trigger a change in the order status
+    await orderDao.checkForStatusUpdate(req.body.orderid, req.body.status);
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
+  }
+});
