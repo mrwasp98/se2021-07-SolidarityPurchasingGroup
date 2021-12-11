@@ -433,11 +433,11 @@ OrderLine (orderid, productid, quantity, price, status)
 ---
 ## Users Credentials 
 
-| Username | Type | Password |
+| Type | Username | Password |
 |---|---|---|
-| client1 | Client | qwerty123 |
-| farmer1 | Farmer | qwerty123 |
-|  shopemployee |  Shop Employee |  qwerty123 |
+| Client | client1 | qwerty123 |
+| Farmer | farmer1 | qwerty123 |
+|  Shop Employee |  shopemployee |  qwerty123 |
 
 ----
 
