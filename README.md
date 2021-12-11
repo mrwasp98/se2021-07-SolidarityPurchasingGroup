@@ -422,13 +422,13 @@ We check the quality of our code relying on SonarCloud analysis.
 - Route `/user/client/password`: renders the page where a client previewsly inserted into the system by a shop epmloyee can change the password for hi account
 ---
 ## Database tables
-User (id, username, password, type) 
-Farmer (userid, name, surname, place, address)
-Client(userid, name, surname, wallet, address)
-Product (id, name, description, farmerid, price, measure, category, typeofproduction, picture) 
-Availability (productid, dateavailability, quantity, status, price)
-Order (id, userid, creationdate, claimdate, confirmationdate, deliveryaddress, status)
-OrderLine (orderid, productid, quantity, price, status)
+- User (id, username, password, type) 
+- Farmer (userid, name, surname, place, address)
+- Client(userid, name, surname, wallet, address)
+- Product (id, name, description, farmerid, price, measure, category, typeofproduction, picture) 
+- Availability (productid, dateavailability, quantity, status, price)
+- Order (id, userid, creationdate, claimdate, confirmationdate, deliveryaddress, status)
+- OrderLine (orderid, productid, quantity, price, status)
 
 ---
 ## Users Credentials 
