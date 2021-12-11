@@ -111,6 +111,7 @@ describe('SPG wallet page', () => {
 
 //testing handout page
 describe('SPG handout page', () => {
+    let value;
     it('open route', () => {
         cy.get('#tohand').click()
         cy.url().should('include', '/handout')
@@ -174,22 +175,176 @@ describe('SPG handout page', () => {
     })
 
     it('handout', () => {
-        let value;
-        cy.get('.accordion-button').find('span:contains("pending")').then((el) =>{
-            value = Cypress.$(el).length
+        cy.get('.accordion-button').find('span:contains("pending")').then((elements) => {
+            value = elements.length;
+        }).then(() => {
+            cy.get('.accordion-button').find('span:contains("pending")').should('have.length', value)
+            cy.get('span:contains("pending")').first().click()
+            cy.get('button:contains("Confirm Handout")').first().click()
+            cy.get('.accordion-button').find('span:contains("pending")').should('have.length',value - 1)
         })
-        cy.get('span:contains("pending")').first().click()
-        cy.get('button:contains("Confirm Handout")').first().click()
-        cy.get('button:contains("Confirm Handout")').should('have.length', value)
     })
 
     it('back to home', () => {
         cy.get('.test-back-btn').click()
         cy.url().should('include', '/employeehome')
     })
+})
 
-    after(() => {
-        cy.get('.logoutButton').click();
+
+//testing products page
+describe('SPG product show page', () => {
+    it('open route', () => {
+        cy.get('#toprod').click()
+        cy.url().should('include', '/products')
+    })
+    it('select 25 Nov', () => {
+        cy.get('.callandarButton').click()
+        let notFound = true;
+        let loop = 5;
+        while (notFound && loop > 0) {
+            cy.get('.react-calendar__navigation__label__labelText').then(($btn) => {
+                // assert on the text
+                if ($btn.text().includes('novembre 2021')) {
+                    notFound = false;
+                } else {
+                    cy.get('.react-calendar__navigation__prev-button').click();
+                }
+            })
+            loop--;
+        }
+        cy.contains('25').click()
+        cy.get('.callandarButton').should("contain", " 25 Nov")
+        cy.get('.btn-hour').click()
+        cy.get('.input-hour').clear().type('12')
+        cy.get('.input-min').clear().type('00')
+        cy.get('.save-btn').click()
+    })
+
+    it('filter navbar', () => {
+        cy.get('.another-product').its('length').should('be.gte', 1)
+        cy.get('.another-product').its('length').should('eq', 4)
+        cy.contains('Fruit and Vegetables').click()
+        cy.get('.another-product').its('length').should('eq', 1)
+        cy.contains('All').click()
+        cy.get('.another-product').its('length').should('eq', 4)
+        //cy.get('.another-product').should('not.contain', 'Dairy')
+    })
+    it('selected category', () => {
+        cy.contains('Fruit and Vegetables').click()
+        cy.get('.selected-items').should('contain', 'Fruit and Vegetables')
+    })
+    it('filter farmers', () => {
+        cy.get('.farmers-filter').click()
+        cy.get('.form-check-input').first().click()
+        cy.get('.another-product').its('length').should('eq', 1)
+        cy.get('.form-check-input').eq(1).click()
+        cy.get('.another-product').should('not.exist')
+        cy.get('.btn-close').click()
+    })
+    it('back to home', () => {
+        cy.get('.test-back-btn').click()
+        cy.url().should('include', '/employeehome')
+    })
+})
+
+//testing register page
+describe('SPG register page', () => {
+    before(() => {
+        cy.get('#toregcl').click()
+        cy.url().should('include', '/registerClient')
+    })
+
+
+    it('type a invalid name', () => {
+        cy.get('.submit-btn').click()
+        cy.contains('The user has been created').should('not.exist')
+    })
+
+    it('type a invalid surname', () => {
+        cy.get('.name-input').type('Antonio')
+        cy.get('.submit-btn').click()
+        cy.contains('The user has been created').should('not.exist')
+    })
+
+    it('type a invalid email', () => {
+        cy.get('.surname-input').type('Ferragnez')
+        cy.get('.submit-btn').click()
+        cy.contains('The user has been created').should('not.exist')
+    })
+
+    it('type a invalid wallet', () => {
+        cy.get('.email-input').type('antonioVes' + Math.random() + '@poli.it')
+        cy.get('.submit-btn').click()
+        cy.contains('The user has been created').should('not.exist')
+    })
+
+    it('type a invalid address', () => {
+        cy.get('.wallet-input').type('10')
+        cy.get('.submit-btn').click()
+        cy.contains('The user has been created').should('not.exist')
+    })
+
+    it('type a valid address', () => {
+        cy.get('.address-input').type('Via Napoleone 29')
+        cy.contains('.alert-success').should('not.exist')
+    })
+
+    it('register succefully', () => {
+        cy.get('.submit-btn').click()
+        cy.contains('The user has been created').should('exist')
+    })
+
+    it('back to home', () => {
+        cy.get('.home-here').click()
         cy.url().should('include', '/')
     })
+})
+
+//testing registration client
+describe('SPG registration client', () => {
+    it('open route', () => {
+        cy.visit('http://localhost:3000/user')
+    })
+
+    it('go to register page', () => {
+        cy.get('#toCreateClient').click()
+        cy.url().should('include', '/user/client')
+    })
+
+    it('go to create client page', () => {
+        cy.get('#toCreateNewClient').click()
+        cy.url().should('include', '/user/client')
+        cy.get('#formBasicName').clear().type('Ajeje')
+        cy.get('#formBasicSurname').clear().type('Brazorf')
+        cy.get('#formBasicAddress').clear().type('Corso Francia 34')
+        cy.get('.next-btn').click()
+    })
+
+
+    it('type a username that just exists', () => {
+        cy.get('#formBasicUsername').clear().type('Brazorf1@3u1g.it')
+        cy.get('#formBasicPassword').clear().type('Ajeje')
+        cy.get('#formBasicCPassword').clear().type('Ajeje')
+        cy.get('.confirm-btn').click()
+        cy.contains('Username already used').should('exist')
+    })
+
+    it('type a bad password', () => {
+        cy.get('#formBasicUsername').clear().type('CuginoDiBrazorf@3u1g.it')
+        cy.get('#formBasicPassword').clear().type('Ajeje')
+        cy.get('#formBasicCPassword').clear().type('Ajeje')
+        cy.get('.confirm-btn').click()
+        cy.contains('The password must be at least 6 characters long and must contain both alphabetic and numerical values.').should('exist')
+    })
+
+
+    it('type a valid username', () => {
+        cy.get('#formBasicUsername').clear().type('CuginoDiBrazorf@3u1g.it')
+        cy.get('#formBasicPassword').clear().type('Ajeje123')
+        cy.get('#formBasicCPassword').clear().type('Ajeje123')
+        cy.get('.confirm-btn').click()
+        cy.contains('The user has been created').should('exist')
+    })
+
 })
