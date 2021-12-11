@@ -417,16 +417,27 @@ We check the quality of our code relying on SonarCloud analysis.
 - Route `/handout`: renders the page used by the shopemployee to confirm the handout of an order
 - Route `/registerClient`: renders the page used by the shopemployee to add a new client in the system
 - Route `/login`: renders the page that lets farmer, shopemployees and clients to login
-- Route `/user`: todo
-- Route `/user/:type`: todo
-- Route `/user/client/password`: todo
+- Route `/user`: renders the page giving the unregisterd user to choose the type of user he want to register as
+- Route `/user/:type`: renders the registration form to register as client, farmer or shopemploye, depending on the type choosen in the previews page.
+- Route `/user/client/password`: renders the page where a client previewsly inserted into the system by a shop epmloyee can change the password for hi account
 ---
 ## Database tables
-TODO
+User (id, username, password, type) 
+Farmer (userid, name, surname, place, address)
+Client(userid, name, surname, wallet, address)
+Product (id, name, description, farmerid, price, measure, category, typeofproduction, picture) 
+Availability (productid, dateavailability, quantity, status, price)
+Order (id, userid, creationdate, claimdate, confirmationdate, deliveryaddress, status)
+OrderLine (orderid, productid, quantity, price, status)
 
 ---
 ## Users Credentials 
-TODO
+
+| Username | Type | Password |
+|---|---|---|
+| client1 | Client | qwerty123 |
+| farmer1 | Farmer | qwerty123 |
+|  shopemployee |  Shop Employee |  qwerty123 |
 
 ----
 

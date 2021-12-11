@@ -495,7 +495,7 @@ app.post('/api/img', function (req, res) {
 app.delete('/api/img/:picture', function (req, res) {
   if (!req.params.picture) {
     console.log("No file received");
-    message = "Error! in image delete.";
+    let message = "Error! in image delete.";
     return res.status(500).json('error in delete');
 
   } else {

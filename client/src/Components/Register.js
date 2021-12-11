@@ -27,7 +27,7 @@ export default function Register(props) {
           setAddress("");
           props.setDirtyClients(true);
         })
-        .catch((errorObj) => { console.log(errorObj); });
+        //.catch((errorObj) => { console.log(errorObj); });
     }
   };
 
