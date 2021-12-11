@@ -49,8 +49,10 @@ class RegisterUserR extends Component {
       form.reportValidity();
     } else {
 
+      //If it's false the API won't be called!
       let valid = true;
   
+      //The two passwords inserted must be equal!
       if (this.state.password !== this.state.cpassword) {
         valid = false;
         this.setState({ error: true })
@@ -61,6 +63,8 @@ class RegisterUserR extends Component {
         this.setState({ messageError: "The password must be at least 6 characters long and must contain both alphabetic and numerical values." })
       }
 
+      //Verify if the choosen username is already present in the database!
+      //Username must be unique in the database!
       this.state.usernames.map((us) => {
         if (us.username === this.state.username) {
           valid = false;
@@ -121,19 +125,21 @@ class RegisterUserR extends Component {
       }
   };
 
+  //Get all the usernames present in the database, at mount time!
   componentDidMount() {
     getUsernames().then((users) => {
       this.setState({ usernames: users })
     })
   }
 
+  //Go to the next step of the registration form
   nextStep = () => {
     const { step } = this.state
     this.setState({
       step: step + 1
     })
   }
-
+ //Go to the previous step of the registration form
   prevStep = () => {
     const { step } = this.state
     this.setState({
@@ -141,6 +147,7 @@ class RegisterUserR extends Component {
     })
   }
 
+  //Set a field of the state with the given value
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
@@ -223,11 +230,13 @@ class UserDetails extends Component {
 
 class AddressDetails extends Component {
 
+  //Go to the previous step of the registration form
   back = (e) => {
     e.preventDefault();
     this.props.prevStep();
   }
 
+  //Go to the next step of the registration form
   saveAndContinue = (e) => {
     e.preventDefault();
     this.props.nextStep();
@@ -343,11 +352,13 @@ class AddressDetails extends Component {
 }
 class Confirmation extends Component {
 
+  //Go to the previous step of the registration form
   back = (e) => {
     e.preventDefault();
     this.props.prevStep();
   }
 
+  //Go to the next step of the registration form
   saveAndContinue = (e) => {
     e.preventDefault();
     this.props.nextStep();
@@ -455,6 +466,7 @@ class Confirmation extends Component {
     )
   }
 }
+//Wrapper in the withRouther so the component inherit history
 const RegisterUser  = withRouter(RegisterUserR);
 
 export default RegisterUser;

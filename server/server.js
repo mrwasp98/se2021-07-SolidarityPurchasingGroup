@@ -35,10 +35,10 @@ passport.use(
 );
 
 //Serialize and deserialize user (user object <-> session)
-
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
+
 //starting from the data in the session, we extract the current (logged-id) user
 passport.deserializeUser((id, done) => {
   userDao
@@ -78,11 +78,11 @@ app.use(
   })
 );
 
-//Then init passport
+/*** Then init passport ***/
 app.use(passport.initialize());
 app.use(passport.session());
 
-//PER LE FOTO
+//FOR THE PHOTOS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
@@ -93,17 +93,17 @@ app.use((req, res, next) => {
   next()
 })
 
-/*TEST GET route */
+//TEST GET route
 app.get("/api/test", (req, res) => {
   res.json({ textsent: "backend ok!" });
 });
 
-// activate the server
+//ACTIVE: activate the server
 module.exports = app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
-//get all clients
+//GET: get all clients
 app.get("/api/clients", async (req, res) => {
   clientDao
     .getClients()
@@ -111,7 +111,7 @@ app.get("/api/clients", async (req, res) => {
     .catch(() => res.status(500).end());
 });
 
-//get client by id
+//GET: get client by id
 app.get("/api/client/:clientid", async (req, res) => {
   clientDao
     .getClientById(req.params.clientid)
@@ -122,7 +122,7 @@ app.get("/api/client/:clientid", async (req, res) => {
     .catch(() => res.status(500).end());
 });
 
-//insert new client
+//POST: insert new client
 app.post(
   "/api/client",
   [
@@ -167,7 +167,7 @@ app.post(
   }
 );
 
-//get orders given a clientid
+//GET: get orders given a clientid
 app.get("/api/orders", async (req, res) => {
   orderDao
     .getOrders(req.query.clientid)
@@ -175,7 +175,7 @@ app.get("/api/orders", async (req, res) => {
     .catch(() => res.status(500).end());
 });
 
-//update order status
+//PUT: update order status
 app.put("/api/orders/:orderid", async (req, res) => {
   try {
     const result = await orderDao.updateOrderStatus(
@@ -189,13 +189,13 @@ app.put("/api/orders/:orderid", async (req, res) => {
   }
 });
 
-// Insert new product in the db
+//POST: insert new product in the db
 app.post('/api/product', async (req, res) => {
   productDao.insertProduct()
 })
 
 
-//Get all available products
+//GET: get all available products
 app.get("/api/products/:date", async (req, res) => {
   productDao
     .getProductsAvailable(req.params.date)
@@ -203,7 +203,7 @@ app.get("/api/products/:date", async (req, res) => {
     .catch(() => res.status(500).end());
 });
 
-//Get all farmers name (actually it gives place and userid)
+//GET: get all farmers name (actually it gives place and userid)
 app.get("/api/farmers", async (req, res) => {
   farmerDao
     .getFarmers()
@@ -211,6 +211,7 @@ app.get("/api/farmers", async (req, res) => {
     .catch(() => res.staus(500).end());
 });
 
+//POST: post products in the table
 app.post('/api/product', async (req, res) => {
   try{
   let numberId = await productDao.insertProduct(req.body);
@@ -226,7 +227,7 @@ app.post('/api/product', async (req, res) => {
 }
 })
 
-// Post: post the request by shop employee
+//POST: post the request by shop employee
 app.post("/api/requests", async (req, res) => {
   try {
     // Get the products availability in the magazine
@@ -301,7 +302,7 @@ app.post("/api/requests", async (req, res) => {
 
 /*** User APIs ***/
 
-//Login
+//LOGIN
 app.post("/login", passport.authenticate("local"), (req, res) => {
   //If this function gets called, authentication was successful.
   // `req.user` contains the authenticated user.
@@ -315,13 +316,16 @@ app.delete("/logout", (req, res) => {
   res.end();
 });
 
+//GET: get informations on the current session (logged users)
 app.get("/api/sessions/current", (req, res) => {
   if (req.isAuthenticated()) {
     res.status(200).json(req.user);
   } else res.status(401).json({ error: "Unauthenticated user!" });
 });
 
-//get orders with products given a clientid
+/***  --------  ***/
+
+//GET: get orders with products given a clientid
 app.get("/api/completeOrders", async (req, res) => {
   try {
     const orders = await orderDao.getOrders(req.query.clientid);
@@ -335,6 +339,7 @@ app.get("/api/completeOrders", async (req, res) => {
   }
 });
 
+//PUT: top up the client's wallet
 app.put("/api/clients/:clientid", async (req, res) => {
   try {
     const result = await clientDao.topUp(req.params.clientid, req.query.ammount);
@@ -345,7 +350,7 @@ app.put("/api/clients/:clientid", async (req, res) => {
   }
 });
 
-//Post a new shop employee
+//POST: post a new shop employee
 app.post("/api/shopemployee",
   [
     check(["username"]).isEmail(),
@@ -376,7 +381,7 @@ app.post("/api/shopemployee",
   }
 );
 
-//get orders with products given a clientid
+//GET: get orders with products given a clientid
 app.get("/api/usernames", async (req, res) => {
   try {
     const usernames = await userDao.getUsers();
@@ -386,7 +391,7 @@ app.get("/api/usernames", async (req, res) => {
   }
 });
 
-//insert new farmer
+//POST: insert a new farmer
 app.post(
   "/api/farmer",
   [
@@ -431,7 +436,7 @@ app.post(
   }
 );
 
-//update password
+//POST: update password (used a post becouse of the need of a body)
 app.post(
   "/api/password",
   [
@@ -457,7 +462,7 @@ app.post(
   }
 );
 
-//get orders by their status -ant
+//GET: get orders by their status -ant
 app.get("/api/orders/status/:status", async (req, res) => {
   try {
     const orders = await orderDao.getOrdersByStatus(req.params.status);
@@ -467,7 +472,7 @@ app.get("/api/orders/status/:status", async (req, res) => {
   }
 });
 
-
+/*** For the photo upload ***/
 const fs = require('fs')
 
 var storage = destinazione => multer.diskStorage({
@@ -491,7 +496,7 @@ app.post('/api/img', function (req, res) {
 });
 
 
-
+//DELETE: delete an image from the site
 app.delete('/api/img/:picture', function (req, res) {
   if (!req.params.picture) {
     console.log("No file received");
