@@ -75,7 +75,7 @@ describe('Test orderline-dao functions unused in any api', () => {
         app.close(); //without that, jest won't exit
     })
 
-    test('Testing getOrderLines function', async () => {
+    test('Testing getOrderLines function (positive result)', async () => {
         const fakeOrderLine1 = {
             orderid:orderid,
             productid:0,
@@ -93,6 +93,27 @@ describe('Test orderline-dao functions unused in any api', () => {
         await orderlineDao.insertOrderLine(fakeOrderLine1);
         await orderlineDao.insertOrderLine(fakeOrderLine2);
         const response = await orderlineDao.getOrderLines(orderid);
+        expect(response).toEqual([fakeOrderLine1,fakeOrderLine2]);
+    });
+
+    test('Testing getOrderLines function (orderline not found)', async () => {
+        const fakeOrderLine1 = {
+            orderid:orderid,
+            productid:0,
+            quantity:2,
+            price:3,
+            status:null
+        };
+        const fakeOrderLine2 = {
+            orderid:orderid,
+            productid:1,
+            quantity:2,
+            price:3,
+            status:null
+        };
+        await orderlineDao.insertOrderLine(fakeOrderLine1);
+        await orderlineDao.insertOrderLine(fakeOrderLine2);
+        const response = await orderlineDao.getOrderLines(orderid+1);
         expect(response).toEqual([fakeOrderLine1,fakeOrderLine2]);
     });
 
