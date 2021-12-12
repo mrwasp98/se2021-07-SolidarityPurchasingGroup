@@ -526,7 +526,7 @@ app.get("/api/orders/farmers", async (req, res) => {
     his ordered products should receive a list of orderlines from different orders (in a date range)
   */
   try {
-    const orderlines = await orderlineDao.getOrderLinesByFarmerAndDateWithProductInfo(req.query.farmerid, req.query.date);
+    const orderlines = await orderlineDao.getOrderLinesByFarmerDateStatusWithProductInfo(req.query.farmerid, req.query.date, req.query.status);
     res.status(200).json(orderlines); //manage empty list case
   } catch (err) {
     res.status(500).end();

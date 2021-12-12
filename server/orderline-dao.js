@@ -69,7 +69,7 @@ exports.deleteAllOrderlines = () => {
 get orders (orderlines) related to a farmer in a date range with info on the related product
 -ant
 */
-exports.getOrderLinesByFarmerAndDateWithProductInfo = (farmerid, date) => {
+exports.getOrderLinesByFarmerDateStatusWithProductInfo = (farmerid,date,status) => {
     return new Promise((resolve, reject) => {
         /*
         for the date, consider the creationdate of the order and see in what range should 'date' (the param) be.
@@ -90,8 +90,8 @@ exports.getOrderLinesByFarmerAndDateWithProductInfo = (farmerid, date) => {
             lastSaturday9=dayjs(date).startOf('week').subtract(1,'day').hour(9).format('YYYY-MM-DD HH:mm');
             lastSunday23=dayjs(date).startOf('week').hour(23).format('YYYY-MM-DD HH:mm');
         }
-        const sql = "SELECT ol.orderid, ol.productid, p.name, ol.quantity, p.measure, ol.price FROM 'order' AS o, orderline AS ol, product AS p WHERE o.id=ol.orderid AND ol.productid=p.id AND p.farmerid=? AND o.creationdate>=? AND o.creationdate<=?";
-        db.all(sql, [farmerid,lastSaturday9,lastSunday23], (err, rows) => {
+        const sql = "SELECT ol.orderid, ol.productid, p.name, ol.quantity, p.measure, ol.price FROM 'order' AS o, orderline AS ol, product AS p WHERE o.id=ol.orderid AND ol.productid=p.id AND p.farmerid=? AND o.creationdate>=? AND o.creationdate<=? AND ol.status=?";
+        db.all(sql, [farmerid,lastSaturday9,lastSunday23,status], (err, rows) => {
             if (err) {
                 reject(err);
             }
