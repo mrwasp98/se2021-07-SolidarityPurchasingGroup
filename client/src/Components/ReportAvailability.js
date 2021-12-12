@@ -145,7 +145,7 @@ export default function ReportAvailability(props){
 
     useEffect(() => {
         //getProductsByFarmer when it will be implemented
-        getFarmersOrders(props.userId, props.date).then((orders) => {
+        getFarmersOrders(props.userId, props.date, 'null').then((orders) => {
             setOrders(orders);
         });
         if(dirtyO){

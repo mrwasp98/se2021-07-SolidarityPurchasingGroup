@@ -391,9 +391,9 @@ async function insertProduct(product) {
 }
 
 //this API fetches all the orders refered to a farmer
-const getFarmersOrders = async (farmerid, date) => {
+const getFarmersOrders = async (farmerid, date, status) => {
   return new Promise((resolve, reject) => {
-    fetch('/api/orders/farmers' + '?farmerid=' + farmerid + "&date=" + date, {
+    fetch('/api/orders/farmers' + '?farmerid=' + farmerid + "&date=" + date + "&status=" + status, {
       method: "GET",
       headers: {
         "content-type": "application/json",
