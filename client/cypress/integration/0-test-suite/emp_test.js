@@ -69,6 +69,19 @@ describe('SPG shop employee routes', () => {
     })
 })
 
+//testing product request page
+describe('SPG manage pending cancelation', () => {
+    it('open route', () => {
+        cy.findByText('Manage orders pending cancelation').click()
+        cy.url().should('include', '/manageOrders')
+        cy.contains('The following orders have failed')
+    })
+
+    it('back to home', () => {
+        cy.get('.home-here').click()
+        cy.url().should('include', '/')
+    })
+})
 
 //testing product request page
 describe('SPG product request page', () => {
