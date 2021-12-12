@@ -193,6 +193,32 @@ describe('SPG product request page', () => {
         cy.findByText('Ok').click()
     })
 
+    it('make an order, with delivery', () => {
+        cy.get('.add-btn-0').click()
+        cy.get('.order-btn').click()
+        cy.get('#checkdelivery').click()
+        cy.contains('Please, select date and time to pick up your order').should('exist')
+        cy.get('.react-datepicker__input-container>input').click()
+        let notFound = true;
+        let loop = 5;
+        while (notFound && loop > 0) {
+            cy.get('.react-datepicker__current-month').then(($btn) => {
+                // assert on the text
+                if ($btn.text().includes('November 2021')) {
+                    notFound = false;
+                } else {
+                    cy.get('.react-datepicker__navigation--previous').click();
+                }
+            })
+            loop--;
+        }
+        cy.get('.react-datepicker__day--001').eq(1).click()
+        cy.findByText('Check and Order').click()
+        cy.contains('Order received!').should('exist')
+        cy.findByText('Ok').click()
+    })
+
+
     it('back to home', () => {
         cy.get('.home-here').click()
         cy.url().should('include', '/')
