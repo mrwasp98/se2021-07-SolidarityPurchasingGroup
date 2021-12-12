@@ -104,7 +104,7 @@ We check the quality of our code relying on SonarCloud analysis.
     "wallet": 50.30, 
     "address": "Corso Duca degli Abruzzi, 21, Torino",
     "password": "123",
-    "type": "farmer"
+    "type": "client"
 }
 ```
 * Response: `200 OK`, `503 Internal Server Error` (generic error),  `422 Unprocessable Entity` (wrong parameters)
@@ -445,6 +445,26 @@ We check the quality of our code relying on SonarCloud analysis.
     }]
   ```
   * Response: `200 OK`, `401 Unothorized` (wrong username or password)
+
+### Insert a new farmer
+* URL: `api/farmer`
+* HTTP method: POST
+* Description: creates a new user and farmer
+* Request body:
+``` JSON
+{
+    "username": "neilw",
+    "password": "qwerty",
+    "name": "Neil",
+    "surname": "Watts",
+    "place": "Cooperativa di Dr. Jekyll",
+    "address": "Via Trotta, 3, Torino, TO",
+    "type": "farmer"
+}
+```
+* Response body: the farmer's id
+* Response: `200 OK`, `503 Internal Server Error` (generic error),  `422 Unprocessable Entity`
+
 
 ---
 ## React client application routes
