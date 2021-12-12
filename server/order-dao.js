@@ -2,6 +2,7 @@
 
 const db = require('./database');
 
+//Get all rows of the order table
 exports.getOrders = (clientId) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM 'order' WHERE userid=?";
@@ -19,19 +20,27 @@ exports.getOrders = (clientId) => {
     });
 };
 
+/*
+I've split this method because we need it below and we can't use it if it's exported
+*/
+//Update the order status
 exports.updateOrderStatus = (orderId, status) => {
+    return privateUpdateOrderStatus(orderId,status);
+};
+
+const privateUpdateOrderStatus= (orderId, status) => {
     return new Promise((resolve, reject) => {
         const sql = "UPDATE 'order' SET status=? WHERE id=?";
         db.run(sql, [status, orderId], (err) => {
             if (err) {
                 reject(err);
             }
-            if(this.changes===0) resolve(false);
-            else resolve(true);
+            resolve(true);
         });
     });
 };
 
+//Delete a row of the table order given the orderid
 exports.deleteOrder = (orderid) => {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM 'order' WHERE id = ?;"
@@ -44,6 +53,7 @@ exports.deleteOrder = (orderid) => {
     })
 } 
 
+//Delete all the rows from the order table
 exports.deleteAllOrders = () => {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM 'order'";
@@ -56,6 +66,7 @@ exports.deleteAllOrders = () => {
     });
 };
 
+//Insert a new row in the order table
 exports.insertOrder = (order) => {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO 'order'(userid, creationdate, claimdate, confirmationdate, deliveryaddress, status) VALUES(?,?,?,?,?,?)";
@@ -68,6 +79,7 @@ exports.insertOrder = (order) => {
     });
 };
 
+//Get a row of the order table given the orderid
 exports.getOrder = (orderid) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM 'order' WHERE id=?";
@@ -80,6 +92,7 @@ exports.getOrder = (orderid) => {
     });
 };
 
+//Get all the orders havin a specifc status
 exports.getOrdersByStatus = (status) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM 'order' WHERE status=?";
@@ -88,6 +101,83 @@ exports.getOrdersByStatus = (status) => {
                 reject(err);
             }
             resolve(rows); //the caller should check if it is undefined or not
+        });
+    });
+};
+
+/*
+TODO test
+given a status, it checks (and in case does it) if the order status must be changed
+ex. if the passed status is "confirmed" it checks if all orderlines are "confirmed": if so it updates the order status
+-ant
+*/
+exports.checkForStatusUpdate = async (orderid,status) => {
+    //add other status when needed
+    switch(status){
+        case 'packaged':{
+            //if all orderlines are packaged, the order should result as packaged
+            if(await allOrderlinesHaveStatus(orderid,'packaged')){
+                await privateUpdateOrderStatus(orderid,'packaged');
+            } 
+        };break;
+        //some cases for future stories
+        /*
+        case 'failed':{
+            //if an orderline fails, the order should fail
+            updateOrderStatus('failed');
+        }
+        case 'confirmed':{
+            //if all orderlines are confirmed, the order should result as confirmed
+            if(allOrderlinesStatus(orderid,'confirmed')) updateOrderStatus('confirmed');
+        };break;
+        */
+        default:{
+            //TODO
+        };
+    }
+};
+
+/*
+TODO test
+Returns true iff all orderlines of the order 'orderid' have the status 'status'
+-ant
+*/
+const allOrderlinesHaveStatus = async (orderid,status) => {
+    return await countOrderLines(orderid) === await countOrderLinesWithStatus(orderid,status);
+}
+
+/*
+TODO test
+"How many orderlines does this order have?"
+Counts the number of orderlines related to an order
+-ant
+*/
+const countOrderLines = (orderid) => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT COUNT(*) FROM orderline WHERE orderid=?";
+        db.get(sql, [orderid], function (err,res) {
+            if (err) {
+                reject(err);
+            }
+            resolve(res['COUNT(*)']);
+        });
+    });
+};
+
+/*
+TODO test
+"How many orderlines with a certain status does this order have?"
+Counts the number of orderlines with a certain status related to an order
+-ant
+*/
+const countOrderLinesWithStatus = (orderid,status) => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT COUNT(*) FROM orderline WHERE orderid=? AND status=?";
+        db.get(sql, [orderid,status], function (err,res) {
+            if (err) {
+                reject(err);
+            }
+            resolve(res['COUNT(*)']);
         });
     });
 };

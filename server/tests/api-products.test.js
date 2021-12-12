@@ -51,19 +51,22 @@ const fakeAvailability1 = {
     productid: 0,
     dateavailability: '2021-10-11',
     quantity: 6,
-    status: 'si'
+    status: 'si',
+    price: 15.00
 }
 const fakeAvailability2 = {
     productid: 1,
     dateavailability: '2021-09-11',
     quantity: 12,
-    status: 'si'
+    status: 'si',
+    price: 15.00
 }
 const fakeAvailability3 = {
     productid: 2,
     dateavailability: '2021-11-20',
     quantity: 18,
-    status: 'si'
+    status: 'si',
+    price: 15.00
 }
 
 const fakeFarmer1 = {

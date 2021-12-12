@@ -80,13 +80,15 @@ describe('Test orderline-dao functions unused in any api', () => {
             orderid:orderid,
             productid:0,
             quantity:2,
-            price:3
+            price:3,
+            status:null
         };
         const fakeOrderLine2 = {
             orderid:orderid,
             productid:1,
             quantity:2,
-            price:3
+            price:3,
+            status:null
         };
         await orderlineDao.insertOrderLine(fakeOrderLine1);
         await orderlineDao.insertOrderLine(fakeOrderLine2);

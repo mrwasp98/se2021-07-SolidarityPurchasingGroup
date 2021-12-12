@@ -5,6 +5,7 @@ const db = require('./database');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+//Get a user information by his Id
 exports.getUserById = (id) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM user WHERE id = ?';
@@ -22,6 +23,7 @@ exports.getUserById = (id) => {
     });
 };
 
+//Get a user informations by his username
 exports.getUser = (username, password) => {
     return new Promise((resolve, reject) => {
 
@@ -46,6 +48,7 @@ exports.getUser = (username, password) => {
     });
 };
 
+//Get all the users' informations in the database
 exports.getUsers = () => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM user";
@@ -65,6 +68,8 @@ exports.getUsers = () => {
 };
 
 /** JUST FOR THE TESTS **/
+
+//Delete all the users in the database
 exports.deleteAllUsers = () => {
     return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM user';
@@ -77,6 +82,9 @@ exports.deleteAllUsers = () => {
     });
 };
 
+/** JUST FOR THE TESTS **/
+
+//Insert a user in the database
 exports.insertUser =  (user) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO user(usename, password, type) VALUES(?,?,?)';
@@ -89,8 +97,8 @@ exports.insertUser =  (user) => {
         });
     });
 };
-/** JUST FOR THE TESTS **/
 
+//Update the password field of a user given his Id
 exports.updatePassword = (password, id) => {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE user SET password=? WHERE id == ?';
@@ -105,6 +113,7 @@ exports.updatePassword = (password, id) => {
     });
 };
 
+//Update the type field of a user give his id
 exports.updateType= (id) => {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE user SET type=? WHERE id == ?';
