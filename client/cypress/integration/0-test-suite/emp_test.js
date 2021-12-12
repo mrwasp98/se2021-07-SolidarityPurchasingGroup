@@ -315,7 +315,7 @@ describe('SPG registration client', () => {
     it('go to create client page', () => {
         cy.get('#toCreateNewClient').click()
         cy.url().should('include', '/user/client')
-        cy.get('#formBasicName').clear().type('Ajeje' +  Math.random())
+        cy.get('#formBasicName').clear().type('Ajeje')
         cy.get('#formBasicSurname').clear().type('Brazorf')
         cy.get('#formBasicAddress').clear().type('Corso Francia 34')
         cy.get('.next-btn').click()
@@ -323,20 +323,15 @@ describe('SPG registration client', () => {
 
 
     it('type a username that just exists', () => {
-        cy.get('#formBasicUsername').clear().type('Brazorf1@3u1g.it')
+        cy.get('#formBasicUsername').clear().type('CuginoDiBrazorf@3u1g.it')
         cy.get('#formBasicPassword').clear().type('AjejeBraz123')
         cy.get('#formBasicCPassword').clear().type('AjejeBraz123')
         cy.get('.confirm-btn').click()
         cy.contains('Username already used').should('exist')
-        cy.get('.back-btn').click()
-        cy.get('#formBasicName').clear().type('Ajeje' +  Math.random())
-        cy.get('#formBasicSurname').clear().type('Brazorf2')
-        cy.get('#formBasicAddress').clear().type('Corso Francia 34')
-        cy.get('.next-btn').click()
     })
 
     it('type a bad password', () => {
-        cy.get('#formBasicUsername').clear().type('CuginoDiBrazorf@3u1g.it')
+        cy.get('#formBasicUsername').clear().type('CuginoDiBrazorf@' + Math.random() + '.it')
         cy.get('#formBasicPassword').clear().type('Ajeje')
         cy.get('#formBasicCPassword').clear().type('Ajeje')
         cy.get('.confirm-btn').click()
@@ -344,12 +339,10 @@ describe('SPG registration client', () => {
     })
 
 
-    it('type a valid username', () => {
-        cy.get('#formBasicUsername').clear().type('CuginoDiBrazorf@3u1g.it')
+    it('type a valid password', () => {
         cy.get('#formBasicPassword').clear().type('Ajeje123')
         cy.get('#formBasicCPassword').clear().type('Ajeje123')
         cy.get('.confirm-btn').click()
-        cy.contains('The user has been created').should('exist')
-    })
+        cy.contains('The password must be at least 6 characters long and must contain both alphabetic and numerical values.').should('not.exist')    })
 
 })
