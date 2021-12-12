@@ -69,6 +69,123 @@ describe('SPG shop employee routes', () => {
     })
 })
 
+
+//testing product request page
+describe('SPG product request page', () => {
+    it('open route', () => {
+        cy.get('#toprodreq').click()
+        cy.url().should('include', '/productRequest')
+    })
+
+    it('wrong day for request', () => {
+        cy.get('.callandarButton').click()
+        let notFound = true;
+        let loop = 5;
+        while (notFound && loop > 0) {
+            cy.get('.react-calendar__navigation__label__labelText').then(($btn) => {
+                // assert on the text
+                if ($btn.text().includes('novembre 2021')) {
+                    notFound = false;
+                } else {
+                    cy.get('.react-calendar__navigation__prev-button').click();
+                }
+            })
+            loop--;
+        }
+        cy.contains('25').click()
+        cy.get('.callandarButton').should("contain", " 25 Nov")
+        cy.contains('Orders will be available after Saturday morning at 9 am')
+    })
+
+    it('rigth day for pickups', () => {
+        cy.get('.callandarButton').click()
+        let notFound = true;
+        let loop = 5;
+        while (notFound && loop > 0) {
+            cy.get('.react-calendar__navigation__label__labelText').then(($btn) => {
+                // assert on the text
+                if ($btn.text().includes('novembre 2021')) {
+                    notFound = false;
+                } else {
+                    cy.get('.react-calendar__navigation__prev-button').click();
+                }
+            })
+            loop--;
+        }
+        cy.contains('28').click()
+        cy.get('.callandarButton').should("contain", " 28 Nov")
+    })
+
+    it('type a invalid user', () => {
+        cy.get('.client-here')
+            .type('unknown').should('have.value', '')
+        cy.contains('No option')
+    })
+
+    it('type a valid user, press add', () => {
+        cy.get('.client-here').click().type('Loren')
+        cy.get('.css-1n7v3ny-option').click()
+        cy.get('.add-btn-0').click()
+        cy.contains('Total order')
+    })
+
+    it('type a valid user, press sub', () => {
+        cy.get('.sub-btn-0').click()
+        cy.contains('.alert-total').should('not.exist')
+    })
+
+    it('make an order, no amount', () => {
+        cy.get('.order-btn').click()
+        cy.contains('Please, select date and time to pick up your order').should('exist')
+        cy.get('.react-datepicker__input-container>input').click()
+        let notFound = true;
+        let loop = 5;
+        while (notFound && loop > 0) {
+            cy.get('.react-datepicker__current-month').then(($btn) => {
+                // assert on the text
+                if ($btn.text().includes('November 2021')) {
+                    notFound = false;
+                } else {
+                    cy.get('.react-datepicker__navigation--previous').click();
+                }
+            })
+            loop--;
+        }
+        cy.get('.react-datepicker__day--001').eq(1).click()
+        cy.findByText('Check and Order').click()
+        cy.contains('Select the amount of at least one product').should('exist')
+    })
+
+    it('make an order, with amount', () => {
+        cy.get('.add-btn-0').click()
+        cy.get('.order-btn').click()
+        cy.contains('Please, select date and time to pick up your order').should('exist')
+        cy.get('.react-datepicker__input-container>input').click()
+        let notFound = true;
+        let loop = 5;
+        while (notFound && loop > 0) {
+            cy.get('.react-datepicker__current-month').then(($btn) => {
+                // assert on the text
+                if ($btn.text().includes('November 2021')) {
+                    notFound = false;
+                } else {
+                    cy.get('.react-datepicker__navigation--previous').click();
+                }
+            })
+            loop--;
+        }
+        cy.get('.react-datepicker__day--001').eq(1).click()
+        cy.findByText('Check and Order').click()
+        cy.contains('Order received!').should('exist')
+        cy.findByText('Ok').click()
+    })
+
+    it('back to home', () => {
+        cy.get('.home-here').click()
+        cy.url().should('include', '/')
+    })
+})
+
 //testing wallet page
 describe('SPG wallet page', () => {
     let val;
@@ -108,6 +225,8 @@ describe('SPG wallet page', () => {
         cy.url().should('include', '/')
     })
 })
+
+
 
 //testing handout page
 describe('SPG handout page', () => {
