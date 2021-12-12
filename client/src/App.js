@@ -56,6 +56,7 @@ function App() {
         const user = await getUserInfo();
         setUsername(user.name);
         setLogged(user.type);
+        setUserId(user.id);
       } catch (err) {
         console.error(err.error);
       }
@@ -133,7 +134,7 @@ function App() {
 
         <Route exact path='/' render={() => <Home />} />
 
-        <Route exact path='/farmerhome' render={() => <ReportAvailability username={username} date={date}/>} />
+        <Route exact path='/farmerhome' render={() => <ReportAvailability username={username} date={date} userId={userId}/>} />
         <Route exact path='/editProduct' render={() => <ProductForm username={username}/>} />
         <Route exact path='/addProduct' render={() => <ProductForm username={username}/>} />
 

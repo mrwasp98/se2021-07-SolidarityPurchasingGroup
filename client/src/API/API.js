@@ -335,7 +335,7 @@ const updatePassword = async (password, id) => {
   });
 }
 
-//this API fetches the all the usernames available
+//this API fetches all the usernames available
 const getUsernames = async () => {
   return new Promise((resolve, reject) => {
     fetch('/api/usernames', {
@@ -390,6 +390,44 @@ async function insertProduct(product) {
   })
 }
 
+//this API fetches all the orders refered to a farmer
+const getFarmersOrders = async (farmerid, date) => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/orders/farmers' + '?farmerid=' + farmerid + "&date=" + date, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        const error = new Error(`${res.status}: ${res.statusText}`);
+        error.response = res;
+        throw error;
+      }
+      resolve(res.json());
+    })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
+}
+
+//this API updates the status of an orderlines
+async function updateOrderStatus(orderid, productid, status) {
+  const response = await fetch('/api/orderlines', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      orderid: orderid,
+      productid: productid,
+      status: status
+    })
+  });
+  if (response.ok) {
+    return response.status;
+  } else return { message: "Couldn't update the order status." };
+}
+
 /*----- USER APIs ---*/
 async function login(credentials) {
   let response = await fetch('/login', {
@@ -429,4 +467,4 @@ async function getUserInfo() {
 
 
 
-export { getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword }
+export { getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus }

@@ -4,6 +4,8 @@ import { useEffect, useState} from "react";
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import HomeButton from './HomeButton'
 import "../App.css";
+import dayjs from 'dayjs';
+import { getFarmersOrders, updateOrderStatus } from "../API/API.js";
 
 function ProductAction(props){
     return (<>
@@ -18,8 +20,9 @@ function ProductAction(props){
 
 function OrderAction(props){
     const action = () => {
-        console.log(props.orderid);
-        console.log(props.productid);
+        updateOrderStatus(props.orderid, props.productid, "packaged").then(() => {
+            props.setDirtyO(true)
+        });
     };
     return (<>
             <Button onClick={action}>Confirm</Button>
@@ -106,7 +109,9 @@ function ProductRow(props){
     return( <tr>
               <td>{order.name}</td>
               <td>{order.quantity}</td>
-              <td><OrderAction orderid={order.orderid} productid={order.productid}/></td>
+              <td>{order.measure}</td>
+              <td>{order.price}</td>
+              <td><OrderAction orderid={order.orderid} productid={order.productid} setDirtyO={props.setDirtyO}/></td>
             </tr>
     )
   }
@@ -123,20 +128,11 @@ export default function ReportAvailability(props){
             typeofproduction: "Local farm",
             picture: "/img/carote.jfif"}]);
 
-    const [orders, setOrders] = useState([{
-                orderid: 1,
-                productid: 4,
-                name: "Carrots",
-                quantity: "2"},
-            {
-                orderid: 2,
-                productid: 3,
-                name: "Choccolate",
-                quantity: "3"
-            }]);
+    const [orders, setOrders] = useState([]);
     
     const [productsAvailable, setProductsAvailable] = useState([]);
-    const [dirty, setDirty] = useState(false)
+    const [dirty, setDirty] = useState(false);
+    const [dirtyO, setDirtyO] = useState(false);
 
     //this use effect is used to get the products of a farmer
     //and also for the orders
@@ -146,6 +142,16 @@ export default function ReportAvailability(props){
             setDirty(false);
         }
     }, [dirty]);
+
+    useEffect(() => {
+        //getProductsByFarmer when it will be implemented
+        getFarmersOrders(props.userId, props.date).then((orders) => {
+            setOrders(orders);
+        });
+        if(dirtyO){
+            setDirtyO(false);
+        }
+    }, [dirtyO, props.date]);
 
     const handleReport = () => {
         console.log(productsAvailable);
@@ -164,9 +170,13 @@ export default function ReportAvailability(props){
                         <ListGroup.Item action href="#link2">
                             Expected availability
                         </ListGroup.Item>
-                        <ListGroup.Item action href="#link3">
-                            Confirm preparation
-                        </ListGroup.Item>
+                        { (dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday'  && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
+                            <ListGroup.Item action href="#link3">
+                                Confirm preparation
+                            </ListGroup.Item>
+                            :
+                            <></>
+                        }
                     </ListGroup>
                     </Col>
                     <Col sm={9}>
@@ -214,21 +224,27 @@ export default function ReportAvailability(props){
                                 <Button className="order-btn" variant="yellow" onClick={() => handleReport()}>Send report</Button>
                             </div>
                         </Tab.Pane>
-                        <Tab.Pane eventKey="#link3">
-                            <h3>Confirm the preparation of a booked orders</h3>
-                            <Table className="mt-3" striped bordered hover responsive>
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Quantity</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {orders.map(order => <ConfirmRow order={order}/>)}
-                                </tbody>
-                            </Table>
-                        </Tab.Pane>
+                        {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
+                            <Tab.Pane eventKey="#link3">
+                                <h3>Confirm the preparation of a booked orders</h3>
+                                <Table className="mt-3" striped bordered hover responsive>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Quantity</th>
+                                            <th>Measure</th>
+                                            <th>Price</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {orders.map(order => <ConfirmRow order={order} setDirtyO={setDirtyO}/>)}
+                                    </tbody>
+                                </Table>
+                            </Tab.Pane>
+                            :
+                            <></>
+                        }
                     </Tab.Content>
                     </Col>
                 </Row>
