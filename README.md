@@ -254,10 +254,10 @@ We check the quality of our code relying on SonarCloud analysis.
 * Request parameters: orderid
 * Response: `200 OK`, `503 Service Unavailable` (generic error), `404 Not Found` (not present or unavailable)
 
-### Get all farmers' names (ACTUALLY it gives place and userid!!!)
+### Get all farmers place and userid
 * URL: `api/farmers`
 * HTTP method: GET
-* Description: ---
+* Description: get for every farmer in the farmer table his place and his id
 * Request body: None
 * Response body:
 ``` JSON
@@ -277,7 +277,7 @@ We check the quality of our code relying on SonarCloud analysis.
 ### Post the request to create an order by shop employee //TODO check if it corresponds with the actual implementation
 * URL: `api/requests`
 * HTTP method: POST
-* description: creates an order with its orderlines and updates quantities
+* Description: creates an order with its orderlines and updates quantities
 * Request body:
 ``` JSON
 {
