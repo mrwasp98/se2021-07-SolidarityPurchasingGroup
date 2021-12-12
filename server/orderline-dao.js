@@ -97,7 +97,6 @@ exports.getOrderLinesByFarmerDateStatusWithProductInfo = (farmerid,date,status) 
                 if (err) {
                     reject(err);
                 }
-                console.log(rows)
                 resolve(rows); //the caller should check if undefined or not
             });
         }
@@ -107,7 +106,6 @@ exports.getOrderLinesByFarmerDateStatusWithProductInfo = (farmerid,date,status) 
                 if (err) {
                     reject(err);
                 }
-                console.log(rows)
                 resolve(rows); //the caller should check if undefined or not
             });
         } 

@@ -141,7 +141,6 @@ describe('Testing PUT on /api/orderlines', () => {
     });
 
     test('It should NOT set to packaged the order status', async () => {
-        //when all orderlines of an order are 'packaged', the order should become 'packaged'
         await orderlineDao.insertOrderLine({
             orderid:orderid,
             productid:0,
