@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, React } from "react";
 import { Card, Container, Form, ListGroup, ListGroupItem, Alert } from "react-bootstrap";
-import React from 'react'
 import Select from 'react-select'
 import { getClients, getClientOrders } from "../API/API"
 import OrderToggle from "./OrderToggle";
@@ -96,14 +95,14 @@ export default function Handout(props) {
                                 {error && <Alert variant="danger">An error as occurred: {error}</Alert>}
                             </ListGroup>
                         </Card>
-                        <HomeButton className="home-here" logged={props.logged} />
+                        <HomeButton logged={props.logged} />
                     </Container >
                     :
                     <>
                         <Alert variant="danger" style={{ "fontWeight": "500" }}>
-                            Pickups take place from Wednesday morning until Friday evening
+                            Pickups take place from Wednesday morning at 9 am until Friday evening at 7 pm 
                         </Alert>
-                        <HomeButton className="home-here" logged={props.logged} />
+                        <HomeButton logged={props.logged} />
                     </>
             }
         </>

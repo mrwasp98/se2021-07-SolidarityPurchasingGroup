@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, React } from "react";
 import { Card, Container, Image, Form, ListGroup, ListGroupItem, Alert, Row, Col, Button } from "react-bootstrap";
-import React from 'react'
 import Select from 'react-select'
 import { getClients, topUpWallet } from "../API/API"
 import HomeButton from "./HomeButton";
-import { Link } from "react-router-dom";
+import {piggy} from "./Icons";
+import { useParams } from "react-router-dom";
 
 export default function Wallet(props) {
-    const [selectedClient, setSelectedClient] = useState(""); //this state controls the Select input
+    let { id } = useParams();
+    const [selectedClient, setSelectedClient] = useState(''); //this state controls the Select input
     const [options, setOptions] = useState([]); //this state is used to store the information in props.clients in the format that works with the Select 
     const [error, setError] = useState("");
     const [amount, setAmount] = useState(0);
@@ -15,6 +16,8 @@ export default function Wallet(props) {
     const [showGif, setShowGif] = useState(false);
     //this use Effect is used to load the clients when the component is loaded
     useEffect(() => {
+        let client = props.clients.filter(c => c.userid === id)[0];
+        setSelectedClient(client);
         if (props.dirtyClients) {
             getClients()
                 .then((res) => {
@@ -27,7 +30,7 @@ export default function Wallet(props) {
                 return { value: e.userid, label: e.name + " " + e.surname + " - " + e.address }
             }))
         }
-    }, [props]);
+    }, [props, id]);
 
     useEffect(() => {
         if (completed) {
@@ -43,7 +46,7 @@ export default function Wallet(props) {
 
     //this function is called only when the client is selected to load their orders
     function handlechange(event) {
-        let client = props.clients.filter(c => c.userid == event.value)
+        let client = props.clients.filter(c => c.userid === event.value)
         setSelectedClient(client[0]);
         setAmount(0.00)
     }
@@ -85,7 +88,13 @@ export default function Wallet(props) {
                             </Card.Header>
                             <Card.Body>
                                 <Form className="client-here">
-                                    <Select options={options} onChange={(event) => handlechange(event)} />
+                                    <Select value={
+                                        selectedClient && options.length > 0 ?
+                                            options.filter(option =>
+                                                option.value === selectedClient.userid)
+                                            :
+                                            ''
+                                    } options={options} onChange={(event) => handlechange(event)} />
                                 </Form>
                             </Card.Body>
                         </ListGroupItem>
@@ -126,7 +135,7 @@ export default function Wallet(props) {
                                                         />
                                                     </Col>
                                                 </Form.Group>
-                                                <Button variant="yellow" type="submit" className="submit-btn m-3" style={{ fontSize: "18px" }}>Confirm</Button>
+                                                <Button variant="yellow" type="submit" className="submit-btn m-3" style={{ fontSize: "18px" }}>Confirm {piggy}</Button>
                                             </Form>
                                         </Row>
                                     </Card.Body>
@@ -136,8 +145,8 @@ export default function Wallet(props) {
                     </ListGroup>
                 </Card>
                 {(showGif === true) ? (
-                    <Row className="justify-content-center mt-3">
-                        <Image src="img/salvadanaio.gif" fluid className="myGif" />
+                    <Row className="justify-content-center mt-2">
+                        <Image src="/img/salvadanaio.gif" fluid className="myGif" />
                     </Row>
                 ) : (
                     ""

@@ -1,7 +1,7 @@
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { addClient } from "../API/API.js";
-import { Link } from "react-router-dom";
+import HomeButton from "./HomeButton";
 
 export default function Register(props) {
   const [name, setName] = useState("");
@@ -17,7 +17,7 @@ export default function Register(props) {
     if (!form.checkValidity()) {
       form.reportValidity();
     } else {
-      addClient(name, surname, email, wallet, address)
+      addClient(name, surname, email, wallet, address, "abc123", "client-prov")
         .then((data) => {
           setInserted(true);
           setName("");
@@ -27,7 +27,7 @@ export default function Register(props) {
           setAddress("");
           props.setDirtyClients(true);
         })
-        .catch((errorObj) => { });
+        //.catch((errorObj) => { console.log(errorObj); });
     }
   };
 
@@ -131,15 +131,13 @@ export default function Register(props) {
               </Col>
             </Form.Group>
 
-            <Container className="d-flex justify-content-between my-4">
-              <Link style={{ textDecoration: "none", hover: "black" }} to="/employeehome" className="linkred">
-                <Button variant="outline-danger" type="submit" className="back-btn">Back</Button>
-              </Link>
+            <Container className="d-flex justify-content-end my-4">
               <Button variant="yellow" type="submit" className="submit-btn">Submit</Button>
             </Container>
           </Form>
         </Col>
       </Row>
+      <HomeButton logged={props.logged} />
     </Container>
   );
 }

@@ -4,35 +4,10 @@ import Select from 'react-select'
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket } from "./Icons";
 import dayjs from "dayjs";
 import { Link } from 'react-router-dom'
-import { getClients } from "../API/API.js";
+import { getClients, getAvailableProducts, addPRequest } from "../API/API.js";
 import HomeButton from "./HomeButton";
-
-function ModalEnd(props) {
-    return (
-        <Modal show={props.showModal} handleClose={props.handleCloseModal} backdrop="static">
-            <Modal.Header>
-                <Modal.Title style={{ width: "100%" }}><Alert variant="success" >Order received!</Alert></Modal.Title>
-            </Modal.Header>
-            <Form>
-                <Modal.Body>
-                    <Form.Group controlId='selectedName'>
-                        <Form.Label>Summary of order</Form.Label>
-                        <ul>
-                            {props.products.summary.map((x, i) => <li key={i}>{x.quantity + " " + x.measure + " of " + x.name}</li>)}
-                        </ul>
-                        <p>Total: {props.products.total}€</p>
-                    </Form.Group>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={() => {
-                        props.setShowModal(false)
-                        props.setDirtyAvailability(true)
-                    }}>Ok</Button>
-                </Modal.Footer>
-            </Form>
-        </Modal>
-    );
-}
+import ModalEnd from "./ModalEnd"
+import ModalClaimDate from "./ModalClaimDate"
 
 function ProductLine(props) {
     const { product } = props;
@@ -42,13 +17,13 @@ function ProductLine(props) {
     (quantity !== 0 && !props.productsSelected.length) && setQuantity(0)
 
     const add = () => {
-        let x = quantity + 1;
+        let x = quantity + 0.5;
         handleProducts(x)
     }
 
     const sub = () => {
         if (quantity > 0) {
-            let x = quantity - 1;
+            let x = quantity - 0.5;
             handleProducts(x)
         }
     }
@@ -84,7 +59,7 @@ function ProductLine(props) {
                 <Col className="d-none d-md-block colBasket">{basket}: <b>{quantity + " " + product.measure}</b></Col>
             </Row>
         </td>
-        <td className="align-middle" style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}><p style={{ fontSize: "18pt" }}>{product.price}€</p></td>
+        <td className="align-middle" style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}><p style={{ fontSize: "18pt" }}>{parseFloat(product.price).toFixed(2)}€</p></td>
         <td className="align-middle">{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
             {quantity !== 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
@@ -96,14 +71,27 @@ function ProductLine(props) {
 }
 
 export default function ProductRequest(props) {
-    const { clients, products, message } = props;
+    const { clients, products } = props;
     const [selectedClient, setSelectedClient] = useState("");
     const [productsSelected, setProductsSelected] = useState([]);
     const [summary, setSummary] = useState([])
     const [product, setProduct] = useState("");
+    const [lastDate, setLastDate] = useState(dayjs(props.date)); //everytime the date changes, the product must be loaded again
+    const [flag, setFlag] = useState(true)
+    const [claimdate, setClaimdate] = useState(new Date());
+    const [deliveryAddress, setDeliveryAddress] = useState("");
 
+    const [messageProductRequest, setMessageProductRequest] = useState({
+        type: "",
+        show: false,
+        text: ""
+    })
     // eslint-disable-next-line
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(false); //this is used for the "recap modal", shows up at the confirmation of the order
+
+    const [showModalClaim, setShowModalClaim] = useState(false) //this is used for the "claim date modal", shows up after clicking "continue"
+
+
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
 
@@ -116,11 +104,15 @@ export default function ProductRequest(props) {
                     props.setDirtyClients(false);
                 })
         }
-    }, [props]);
-
-    useEffect(() => {
-
-    }, [product])
+        if (!lastDate.isSame(props.date) || flag) {
+            setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
+            getAvailableProducts(props.date)
+                .then((res) => {
+                    props.setProducts(res)
+                })
+            setFlag(false)
+        }
+    }, [props, flag, lastDate]);
 
     const calculateTotal = (elements) => {
         let total = parseFloat(0)
@@ -128,41 +120,57 @@ export default function ProductRequest(props) {
         for (let i = 0; i < elements.length; i++) {
             total = parseFloat(total) + parseFloat(elements[i].total)
         }
-        return total;
+        return total.toFixed(2);
     }
 
     const handleOrder = () => {
-        console.log("creation: ", props.date)
-        const newOrder = {
-            userid: selectedClient,
-            creationdate: props.date,
-            claimdate: "2021-11-10 12:30",
-            confirmationdate: null,
-            deliveryaddress: null,
-            deliveryid: null,
-            status: "pending",
-            products: productsSelected
-        }
-
-        let valid = true;
-
-        if (newOrder.products.length === 0) {
-            valid = false;
-            props.setMessage({
+        if (productsSelected.length === 0) {
+            setMessageProductRequest({
                 type: "error",
                 show: true,
                 text: "Select the amount of at least one product"
             })
-        }
-
-        if (valid) {
-            props.setOrder(newOrder)
+        } else {
+            console.log(productsSelected)
             setSummary(productsSelected);
-            setProductsSelected([])
-            props.setDirty(true)
+            //add the order in the db
+            addPRequest(selectedClient,
+                props.date,
+                dayjs(claimdate).format("dd-mm-yyyy HH:mm"),
+                null,
+                deliveryAddress,
+                null,
+                "pending",
+                productsSelected).then(result => {
+                    // A few products are not available
+                    console.log("risultato: ", result)
+                    if (result.status !== undefined && result.status === 406)
+                        setMessageProductRequest({
+                            type: "error",
+                            show: true,
+                            text: result.listofProducts.map(x => x.name + " ").concat("are not available")
+                        })
+                    else if (result.status !== undefined && result.status === 200)
+                        setMessageProductRequest({
+                            type: "done",
+                            show: true,
+                            text: "Order received!" //this message won't be used. I don't remove it for consistency
+                        })
+                }).catch(err => {
+                    console.log(err)
+                    setMessageProductRequest({
+                        type: "error",
+                        show: true,
+                        text: err.message //this message won't be used. I don't remove it for consistency
+                    })
+                })
+                .finally(() => {
+                    setProductsSelected([])
+                })
             props.setDirtyAvailability(true)
         }
     }
+
     let sat9am;
     let sun23pm;
     if (dayjs(props.date).format('dddd') !== 'Sunday') {
@@ -172,9 +180,10 @@ export default function ProductRequest(props) {
         sat9am = dayjs(props.date).endOf('week').subtract(1, 'week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         sun23pm = dayjs(props.date).endOf('week').subtract(1, 'week').add(1, 'day').subtract(59, 'minute').subtract(59, 'second')
     }
+
     return (<>
         {dayjs(props.date).isAfter(sat9am) && dayjs(props.date).isBefore(sun23pm) ?
-            <Container className="containerProdRequest justify-content-center mt-3">
+            <Container className="justify-content-center mt-3">
                 <h1>Enter a new product request</h1>
                 <Card className="text-left mt-4">
                     <ListGroup className="list-group-flush">
@@ -198,14 +207,20 @@ export default function ProductRequest(props) {
 
                 {selectedClient &&
                     <>
+                        {/* STUB */}
                         {(products.filter(p => p.quantity > 0).length !== 0) ? <>
-                            <ModalEnd showModal={message.show && message.type === "done"} setShowModal={() => {
-                                props.setMessage({
-                                    type: message.type,
-                                    show: false,
-                                    text: message.text
-                                })
-                            }} handleCloseModal={handleCloseModal} handleShowModal={handleShowModal} products={{ summary: summary, total: calculateTotal(summary) }} setDirtyAvailability={props.setDirtyAvailability} />
+                            <ModalEnd showModal={messageProductRequest.show && messageProductRequest.type === "done"}
+                                setShowModal={() => {
+                                    setMessageProductRequest({
+                                        type: messageProductRequest.type,
+                                        show: false,
+                                        text: messageProductRequest.text
+                                    })
+                                }}
+                                handleCloseModal={handleCloseModal} 
+                                handleShowModal={handleShowModal}
+                                products={{ summary: summary, total: calculateTotal(summary) }} 
+                                setDirtyAvailability={props.setDirtyAvailability} />
                             <Row>
                                 <Col className="d-none d-md-block">
                                 </Col>
@@ -235,33 +250,44 @@ export default function ProductRequest(props) {
                                         .map((p, index) => <ProductLine product={p} index={index} key={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                                 </tbody>
                             </Table>
-                            {message.show && message.type === "error" && <Alert className="mt-3" show={message.show} onClose={() => props.setMessage({
-                                type: message.type,
-                                show: false,
-                                text: message.text
-                            })} variant="danger" dismissible>{message.text}</Alert>}
+                            {messageProductRequest.show && messageProductRequest.type === "error" &&
+                                <Alert className="mt-3" show={messageProductRequest.show} onClose={() => setMessageProductRequest({
+                                    type: messageProductRequest.type,
+                                    show: false,
+                                    text: messageProductRequest.text
+                                })} variant="danger" dismissible>{messageProductRequest.text}</Alert>
+                            }
                             {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal(productsSelected)}€</Alert>}
                             <div className="d-flex justify-content-between mb-4">
-                                <Link to="/"><Button variant="danger" className="back-btn">Back</Button></Link>
-                                <Button className="order-btn" variant="yellow" onClick={() => handleOrder()}>Check and order</Button>
+                                <Link to="/employeehome"><Button variant="danger" className="back-btn">Back</Button></Link>
+                                <Button className="order-btn" variant="yellow" onClick={() => setShowModalClaim(old => !old)}>Continue</Button>
                             </div>
+                            {showModalClaim &&
+                                <ModalClaimDate show={showModalClaim}
+                                    setShow={setShowModalClaim}
+                                    claimdate={claimdate}
+                                    setClaimdate={setClaimdate}
+                                    address={deliveryAddress}
+                                    setAddress={setDeliveryAddress}
+
+                                    handleOrder={handleOrder} />}
                         </>
                             :
                             <Alert className="mt-3" variant="primary">There are no available products</Alert>}
                     </>
                 }
-                <HomeButton className="home-here" logged={props.logged} />
+                <HomeButton logged={props.logged} />
 
             </Container>
             :
             <>
                 {
                     (dayjs(props.date).isBefore(sat9am)) ?
-                        <Alert variant="danger" style={{"fontWeight":"500"}}>
+                        <Alert variant="danger" style={{ "fontWeight": "500" }}>
                             Orders will be available after Saturday morning at 9 am
                         </Alert>
                         :
-                        <Alert variant="danger" style={{"fontWeight":"500"}}>
+                        <Alert variant="danger" style={{ "fontWeight": "500" }}>
                             Orders from clients are accepted until Sunday 23:00
                         </Alert>
 
@@ -270,7 +296,6 @@ export default function ProductRequest(props) {
             </>
 
         }
-    </>
-    )
+    </>)
 
 }

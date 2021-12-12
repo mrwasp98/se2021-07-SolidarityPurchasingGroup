@@ -1,27 +1,25 @@
-import { Modal, Button,Container } from "react-bootstrap";
+import { Modal, Button, Container } from "react-bootstrap";
 import { topUpWallet } from "./Icons";
+import QRCode from "react-qr-code";
 
 export default function MyModal(props) {
-
-    return (
-      <>
-        <Modal show={props.show} onHide={props.close}>
-          <Modal.Header closeButton>
-            <Modal.Title>Not suficient budget {topUpWallet}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Do you want to increase your wallet!? </Modal.Body>
-          <Modal.Footer>
-          <Container className="d-flex justify-content-between my-4">
-            
+  //console.log(props.userid)
+  return (
+    <>
+      <Modal show={props.show} onHide={props.close}>
+        <Modal.Header closeButton>
+          <Modal.Title>Not suficient budget {topUpWallet}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>If you want to top up your wallet, go to the SPG office and ask a shop employee to do so. In order to do this, show: </Modal.Body>
+        <Container className="mb-4 d-flex justify-content-center">
+          <QRCode value={`http://localhost:3000/wallet/${props.userid}`} />
+        </Container>
+        <Modal.Footer>
           <Button variant="secondary" className="float-left" onClick={props.close}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={props.close}>
-              Top Up Your Wallet
-            </Button>
-            </Container>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  }
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}

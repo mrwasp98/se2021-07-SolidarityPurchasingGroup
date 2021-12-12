@@ -7,31 +7,37 @@ import { getFarmers, getAvailableProducts } from "../API/API.js";
 import dayjs from "dayjs";
 
 export default function ProductsList(props) {
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState("All");
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     let categories = [...new Set(props.products.map(prod => prod.category))];
-    let [farmersPresent, setFarmersPresent] = useState([]);
+    const [farmersPresent, setFarmersPresent] = useState([]);
+    const [selectedFarmers, setSelectedFarmers] = useState([]);
     const [inserted, setInserted] = useState(false);
     const [lastDate, setLastDate] = useState(dayjs(props.date));
-    //this use effect is used to get the available products
+    const [flag, setFlag] = useState(true)
+    //this use effect is used to get the available products and the farmers
     useEffect(() => {
-        if (props.dirtyAvailability || !lastDate.isSame(props.date)) {
+        if (props.dirtyAvailability || !lastDate.isSame(props.date) || flag) {
+            let list;
             setLastDate(dayjs(props.date)); //update lastdate, so the useEffect will be triggered again
             getAvailableProducts(props.date)
                 .then((res) => {
                     props.setProducts(res)
                     props.setDirtyAvailability(false)
+                    list = res.map(prod => prod.farmerid)
+                    setSelectedFarmers(list)
+                }).then(() => {
                     getFarmers()
                         .then((p) => {
                             props.setFarmers(p);
-                            setFarmersPresent(props.products.map(prod => prod.farmerid));
-                            setFarmersPresent(props.farmers.filter(f => farmersPresent.includes(f.userid)));
+                            setFarmersPresent(p.filter(f => list.includes(f.userid)))
                         });
                 })
+            setFlag(false)
         }
-    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, setFarmersPresent, props.date]);
+    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, props.date, props.setProducts, flag, lastDate]);
 
     //this use effect is used to show a message when the cart button is clicked
     useEffect(() => {
@@ -40,6 +46,8 @@ export default function ProductsList(props) {
         }, 5000);
     }, [inserted]);
 
+    //this use effect is called when something is deleted from the basket. 
+    //it is meant to realling the quantities
     useEffect(() => {
         if (props.dirtyQuantity.length > 0) {
             let list = props.products.map(prod => {
@@ -51,7 +59,18 @@ export default function ProductsList(props) {
             props.setDirtyQuantity([]);
         }
     }
-        , [props.setDirtyQuantity, props.dirtyQuantity])
+        , [props.setDirtyQuantity, props.dirtyQuantity, props.products, props.setProducts])
+
+    function showFarmer(id) {
+        if (!selectedFarmers.includes(id)) {
+            setSelectedFarmers(old => [...old, id])
+        }
+    }
+    function hideFarmer(id) {
+        if (selectedFarmers.includes(id)) {
+            setSelectedFarmers(old => old.filter(el => el !== id))
+        }
+    }
 
     return (
         <>
@@ -67,12 +86,22 @@ export default function ProductsList(props) {
                             </Button>
                         </div>
                     </Col>)}
+                <Col className="border-end border-grey p-4">
+                    <div className="d-flex justify-content-around">
+                        <Button className="btn-primary" id="main"
+                            onClick={() => {
+                                setSelected("All");
+                            }}>
+                            <>All</>
+                        </Button>
+                    </div>
+                </Col>
             </Row>
             <Container className="d-flex justify-content-around">
                 <Row className="p-0 w-100">
                     <Col className="col-12 col-md-3 text-center">
                         <Button
-                            className=" rounded-circle mt-3 "
+                            className=" rounded-circle mt-3 farmers-filter"
                             onClick={() => { handleShow(); }}
                             style={{
                                 right: '3rem', fontSize: "20px", "fontWeight": "400", width: '4rem', height: '4rem', bottom: '2rem', zIndex: '2', backgroundColor: "#0f8b8b", color: "white"
@@ -86,12 +115,11 @@ export default function ProductsList(props) {
                     </Col>
                 </Row>
                 {inserted && <Alert className="position-fixed" variant="success"
-                    style={{ bottom: '2rem', zIndex: '100', background: '#0C7373', color: "white" }}
-                    variant={"success"}>
+                    style={{ bottom: '2rem', zIndex: '100', background: '#0C7373', color: "white" }}>
                     Product has been added to cart.
                 </Alert>
                 }
-                <HomeButton logged={props.logged} />
+                <HomeButton className="home-here" logged={props.logged} />
             </Container>
 
             <Offcanvas show={show} onHide={handleClose} {...props} className="p-2" style={{ "backgroundColor": "#FFF3E0", color: "#5E3A08" }}>
@@ -128,12 +156,12 @@ export default function ProductsList(props) {
             </Row>
             <Row className="mt-3 d-block m-0">
                 <Row className="mt-0 p-0 justify-content-center">
-                    {props.products.filter(p => (selected) ? p.category === selected : true).map((prod, index) =>
+                    {props.products.filter(p => (selected) ? (p.category === selected || selected === "All")&&(selectedFarmers.includes(p.farmerid)) : false).map((prod, index) =>
                         <Product
                             prod={prod}
                             key={index}
                             logged={props.logged}
-                            farmerName={props.farmers.lenght > 0 && props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0] && props.farmers.filter(farmer => farmer.userid === prod.farmerid)[0].place}
+                            farmerName={farmersPresent.length > 0 && farmersPresent.filter(farmer => farmer.userid === prod.farmerid)[0] && farmersPresent.filter(farmer => farmer.userid === prod.farmerid)[0].place}
                             setInserted={setInserted}
                             setDirtyBasket={props.setDirtyBasket}
                         />)}
@@ -149,10 +177,10 @@ function Product(props) {
 
     //functions needed to select the quantity
     function add() {
-        setCounter((c) => c + 1);
+        setCounter((c) => c + 0.5);
     }
     function sub() {
-        setCounter((c) => c - 1);
+        setCounter((c) => c - 0.5);
     }
 
     function addToBasket() {
@@ -190,7 +218,7 @@ function Product(props) {
     }
 
     return (
-        <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }}>
+        <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }} className="another-product mb-2 ">
             <Accordion.Item eventKey="0">
                 <Card style={{ backgroundColor: "#FFEFD6" }}> {/*text-center*/}
                     <Card.Img variant="top" className="m-0" src={props.prod.picture} />
@@ -235,7 +263,7 @@ function Product(props) {
                                         :
                                         <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { sub() }}>{iconSub}</Button>
                                     }
-                                    <p className="px-2 m-0">{counter} {props.prod.measure}</p>
+                                    <p className="px-2 m-0">{parseFloat(counter).toFixed(1)} {props.prod.measure}</p>
                                     {counter >= props.prod.quantity ?
                                         <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconAddDisabled}</Button>
                                         :

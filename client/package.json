@@ -28,7 +28,8 @@
         "eject": "react-scripts eject",
         "cypress": "cypress open",
         "cypress:coverage": "npx nyc report --reporter=text-summary",
-        "coverage": "start ./report.sh"
+        "coverage": "start ./report.sh",
+        "instrumented": "npx nyc instrument --compact=false src instrumented"
     },
     "eslintConfig": {
         "extends": [

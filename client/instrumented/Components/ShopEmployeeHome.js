@@ -14,12 +14,12 @@ export default function ShopEmployeeHome() {
                             </Link>
                         </Button>
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toregcl">
-                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/registerClient" className="py-2 yellowLink">
+                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/registerClient"className="py-2 yellowLink">
                                 Register new client
                             </Link>
                         </Button>
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="topup">
-                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/wallet" className="py-2 yellowLink">
+                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/wallet/0" className="py-2 yellowLink">
                                 Top-up a client's wallet
                             </Link>
                         </Button>
@@ -31,6 +31,11 @@ export default function ShopEmployeeHome() {
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="tohand">
                             <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/handout" className="py-2 yellowLink">
                                 Record products handout
+                            </Link>
+                        </Button>
+                        <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="tohand">
+                            <Link style={{ minWidth: "100%", textDecoration: "none" }} to="/manageOrders" className="py-2 yellowLink">
+                                Manage orders pending cancelation
                             </Link>
                         </Button>
                     </ButtonGroup>

@@ -4,7 +4,7 @@ import {useState} from 'react';
 import '../App.css';
 import { useHistory } from 'react-router-dom';
 
-
+//This function verify if a string contains both numeric and alphabetic caracthers
 function isAlphaNumeric(str) {
     var code, i, len, nNum = 0, nLett = 0;
 
@@ -24,7 +24,7 @@ function isAlphaNumeric(str) {
 };
 
 function LoginForm(props) {
-    const history = useHistory();
+    const history = useHistory()
 
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
@@ -39,10 +39,17 @@ function LoginForm(props) {
         props.setLogged(user.type);
         props.setUser(user.username);
         props.setUserId(user.id);
+        //Depending on who is logging in he is redirect to a different page
         if(user.type === "shopemployee"){
-            history.push("/employeehome")
+            if(props.wallet){
+                history.push("/wallet/0")
+            } else {
+                history.push("/employeehome")
+            }
         }else if(user.type === "client"){
             history.push("/clienthome")
+        }else if(user.type === "farmer"){
+            history.push("/farmerhome")  //this if is used to story9
         }
       })
         .catch (err=>{
@@ -67,6 +74,8 @@ function LoginForm(props) {
 
             var valid;
 
+            //Check if the password has the correct format and if the username is not empty!
+            //If everything is ok the login is performed
             if (username === '' || password === '' || password.length < 6 || isAlphaNumeric(password) === false) {
                 valid = false;
                 setShow(true);
@@ -80,9 +89,9 @@ function LoginForm(props) {
     };
 
     return (
-        <>
+        <div className="form_wrapper">
             <Container className='login-form text-warning'>
-                <Col>
+                <Col className="col">
                   <h2 align="center">{iconStar}&nbsp;Login</h2>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Table className="mb-3 color">
@@ -109,7 +118,7 @@ function LoginForm(props) {
                     </Form>
                 </Col>
             </Container>
-        </>
+        </div>
     )
 }
 
