@@ -1,143 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-orderlines.test.js">
-    <testCase name="Testing PUT on /api/orderlines It should update the orderline status" duration="161"/>
-    <testCase name="Testing PUT on /api/orderlines It should respond with 200 status code" duration="86"/>
-    <testCase name="Testing PUT on /api/orderlines It should set to packaged the order status" duration="129"/>
-    <testCase name="Testing PUT on /api/orderlines It should NOT set to packaged the order status" duration="95"/>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-orders.test.js">
-    <testCase name="Testing PUT on /api/orders/:orderid It should respond with 200 status code" duration="57"/>
-    <testCase name="Testing GET on /api/orders It should respond with an array of orders" duration="45"/>
-    <testCase name="Testing GET on /api/orders/status/:status It should respond with an array of orders with status Pending" duration="32"/>
-    <testCase name="Testing GET on /api/orders/status/:status It should respond with an empty array" duration="32"/>
-    <testCase name="Testing GET on /api/orders/farmers It should respond with an array of orderlines related to farmerid 1" duration="25"/>
-    <testCase name="Testing GET on /api/orders/farmers It should respond with an array of orderlines related to farmerid 1 (test for an edge case for date)" duration="31"/>
-    <testCase name="Testing GET on /api/orders/farmers It should respond with 200 status code" duration="35"/>
-    <testCase name="Testing GET on /api/orders/farmers It should respond with an empty array" duration="28"/>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\user-dao.test.js">
-    <testCase name="Testing user-dao functions unused in any api Testing getUserById function" duration="122"/>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\product-dao.test.js">
-    <testCase name="Test product-dao functions unused in any api Testing getProductById function" duration="23"/>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\orderline-dao.test.js">
-    <testCase name="Test orderline-dao functions unused in any api Testing getOrderLines function" duration="36">
-      <failure message="Error: expect(received).toEqual(expected) // deep equality"><![CDATA[Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  - 0
-+ Received  + 2
-
-@@ -2,13 +2,15 @@
-    Object {
-      "orderid": 299,
-      "price": 3,
-      "productid": 0,
-      "quantity": 2,
-+     "status": null,
-    },
-    Object {
-      "orderid": 299,
-      "price": 3,
-      "productid": 1,
-      "quantity": 2,
-+     "status": null,
-    },
-  ]
-    at Object.<anonymous> (C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\orderline-dao.test.js:94:26)]]></failure>
-    </testCase>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\order-dao.test.js">
-    <testCase name="Testing order-dao functions unused in any api Testing deleteOrder function" duration="59"/>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-users.test.js">
-    <testCase name="Testing POST on /login It should respond with 200 status code" duration="125"/>
-    <testCase name="Testing POST on /login It should respond with 401 (Unauthorized) status code Case of wrong username" duration="22"/>
-    <testCase name="Testing POST on /login It should respond with 401 (Unauthorized) status code Case of wrong password" duration="115"/>
-    <testCase name="Testing DELETE on /logout It should respond with a 200 status code" duration="127"/>
-    <testCase name="Testing POST on /api/shopemployee It should respond with 200 status code" duration="40">
-      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: 200
-Received: 422
-    at Object.<anonymous> (C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-users.test.js:133:37)
-    at processTicksAndRejections (internal/process/task_queues.js:93:5)]]></failure>
-    </testCase>
-    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="87"/>
-    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;username&apos; parameter type" duration="49"/>
-    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;password&apos; parameter type" duration="45"/>
-    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;type&apos; parameter type" duration="41"/>
-    <testCase name="Testing GET on /api/usernames It should respond with an array of farmers" duration="19"/>
-    <testCase name="Testing GET on /api/usernames It should respond with a 200 status code" duration="29"/>
-    <testCase name="Testing GET on /api/usernames It should respond with a 404 status code" duration="30"/>
-    <testCase name="Testing POST on /api/farmer It should respond with 200 status code" duration="31">
-      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: 200
-Received: 422
-    at Object.<anonymous> (C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-users.test.js:284:37)
-    at processTicksAndRejections (internal/process/task_queues.js:93:5)]]></failure>
-    </testCase>
-    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="121"/>
-    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;username&apos; parameter type" duration="42"/>
-    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;password&apos; parameter type" duration="34"/>
-    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;name&apos; parameter type" duration="31"/>
-    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;surname&apos; parameter type" duration="37"/>
-    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;place&apos; parameter type" duration="26"/>
-    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;place&apos; parameter type" duration="30"/>
-    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;type&apos; parameter type" duration="31"/>
-    <testCase name="Testing POST on /api/password It should respond with 200 status code" duration="151"/>
-    <testCase name="Testing POST on /api/password It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="40"/>
-    <testCase name="Testing POST on /api/password It should respond with 400 (Bad Request) status code Case of wrong &apos;id&apos; parameter type" duration="35"/>
-    <testCase name="Testing POST on /api/password It should respond with 400 (Bad Request) status code Case of wrong &apos;password&apos; parameter type" duration="36"/>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-requests.test.js">
-    <testCase name="Testing POST on /api/requests It should respond with 406 status code" duration="34"/>
-  </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-products.test.js">
-    <testCase name="Testing GET on /api/products It should respond with an array of products" duration="19">
-      <failure message="Error: expect(received).toEqual(expected) // deep equality"><![CDATA[Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  - 1
-+ Received  + 1
-
-@@ -6,10 +6,10 @@
-      "farmerid": 2,
-      "id": 1,
-      "measure": "kg",
-      "name": "Banana",
-      "picture": "",
--     "price": 15,
-+     "price": null,
-      "quantity": 12,
-      "typeofproduction": "Bio",
-    },
-  ]
-    at Object.<anonymous> (C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-products.test.js:139:31)
-    at processTicksAndRejections (internal/process/task_queues.js:93:5)]]></failure>
-    </testCase>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/api-products.test.js">
+    <testCase name="Testing GET on /api/products It should respond with an array of products" duration="29"/>
     <testCase name="Testing GET on /api/products It should respond with a 200 status code" duration="24"/>
   </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-farmers.test.js">
-    <testCase name="Testing GET on /api/farmers It should respond with an array of farmers" duration="26"/>
-    <testCase name="Testing GET on /api/farmers It should respond with a 200 status code" duration="57"/>
-    <testCase name="Testing GET on /api/farmers It should respond with a 404 status code" duration="47"/>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/api-users.test.js">
+    <testCase name="Testing POST on /login It should respond with 200 status code" duration="72"/>
+    <testCase name="Testing POST on /login It should respond with 401 (Unauthorized) status code Case of wrong username" duration="8"/>
+    <testCase name="Testing POST on /login It should respond with 401 (Unauthorized) status code Case of wrong password" duration="60"/>
+    <testCase name="Testing DELETE on /logout It should respond with a 200 status code" duration="66"/>
+    <testCase name="Testing POST on /api/shopemployee It should respond with 200 status code" duration="66"/>
+    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="10"/>
+    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;username&apos; parameter type" duration="7"/>
+    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;password&apos; parameter type" duration="6"/>
+    <testCase name="Testing POST on /api/shopemployee It should respond with 400 (Bad Request) status code Case of wrong &apos;type&apos; parameter type" duration="6"/>
+    <testCase name="Testing GET on /api/usernames It should respond with an array of farmers" duration="6"/>
+    <testCase name="Testing GET on /api/usernames It should respond with a 200 status code" duration="5"/>
+    <testCase name="Testing GET on /api/usernames It should respond with a 404 status code" duration="4"/>
+    <testCase name="Testing POST on /api/farmer It should respond with 200 status code" duration="62"/>
+    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="24"/>
+    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;username&apos; parameter type" duration="6"/>
+    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;password&apos; parameter type" duration="4"/>
+    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;name&apos; parameter type" duration="4"/>
+    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;surname&apos; parameter type" duration="5"/>
+    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;place&apos; parameter type" duration="5"/>
+    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;place&apos; parameter type" duration="4"/>
+    <testCase name="Testing POST on /api/farmer It should respond with 400 (Bad Request) status code Case of wrong &apos;type&apos; parameter type" duration="4"/>
+    <testCase name="Testing POST on /api/password It should respond with 200 status code" duration="62"/>
+    <testCase name="Testing POST on /api/password It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="6"/>
+    <testCase name="Testing POST on /api/password It should respond with 400 (Bad Request) status code Case of wrong &apos;id&apos; parameter type" duration="5"/>
+    <testCase name="Testing POST on /api/password It should respond with 400 (Bad Request) status code Case of wrong &apos;password&apos; parameter type" duration="4"/>
   </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-completeOrders.test.js">
-    <testCase name="Testing GET on /api/completeOrders It should respond with an array of orders with products" duration="18"/>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/api-clients.test.js">
+    <testCase name="Testing GET on /api/clients It should respond with an array of clients" duration="185"/>
+    <testCase name="Testing GET on api/client/:clientid It should respond with the right client" duration="63"/>
+    <testCase name="Testing GET on api/client/:clientid It should respond with 200 status" duration="62"/>
+    <testCase name="Testing GET on api/client/:clientid It should respond with 404 status" duration="6"/>
+    <testCase name="Testing POST on /api/client It should respond with 200 status code" duration="67"/>
+    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="16"/>
+    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;name&apos; parameter type" duration="6"/>
+    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;surname&apos; parameter type" duration="4"/>
+    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;wallet&apos; parameter type" duration="4"/>
+    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;address&apos; parameter type" duration="5"/>
+    <testCase name="Testing PUT on /api/clients/:clientid It should respond with 200 status code" duration="5"/>
   </file>
-  <file path="C:\Users\Utente\Desktop\Università\Software Engineering 2\Project\se2021-07-SolidarityPurchasingGroup\server\tests\api-clients.test.js">
-    <testCase name="Testing GET on /api/clients It should respond with an array of clients" duration="390"/>
-    <testCase name="Testing GET on api/client/:clientid It should respond with the right client" duration="158"/>
-    <testCase name="Testing GET on api/client/:clientid It should respond with 200 status" duration="163"/>
-    <testCase name="Testing GET on api/client/:clientid It should respond with 404 status" duration="53"/>
-    <testCase name="Testing POST on /api/client It should respond with 200 status code" duration="163"/>
-    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of one parameter missing" duration="84"/>
-    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;name&apos; parameter type" duration="36"/>
-    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;surname&apos; parameter type" duration="28"/>
-    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;wallet&apos; parameter type" duration="37"/>
-    <testCase name="Testing POST on /api/client It should respond with 400 (Bad Request) status code Case of wrong &apos;address&apos; parameter type" duration="32"/>
-    <testCase name="Testing PUT on /api/clients/:clientid It should respond with 200 status code" duration="43"/>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/api-orders.test.js">
+    <testCase name="Testing PUT on /api/orders/:orderid It should respond with 200 status code" duration="14"/>
+    <testCase name="Testing GET on /api/orders It should respond with an array of orders" duration="6"/>
+    <testCase name="Testing GET on /api/orders/status/:status It should respond with an array of orders with status Pending" duration="6"/>
+    <testCase name="Testing GET on /api/orders/status/:status It should respond with an empty array" duration="4"/>
+    <testCase name="Testing GET on /api/orders/farmers It should respond with an array of orderlines related to farmerid 1" duration="6"/>
+    <testCase name="Testing GET on /api/orders/farmers It should respond with an array of orderlines related to farmerid 1 (test for an edge case for date)" duration="5"/>
+    <testCase name="Testing GET on /api/orders/farmers It should respond with 200 status code" duration="4"/>
+    <testCase name="Testing GET on /api/orders/farmers It should respond with an empty array" duration="5"/>
+  </file>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/user-dao.test.js">
+    <testCase name="Testing user-dao functions unused in any api Testing getUserById function" duration="58"/>
+  </file>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/api-orderlines.test.js">
+    <testCase name="Testing PUT on /api/orderlines It should update the orderline status" duration="15"/>
+    <testCase name="Testing PUT on /api/orderlines It should respond with 200 status code" duration="7"/>
+    <testCase name="Testing PUT on /api/orderlines It should set to packaged the order status" duration="15"/>
+    <testCase name="Testing PUT on /api/orderlines It should NOT set to packaged the order status" duration="6"/>
+  </file>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/api-requests.test.js">
+    <testCase name="Testing POST on /api/requests It should respond with 406 status code" duration="18"/>
+  </file>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/api-farmers.test.js">
+    <testCase name="Testing GET on /api/farmers It should respond with an array of farmers" duration="10"/>
+    <testCase name="Testing GET on /api/farmers It should respond with a 200 status code" duration="4"/>
+    <testCase name="Testing GET on /api/farmers It should respond with a 404 status code" duration="5"/>
+  </file>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/api-completeOrders.test.js">
+    <testCase name="Testing GET on /api/completeOrders It should respond with an array of orders with products" duration="10"/>
+  </file>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/orderline-dao.test.js">
+    <testCase name="Test orderline-dao functions unused in any api Testing getOrderLines function" duration="4"/>
+  </file>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/order-dao.test.js">
+    <testCase name="Testing order-dao functions unused in any api Testing deleteOrder function" duration="3"/>
+  </file>
+  <file path="/Users/francescociarla/Documents/Polito/SoftEngII/se2021-07-SolidarityPurchasingGroup/server/tests/product-dao.test.js">
+    <testCase name="Test product-dao functions unused in any api Testing getProductById function" duration="3"/>
   </file>
 </testExecutions>

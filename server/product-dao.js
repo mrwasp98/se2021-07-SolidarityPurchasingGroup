@@ -15,7 +15,7 @@ exports.getProductsAvailable = (date) => {
         lastSaturday9Am = dayjs(thisSaturday9Am).subtract(1, 'week')
     }
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM product AS P, availability AS A WHERE P.id=A.productid AND A.quantity<>0';
+        const sql = 'SELECT P.id, P.name, P.description, P.farmerid, P.price, P.measure, P.category, P.typeofproduction, P.picture, A.dateavailability, A.quantity, A.status FROM product AS P, availability AS A WHERE P.id=A.productid AND A.quantity<>0';
         db.all(sql, [], (err, rows) => {
             if(err) {
                 reject(err);

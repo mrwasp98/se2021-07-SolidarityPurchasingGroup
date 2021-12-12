@@ -207,7 +207,7 @@ app.get("/api/products/:date", async (req, res) => {
 app.get("/api/farmers", async (req, res) => {
   farmerDao
     .getFarmers()
-    .then((farmers) => res.json(farmers))
+    .then((farmers) => res.status(200).json(farmers))
     .catch(() => res.staus(500).end());
 });
 

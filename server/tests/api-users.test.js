@@ -126,9 +126,9 @@ describe('Testing POST on /api/shopemployee', () => {
 
     test('It should respond with 200 status code', async () => {
         const response = await request(app).post('/api/shopemployee').send({
-            username:"Hari",
+            username:"Hari@prova.it",
             password:"qwerty1",
-            type:"farmer"
+            type:"shopemployee"
         })
         expect(response.statusCode).toBe(200);
     });
@@ -273,7 +273,7 @@ describe('Testing POST on /api/farmer', () => {
 
     test('It should respond with 200 status code', async () => {
         const response = await request(app).post('/api/farmer').send({
-            username: "Harry01",
+            username: "Harry01@prova.it",
             password: "qwerty1",
             name: "Harry", 
             surname: "Potter",
@@ -288,7 +288,7 @@ describe('Testing POST on /api/farmer', () => {
 
         test('Case of one parameter missing', async () => {
             const obj = {
-                username: "Harry01",
+                username: "Harry01@prova.it",
                 password: "qwerty1",
                 name: "Harry", 
                 place: "Hogwarts",
@@ -320,7 +320,7 @@ describe('Testing POST on /api/farmer', () => {
 
         test("Case of wrong 'password' parameter type", async () => {
             const response = await request(app).post('/api/farmer').send({
-                username: "Harry01",
+                username: "Harry01@prova.it",
                 password: 1,
                 name: "Harry", 
                 surname: "Potter",
@@ -333,7 +333,7 @@ describe('Testing POST on /api/farmer', () => {
 
         test("Case of wrong 'name' parameter type", async () => {
             const response = await request(app).post('/api/farmer').send({
-                username: "Harry01",
+                username: "Harry01@prova.it",
                 password: "qwerty1",
                 name: 2, 
                 surname: "Potter",
@@ -346,7 +346,7 @@ describe('Testing POST on /api/farmer', () => {
 
         test("Case of wrong 'surname' parameter type", async () => {
             const response = await request(app).post('/api/farmer').send({
-                username: "Harry01",
+                username: "Harry01@prova.it",
                 password: "qwerty1",
                 name: "Harry", 
                 surname: 3,
@@ -359,7 +359,7 @@ describe('Testing POST on /api/farmer', () => {
 
         test("Case of wrong 'place' parameter type", async () => {
             const response = await request(app).post('/api/farmer').send({
-                username: "Harry01",
+                username: "Harry01@prova.it",
                 password: "qwerty1",
                 name: "Harry", 
                 surname: "Potter",
@@ -372,7 +372,7 @@ describe('Testing POST on /api/farmer', () => {
 
         test("Case of wrong 'place' parameter type", async () => {
             const response = await request(app).post('/api/farmer').send({
-                username: "Harry01",
+                username: "Harry01@prova.it",
                 password: "qwerty1",
                 name: "Harry", 
                 surname: "Potter",
@@ -385,7 +385,7 @@ describe('Testing POST on /api/farmer', () => {
 
         test("Case of wrong 'type' parameter type", async () => {
             const response = await request(app).post('/api/farmer').send({
-                username: "Harry01",
+                username: "Harry01@prova.it",
                 password: "qwerty1",
                 name: "Harry", 
                 surname: "Potter",
@@ -405,7 +405,7 @@ describe('Testing POST on /api/password', () => {
     let idU;
 
     const fakeUser1 = {
-        username: 'Henry',
+        username: 'Henry@prova.it',
         password: 'qwerty1',
         type: 'client-prov'
     }
