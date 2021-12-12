@@ -11,11 +11,8 @@ exports.getOrderLines = (orderid) => {
             if (err) {
                 reject(err);
             }
-            if (rows == undefined) {
-                resolve({ error: 'Orderline not found.' });
-            }
             else {
-                resolve(rows);
+                resolve(rows); //the caller should manage if undefined
             }
         });
     });

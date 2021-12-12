@@ -144,7 +144,7 @@ describe('Testing GET on api/client/:clientid', () => {
 
 describe('Testing POST on /api/client', () => {
 
-    afterEach(() => {
+    beforeEach(() => {
         clientDao.deleteAllClients();
     });
 
@@ -266,6 +266,22 @@ describe('Testing PUT on /api/clients/:clientid', () => {
             status: 'completed'
         })
         expect(response.statusCode).toBe(200);;
+    });
+
+    test('It should respond with 404 status code', async () => {
+        const fakeClient1 = {
+            userid: userId3,
+            name: 'John',
+            surname: 'Doe',
+            wallet: 50.30,
+            address: 'Corso Duca degli Abruzzi, 21, Torino'
+        }
+        const clientIdNotExisting = userId3+1;
+        id1 = await clientDao.insertClient(fakeClient1);
+        const response = await request(app).put('/api/clients/'+clientIdNotExisting+'/?ammount=30').send({
+            status: 'completed'
+        })
+        expect(response.statusCode).toBe(404);;
     });
 
 });

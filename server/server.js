@@ -8,15 +8,12 @@ const orderDao = require("./order-dao");
 const orderlineDao = require("./orderline-dao");
 const productDao = require("./product-dao");
 const farmerDao = require("./farmer-dao");
-
 const passport = require("passport"); //auth middleware
 const LocalStrategy = require("passport-local").Strategy; //Username and password for login
 const session = require("express-session"); //enable sessions
 const userDao = require("./user-dao"); //module fo accessing the users in the DB
 var path = require("path");
-
-
-var multer = require('multer')
+var multer = require('multer');
 
 
 /*** Set up Passport ***/
@@ -189,11 +186,6 @@ app.put("/api/orders/:orderid", async (req, res) => {
   }
 });
 
-//POST: insert new product in the db
-app.post('/api/product', async (req, res) => {
-  productDao.insertProduct()
-})
-
 
 //GET: get all available products
 app.get("/api/products/:date", async (req, res) => {
@@ -215,11 +207,11 @@ app.get("/api/farmers", async (req, res) => {
 app.post('/api/product', async (req, res) => {
   try{
   let numberId = await productDao.insertProduct(req.body);
-
   res.status(200).json({
     status: 200
   })
 }catch(err){
+  console.log(err)
   res.status(500).json({
     status: 500,
     argoment: req.body
@@ -393,7 +385,7 @@ app.get("/api/usernames", async (req, res) => {
 //POST: insert a new farmer
 app.post(
   "/api/farmer",
-  [
+  [ 
     check(["place"]).isString().isLength({ min: 2 }),
     check(["username"]).isEmail(),
     check(["name"]).isString().isLength({ min: 2 }),
@@ -426,7 +418,7 @@ app.post(
 
     try {
       const result = await farmerDao.insertFarmer(client);
-      res.json(result);
+      res.status(200).json(result);
     } catch (err) {
       res.status(503).json({
         error: `Database error during the creation of new client: ${err}.`,

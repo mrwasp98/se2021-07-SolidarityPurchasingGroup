@@ -148,3 +148,28 @@ describe('Testing GET on /api/products', () => {
     });
    
 });
+
+describe('Testing POST on /api/product', () => {
+
+    beforeEach(async () => {
+        await productDao.deleteAllProducts();
+    });
+
+    afterAll(async () => {
+        //clear (mock) product database
+        await productDao.deleteAllProducts();
+        app.close();
+    });
+
+    test("It should respond with 200 status code", async () => {
+        const response = await request(app).post('/api/product').send(fakeProduct1);
+        expect(response.statusCode).toBe(200);
+    });
+
+    test("It should respond with 500 status code", async () => {
+        await productDao.insertProduct(fakeProduct1);
+        const response = await request(app).post('/api/product').send(fakeProduct1);
+        expect(response.statusCode).toBe(500);
+    });
+   
+});
