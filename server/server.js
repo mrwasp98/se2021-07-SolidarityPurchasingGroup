@@ -255,7 +255,6 @@ app.post("/api/requests", async (req, res) => {
         deliveryaddress: req.body.deliveryaddress,
         status: req.body.status,
       };
-
       let numberId = await orderDao.insertOrder(order);
 
       products.forEach((product) => {

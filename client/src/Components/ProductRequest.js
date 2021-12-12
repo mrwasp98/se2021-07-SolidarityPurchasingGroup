@@ -79,6 +79,7 @@ export default function ProductRequest(props) {
     const [lastDate, setLastDate] = useState(dayjs(props.date)); //everytime the date changes, the product must be loaded again
     const [flag, setFlag] = useState(true)
     const [claimdate, setClaimdate] = useState(new Date());
+    const [deliveryAddress, setDeliveryAddress] = useState("");
 
     const [messageProductRequest, setMessageProductRequest] = useState({
         type: "",
@@ -137,7 +138,7 @@ export default function ProductRequest(props) {
                 props.date,
                 dayjs(claimdate).format("dd-mm-yyyy HH:mm"),
                 null,
-                null,
+                deliveryAddress,
                 null,
                 "pending",
                 productsSelected).then(result => {
@@ -266,6 +267,9 @@ export default function ProductRequest(props) {
                                     setShow={setShowModalClaim}
                                     claimdate={claimdate}
                                     setClaimdate={setClaimdate}
+                                    address={deliveryAddress}
+                                    setAddress={setDeliveryAddress}
+
                                     handleOrder={handleOrder} />}
                         </>
                             :
