@@ -2,6 +2,7 @@
 
 const db = require('./database');
 
+//Get all rows of the order table
 exports.getOrders = (clientId) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM 'order' WHERE userid=?";
@@ -22,6 +23,7 @@ exports.getOrders = (clientId) => {
 /*
 I've split this method because we need it below and we can't use it if it's exported
 */
+//Update the order status
 exports.updateOrderStatus = (orderId, status) => {
     return privateUpdateOrderStatus(orderId,status);
 };
@@ -38,6 +40,7 @@ const privateUpdateOrderStatus= (orderId, status) => {
     });
 };
 
+//Delete a row of the table order given the orderid
 exports.deleteOrder = (orderid) => {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM 'order' WHERE id = ?;"
@@ -50,6 +53,7 @@ exports.deleteOrder = (orderid) => {
     })
 } 
 
+//Delete all the rows from the order table
 exports.deleteAllOrders = () => {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM 'order'";
@@ -62,6 +66,7 @@ exports.deleteAllOrders = () => {
     });
 };
 
+//Insert a new row in the order table
 exports.insertOrder = (order) => {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO 'order'(userid, creationdate, claimdate, confirmationdate, deliveryaddress, status) VALUES(?,?,?,?,?,?)";
@@ -74,6 +79,7 @@ exports.insertOrder = (order) => {
     });
 };
 
+//Get a row of the order table given the orderid
 exports.getOrder = (orderid) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM 'order' WHERE id=?";
@@ -86,6 +92,7 @@ exports.getOrder = (orderid) => {
     });
 };
 
+//Get all the orders havin a specifc status
 exports.getOrdersByStatus = (status) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM 'order' WHERE status=?";

@@ -82,6 +82,8 @@ exports.deleteAllUsers = () => {
     });
 };
 
+/** JUST FOR THE TESTS **/
+
 //Insert a user in the database
 exports.insertUser =  (user) => {
     return new Promise((resolve, reject) => {
@@ -95,8 +97,6 @@ exports.insertUser =  (user) => {
         });
     });
 };
-
-/** JUST FOR THE TESTS **/
 
 //Update the password field of a user given his Id
 exports.updatePassword = (password, id) => {

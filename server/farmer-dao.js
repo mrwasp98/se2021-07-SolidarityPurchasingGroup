@@ -2,6 +2,7 @@
 
 const db = require('./database');
 
+//Get place and id of all the farmers of the farmer table
 exports.getFarmers = () => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT place, userId FROM farmer';
@@ -16,6 +17,7 @@ exports.getFarmers = () => {
 
 /**  JUST FOR TESTS **/
 
+//Delete all the rows of the farmer table
 exports.deleteAllFarmers = () => {
     return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM farmer';
@@ -28,6 +30,7 @@ exports.deleteAllFarmers = () => {
     });
 };
 
+//Inser a new farmer in the farmer table
 exports.insertFarmer = (farmer) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO farmer(userid, name, surname, place, address) VALUES(?,?,?,?,?)';

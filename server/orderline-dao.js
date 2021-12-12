@@ -3,6 +3,7 @@
 const dayjs = require('dayjs');
 const db = require('./database');
 
+//Get all the rows of the orderline table
 exports.getOrderLines = (orderid) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM orderline WHERE orderid=?';
@@ -20,6 +21,7 @@ exports.getOrderLines = (orderid) => {
     });
 };
 
+//Insert a new row in the orderline table
 exports.insertOrderLine = (line) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO orderline (orderid, productid, quantity, price) VALUES(?,?,?,?);';
@@ -32,6 +34,7 @@ exports.insertOrderLine = (line) => {
     });
 };
 
+//Get products' informations of a specific orderline given the orderid
 exports.getOrderLinesWithProducts = (orderid) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT p.id,p.name,o.quantity,p.measure,o.price FROM orderline AS O, product as P WHERE orderid=? AND O.productid=P.id';
@@ -49,6 +52,7 @@ exports.getOrderLinesWithProducts = (orderid) => {
     });
 };
 
+//Delete all the rows of the orderline table
 exports.deleteAllOrderlines = () => {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM orderline";
