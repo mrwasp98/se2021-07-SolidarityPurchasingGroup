@@ -70,6 +70,7 @@ exports.getClientById = (clientid) => {
 
 //Function to subtract an amout from a client's wallet after the confirmation of the order
 //antmat99
+/*
 exports.subtractFromWallet = (clientid, amount) => {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE client SET wallet = wallet - ? WHERE userid == ?';
@@ -82,3 +83,4 @@ exports.subtractFromWallet = (clientid, amount) => {
         });
     });
 };
+*/

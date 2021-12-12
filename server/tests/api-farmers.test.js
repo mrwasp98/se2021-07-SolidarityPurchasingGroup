@@ -69,5 +69,5 @@ describe('Testing GET on /api/farmers', () => {
         const response = await request(app).get('/api/farmer');
         expect(response.statusCode).toBe(404);
     });
-
+ 
 });
