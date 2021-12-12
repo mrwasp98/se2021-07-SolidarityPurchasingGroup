@@ -164,7 +164,7 @@ describe('SPG handout page', () => {
 
     it('type a valid user, no order', () => {
         cy.get('.client-here').type('Anton')
-        cy.findByText('Antonio Ferragnez - Via Napoleone 29').click()
+        cy.findByText('Antonio Ferragnez - via San Severo, 3').click()
         cy.contains('There is no order to be handed out.')
     })
 
@@ -262,7 +262,7 @@ describe('SPG register page', () => {
     })
 
     it('type a invalid surname', () => {
-        cy.get('.name-input').type('Antonio')
+        cy.get('.name-input').type('Marco')
         cy.get('.submit-btn').click()
         cy.contains('The user has been created').should('not.exist')
     })
@@ -315,7 +315,7 @@ describe('SPG registration client', () => {
     it('go to create client page', () => {
         cy.get('#toCreateNewClient').click()
         cy.url().should('include', '/user/client')
-        cy.get('#formBasicName').clear().type('Ajeje')
+        cy.get('#formBasicName').clear().type('Ajeje' +  Math.random())
         cy.get('#formBasicSurname').clear().type('Brazorf')
         cy.get('#formBasicAddress').clear().type('Corso Francia 34')
         cy.get('.next-btn').click()
@@ -324,10 +324,15 @@ describe('SPG registration client', () => {
 
     it('type a username that just exists', () => {
         cy.get('#formBasicUsername').clear().type('Brazorf1@3u1g.it')
-        cy.get('#formBasicPassword').clear().type('Ajeje')
-        cy.get('#formBasicCPassword').clear().type('Ajeje')
+        cy.get('#formBasicPassword').clear().type('AjejeBraz123')
+        cy.get('#formBasicCPassword').clear().type('AjejeBraz123')
         cy.get('.confirm-btn').click()
         cy.contains('Username already used').should('exist')
+        cy.get('.back-btn').click()
+        cy.get('#formBasicName').clear().type('Ajeje' +  Math.random())
+        cy.get('#formBasicSurname').clear().type('Brazorf2')
+        cy.get('#formBasicAddress').clear().type('Corso Francia 34')
+        cy.get('.next-btn').click()
     })
 
     it('type a bad password', () => {
