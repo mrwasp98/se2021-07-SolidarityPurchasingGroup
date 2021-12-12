@@ -32,6 +32,7 @@ function App() {
   // eslint-disable-next-line
   const [username, setUsername] = useState(''); //this state saves the name of the logged user
   const [userId, setUserId] = useState(0); //this state saves the id of the logged user
+  const [clientAddress, setClientAddress] = useState(''); 
   const [showTopUpWalletModal, setShowTopUpWalletModal] = useState(false);
   const [notify, setNotify] = useState(false);
 
@@ -69,6 +70,7 @@ function App() {
     async function fetchdata() {
       if (logged === "client") {
         let res = await getClientById(userId);
+        setClientAddress(res.address);
         setClient(res);
         if (res.userid === userId && parseInt(res.wallet) < 10) {
           setShowTopUpWalletModal(true);
@@ -112,6 +114,7 @@ function App() {
             className="myNav"
             setDirtyAvailability={setDirtyAvailability}
             topUpWallet={notify}
+            clientAddress={clientAddress}
           />
           <MyModal
             userid={client.userid}

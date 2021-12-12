@@ -3,6 +3,7 @@
 const dayjs = require('dayjs');
 const db = require('./database');
 
+//Get all the available products in a specified date
 exports.getProductsAvailable = (date) => {
     let thisSaturday9Am;
     let lastSaturday9Am;
@@ -26,6 +27,7 @@ exports.getProductsAvailable = (date) => {
     });
 };
 
+//Update the quantity field of a product
 exports.updateProductsQuantity = (productid, quantity) => {
     return new Promise((resolve, reject ) => {
         const sql = 'UPDATE availability SET quantity = quantity - ? WHERE productid == ?;';
@@ -38,6 +40,7 @@ exports.updateProductsQuantity = (productid, quantity) => {
     });
 };
 
+//Get informations about a product given his id
 exports.getProductById = (id) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM product WHERE id=?';
@@ -54,6 +57,8 @@ exports.getProductById = (id) => {
 };
 
 /** JUST FOR TESTS **/
+
+//Delete all products from the DB
 exports.deleteAllProducts = () => {
     return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM product';
@@ -66,6 +71,7 @@ exports.deleteAllProducts = () => {
     });
 };
 
+//Inser a new product in the product table
 exports.insertProduct = (product) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO product(id, name, description, farmerid, price, measure, category, typeofproduction, picture) VALUES(?,?,?,?,?,?,?,?,?)';
@@ -78,6 +84,7 @@ exports.insertProduct = (product) => {
     });
 };
 
+//Delete everiting from the availability table (This daos are made just for the tests)
 exports.deleteAvailability = () => {
     return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM availability';
@@ -90,6 +97,7 @@ exports.deleteAvailability = () => {
     });
 };
 
+//Insert a new row in the availability rable
 exports.insertAvailability = (availability) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO availability(productid, dateavailability, quantity, status) VALUES(?,?,?,?)';

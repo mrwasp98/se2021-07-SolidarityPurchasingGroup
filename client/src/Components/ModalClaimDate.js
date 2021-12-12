@@ -1,22 +1,13 @@
 /*
 This component is used to let the client choose time and date for the pickup
 */
-import {
-  Form,
-  ListGroup,
-  Button,
-  Modal,
-  Row,
-  Col,
-  Container,
-} from "react-bootstrap";
+import { Form, ListGroup, Button, Modal, Col } from "react-bootstrap";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function ModalClaimDate(props) {
   const [orderMethod, setOrderMethod] = useState("store");
-  const [address, setAddress] = useState("");
   const [showAddressForm, setShowAddressForm] = useState(false);
 
   const handleClose = () => {
@@ -103,18 +94,21 @@ export default function ModalClaimDate(props) {
               <Form>
                 {orderMethod === "address" && (
                   <>
-                   <Form.Check
+                    <Form.Check
                       defaultChecked
                       type="radio"
                       name="addressgroup"
                       id="checkdefadd"
                       label="Default address"
                       onClick={() => {
-                        setAddress(() => "");
+                        props.setAddress(()=>{return props.clientAddress});
                         setShowAddressForm(() => false);
                       }}
                     />
-                    <Form.Check                     
+                    <Form.Label className="mt-1 mb-3">
+                      Address: {props.clientAddress}
+                    </Form.Label>
+                    <Form.Check
                       type="radio"
                       name="addressgroup"
                       id="checkspec"
@@ -122,20 +116,16 @@ export default function ModalClaimDate(props) {
                       onClick={() => {
                         setShowAddressForm(() => true);
                       }}
-                    />
-                   {" "}
+                    />{" "}
                   </>
                 )}
-                {orderMethod === "address" && showAddressForm &&(
+                {orderMethod === "address" && showAddressForm && (
                   <>
-                    <Form.Label className="mt-3">
-                      address:
-                    </Form.Label>
+                    <Form.Label className="mt-1">Add new address:</Form.Label>
                     <Form.Control
-                    
                       type="text"
                       placeholder="Write your delivery address"
-                      onChange={(e) => setAddress(() => e.target.value)}
+                      onChange={(e) => props.setAddress(() => e.target.value)}
                     />
                   </>
                 )}

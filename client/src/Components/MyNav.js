@@ -25,7 +25,6 @@ export default function MyNav(props) {
     topUpWallet: props.topUpWallet
   });
 
-
   const toggleShowHour = () => {
     setShow(false);
     setShowHour(!show)
@@ -157,7 +156,7 @@ export default function MyNav(props) {
         </Container>
       </Navbar>
       {message.length > 0 && <Alert className="m-0 w-100" style={{ position: "absolute", zIndex: "2" }} variant={message[0]}>{message[1]}</Alert>}
-      <BasketOffCanvas showBasket={props.showBasket} setShowBasket={props.setShowBasket}
+      <BasketOffCanvas showBasket={props.showBasket} setShowBasket={props.setShowBasket} clientAddress={props.clientAddress}
         dirtyBasket={props.dirtyBasket} setDirtyBasket={props.setDirtyBasket} setDirtyQuantity={props.setDirtyQuantity}
         userId={props.userId} date={props.date} setMessage={setMessage} setDirtyAvailability={props.setDirtyAvailability}
       />
@@ -172,6 +171,9 @@ function BasketOffCanvas(props) {
   const [claimdate, setClaimdate] = useState(new Date());
   const [showModalClaim, setShowModalClaim] = useState(false) //this is used for the "claim date modal", shows up after clicking "continue"
   const [showModal, setShowModal] = useState(false); //this is used for the "recap modal", shows up at the confirmation of the order
+  const [deliveryAddress, setDeliveryAddress] = useState(()=>{return props.clientAddress});
+
+
   let total;
   //function called to close the offcanvas
   const handleClose = () => props.setShowBasket(false);
@@ -231,7 +233,7 @@ function BasketOffCanvas(props) {
       props.date,
       dayjs(claimdate).format("dd-mm-yyyy HH:mm"),
       null,
-      null,
+      deliveryAddress,
       null,
       "pending",
       elements)
@@ -258,6 +260,9 @@ function BasketOffCanvas(props) {
           claimdate={claimdate}
           setClaimdate={setClaimdate}
           handleOrder={checkAndOrder}
+          clientAddress={props.clientAddress}
+          address={deliveryAddress}
+          setAddress={setDeliveryAddress}
         />}
 
       {showModal &&
