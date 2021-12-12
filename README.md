@@ -368,10 +368,10 @@ We check the quality of our code relying on SonarCloud analysis.
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
-### Get orderlines (with product info) by farmer and date
-* URL: `api/orders/farmers?farmerid=xxx&date=yyy`
+### Get orderlines (with product info) by farmer, date and status
+* URL: `api/orders/farmers?farmerid=xxx&date=yyy&status=zzz`
 * HTTP method: GET
-* Description: get the orderlines of the week related to a specific farmer (since the user can buy items from different farmers in a single order, the farmer who wants to know
+* Description: get the orderlines of the week related to a specific farmer and with a specific status (since the user can buy items from different farmers in a single order, the farmer who wants to know
     his ordered products should receive a list of orderlines from different orders)
 * Request body: None
 * Response body: an array of orderlines and product info
