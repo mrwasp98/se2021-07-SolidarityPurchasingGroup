@@ -241,6 +241,38 @@ We check the quality of our code relying on SonarCloud analysis.
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
+### Get products of a farmer
+* URL: `api/productsByFarmer/<farmerid>`
+* HTTP method: GET
+* Description: get all products of a given farmer
+* Request body: None
+* Response body: an array of products,
+``` JSON
+[
+{
+    "id":1,
+    "name": "Apple",
+    "description": "desc",
+    "farmerid": 2,
+    "measure": "kg",
+    "category": "Fruit",
+    "typeofproduction": "some type",
+    "picture": ""
+},
+{
+    "id":2,
+    "name": "Strawberry",
+    "description": "desc 2",
+    "farmerid": 2,
+    "measure": "kg",
+    "category": "Fruit",
+    "typeofproduction": "some type",
+    "picture": ""
+}
+]
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
 ### Update order status
 * URL: `api/orders/{orderid}`
 * HTTP method: PUT
