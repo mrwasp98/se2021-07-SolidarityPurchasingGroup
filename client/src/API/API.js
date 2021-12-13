@@ -363,31 +363,104 @@ async function insertProduct(product) {
     fetch('/api/product', {
       method: "POST",
       headers: {
-        body: JSON.stringify({
-          id: product.id,
-          name: product.name,
-          description: product.description,
-          farmerid: product.farmerid,
-          price: product.price,
-          measure: product.measure,
-          category: product.category,
-          typeofproduction: product.typeofproduction,
-          picture: product.picture
-        })
-          .then((res) => {
+        "content-type": "application/json"
+      }, 
+      body: JSON.stringify({
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        farmerid: product.farmerid,
+        price: product.price,
+        measure: product.measure,
+        category: product.category,
+        typeofproduction: product.typeofproduction,
+        picture: product.picture
+      })}).then((res) => {
             if (!res.ok) {
               const error = new Error(`${res.status}: ${res.statusText}`);
               error.response = res;
               throw error;
             }
             resolve(res.json())
-              .catch((err) => {
-                reject({ message: err.message })
-              })
           })
-      }
+          .catch((err) => {
+            reject({ message: err.message })
+          })
     })
-  })
+}
+
+async function updateProduct(product) {
+  return new Promise((resolve, reject) => {
+    fetch('/api/product', {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json"
+      }, 
+      body: JSON.stringify({
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        farmerid: product.farmerid,
+        price: product.price,
+        measure: product.measure,
+        category: product.category,
+        typeofproduction: product.typeofproduction,
+        picture: product.picture
+      })}).then((res) => {
+            if (!res.ok) {
+              const error = new Error(`${res.status}: ${res.statusText}`);
+              error.response = res;
+              throw error;
+            }
+            resolve(res.json())
+          })
+          .catch((err) => {
+            reject({ message: err.message })
+          })
+    })
+}
+
+async function insertAvailability(availability) {
+  return new Promise((resolve, reject) => {
+    fetch('/api/availability', {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      }, 
+      body: JSON.stringify(availability)
+      }).then((res) => {
+            if (!res.ok) {
+              const error = new Error(`${res.status}: ${res.statusText}`);
+              error.response = res;
+              throw error;
+            }
+            resolve(res.json())
+          })
+          .catch((err) => {
+            reject({ message: err.message })
+          })
+    })
+}
+
+const getProductsByFarmer = async (farmerid) => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/products/' + farmerid, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        const error = new Error(`${res.status}: ${res.statusText}`);
+        error.response = res;
+        throw error;
+      }
+      resolve(res.json());
+    })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
 }
 
 //this API fetches all the orders refered to a farmer
@@ -467,4 +540,4 @@ async function getUserInfo() {
 
 
 
-export { getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus }
+export { getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct }

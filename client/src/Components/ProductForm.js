@@ -64,6 +64,7 @@ export default function ProductForm(props){
         e.preventDefault();
         const product = {id:id, name: name, description: description, farmerid: farmerid, measure: measure, category: category, typeofproduction: typeofproduction, picture: picture};
         let valid = true;
+
         if(name === '' || description === ''){
             valid = false;    
             setErrorMessage("Name or description are empty");
@@ -72,19 +73,19 @@ export default function ProductForm(props){
             valid=false;
             setErrorMessage("Select at least one type of production");
             setSubmitted(false)
+        } else if(picture === ''){
+            valid=false;
+            setErrorMessage("Select an image for your product");
+            setSubmitted(false)
         }
-
-        // TO DO: validation for insert only a type of a measure
-
 
         if(valid === true){
             if(path === '/addProduct'){
-               // props.addProduct(product); 
+                props.addProduct(product); 
                 setSubmitted(true);
             }
-
             if(path === '/editProduct'){
-                //props.editProduct(product);
+                props.editProduct(product);
                 setSubmitted(true);
             }
         }
@@ -95,7 +96,6 @@ export default function ProductForm(props){
             <h1>Edit your product</h1>
             <hr></hr>
             <Form onSubmit={submit}>
-            {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
             <Form.Group controlId="formProduct">
                 <Form.Label style={{marginTop: "10px"}}>Name</Form.Label>
                 <Form.Control type="name" placeholder="Enter name" onChange={(e) => setName(e.target.value)} value={name}/>
@@ -169,6 +169,7 @@ export default function ProductForm(props){
                         </Card>
                      </Col>               
                 </Row>
+                {errorMessage ? <Alert className="mt-3" variant='danger'>{errorMessage}</Alert> : ''}
             </Form.Group>
             <div className="d-flex justify-content-between mb-4 mt-4">
                 <Link to="/farmerhome"><Button variant='danger'>Cancel</Button></Link>

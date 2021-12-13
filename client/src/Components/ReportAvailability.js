@@ -5,7 +5,7 @@ import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import HomeButton from './HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
-import { getFarmersOrders, updateOrderStatus } from "../API/API.js";
+import { getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer } from "../API/API.js";
 
 function ProductAction(props){
     return (<>
@@ -63,14 +63,14 @@ function ProductRow(props){
         setPrice(newPrice);
         setQuantity(newQuantity);
         if (props.productsAvailable.length === 0) {
-            const newProduct = { productid: product.id, name: product.name, quantity: newQuantity, measure: product.measure, price: newPrice };
+            const newProduct = { productid: product.id, dateavailability: '13-12-2021', quantity: newQuantity, status: 'ok', price: newPrice };
             props.setProductsAvailable([newProduct])
         } else {
             const otherProducts = props.productsAvailable.filter(p => p.productid !== product.id)
             if (newQuantity === 0) {
                 props.setProductsAvailable(otherProducts);
             } else {
-                const newProduct = { productid: product.id, name: product.name, quantity: newQuantity, measure: product.measure, price: newPrice};
+                const newProduct = { productid: product.id, dateavailability: '13-12-2021', quantity: newQuantity, status: 'ok', price: newPrice};
                 const newProducts = [...otherProducts, newProduct];
                 props.setProductsAvailable(newProducts);
             }
@@ -117,34 +117,27 @@ function ProductRow(props){
   }
 
 export default function ReportAvailability(props){
-    const [products, setProducts] = useState([{
-            id: 1,
-            name: "Carrots",
-            description: "Organic carrots are a versatile and nutritious addition to any meal. They are rich in beta-carotene, vitamin A, and potassium. Carrots can be roasted, mashed, and mixed into salads. They can also be steamed and served with a flavorful sauce",
-        	farmerid: 1,
-            price: 4.17,
-            measure: "kg",
-            category: "Fruit and Vegetables",
-            typeofproduction: "Local farm",
-            picture: "/img/carote.jfif"}]);
+    const [products, setProducts] = useState([]);
 
     const [orders, setOrders] = useState([]);
     
     const [productsAvailable, setProductsAvailable] = useState([]);
-    const [dirty, setDirty] = useState(false);
+    const [dirty, setDirty] = useState(true);
     const [dirtyO, setDirtyO] = useState(false);
 
-    //this use effect is used to get the products of a farmer
-    //and also for the orders
+    // this useEffect gets all the product of a particular farmer
     useEffect(() => {
-        //getProductsByFarmer when it will be implemented
         if(dirty){
-            setDirty(false);
+            getProductsByFarmer(1)
+            .then(res => {
+                console.log(res)
+                setProducts(res)
+            })
+            .then(() => setDirty(false))
         }
     }, [dirty]);
 
     useEffect(() => {
-        //getProductsByFarmer when it will be implemented
         getFarmersOrders(props.userId, props.date, 'null').then((orders) => {
             setOrders(orders);
         });
@@ -154,7 +147,7 @@ export default function ReportAvailability(props){
     }, [dirtyO, props.date]);
 
     const handleReport = () => {
-        console.log(productsAvailable);
+        productsAvailable.forEach( async p => await insertAvailability(p));
     }
 
     return( <Container className="justify-content-center">

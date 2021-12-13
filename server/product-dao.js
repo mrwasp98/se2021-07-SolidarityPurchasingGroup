@@ -27,6 +27,19 @@ exports.getProductsAvailable = (date) => {
     });
 };
 
+//Get all the products of a famrmer
+exports.getProductsByFarmer = (farmerid) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM product AS P WHERE P.farmerid = ?';
+        db.all(sql, [farmerid], (err, rows) => {
+            if(err) {
+                reject(err);
+            }
+            resolve(rows);
+        });
+    });
+};
+
 //Update the quantity field of a product
 exports.updateProductsQuantity = (productid, quantity) => {
     return new Promise((resolve, reject ) => {
@@ -71,15 +84,28 @@ exports.deleteAllProducts = () => {
     });
 };
 
-//Inser a new product in the product table
+//Insert a new product in the product table (for the story 9)
 exports.insertProduct = (product) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO product(id, name, description, farmerid, price, measure, category, typeofproduction, picture) VALUES(?,?,?,?,?,?,?,?,?)';
-        db.run(sql, [product.id, product.name, product.description, product.farmerid, product.price, product.measure, product.category, product.typeofproduction, product.picture], function (err) {
+        const sql = 'INSERT INTO product(name, description, farmerid, price, measure, category, typeofproduction, picture) VALUES(?,?,?,?,?,?,?,?)';
+        db.run(sql, [product.name, product.description, product.farmerid, product.price, product.measure, product.category, product.typeofproduction, product.picture], function (err) {
             if (err) {
                 reject(err);
             }
             resolve(this.lastID);
+        });
+    });
+};
+
+//edit a product in the product table (for the story 9)
+exports.updateProduct = (product) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE product SET name = ?, description = ?, farmerid = ?, measure = ?, category = ?, typeofproduction = ?, picture = ? WHERE id == ?;';
+        db.run(sql, [product.name, product.description, product.farmerid, product.measure, product.category, product.typeofproduction, product.picture, product.id], function (err) {
+            if (err) {
+                reject(err);
+            }
+            resolve();
         });
     });
 };
@@ -97,15 +123,15 @@ exports.deleteAvailability = () => {
     });
 };
 
-//Insert a new row in the availability rable
+//Insert a new row in the availability rable (for the story 9)
 exports.insertAvailability = (availability) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO availability(productid, dateavailability, quantity, status) VALUES(?,?,?,?)';
-        db.run(sql, [availability.productid, availability.dateavailability, availability.quantity, availability.status], function (err) {
+        const sql = 'INSERT INTO availability(productid, dateavailability, quantity, status, price) VALUES(?,?,?,?,?)';
+        db.run(sql, [availability.productid, availability.dateavailability, availability.quantity, availability.status, availability.price], function (err) {
             if (err) {
                 reject(err);
             }
-            resolve(this.lastID);
+            resolve();
         });
     });
 };

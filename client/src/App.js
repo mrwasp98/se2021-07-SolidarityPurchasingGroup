@@ -11,7 +11,7 @@ import Register from "./Components/Register";
 import Type from "./Components/Type";
 import UpdatePassword from "./Components/UpdatePassword";
 import RegisterUser from "./Components/RegisterUser";
-import { login, getUserInfo, logout, getClientById } from "./API/API.js";
+import { login, getUserInfo, logout, getClientById, insertProduct, updateProduct } from "./API/API.js";
 import ShopEmployeeHome from "./Components/ShopEmployeeHome";
 import Home from "./Components/Home.js"
 import ClientHome from "./Components/ClientHome";
@@ -90,11 +90,11 @@ function App() {
   })
 
   const editProduct = (product) => {
-    //updateProduct(product).then(()=>setDirty(true));
+    updateProduct(product);
   }
 
   const addProduct = (product) => {
-    //addProduct(product).then(()=>setDirty(true));
+    insertProduct(product);
   }
 
 
@@ -138,8 +138,8 @@ function App() {
         <Route exact path='/' render={() => <Home />} />
 
         <Route exact path='/farmerhome' render={() => <ReportAvailability username={username} date={date} userId={userId}/>} />
-        <Route exact path='/editProduct' render={() => <ProductForm username={username}/>} />
-        <Route exact path='/addProduct' render={() => <ProductForm username={username}/>} />
+        <Route exact path='/editProduct' render={() => <ProductForm username={username} editProduct={editProduct}/>} />
+        <Route exact path='/addProduct' render={() => <ProductForm username={username} addProduct={addProduct}/>} />
 
         <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
 

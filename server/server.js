@@ -187,13 +187,22 @@ app.put("/api/orders/:orderid", async (req, res) => {
 });
 
 
-//GET: get all available products
-app.get("/api/products/:date", async (req, res) => {
+// //GET: get all available products
+// app.get("/api/products/:date", async (req, res) => {
+//   productDao
+//     .getProductsAvailable(req.params.date)
+//     .then((products) => res.status(200).json(products))
+//     .catch(() => res.status(500).end());
+// });
+
+//GET: get all products of a farmer
+app.get("/api/products/:farmerid", async (req, res) => {
   productDao
-    .getProductsAvailable(req.params.date)
+    .getProductsByFarmer(req.params.farmerid)
     .then((products) => res.status(200).json(products))
     .catch(() => res.status(500).end());
 });
+
 
 //GET: get all farmers name (actually it gives place and userid)
 app.get("/api/farmers", async (req, res) => {
@@ -218,6 +227,38 @@ app.post('/api/product', async (req, res) => {
   })
 }
 })
+
+//put: update product in the table
+app.put('/api/product', async (req, res) => {
+  try{
+  productDao.updateProduct(req.body);
+  res.status(200).json({
+    status: 200
+  })
+}catch(err){
+  console.log(err)
+  res.status(500).json({
+    status: 500,
+    argoment: req.body
+  })
+}
+})
+
+//POST: post availability in the table
+app.post('/api/availability', async (req, res) => {
+    try{
+    let numberId = await productDao.insertAvailability(req.body);
+    res.status(200).json({
+      status: 200
+    })
+  }catch(err){
+    res.status(500).json({
+      status: 500,
+      argoment: req.body
+    })
+  }
+})
+
 
 //POST: post the request by shop employee
 app.post("/api/requests", async (req, res) => {
