@@ -17,6 +17,7 @@
  */
 import dayjs from "dayjs";
 
+
 const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, products) => {
   return new Promise((resolve, reject) => {
     fetch('/api/requests', {
@@ -522,6 +523,7 @@ async function updateOrderStatus(orderid, productid, status) {
   } else return { message: "Couldn't update the order status." };
 }
 
+
 /*----- USER APIs ---*/
 async function login(credentials) {
   let response = await fetch('/login', {
@@ -561,4 +563,4 @@ async function getUserInfo() {
 
 
 
-export { getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct}
+export {getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct}

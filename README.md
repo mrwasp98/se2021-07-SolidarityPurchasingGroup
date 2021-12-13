@@ -241,6 +241,64 @@ We check the quality of our code relying on SonarCloud analysis.
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
+### Get products of a farmer
+* URL: `api/productsByFarmer/<farmerid>`
+* HTTP method: GET
+* Description: get all products of a given farmer
+* Request body: None
+* Response body: an array of products,
+``` JSON
+[
+{
+    "id":1,
+    "name": "Apple",
+    "description": "desc",
+    "farmerid": 2,
+    "measure": "kg",
+    "category": "Fruit",
+    "typeofproduction": "some type",
+    "picture": ""
+},
+{
+    "id":2,
+    "name": "Strawberry",
+    "description": "desc 2",
+    "farmerid": 2,
+    "measure": "kg",
+    "category": "Fruit",
+    "typeofproduction": "some type",
+    "picture": ""
+}
+]
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
+### Update a product
+* URL: `api/product/`
+* HTTP method: PUT
+* Request body:
+``` JSON
+[{
+    "id":2,
+    "name": "Strawberry",
+    "description": "desc 2",
+    "farmerid": 2,
+    "measure": "kg",
+    "category": "Fruit",
+    "typeofproduction": "some type",
+    "picture": ""
+}]
+```
+* Description: updates a product
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
+### Delete a product
+* URL: `api/product/<productid>`
+* HTTP method: DELETE
+* Request body: none
+* Description: deletes a product given its id
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
 ### Update order status
 * URL: `api/orders/{orderid}`
 * HTTP method: PUT
@@ -323,6 +381,23 @@ We check the quality of our code relying on SonarCloud analysis.
 * Description: Top up the wallet of the given client adding the given ammount 
 * Request parameters: clientid, ammount
 * Response: `200 OK`, `503 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)
+
+### Insert availability
+* URL: `api/availability`
+* HTTP method: POST
+* description: insert a new product availability
+* Request body:
+``` JSON
+[{ 
+    "productid": 1,
+    "dateavailability": "2021-10-11",
+    "quantity": 6,
+    "status": "si",
+    "price": 15.00
+}]
+```
+* Response: `200 OK`, `503 Internal Server Error` (generic error)
+
 
 ### Add user
 * URL: `api/user`

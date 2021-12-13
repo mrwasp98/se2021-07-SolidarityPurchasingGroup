@@ -52,12 +52,18 @@ export default function ProductForm(props){
 
     //on change dell'input
     const browse = (event) =>{
+        console.log(event.target.files[0])
         //when i select an image and another image is just uploaded, i delete the image uploaded before
-        if(image != ' '){
-            deleteImage()
+        if(picture != ' '){
+            deleteImage().then(()=>{
+                image = event.target.files[0];
+                addImage();
+            })
+        } else{
+            image = event.target.files[0];
+            addImage();
         }
-        image = event.target.files[0];
-        addImage();
+
     };
 
     const submit = (e) => {
