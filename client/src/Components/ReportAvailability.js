@@ -1,20 +1,42 @@
-import {Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image} from 'react-bootstrap'
+import {Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image, Modal} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import { useEffect, useState} from "react";
-import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
+import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit} from "./Icons";
 import HomeButton from './HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
 import { getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct } from "../API/API.js";
+import axios from 'axios';
 
 function ProductAction(props){
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    
     return (<>
-            <Link to={{
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>Deleting...</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Are you sure to delete <b>{props.name}</b> from your products?</Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                Back
+            </Button>
+            <Button variant="primary" onClick={() => props.deleteProd(props.id, props.picture)}>
+                Delete
+            </Button>
+            </Modal.Footer>
+        </Modal>
+            <span to={{
                         pathname: "/editProduct",
                         state: { id: props.id, name: props.name, description: props.description, category: props.category, typeofproduction: props.typeofproduction, measure: props.measure, picture: props.picture}
-                    }}><Button>edit</Button>
-            </Link>&nbsp; 
-            <Button variant ="danger" onClick={()=>props.deleteProd(props.id)}>Delete</Button>
+                    }}>{edit}
+            </span>&nbsp; 
+            <span onClick={handleShow}>{trash}</span>
         </>
     )
 }
@@ -126,14 +148,12 @@ export default function ReportAvailability(props){
     const [dirty, setDirty] = useState(true);
     const [dirtyO, setDirtyO] = useState(false);
 
+
     // this useEffect gets all the product of a particular farmer
     useEffect(() => {
         if(dirty){
             getProductsByFarmer(1)
-            .then(res => {
-                console.log(res)
-                setProducts(res)
-            })
+            .then(res => setProducts(res))
             .then(() => setDirty(false))
         }
     }, [dirty]);
@@ -147,7 +167,20 @@ export default function ReportAvailability(props){
         }
     }, [dirtyO, props.date]);
 
-    const deleteProd = (productid) => {
+    const deleteImage = async (picture) => {
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        const url = 'http://localhost:3001/api'
+        axios.delete(url+picture, config).then().catch(err => {})
+      }
+
+
+    const deleteProd = (productid, picture) => {
+        //FIRST, delete the image
+        deleteImage(picture)
         deleteProduct(productid).then(() => setDirty(true));
       }
         
