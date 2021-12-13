@@ -53,6 +53,7 @@ exports.updateProductsQuantity = (productid, quantity) => {
     });
 };
 
+
 //Get informations about a product given his id
 exports.getProductById = (id) => {
     return new Promise((resolve, reject) => {
@@ -109,6 +110,20 @@ exports.updateProduct = (product) => {
         });
     });
 };
+
+//delete a product in the product table (for the story 9)
+exports.deleteProduct = (productid) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM product WHERE id == ?;';
+        db.run(sql, [productid], function (err) {
+            if (err) {
+                reject(err);
+            }
+            resolve();
+        });
+    });
+};
+
 
 //Delete everiting from the availability table (This daos are made just for the tests)
 exports.deleteAvailability = () => {

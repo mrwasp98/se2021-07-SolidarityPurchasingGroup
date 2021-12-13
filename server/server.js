@@ -187,16 +187,16 @@ app.put("/api/orders/:orderid", async (req, res) => {
 });
 
 
-// //GET: get all available products
-// app.get("/api/products/:date", async (req, res) => {
-//   productDao
-//     .getProductsAvailable(req.params.date)
-//     .then((products) => res.status(200).json(products))
-//     .catch(() => res.status(500).end());
-// });
+//GET: get all available products
+app.get("/api/products/:date", async (req, res) => {
+  productDao
+    .getProductsAvailable(req.params.date)
+    .then((products) => res.status(200).json(products))
+    .catch(() => res.status(500).end());
+});
 
 //GET: get all products of a farmer
-app.get("/api/products/:farmerid", async (req, res) => {
+app.get("/api/productsByFarmer/:farmerid", async (req, res) => {
   productDao
     .getProductsByFarmer(req.params.farmerid)
     .then((products) => res.status(200).json(products))
@@ -243,6 +243,23 @@ app.put('/api/product', async (req, res) => {
   })
 }
 })
+
+//put: update product in the table
+app.delete('/api/product/:productid', async (req, res) => {
+  try{
+  productDao.deleteProduct(req.params.productid);
+  res.status(200).json({
+    status: 200
+  })
+}catch(err){
+  console.log(err)
+  res.status(500).json({
+    status: 500,
+    argoment: req.body
+  })
+}
+})
+
 
 //POST: post availability in the table
 app.post('/api/availability', async (req, res) => {

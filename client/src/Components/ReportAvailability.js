@@ -5,7 +5,7 @@ import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import HomeButton from './HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
-import { getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer } from "../API/API.js";
+import { getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct } from "../API/API.js";
 
 function ProductAction(props){
     return (<>
@@ -14,6 +14,7 @@ function ProductAction(props){
                         state: { id: props.id, name: props.name, description: props.description, category: props.category, typeofproduction: props.typeofproduction, measure: props.measure, picture: props.picture}
                     }}><Button>edit</Button>
             </Link>&nbsp; 
+            <Button variant ="danger" onClick={()=>props.deleteProd(props.id)}>Delete</Button>
         </>
     )
 }
@@ -37,7 +38,7 @@ function ProductRow(props){
               <td>{product.name}</td>
               <td>{product.description}</td>
               <td><Image style={{width: "100px"}} src={product.picture} fluid/></td>
-              <td><ProductAction id={product.id} name={product.name} description={product.description} category={product.category} typeofproduction={product.typeofproduction} measure={product.measure} picture={product.picture}></ProductAction></td>
+              <td><ProductAction id={product.id} name={product.name} description={product.description} category={product.category} typeofproduction={product.typeofproduction} measure={product.measure} picture={product.picture} deleteProd={props.deleteProd}></ProductAction></td>
             </tr>
     )
   }
@@ -146,6 +147,10 @@ export default function ReportAvailability(props){
         }
     }, [dirtyO, props.date]);
 
+    const deleteProd = (productid) => {
+        deleteProduct(productid).then(() => setDirty(true));
+      }
+        
     const handleReport = () => {
         productsAvailable.forEach( async p => await insertAvailability(p));
     }
@@ -193,7 +198,7 @@ export default function ReportAvailability(props){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {products.map(product => <ProductRow key={product.id} product={product}></ProductRow>)}
+                                {products.map(product => <ProductRow key={product.id} product={product} deleteProd={deleteProd}></ProductRow>)}
                                 </tbody>
                             </Table>
                         </Tab.Pane>
@@ -243,6 +248,5 @@ export default function ReportAvailability(props){
                 </Row>
                 </Tab.Container>
                 <HomeButton  logged={props.logged} />
-
             </Container>)
 }

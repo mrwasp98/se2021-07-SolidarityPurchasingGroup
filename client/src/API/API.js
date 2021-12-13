@@ -420,6 +420,27 @@ async function updateProduct(product) {
     })
 }
 
+async function deleteProduct(productid) {
+  return new Promise((resolve, reject) => {
+    fetch('/api/product/' + productid, {
+      method: "DELETE",
+      headers: {
+        "content-type": "application/json"
+      } 
+    }).then((res) => {
+            if (!res.ok) {
+              const error = new Error(`${res.status}: ${res.statusText}`);
+              error.response = res;
+              throw error;
+            }
+            resolve(res.json())
+          })
+          .catch((err) => {
+            reject({ message: err.message })
+          })
+    })
+}
+
 async function insertAvailability(availability) {
   return new Promise((resolve, reject) => {
     fetch('/api/availability', {
@@ -444,7 +465,7 @@ async function insertAvailability(availability) {
 
 const getProductsByFarmer = async (farmerid) => {
   return new Promise((resolve, reject) => {
-    fetch('/api/products/' + farmerid, {
+    fetch('/api/productsByFarmer/' + farmerid, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -540,4 +561,4 @@ async function getUserInfo() {
 
 
 
-export { getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct }
+export { getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct}
