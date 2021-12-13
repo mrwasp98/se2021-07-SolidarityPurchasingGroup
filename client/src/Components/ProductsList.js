@@ -17,6 +17,7 @@ export default function ProductsList(props) {
     const [inserted, setInserted] = useState(false);
     const [lastDate, setLastDate] = useState(dayjs(props.date));
     const [flag, setFlag] = useState(true)
+
     //this use effect is used to get the available products and the farmers
     useEffect(() => {
         if (props.dirtyAvailability || !lastDate.isSame(props.date) || flag) {
@@ -37,7 +38,7 @@ export default function ProductsList(props) {
                 })
             setFlag(false)
         }
-    }, [props.dirtyAvailability, props.setFarmers, farmersPresent, props.date, props.setProducts, flag, lastDate]);
+    }, [props.dirtyAvailability, props.setFarmers, setFarmersPresent, props.date, props.setProducts, flag, lastDate]);
 
     //this use effect is used to show a message when the cart button is clicked
     useEffect(() => {
