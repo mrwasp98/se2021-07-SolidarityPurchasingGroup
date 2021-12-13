@@ -141,7 +141,7 @@ export default function ModalClaimDate(props) {
                   onChange={(date) => props.setClaimdate(date)}
                   filterDate={notSelectableDates}
                   filterTime={notSelectableTimes}
-                  dateFormat="dd-mm-yyyy HH:mm"
+                  dateFormat="dd-MM-yyyy HH:mm"
                   showTimeSelect
                   timeFormat="HH:mm"
                 />
