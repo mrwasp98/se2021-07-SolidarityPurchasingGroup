@@ -75,7 +75,7 @@ describe('Testing PUT on /api/orders/:orderid', () => {
 
     test('It should respond with 200 status code', async () => {
         id = await orderDao.insertOrder(fakeOrder1);
-        await request(app).put('/api/orders/'+id).send({
+        await request(app).put('/api/orders/' + id).send({
             status: 'completed'
         })
         const order = await orderDao.getOrder(id);
@@ -194,7 +194,7 @@ describe('Testing GET on /api/orders/farmers', () => {
 
         fakeOrder1 has products 0 and 1
         fakeOrder2 has products 1 and 3
-    */  
+    */
 
     const fakeClient1 = {
         userid: 1,
@@ -204,7 +204,6 @@ describe('Testing GET on /api/orders/farmers', () => {
         address: 'Corso Duca degli Abruzzi, 21, Torino'
     };
     const fakeProduct1 = {
-        id: 0,
         name: 'Artichoke',
         description: 'prova description1',
         farmerid: 1,
@@ -215,7 +214,6 @@ describe('Testing GET on /api/orders/farmers', () => {
         picture: ''
     }
     const fakeProduct2 = {
-        id: 1,
         name: 'Banana',
         description: 'prova description2',
         farmerid: 1,
@@ -224,9 +222,8 @@ describe('Testing GET on /api/orders/farmers', () => {
         category: 'Fruit',
         typeofproduction: 'Bio',
         picture: ''
-    } 
+    }
     const fakeProduct3 = {
-        id: 2,
         name: 'Mela',
         description: 'prova description3',
         farmerid: 0,
@@ -260,54 +257,59 @@ describe('Testing GET on /api/orders/farmers', () => {
         deliveryaddress: 'prova',
         status: 'confirmed'
     };
-    const fakeOrderline11={
-        orderid:null,
-        productid:0,
-        quantity:2,
-        price:3
+    const fakeOrderline11 = {
+        orderid: null,
+        productid: null,
+        quantity: 2,
+        price: 3
     };
-    const fakeOrderline12={
-        orderid:null,
-        productid:1,
-        quantity:2,
-        price:3
+    const fakeOrderline12 = {
+        orderid: null,
+        productid: null,
+        quantity: 2,
+        price: 3
     };
-    const fakeOrderline22={
-        orderid:null,
-        productid:1,
-        quantity:2,
-        price:3
+    const fakeOrderline22 = {
+        orderid: null,
+        productid: null,
+        quantity: 2,
+        price: 3
     };
-    const fakeOrderline23={
-        orderid:null,
-        productid:2,
-        quantity:2,
-        price:3
+    const fakeOrderline23 = {
+        orderid: null,
+        productid: null,
+        quantity: 2,
+        price: 3
     };
-    const fakeOrderlineToIgnore={
-        orderid:null,
-        productid:0,
-        quantity:2,
-        price:3
+    const fakeOrderlineToIgnore = {
+        orderid: null,
+        productid: null,
+        quantity: 2,
+        price: 3
     };
-
+    let productid1, productid2, productid3;
 
     beforeAll(async () => {
         await clientDao.deleteAllClients();
         await clientDao.insertClient(fakeClient1);
         await productDao.deleteAllProducts();
-        await productDao.insertProduct(fakeProduct1);
-        await productDao.insertProduct(fakeProduct2);
-        await productDao.insertProduct(fakeProduct3);
+        productid1 = await productDao.insertProduct(fakeProduct1);
+        productid2 = await productDao.insertProduct(fakeProduct2);
+        productid3 = await productDao.insertProduct(fakeProduct3);
         await orderDao.deleteAllOrders();
-        const orderid1=await orderDao.insertOrder(fakeOrder1);
-        const orderid2=await orderDao.insertOrder(fakeOrder2);
-        const orderid3=await orderDao.insertOrder(fakeOrder3); //should be ignored because it's in a wrong date range
-        fakeOrderline11.orderid=orderid1;
-        fakeOrderline12.orderid=orderid1;
-        fakeOrderline22.orderid=orderid2;
-        fakeOrderline23.orderid=orderid2;
-        fakeOrderlineToIgnore.orderid=orderid3;
+        const orderid1 = await orderDao.insertOrder(fakeOrder1);
+        const orderid2 = await orderDao.insertOrder(fakeOrder2);
+        const orderid3 = await orderDao.insertOrder(fakeOrder3); //should be ignored because it's in a wrong date range
+        fakeOrderline11.orderid = orderid1;
+        fakeOrderline12.orderid = orderid1;
+        fakeOrderline22.orderid = orderid2;
+        fakeOrderline23.orderid = orderid2;
+        fakeOrderlineToIgnore.orderid = orderid3;
+        fakeOrderline11.productid =productid1;
+        fakeOrderline12.productid = productid2;
+        fakeOrderline22.productid = productid2;
+        fakeOrderline23.productid = productid3;
+        fakeOrderlineToIgnore.orderid = productid1;
         await orderlineDao.deleteAllOrderlines();
     });
 
@@ -327,38 +329,38 @@ describe('Testing GET on /api/orders/farmers', () => {
         await orderlineDao.insertOrderLine(fakeOrderline22);
         await orderlineDao.insertOrderLine(fakeOrderline23);
         await orderlineDao.insertOrderLine(fakeOrderlineToIgnore);
-        await orderlineDao.updateOrderLineStatus(fakeOrderline11.orderid,fakeOrderline11.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline12.orderid,fakeOrderline12.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline22.orderid,fakeOrderline22.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline23.orderid,fakeOrderline23.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderlineToIgnore.orderid,fakeOrderlineToIgnore.productid,'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline11.orderid, fakeOrderline11.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline12.orderid, fakeOrderline12.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline22.orderid, fakeOrderline22.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline23.orderid, fakeOrderline23.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderlineToIgnore.orderid, fakeOrderlineToIgnore.productid, 'packaged');
 
         const response = await request(app).get('/api/orders/farmers?farmerid=1&date=2021-12-10&status=packaged');
-        const res1={
-            orderid:fakeOrderline11.orderid,
-            productid:fakeOrderline11.productid,
-            name:fakeProduct1.name,
-            quantity:fakeOrderline11.quantity,
-            measure:fakeProduct1.measure,
-            price:fakeOrderline11.price
+        const res1 = {
+            orderid: fakeOrderline11.orderid,
+            productid: fakeOrderline11.productid,
+            name: fakeProduct1.name,
+            quantity: fakeOrderline11.quantity,
+            measure: fakeProduct1.measure,
+            price: fakeOrderline11.price
         };
-        const res2={
-            orderid:fakeOrderline12.orderid,
-            productid:fakeOrderline12.productid,
-            name:fakeProduct2.name,
-            quantity:fakeOrderline12.quantity,
-            measure:fakeProduct2.measure,
-            price:fakeOrderline12.price
+        const res2 = {
+            orderid: fakeOrderline12.orderid,
+            productid: fakeOrderline12.productid,
+            name: fakeProduct2.name,
+            quantity: fakeOrderline12.quantity,
+            measure: fakeProduct2.measure,
+            price: fakeOrderline12.price
         }
-        const res3={
-            orderid:fakeOrderline22.orderid,
-            productid:fakeOrderline22.productid,
-            name:fakeProduct2.name,
-            quantity:fakeOrderline22.quantity,
-            measure:fakeProduct2.measure,
-            price:fakeOrderline22.price
+        const res3 = {
+            orderid: fakeOrderline22.orderid,
+            productid: fakeOrderline22.productid,
+            name: fakeProduct2.name,
+            quantity: fakeOrderline22.quantity,
+            measure: fakeProduct2.measure,
+            price: fakeOrderline22.price
         }
-        expect(response.body).toEqual([res1,res2,res3]);
+        expect(response.body).toEqual([res1, res2, res3]);
     });
 
     test('It should respond with an array of orderlines related to farmerid 1 and status=null', async () => {
@@ -369,31 +371,31 @@ describe('Testing GET on /api/orders/farmers', () => {
         await orderlineDao.insertOrderLine(fakeOrderlineToIgnore);
 
         const response = await request(app).get('/api/orders/farmers?farmerid=1&date=2021-12-10&status=null');
-        const res1={
-            orderid:fakeOrderline11.orderid,
-            productid:fakeOrderline11.productid,
-            name:fakeProduct1.name,
-            quantity:fakeOrderline11.quantity,
-            measure:fakeProduct1.measure,
-            price:fakeOrderline11.price
+        const res1 = {
+            orderid: fakeOrderline11.orderid,
+            productid: fakeOrderline11.productid,
+            name: fakeProduct1.name,
+            quantity: fakeOrderline11.quantity,
+            measure: fakeProduct1.measure,
+            price: fakeOrderline11.price
         };
-        const res2={
-            orderid:fakeOrderline12.orderid,
-            productid:fakeOrderline12.productid,
-            name:fakeProduct2.name,
-            quantity:fakeOrderline12.quantity,
-            measure:fakeProduct2.measure,
-            price:fakeOrderline12.price
+        const res2 = {
+            orderid: fakeOrderline12.orderid,
+            productid: fakeOrderline12.productid,
+            name: fakeProduct2.name,
+            quantity: fakeOrderline12.quantity,
+            measure: fakeProduct2.measure,
+            price: fakeOrderline12.price
         }
-        const res3={
-            orderid:fakeOrderline22.orderid,
-            productid:fakeOrderline22.productid,
-            name:fakeProduct2.name,
-            quantity:fakeOrderline22.quantity,
-            measure:fakeProduct2.measure,
-            price:fakeOrderline22.price
+        const res3 = {
+            orderid: fakeOrderline22.orderid,
+            productid: fakeOrderline22.productid,
+            name: fakeProduct2.name,
+            quantity: fakeOrderline22.quantity,
+            measure: fakeProduct2.measure,
+            price: fakeOrderline22.price
         }
-        expect(response.body).toEqual([res1,res2,res3]);
+        expect(response.body).toEqual([res1, res2, res3]);
     });
 
     test('It should respond with an array of orderlines related to farmerid 1 (test for an edge case for date)', async () => {
@@ -402,38 +404,38 @@ describe('Testing GET on /api/orders/farmers', () => {
         await orderlineDao.insertOrderLine(fakeOrderline22);
         await orderlineDao.insertOrderLine(fakeOrderline23);
         await orderlineDao.insertOrderLine(fakeOrderlineToIgnore);
-        await orderlineDao.updateOrderLineStatus(fakeOrderline11.orderid,fakeOrderline11.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline12.orderid,fakeOrderline12.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline22.orderid,fakeOrderline22.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline23.orderid,fakeOrderline23.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderlineToIgnore.orderid,fakeOrderlineToIgnore.productid,'packaged');
-        
+        await orderlineDao.updateOrderLineStatus(fakeOrderline11.orderid, fakeOrderline11.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline12.orderid, fakeOrderline12.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline22.orderid, fakeOrderline22.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline23.orderid, fakeOrderline23.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderlineToIgnore.orderid, fakeOrderlineToIgnore.productid, 'packaged');
+
         const response = await request(app).get('/api/orders/farmers?farmerid=1&date=2021-12-5%2023:30&status=packaged');
-        const res1={
-            orderid:fakeOrderline11.orderid,
-            productid:fakeOrderline11.productid,
-            name:fakeProduct1.name,
-            quantity:fakeOrderline11.quantity,
-            measure:fakeProduct1.measure,
-            price:fakeOrderline11.price
+        const res1 = {
+            orderid: fakeOrderline11.orderid,
+            productid: fakeOrderline11.productid,
+            name: fakeProduct1.name,
+            quantity: fakeOrderline11.quantity,
+            measure: fakeProduct1.measure,
+            price: fakeOrderline11.price
         };
-        const res2={
-            orderid:fakeOrderline12.orderid,
-            productid:fakeOrderline12.productid,
-            name:fakeProduct2.name,
-            quantity:fakeOrderline12.quantity,
-            measure:fakeProduct2.measure,
-            price:fakeOrderline12.price
+        const res2 = {
+            orderid: fakeOrderline12.orderid,
+            productid: fakeOrderline12.productid,
+            name: fakeProduct2.name,
+            quantity: fakeOrderline12.quantity,
+            measure: fakeProduct2.measure,
+            price: fakeOrderline12.price
         }
-        const res3={
-            orderid:fakeOrderline22.orderid,
-            productid:fakeOrderline22.productid,
-            name:fakeProduct2.name,
-            quantity:fakeOrderline22.quantity,
-            measure:fakeProduct2.measure,
-            price:fakeOrderline22.price
+        const res3 = {
+            orderid: fakeOrderline22.orderid,
+            productid: fakeOrderline22.productid,
+            name: fakeProduct2.name,
+            quantity: fakeOrderline22.quantity,
+            measure: fakeProduct2.measure,
+            price: fakeOrderline22.price
         }
-        expect(response.body).toEqual([res1,res2,res3]);
+        expect(response.body).toEqual([res1, res2, res3]);
     });
 
     test('It should respond with 200 status code', async () => {
@@ -442,12 +444,12 @@ describe('Testing GET on /api/orders/farmers', () => {
         await orderlineDao.insertOrderLine(fakeOrderline22);
         await orderlineDao.insertOrderLine(fakeOrderline23);
         await orderlineDao.insertOrderLine(fakeOrderlineToIgnore);
-        await orderlineDao.updateOrderLineStatus(fakeOrderline11.orderid,fakeOrderline11.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline12.orderid,fakeOrderline12.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline22.orderid,fakeOrderline22.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline23.orderid,fakeOrderline23.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderlineToIgnore.orderid,fakeOrderlineToIgnore.productid,'packaged');
-        
+        await orderlineDao.updateOrderLineStatus(fakeOrderline11.orderid, fakeOrderline11.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline12.orderid, fakeOrderline12.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline22.orderid, fakeOrderline22.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline23.orderid, fakeOrderline23.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderlineToIgnore.orderid, fakeOrderlineToIgnore.productid, 'packaged');
+
         const response = await request(app).get('/api/orders/farmers?farmerid=1&date=2021-12-10&status=packaged');
         expect(response.status).toBe(200);
     });
@@ -458,15 +460,15 @@ describe('Testing GET on /api/orders/farmers', () => {
         await orderlineDao.insertOrderLine(fakeOrderline22);
         await orderlineDao.insertOrderLine(fakeOrderline23);
         await orderlineDao.insertOrderLine(fakeOrderlineToIgnore);
-        await orderlineDao.updateOrderLineStatus(fakeOrderline11.orderid,fakeOrderline11.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline12.orderid,fakeOrderline12.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline22.orderid,fakeOrderline22.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderline23.orderid,fakeOrderline23.productid,'packaged');
-        await orderlineDao.updateOrderLineStatus(fakeOrderlineToIgnore.orderid,fakeOrderlineToIgnore.productid,'packaged');
-        
+        await orderlineDao.updateOrderLineStatus(fakeOrderline11.orderid, fakeOrderline11.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline12.orderid, fakeOrderline12.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline22.orderid, fakeOrderline22.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderline23.orderid, fakeOrderline23.productid, 'packaged');
+        await orderlineDao.updateOrderLineStatus(fakeOrderlineToIgnore.orderid, fakeOrderlineToIgnore.productid, 'packaged');
+
         const response = await request(app).get('/api/orders/farmers?farmerid=5&date=2021-12-10&status=packaged');
         expect(response.body).toEqual([]);
     });
-   
+
 
 });

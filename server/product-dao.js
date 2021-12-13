@@ -62,10 +62,7 @@ exports.getProductById = (id) => {
             if(err) {
                 reject(err);
             }
-            if(row==undefined){
-                reject({ error: 'Product not found for id ' + id });
-            }
-            resolve(row);
+            resolve(row); //could be undefined
         });
     });
 };

@@ -214,65 +214,42 @@ app.get("/api/farmers", async (req, res) => {
 
 //POST: post products in the table
 app.post('/api/product', async (req, res) => {
-  try{
-  let numberId = await productDao.insertProduct(req.body);
-  res.status(200).json({
-    status: 200
-  })
-}catch(err){
-  console.log(err)
-  res.status(500).json({
-    status: 500,
-    argoment: req.body
-  })
-}
+  try {
+    await productDao.insertProduct(req.body);
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
+  }
 })
 
 //put: update product in the table
 app.put('/api/product', async (req, res) => {
-  try{
-  productDao.updateProduct(req.body);
-  res.status(200).json({
-    status: 200
-  })
-}catch(err){
-  console.log(err)
-  res.status(500).json({
-    status: 500,
-    argoment: req.body
-  })
-}
+  try {
+    await productDao.updateProduct(req.body);
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
+  }
 })
 
-//put: update product in the table
+//delete: deletes a product
 app.delete('/api/product/:productid', async (req, res) => {
-  try{
-  productDao.deleteProduct(req.params.productid);
-  res.status(200).json({
-    status: 200
-  })
-}catch(err){
-  console.log(err)
-  res.status(500).json({
-    status: 500,
-    argoment: req.body
-  })
-}
+  try {
+    await productDao.deleteProduct(req.params.productid);
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
+  }
 })
 
 
 //POST: post availability in the table
 app.post('/api/availability', async (req, res) => {
-    try{
-    let numberId = await productDao.insertAvailability(req.body);
-    res.status(200).json({
-      status: 200
-    })
-  }catch(err){
-    res.status(500).json({
-      status: 500,
-      argoment: req.body
-    })
+  try {
+    await productDao.insertAvailability(req.body);
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
   }
 })
 
@@ -443,7 +420,7 @@ app.get("/api/usernames", async (req, res) => {
 //POST: insert a new farmer
 app.post(
   "/api/farmer",
-  [ 
+  [
     check(["place"]).isString().isLength({ min: 2 }),
     check(["username"]).isEmail(),
     check(["name"]).isString().isLength({ min: 2 }),
@@ -548,16 +525,16 @@ app.post('/api/img', function (req, res) {
 //DELETE: delete an image from the site
 app.delete('/api/img/:picture', function (req, res) {
   if (!req.params.picture) {
-    console.log("No file received");
-    let message = "Error! in image delete.";
+    //console.log("No file received");
+    //let message = "Error! in image delete.";
     return res.status(500).json('error in delete');
 
   } else {
-    console.log('file received');
-    console.log(req.params.picture);
+    //console.log('file received');
+    //console.log(req.params.picture);
     try {
       fs.unlinkSync('public/img/' + req.params.picture);
-      console.log('successfully deleted');
+      //console.log('successfully deleted');
       return res.status(200).send('Successfully! Image has been Deleted');
     } catch (err) {
       // handle the error
@@ -568,6 +545,7 @@ app.delete('/api/img/:picture', function (req, res) {
 
 });
 
+/*** -------------- ***/
 
 //GET: get orders (orderlines) given a farmerid and a date -ant
 app.get("/api/orders/farmers", async (req, res) => {
@@ -577,7 +555,7 @@ app.get("/api/orders/farmers", async (req, res) => {
   */
   try {
     const orderlines = await orderlineDao.getOrderLinesByFarmerDateStatusWithProductInfo(req.query.farmerid, req.query.date, req.query.status);
-    res.status(200).json(orderlines); //manage empty list case
+    res.status(200).json(orderlines); //could be empty
   } catch (err) {
     res.status(500).end();
   }

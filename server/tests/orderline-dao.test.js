@@ -23,7 +23,6 @@ const fakeClient1 = {
     address: 'Corso Duca degli Abruzzi, 21, Torino'
 };
 const fakeProduct1 = {
-    id: 0,
     name: 'Artichoke',
     description: 'prova description1',
     farmerid: 1,
@@ -34,7 +33,6 @@ const fakeProduct1 = {
     picture: ''
 }
 const fakeProduct2 = {
-    id: 1,
     name: 'Banana',
     description: 'prova description2',
     farmerid: 2,
@@ -52,19 +50,21 @@ const fakeOrder1 = {
     deliveryaddress: 'prova',
     status: 'confirmed'
 };
-let orderid;
+let orderid,productid1,productid2;
 
 describe('Test orderline-dao functions unused in any api', () => {
+
 
     beforeAll(async () => {
         await clientDao.deleteAllClients();
         await productDao.deleteAllProducts();
+        await clientDao.insertClient(fakeClient1);
+        productid1 = await productDao.insertProduct(fakeProduct1);
+        productid2 = await productDao.insertProduct(fakeProduct2);
         await orderDao.deleteAllOrders();
         await orderlineDao.deleteAllOrderlines();
-        await clientDao.insertClient(fakeClient1);
         orderid = await orderDao.insertOrder(fakeOrder1);
-        await productDao.insertProduct(fakeProduct1);
-        await productDao.insertProduct(fakeProduct2);
+
     })
 
     afterAll(async () => {
@@ -77,44 +77,44 @@ describe('Test orderline-dao functions unused in any api', () => {
 
     test('Testing getOrderLines function (positive result)', async () => {
         const fakeOrderLine1 = {
-            orderid:orderid,
-            productid:0,
-            quantity:2,
-            price:3,
-            status:null
+            orderid: orderid,
+            productid: productid1,
+            quantity: 2,
+            price: 3,
+            status: null
         };
         const fakeOrderLine2 = {
-            orderid:orderid,
-            productid:1,
-            quantity:2,
-            price:3,
-            status:null
+            orderid: orderid,
+            productid: productid2,
+            quantity: 2,
+            price: 3,
+            status: null
         };
         await orderlineDao.insertOrderLine(fakeOrderLine1);
         await orderlineDao.insertOrderLine(fakeOrderLine2);
         const response = await orderlineDao.getOrderLines(orderid);
-        expect(response).toEqual([fakeOrderLine1,fakeOrderLine2]);
+        expect(response).toEqual([fakeOrderLine1, fakeOrderLine2]);
     });
 
     test('Testing getOrderLines function (orderline not found)', async () => {
         const fakeOrderLine1 = {
-            orderid:orderid,
-            productid:0,
-            quantity:2,
-            price:3,
-            status:null
+            orderid: orderid,
+            productid: 0,
+            quantity: 2,
+            price: 3,
+            status: null
         };
         const fakeOrderLine2 = {
-            orderid:orderid,
-            productid:1,
-            quantity:2,
-            price:3,
-            status:null
+            orderid: orderid,
+            productid: 1,
+            quantity: 2,
+            price: 3,
+            status: null
         };
         await orderlineDao.insertOrderLine(fakeOrderLine1);
         await orderlineDao.insertOrderLine(fakeOrderLine2);
-        const response = await orderlineDao.getOrderLines(orderid+1);
-        expect(response).toEqual([fakeOrderLine1,fakeOrderLine2]);
+        const response = await orderlineDao.getOrderLines(orderid + 1);
+        expect(response).toEqual([]);
     });
 
 });

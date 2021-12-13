@@ -45,8 +45,10 @@ describe('Test product-dao functions unused in any api', () => {
     })
 
     test('Testing getProductById function', async () => {
-        await productDao.insertProduct(fakeProduct1);
-        const p = await productDao.getProductById(0);
+        const id = await productDao.insertProduct(fakeProduct1);
+        const p = await productDao.getProductById(id);
+        fakeProduct1.id=id;
+        fakeAvailability1.productid=id;
         expect(p).toEqual(fakeProduct1);
     });
 
