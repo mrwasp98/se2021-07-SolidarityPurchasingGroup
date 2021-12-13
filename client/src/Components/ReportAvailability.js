@@ -1,50 +1,51 @@
-import {Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image} from 'react-bootstrap'
-import {Link} from 'react-router-dom'
-import { useEffect, useState} from "react";
+import { Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { useEffect, useState } from "react";
 import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled } from "./Icons";
 import HomeButton from './HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
 import { getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct } from "../API/API.js";
 
-function ProductAction(props){
+function ProductAction(props) {
     return (<>
-            <Link to={{
-                        pathname: "/editProduct",
-                        state: { id: props.id, name: props.name, description: props.description, category: props.category, typeofproduction: props.typeofproduction, measure: props.measure, picture: props.picture}
-                    }}><Button>edit</Button>
-            </Link>&nbsp; 
-            <Button variant ="danger" onClick={()=>props.deleteProd(props.id)}>Delete</Button>
-        </>
+        <Link to={{
+            pathname: "/editProduct",
+            state: { id: props.id, name: props.name, description: props.description, category: props.category, typeofproduction: props.typeofproduction, measure: props.measure, picture: props.picture }
+        }}><Button id={`productavailability_edit_${props.index}`}>edit</Button>
+        </Link>&nbsp;
+        <Button id={`productavailability_delete_${props.index}`} variant="danger" onClick={() => props.deleteProd(props.id)}>Delete</Button>
+    </>
     )
 }
 
-function OrderAction(props){
+function OrderAction(props) {
     const action = () => {
         updateOrderStatus(props.orderid, props.productid, "packaged").then(() => {
             props.setDirtyO(true)
-        });
+        })
+            .catch(err => console.log(err));
     };
     return (<>
-            <Button onClick={action}>Confirm</Button>
-        </>
+        <Button onClick={action}>Confirm</Button>
+    </>
     )
 }
 
-function ProductRow(props){  
-    const {product} = props;
+function ProductRow(props) {
+    const { product } = props;
 
-    return( <tr>
-              <td>{product.name}</td>
-              <td>{product.description}</td>
-              <td><Image style={{width: "100px"}} src={product.picture} fluid/></td>
-              <td><ProductAction id={product.id} name={product.name} description={product.description} category={product.category} typeofproduction={product.typeofproduction} measure={product.measure} picture={product.picture} deleteProd={props.deleteProd}></ProductAction></td>
-            </tr>
+    return (<tr>
+        <td>{product.name}</td>
+        <td>{product.description}</td>
+        <td><Image style={{ width: "100px" }} src={product.picture} fluid /></td>
+        <td><ProductAction index={props.index} id={product.id} name={product.name} description={product.description} category={product.category} typeofproduction={product.typeofproduction} measure={product.measure} picture={product.picture} deleteProd={props.deleteProd}></ProductAction></td>
+    </tr>
     )
-  }
+}
 
-  function ProductAvailableRow(props){  
-    const {product} = props;
+function ProductAvailableRow(props) {
+    const { product } = props;
     const [price, setPrice] = useState(0);
     const [quantity, setQuantity] = useState(0);
 
@@ -71,96 +72,101 @@ function ProductRow(props){
             if (newQuantity === 0) {
                 props.setProductsAvailable(otherProducts);
             } else {
-                const newProduct = { productid: product.id, dateavailability: '13-12-2021', quantity: newQuantity, status: 'ok', price: newPrice};
+                const newProduct = { productid: product.id, dateavailability: '13-12-2021', quantity: newQuantity, status: 'ok', price: newPrice };
                 const newProducts = [...otherProducts, newProduct];
                 props.setProductsAvailable(newProducts);
             }
         }
     }
 
-    return( <tr>
-              <td style={{ fontSize: "18pt"}}>{product.name}</td>
-              <td>       
-                <Form.Group className="m-2" controlId="formBasicPrice">
-                        {"€ "}
-                        <input
-                            type="number"
-                            min={1}
-                            max={1000}
-                            step={0.01}
-                            value={price}
-                            onChange={e => setPrice(e.target.value)}
-                        />
-                </Form.Group>                      
-              </td>
-              <td><Image style={{width: "100px"}} src={product.picture} fluid/></td>
-              <td className="align-middle">{(quantity > -1) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
-                    : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
-                    {quantity > 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
-                        : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
-                </td>
-              <td>{quantity + " " + product.measure}</td>
-            </tr>
+    return (<tr>
+        <td style={{ fontSize: "18pt" }}>{product.name}</td>
+        <td>
+            <Form.Group className="m-2" controlId="formBasicPrice">
+                {"€ "}
+                <input
+                    type="number"
+                    min={1}
+                    max={1000}
+                    step={0.01}
+                    value={price}
+                    onChange={e => setPrice(e.target.value)}
+                />
+            </Form.Group>
+        </td>
+        <td><Image style={{ width: "100px" }} src={product.picture} fluid /></td>
+        <td className="align-middle">{(quantity > -1) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
+            : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
+            {quantity > 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
+                : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
+        </td>
+        <td>{quantity + " " + product.measure}</td>
+    </tr>
     )
-  }
+}
 
-  function ConfirmRow(props){  
-    const {order} = props;
+function ConfirmRow(props) {
+    const { order } = props;
 
-    return( <tr>
-              <td>{order.name}</td>
-              <td>{order.quantity}</td>
-              <td>{order.measure}</td>
-              <td>{order.price}</td>
-              <td><OrderAction orderid={order.orderid} productid={order.productid} setDirtyO={props.setDirtyO}/></td>
-            </tr>
+    return (<tr>
+        <td>{order.name}</td>
+        <td>{order.quantity}</td>
+        <td>{order.measure}</td>
+        <td>{order.price}</td>
+        <td><OrderAction orderid={order.orderid} productid={order.productid} setDirtyO={props.setDirtyO} /></td>
+    </tr>
     )
-  }
+}
 
-export default function ReportAvailability(props){
+export default function ReportAvailability(props) {
     const [products, setProducts] = useState([]);
 
     const [orders, setOrders] = useState([]);
-    
+
     const [productsAvailable, setProductsAvailable] = useState([]);
     const [dirty, setDirty] = useState(true);
     const [dirtyO, setDirtyO] = useState(false);
 
     // this useEffect gets all the product of a particular farmer
     useEffect(() => {
-        if(dirty){
+        if (dirty) {
             getProductsByFarmer(1)
-            .then(res => {
-                console.log(res)
-                setProducts(res)
-            })
-            .then(() => setDirty(false))
+                .then(res => {
+                    console.log(res)
+                    setProducts(res)
+                })
+                .then(() => setDirty(false))
+                .catch(err => console.log(err))
         }
     }, [dirty]);
 
     useEffect(() => {
-        getFarmersOrders(props.userId, props.date, 'null').then((orders) => {
+        getFarmersOrders(props.userId, props.date, 'null')
+        .then((orders) => {
             setOrders(orders);
-        });
-        if(dirtyO){
+        })
+        .catch(err=>{console.log(err)})
+        if (dirtyO) {
             setDirtyO(false);
         }
     }, [dirtyO, props.date]);
 
     const deleteProd = (productid) => {
-        deleteProduct(productid).then(() => setDirty(true));
-      }
-        
-    const handleReport = () => {
-        productsAvailable.forEach( async p => await insertAvailability(p));
+        deleteProduct(productid)
+        .then(() => setDirty(true))
+        .catch(err => console.log(err))
     }
 
-    return( <Container className="justify-content-center">
-                <h1>Hello {props.username}!</h1>
-                <hr></hr>
-                <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
-                <Row>
-                    <Col sm={3} style={{backgroundColor: '#f2f2f2'}}>
+    const handleReport = () => {
+        productsAvailable.forEach(async p => await insertAvailability(p));
+    }
+
+    return (<Container className="justify-content-center">
+        <h1>Hello {props.username}!</h1>
+        <hr></hr>
+        <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
+            <Row>
+                <Col sm={3} style={{ backgroundColor: '#f2f2f2' }}>
                     <ListGroup variant="flush" className="mt-3">
                         <ListGroup.Item action href="#link1">
                             Your products
@@ -168,7 +174,7 @@ export default function ReportAvailability(props){
                         <ListGroup.Item action href="#link2">
                             Expected availability
                         </ListGroup.Item>
-                        { (dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday'  && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
+                        {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
                             <ListGroup.Item action href="#link3">
                                 Confirm preparation
                             </ListGroup.Item>
@@ -176,8 +182,8 @@ export default function ReportAvailability(props){
                             <></>
                         }
                     </ListGroup>
-                    </Col>
-                    <Col sm={9}>
+                </Col>
+                <Col sm={9}>
                     <Tab.Content>
                         <Tab.Pane eventKey="#link1">
                             <Row >
@@ -185,9 +191,9 @@ export default function ReportAvailability(props){
                                     <h3>These are all your products</h3>
                                 </Col>
                                 <Col className="d-flex justify-content-end">
-                                    <Link to={{pathname: "/addProduct"}}><Button>Add product</Button></Link>
+                                    <Link to={{ pathname: "/addProduct" }}><Button id="farmer_add_product">Add product</Button></Link>
                                 </Col>
-                            </Row> 
+                            </Row>
                             <Table className="mt-4" striped bordered hover>
                                 <thead>
                                     <tr>
@@ -198,7 +204,7 @@ export default function ReportAvailability(props){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {products.map(product => <ProductRow key={product.id} product={product} deleteProd={deleteProd}></ProductRow>)}
+                                    {products.map((product, index) => <ProductRow key={product.id} index={index} product={product} deleteProd={deleteProd}></ProductRow>)}
                                 </tbody>
                             </Table>
                         </Tab.Pane>
@@ -215,7 +221,7 @@ export default function ReportAvailability(props){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {products.map(product => <ProductAvailableRow key={product.id} product={product} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
+                                    {products.map(product => <ProductAvailableRow key={product.id} product={product} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
                                 </tbody>
                             </Table>
                             <div className="d-flex justify-content-center mb-4">
@@ -236,7 +242,7 @@ export default function ReportAvailability(props){
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {orders.map(order => <ConfirmRow order={order} setDirtyO={setDirtyO}/>)}
+                                        {orders.map(order => <ConfirmRow order={order} setDirtyO={setDirtyO} />)}
                                     </tbody>
                                 </Table>
                             </Tab.Pane>
@@ -244,9 +250,9 @@ export default function ReportAvailability(props){
                             <></>
                         }
                     </Tab.Content>
-                    </Col>
-                </Row>
-                </Tab.Container>
-                <HomeButton  logged={props.logged} />
-            </Container>)
+                </Col>
+            </Row>
+        </Tab.Container>
+        <HomeButton logged={props.logged} />
+    </Container>)
 }

@@ -2,6 +2,8 @@ import dayjs from 'dayjs'
 import 'cypress-react-selector'
 import '@testing-library/cypress/add-commands'
 
+let emailtest;
+
 //testing the shop employee login
 describe('SPG login (shopemployee)', () => {
     it('open route', () => {
@@ -265,8 +267,6 @@ describe('SPG wallet page', () => {
     })
 })
 
-
-
 //testing handout page
 describe('SPG handout page', () => {
     let value;
@@ -349,7 +349,6 @@ describe('SPG handout page', () => {
     })
 })
 
-
 //testing products page
 describe('SPG product show page', () => {
     it('open route', () => {
@@ -406,6 +405,10 @@ describe('SPG product show page', () => {
     })
 })
 
+
+
+
+
 //testing register page
 describe('SPG register page', () => {
     before(() => {
@@ -432,7 +435,8 @@ describe('SPG register page', () => {
     })
 
     it('type a invalid wallet', () => {
-        cy.get('.email-input').type('antonioVes' + Math.random() + '@poli.it')
+        emailtest = 'antonioVes' + Math.random() + '@poli.it'
+        cy.get('.email-input').type(emailtest)
         cy.get('.submit-btn').click()
         cy.contains('The user has been created').should('not.exist')
     })
@@ -479,7 +483,6 @@ describe('SPG registration client', () => {
         cy.get('.next-btn').click()
     })
 
-
     it('type a username that just exists', () => {
         cy.get('#formBasicUsername').clear().type('CuginoDiBrazorf@3u1g.it')
         cy.get('#formBasicPassword').clear().type('AjejeBraz123')
@@ -496,11 +499,84 @@ describe('SPG registration client', () => {
         cy.contains('The password must be at least 6 characters long and must contain both alphabetic and numerical values.').should('exist')
     })
 
-
     it('type a valid password', () => {
         cy.get('#formBasicPassword').clear().type('Ajeje123')
         cy.get('#formBasicCPassword').clear().type('Ajeje123')
         cy.get('.confirm-btn').click()
-        cy.contains('The password must be at least 6 characters long and must contain both alphabetic and numerical values.').should('not.exist')    })
 
+        cy.contains('The password must be at least 6 characters long and must contain both alphabetic and numerical values.').should('not.exist')
+    })
+
+    it('go to user/client/pasword', () => {
+        cy.visit('http://localhost:3000/user')
+        cy.get('#toCreateClient').click()
+        cy.url().should('include', '/user/client')
+        cy.get('#toCreatePassword').click()
+        cy.url().should('include', 'user/client/password')
+    })
+
+    it('change password of a user that does not exists', () => {
+        cy.get('#formBasicUsername').clear().type('inesistente@email.email.it')
+        cy.get('#formBasicPassword').clear().type('testclient5')
+        cy.get('#formBasicCPassword').clear().type('testclient5')
+        cy.get('.confirm-btn').click()
+        cy.contains('No username found')
+    })
+
+    it('change password of a user', () => {
+        cy.get('#formBasicUsername').clear().type(emailtest)
+        cy.get('.confirm-btn').click()
+        cy.contains('No username found').should('not.exist')
+        cy.url().should('include', '/login')
+    })
+
+})
+
+//testing registration farmer
+describe('SPG registration farmer', () => {
+    it('go to user/farmer/pasword', () => {
+        cy.visit('http://localhost:3000/user')
+        cy.get('#toCreateFarmer').click()
+        cy.url().should('include', '/user/farmer')
+    })
+
+    it('create new farmer, step 1', () => {
+        cy.get('#formBasicName').clear().type('Rocco')
+        cy.get('#formBasicSurname').clear().type('Guerra')
+        cy.get('#formBasicPlace').clear().type('Azienda Vercelli')
+        cy.get('#formBasicAddress').clear().type('Corso Francia 34, Vercelli, 13100 ')
+        cy.get('.next-btn').click()
+        cy.url().should('include', '/user/farmer')
+    })
+
+    it('create new farmer, step 2', () => {
+        cy.get('#formBasicUsername').clear().type('RoccoGuerra@' + Math.random() + '.it')
+        cy.get('#formBasicPassword').clear().type('qwerty123')
+        cy.get('#formBasicCPassword').clear().type('qwerty123')
+        cy.get('.confirm-btn').click()
+        cy.url().should('include', '/login')
+    })
+})
+
+//testing registration farmer
+describe('SPG registration shopemployee', () => {
+    it('go to user/user/shopemployee', () => {
+        cy.visit('http://localhost:3000/user')
+        cy.get('#toCreateShopEmployee').click()
+        cy.url().should('include', '/user/shopemployee')
+    })
+
+    it('registration shopemployee, confirmation password is wrong', () =>{
+        cy.get('#formBasicUsername').clear().type('shopemployeetest@' + Math.random() + '.it')
+        cy.get('#formBasicPassword').clear().type('qwerty123')
+        cy.get('#formBasicCPassword').clear().type('qwerty124')
+        cy.get('.confirm-btn').click()
+        cy.contains('Passwords are not equal')
+    })
+
+    it('registration shopemployee, confirmation', ()=>{
+        cy.get('#formBasicCPassword').clear().type('qwerty123')
+        cy.get('.confirm-btn').click()
+        cy.url().should('include', '/login')
+    })
 })

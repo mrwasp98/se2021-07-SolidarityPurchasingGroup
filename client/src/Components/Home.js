@@ -64,7 +64,7 @@ export default function Home(props) {
                     </Col>
                     <Col sm={12} md={6}>
                         <Link to="/products">
-                            <Button variant="yellow" size="lg">Browse products for next week!</Button>
+                            <Button id="homepage_browseproducts" variant="yellow" size="lg">Browse products for next week!</Button>
                         </Link>
                     </Col>
                 </Row>
@@ -74,7 +74,7 @@ export default function Home(props) {
                     </Col>
                     <Col sm={12} md={6}>
                         <Link to="/user">
-                            <Button variant="yellow" size="lg">Join us!</Button>
+                            <Button id="homepage_joinus" variant="yellow" size="lg">Join us!</Button>
                         </Link>
                     </Col>
                 </Row>

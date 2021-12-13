@@ -165,15 +165,15 @@ export default function ProductForm(props){
                         <Card style={{width: "50%"}} className="p-3">
                         {(picture == '') &&<h5>Your image will appear here</h5>}
                         {(picture != '') && <><Card.Img  src={picture}></Card.Img>
-                        <Button variant="danger" onClick={deleteImage} className='mt-2'>Delete image</Button></> }             
+                        <Button id="productform_delete" variant="danger" onClick={deleteImage} className='mt-2'>Delete image</Button></> }             
                         </Card>
                      </Col>               
                 </Row>
                 {errorMessage ? <Alert className="mt-3" variant='danger'>{errorMessage}</Alert> : ''}
             </Form.Group>
             <div className="d-flex justify-content-between mb-4 mt-4">
-                <Link to="/farmerhome"><Button variant='danger'>Cancel</Button></Link>
-                <Button variant="yellow" onClick={submit}>Save</Button> 
+                <Link to="/farmerhome"><Button id="productform_cancel" variant='danger'>Cancel</Button></Link>
+                <Button id="productform_save"variant="yellow" onClick={submit}>Save</Button> 
             </div>
             </Form>
         </Container>
