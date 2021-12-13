@@ -38,7 +38,7 @@ export default function ProductsList(props) {
                 })
             setFlag(false)
         }
-    }, [props.dirtyAvailability, props.setFarmers, setFarmersPresent, props.date, props.setProducts, flag, lastDate]);
+    }, [props.dirtyAvailability, props.date, props.setProducts, flag]);
 
     //this use effect is used to show a message when the cart button is clicked
     useEffect(() => {
