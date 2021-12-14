@@ -12,9 +12,9 @@ sections:
 
 ### Macro statistics
 
-- Number of stories committed vs done 6 vs
-- Total points committed vs done 31 vs
-- Nr of hours planned vs spent (as a team) 112 vs
+- Number of stories committed vs done => 6 vs 6
+- Total points committed vs done => 31 vs 31
+- Nr of hours planned vs spent (as a team) =>  112h vs 110h 40m
 
 **Remember**  a story is done ONLY if it fits the Definition of Done:
  
@@ -23,21 +23,19 @@ sections:
 - Code present on VCS
 - End-to-End tests performed
 
-> Please refine your DoD 
-
+> Our DoD: A story is done when the backed tests performed by `jest` ends successfully and when the frontend tests performed by `cypress` are correctly completed.
 ### Detailed statistics
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
-| _#0_   |         |    -   |     40     |              |
-| _#1_   |         |    5   |   11h30m   |              |
-| _#2_   |         |    8   |     19h    |              |
-| _#3_   |         |    5   |   11h30m   |              |
-| _#4_   |         |    5   |   11h30m   |              |
-| _#5_   |         |    3   |    7h      |              |
-| _#6_   |         |    5   |   11h30m   |              |
+| _#0_   |    13   |    -   |     40     |       47h    |
+| _#1_   |    3    |    5   |   11h30m   |   32h 30m    |
+| _#2_   |    3    |    8   |     19h    |    5h 25m    |
+| _#3_   |    2    |    5   |   11h30m   |       30m    |
+| _#4_   |    3    |    5   |   11h30m   |    8h 05m    |
+| _#5_   |    3    |    3   |    7h      |    4h 30m    |
+| _#6_   |    3    |    5   |   11h30m   |   12h 40m    |
 
-> place technical tasks corresponding to story `#0` and leave out story points (not applicable in this case)
 
 - Hours per task (average, standard deviation)
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent from previous table
@@ -69,16 +67,19 @@ sections:
 
 ## ASSESSMENT
 
-- What caused your errors in estimation (if any)?
+- What caused your errors in estimation (if any)? 
+	+ Some tasks where implemented in an indirect way in the previous sprint. For instance, story 3 was completed adding just a button in the homepage, recycling the ProductList component.
 
 - What lessons did you learn (both positive and negative) in this sprint?
+	+ Doing things in the most correct way always pays back. Dedicating a bit more time to details always makes the difference.
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
-  
+	+ We dedicated ourselves into improve the project documentation.
 - Which ones you were not able to achieve? Why?
+	+ Apparently the time we spent on the documentation wasn't enough. When we were re-reading that new things to be added came up into our minds. So, since we want to do a good job, we'll keep this as a goal also for next sprint.
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-
-> Propose one or two
+	+ Improve testes by dedicating more time to it, complete the documentation, make the GUI more user-friendly.
 
 - One thing you are proud of as a Team!!
+	+ We trust each other's work, we all know that we're doing the best we can.
