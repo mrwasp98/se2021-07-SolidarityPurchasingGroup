@@ -68,17 +68,22 @@ function App() {
   //this use effect is used to show the modal when the client logs in  
   useEffect(() => {
     async function fetchdata() {
-      if (logged === "client") {
-        let res = await getClientById(userId);
-        setClientAddress(res.address);
-        setClient(res);
-        if (res.userid === userId && parseInt(res.wallet) < 10) {
-          setShowTopUpWalletModal(true);
-          setNotify(true);
-        } else {
-          setNotify(false);
+      try{
+        if (logged === "client") {
+          let res = await getClientById(userId);
+          setClientAddress(res.address);
+          setClient(res);
+          if (res.userid === userId && parseInt(res.wallet) < 10) {
+            setShowTopUpWalletModal(true);
+            setNotify(true);
+          } else {
+            setNotify(false);
+          }
         }
+      }catch (err){
+        console.log(err)
       }
+     
     }
     fetchdata();
   }, [logged, userId]);
