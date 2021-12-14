@@ -23,10 +23,10 @@ function ProductAction(props){
             </Modal.Header>
             <Modal.Body>Are you sure to delete <b>{props.name}</b> from your products?</Modal.Body>
             <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="secondary" id="modal_back" onClick={handleClose}>
                 Back
             </Button>
-            <Button variant="primary" onClick={() => props.deleteProd(props.id, props.picture)}>
+            <Button variant="primary" id="modal_delete" onClick={() => props.deleteProd(props.id, props.picture)}>
                 Delete
             </Button>
             </Modal.Footer>
@@ -34,9 +34,9 @@ function ProductAction(props){
             <span to={{
                         pathname: "/editProduct",
                         state: { id: props.id, name: props.name, description: props.description, category: props.category, typeofproduction: props.typeofproduction, measure: props.measure, picture: props.picture}
-                    }}>{edit}
+                    }}><Button className="p-0" id={`productavailability_edit_${props.index}`}>{edit}</Button>
             </span>&nbsp; 
-            <span onClick={handleShow}>{trash}</span>
+            <span onClick={handleShow}><Button className="p-0" id={`productavailability_delete_${props.index}`}>{trash}</Button></span>
         </>
     )
 }
@@ -104,9 +104,10 @@ function ProductAvailableRow(props) {
     return (<tr>
         <td style={{ fontSize: "18pt" }}>{product.name}</td>
         <td>
-            <Form.Group className="m-2" controlId="formBasicPrice">
+            <Form.Group controlId="formBasicPrice" >
                 {"€ "}
                 <input
+                className="align-baseline"
                     type="number"
                     min={1}
                     max={1000}
@@ -202,14 +203,14 @@ export default function ReportAvailability(props) {
             <Row>
                 <Col sm={3} style={{ backgroundColor: '#f2f2f2' }}>
                     <ListGroup variant="flush" className="mt-3">
-                        <ListGroup.Item action href="#link1">
+                        <ListGroup.Item action href="#link1" id="link1">
                             Your products
                         </ListGroup.Item>
-                        <ListGroup.Item action href="#link2">
+                        <ListGroup.Item action href="#link2" id="link2">
                             Expected availability
                         </ListGroup.Item>
                         {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
-                            <ListGroup.Item action href="#link3">
+                            <ListGroup.Item action href="#link3"  id="link3">
                                 Confirm preparation
                             </ListGroup.Item>
                             :
@@ -255,7 +256,7 @@ export default function ReportAvailability(props) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {products.map(product => <ProductAvailableRow key={product.id} product={product} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
+                                    {products.map((product, index) => <ProductAvailableRow key={product.id} index={index} product={product} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
                                 </tbody>
                             </Table>
                             <div className="d-flex justify-content-center mb-4">

@@ -104,13 +104,13 @@ export default function ProductForm(props){
             <Form onSubmit={submit}>
             <Form.Group controlId="formProduct">
                 <Form.Label style={{marginTop: "10px"}}>Name</Form.Label>
-                <Form.Control type="name" placeholder="Enter name" onChange={(e) => setName(e.target.value)} value={name}/>
+                <Form.Control type="name" placeholder="Enter name" onChange={(e) => setName(e.target.value)} value={name} className="productName"/>
                 <Form.Label style={{marginTop: "30px"}}>Description</Form.Label>
-                <Form.Control as="textarea" placeholder="Enter description" rows={3} onChange={(e) => setDescription(e.target.value)} value={description}/>
+                <Form.Control as="textarea" placeholder="Enter description" rows={3} onChange={(e) => setDescription(e.target.value)} className="productDescr" value={description}/>
                 <Row>
                     <Col>
                     <Form.Label style={{marginTop: "30px"}}>Category</Form.Label>
-                        <Form.Select aria-label="Select category" defaultValue={category} onChange={(e) => setCategory(e.target.value)}>
+                        <Form.Select aria-label="Select category" className="productCategory" defaultValue={category} onChange={(e) => setCategory(e.target.value)}>
                             <option value="Choose..." selected hidden>Choose...</option>
                             <option value="Meat and Cold Cuts">Meat and Cold Cuts</option>
                             <option value="Fruit and Vegetables">Fruit and Vegetables</option>
@@ -120,7 +120,7 @@ export default function ProductForm(props){
                     </Col>
                     <Col>
                     <Form.Label style={{marginTop: "30px"}}>Type of production</Form.Label>
-                        <Form.Select aria-label="Select category" defaultValue={typeofproduction} onChange={(e) => setTypeofproduction(e.target.value)}>
+                        <Form.Select aria-label="Select category" className="productProduction" defaultValue={typeofproduction} onChange={(e) => setTypeofproduction(e.target.value)}>
                             <option value="Choose..." selected hidden>Choose...</option>
                             <option value="Biological agriculture">Biological agriculture</option>
                             <option value="Local farm">Local farm</option>
