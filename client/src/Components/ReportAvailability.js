@@ -149,7 +149,7 @@ export default function ReportAvailability(props) {
     const [product, setProduct] = useState("");
 
     const [orders, setOrders] = useState([]);
-    const [dateavailability, setDateavailability] = useState()
+    const [dateavailability, setDateavailability] = useState(dayjs(props.date).add(1, 'day').format('YYYY-MM-DD'))
     const [productsAvailable, setProductsAvailable] = useState([]);
     const [dirty, setDirty] = useState(true);
     const [dirtyO, setDirtyO] = useState(false);
@@ -224,7 +224,8 @@ export default function ReportAvailability(props) {
       }
         
     const handleReport = () => {
-        productsAvailable.forEach(async p => await insertAvailability(p));
+        productsAvailable.map(async p => await insertAvailability(p));
+        setDirty(true)
     }
 
     return (<Container className="justify-content-center">
@@ -300,7 +301,7 @@ export default function ReportAvailability(props) {
                                 </tbody>
                             </Table>
                             <div className="d-flex justify-content-center mb-4">
-                                <Button className="order-btn" variant="yellow" onClick={() => handleReport()}>Send report</Button>
+                                <Button className="order-btn" variant="yellow" onClick={()=>handleReport()}>Send report</Button>
                             </div>
                         </Tab.Pane>
                         </> 
