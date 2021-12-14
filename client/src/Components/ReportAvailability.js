@@ -282,7 +282,7 @@ export default function ReportAvailability(props) {
                                 </tbody>
                             </Table>
                         </Tab.Pane>
-                        {(props.date.getDay() == 6 && dayjs(props.date).hour() >= 9) || props.date.getDay() == 0 || (props.date.getDay() == 1 && dayjs(props.date).hour() < 9) ? <>
+                        {!((props.date.getDay() == 6 && dayjs(props.date).hour() >= 9) || props.date.getDay() == 0 || (props.date.getDay() == 1 && dayjs(props.date).hour() < 9)) ? <>
                         <Tab.Pane eventKey="#link2">
                             <h3>Select the availability for the next week</h3>
                             <Table className="mt-3" striped bordered hover responsive>
@@ -307,7 +307,7 @@ export default function ReportAvailability(props) {
                         :
                         <>
                         <Tab.Pane eventKey="#link2">
-                            <Alert style={{fontSize: "18pt"}}>See you Saturday by 9:00 am to estimate the availability</Alert>
+                            <Alert style={{fontSize: "18pt"}}>You can do the estimation by monday at 9:00 am</Alert>
                         </Tab.Pane>
                     </> }
                         {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
