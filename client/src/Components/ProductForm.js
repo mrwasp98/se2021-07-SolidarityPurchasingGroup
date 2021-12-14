@@ -9,7 +9,7 @@ export default function ProductForm(props){
     const id = location.state ? location.state.id : 0;
     const [name, setName] = useState(location.state ? location.state.name : '');
     const [description, setDescription] = useState(location.state ? location.state.description : '');
-    const [farmerid, setFarmerid] = useState(1); //TO DO
+    const [farmerid, setFarmerid] = useState(location.state ? location.state.farmerid : props.userId);
     const [measure, setMeasure] = useState(location.state ? location.state.measure : '');
     const [category, setCategory] = useState(location.state ? location.state.category : '');  
     const [typeofproduction, setTypeofproduction] = useState(location.state ? location.state.typeofproduction : '');  
@@ -52,7 +52,6 @@ export default function ProductForm(props){
 
     //on change dell'input
     const browse = (event) =>{
-        console.log(event.target.files[0])
         //when i select an image and another image is just uploaded, i delete the image uploaded before
         if(picture != ' '){
             deleteImage().then(()=>{

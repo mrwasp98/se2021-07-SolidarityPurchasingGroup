@@ -111,7 +111,7 @@ exports.updateProduct = (product) => {
 //delete a product in the product table (for the story 9)
 exports.deleteProduct = (productid) => {
     return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM product WHERE id == ?;';
+        const sql = 'DELETE FROM product WHERE id = ?';
         db.run(sql, [productid], function (err) {
             if (err) {
                 reject(err);

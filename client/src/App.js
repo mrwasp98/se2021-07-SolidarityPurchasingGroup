@@ -137,9 +137,9 @@ function App() {
 
         <Route exact path='/' render={() => <Home />} />
 
-        <Route exact path='/farmerhome' render={() => <ReportAvailability username={username} date={date} userId={userId}/>} />
+        <Route exact path='/farmerhome' render={() => <ReportAvailability username={username} userId={userId} date={date} userId={userId}/>} />
         <Route exact path='/editProduct' render={() => <ProductForm username={username} editProduct={editProduct}/>} />
-        <Route exact path='/addProduct' render={() => <ProductForm username={username} addProduct={addProduct}/>} />
+        <Route exact path='/addProduct' render={() => <ProductForm username={username} addProduct={addProduct} userId={userId}/>} />
 
         <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
 

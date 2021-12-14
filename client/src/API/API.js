@@ -424,17 +424,14 @@ async function updateProduct(product) {
 async function deleteProduct(productid) {
   return new Promise((resolve, reject) => {
     fetch('/api/product/' + productid, {
-      method: "DELETE",
-      headers: {
-        "content-type": "application/json"
-      } 
+      method: "DELETE"
     }).then((res) => {
             if (!res.ok) {
               const error = new Error(`${res.status}: ${res.statusText}`);
               error.response = res;
               throw error;
             }
-            resolve(res.json())
+            resolve(null)
           })
           .catch((err) => {
             reject({ message: err.message })
