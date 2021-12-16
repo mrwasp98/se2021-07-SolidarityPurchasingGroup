@@ -37,8 +37,8 @@ sections:
 | _#6_   |    3    |    5   |   11h30m   |   12h 40m    |
 
 
-- Hours per task (average, standard deviation)
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent from previous table
+- Hours per task (average, standard deviation): 3h 40m
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent from previous table: 1.02
 
   
 ## QUALITY MEASURES 
