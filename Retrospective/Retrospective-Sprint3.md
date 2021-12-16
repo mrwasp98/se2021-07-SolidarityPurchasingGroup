@@ -46,24 +46,25 @@ sections:
 - Unit Testing:
   - Total hours estimated: 8h
   - Total hours spent: 9h25m
-  - Nr of automated unit test cases 
-  - Coverage (if available)
+  - Nr of automated unit test cases: 70 (backend)
+  - Coverage (if available): 80.65% (jtest), 72.22% (cypress)
 - E2E testing:
   - Total hours estimated: 5h
   - Total hours spent: 5h
 - Code review 
-  - Total hours estimated
-  - Total hours spent
+  - Total hours estimated: included in Technical Debt management
+  - Total hours spent: included in Technical Debt management
 - Technical Debt management:
   - Total hours estimated: 10h
   - Total hours spent: 11h10m
   - Hours estimated for remediation by SonarQube: 7h
   - Hours estimated for remediation by SonarQube only for the selected and planned issues: 3h40m 
   - Hours spent on remediation: 7h30m 
-  - debt ratio (as reported by SonarQube under "Measures-Maintainability")
-  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability )
-  
-
+  - debt ratio (as reported by SonarQube under "Measures-Maintainability"): 0.2%
+  - rating for each quality characteristic reported in SonarQube under "Measures":
+    - Reliability: A
+    - Security: A
+    - Maintainability: A
 
 ## ASSESSMENT
 
@@ -79,7 +80,7 @@ sections:
 	+ Apparently the time we spent on the documentation wasn't enough. When we were re-reading that new things to be added came up into our minds. So, since we want to do a good job, we'll keep this as a goal also for next sprint.
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-	+ Improve testes by dedicating more time to it, complete the documentation, make the GUI more user-friendly.
+	+ We want to improve code review. We also want to improve our way of testing in order to have a very robust system.
 
 - One thing you are proud of as a Team!!
 	+ We trust each other's work, we all know that we're doing the best we can.
