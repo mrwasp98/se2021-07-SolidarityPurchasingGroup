@@ -75,9 +75,9 @@ sections:
 	+ Doing things in the most correct way always pays back. Dedicating a bit more time to details always makes the difference.
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
-	+ We dedicated ourselves into improve the project documentation.
+	+ We dedicated ourselves into improving the project documentation.
 - Which ones you were not able to achieve? Why?
-	+ Apparently the time we spent on the documentation wasn't enough. When we were re-reading that new things to be added came up into our minds. So, since we want to do a good job, we'll keep this as a goal also for next sprint.
+	+ Apparently the time we spent on the documentation wasn't enough. When we were re-reading that, new things to be added came up into our minds. So, since we want to do a good job, we'll keep this as a goal also for next sprint.
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 	+ We want to improve code review. We also want to improve our way of testing in order to have a very robust system.
