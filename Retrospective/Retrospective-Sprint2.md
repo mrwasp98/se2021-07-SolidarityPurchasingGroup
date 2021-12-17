@@ -30,11 +30,11 @@ sections:
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
 | _#0_   |    14   |    -   |      40h   |     56h30m   |
-|*#1*    |     3   |   3    |      5h    |     4h30m    |
-|*#2*    |     3   |   5    |      9h    |     11h50m   |
-|*#3*    |     3   |  21    |      36h   |     9h30m    |
-|*#4*    |     3   |   8    |      13h   |     26h50m   |
-|*#5*    |     3   |   5    |      9h    |      0h      |
+|*#5*    |     3   |   3    |      5h    |     4h30m    |
+|*#6*    |     3   |   5    |      9h    |     11h50m   |
+|*#7*    |     3   |  21    |      36h   |     9h30m    |
+|*#8*    |     3   |   8    |      13h   |     26h50m   |
+|*#9*    |     3   |   5    |      9h    |      0h      |
 
 - Hours per task (average, standard deviation): 3h 43m
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent from previous table: 1,03
