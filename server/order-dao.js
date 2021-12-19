@@ -119,7 +119,7 @@ exports.checkForStatusUpdate = async (orderid,status) => {
             if(await allOrderlinesHaveStatus(orderid,'packaged')){
                 await privateUpdateOrderStatus(orderid,'packaged');
             } 
-        };break;
+        }break;
         //some cases for future stories
         /*
         case 'failed':{
@@ -133,7 +133,7 @@ exports.checkForStatusUpdate = async (orderid,status) => {
         */
         default:{
             //TODO
-        };
+        }
     }
 };
 

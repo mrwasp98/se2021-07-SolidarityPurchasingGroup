@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import 'cypress-react-selector'
 import '@testing-library/cypress/add-commands'
 

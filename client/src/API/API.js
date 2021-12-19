@@ -531,7 +531,7 @@ async function login(credentials) {
     body: JSON.stringify(credentials),
   });
   if (response.ok) {
-    return await response.json();
+    return response.json();
   } else {
     throw await response.text();
   }
