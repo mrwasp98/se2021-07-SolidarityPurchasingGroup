@@ -1,23 +1,23 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import MyNav from "./Components/MyNav";
+import MyNav from "./Components/Navbar/MyNav";
 import { LoginForm } from "./Components/LoginForm";
 import { BrowserRouter as Router, Route} from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ProductsList from "./Components/ProductsList";
 import ProductRequest from "./Components/ProductRequest";
-import Handout from "./Components/Handout";
+import Handout from "./Components/Handout/Handout";
 import Register from "./Components/Register";
 import Type from "./Components/Type";
 import UpdatePassword from "./Components/UpdatePassword";
 import RegisterUser from "./Components/RegisterUser";
 import { login, getUserInfo, logout, getClientById, insertProduct, updateProduct } from "./API/API.js";
-import ShopEmployeeHome from "./Components/ShopEmployeeHome";
-import Home from "./Components/Home.js"
-import ClientHome from "./Components/ClientHome";
+import ShopEmployeeHome from "./Components/Homepages/ShopEmployeeHome";
+import Home from "./Components/Homepages/Home.js"
+import ClientHome from "./Components/Homepages/ClientHome";
 import Wallet from "./Components/Wallet";
 import MyModal from "./Components/MyModal";
-import ManageOrders from "./Components/ManageOrders";
+import ManageOrders from "./Components/ManageOrders/ManageOrders";
 import ReportAvailability from "./Components/ReportAvailability";
 import ProductForm from "./Components/ProductForm";
 
@@ -29,7 +29,6 @@ function App() {
   const [farmers, setFarmers] = useState([]); //farmers present in the system
 
   const [logged, setLogged] = useState(''); //this state is used to store the type of the user logged
-  // eslint-disable-next-line
   const [username, setUsername] = useState(''); //this state saves the name of the logged user
   const [userId, setUserId] = useState(0); //this state saves the id of the logged user
   const [clientAddress, setClientAddress] = useState(''); 
@@ -83,12 +82,6 @@ function App() {
     fetchdata();
   }, [logged, userId]);
 
-  const [messageProductRequest, setMessageProductRequest] = useState({
-    type: "",
-    show: false,
-    text: ""
-  })
-
   const editProduct = (product) => {
     updateProduct(product);
   }
@@ -137,7 +130,7 @@ function App() {
 
         <Route exact path='/' render={() => <Home />} />
 
-        <Route exact path='/farmerhome' render={() => <ReportAvailability username={username} userId={userId} date={date} userId={userId}/>} />
+        <Route exact path='/farmerhome' render={() => <ReportAvailability username={username} userId={userId} date={date}/>} />
         <Route exact path='/editProduct' render={() => <ProductForm username={username} editProduct={editProduct}/>} />
         <Route exact path='/addProduct' render={() => <ProductForm username={username} addProduct={addProduct} userId={userId}/>} />
 

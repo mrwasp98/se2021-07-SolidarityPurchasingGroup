@@ -1,13 +1,13 @@
-import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Modal, Alert, Row, Col } from "react-bootstrap";
+import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Alert, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Select from 'react-select'
-import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket } from "./Icons";
+import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket } from "./Utilities/Icons";
 import dayjs from "dayjs";
 import { Link } from 'react-router-dom'
 import { getClients, getAvailableProducts, addPRequest } from "../API/API.js";
-import HomeButton from "./HomeButton";
-import ModalEnd from "./ModalEnd"
-import ModalClaimDate from "./ModalClaimDate"
+import HomeButton from "./Utilities/HomeButton";
+import ModalEnd from "./Utilities/ModalEnd"
+import ModalClaimDate from "./Utilities/ModalClaimDate"
 
 function ProductLine(props) {
     const { product } = props;

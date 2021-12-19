@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { contact } from "./Icons";
+import { contact } from "../Utilities/Icons";
 
 export default function ContactClient(props) {
     return ( 

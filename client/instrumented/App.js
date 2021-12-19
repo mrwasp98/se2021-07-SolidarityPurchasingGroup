@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route} from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ProductsList from "./Components/ProductsList";
 import ProductRequest from "./Components/ProductRequest";
-import Handout from "./Components/Handout";
+import Handout from "./Components/Handout/Handout";
 import Register from "./Components/Register";
 import Type from "./Components/Type";
 import UpdatePassword from "./Components/UpdatePassword";

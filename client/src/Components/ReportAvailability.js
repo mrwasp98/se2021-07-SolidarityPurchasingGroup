@@ -1,8 +1,8 @@
 import {Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image, Modal, Alert} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import { useEffect, useState} from "react";
-import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit} from "./Icons";
-import HomeButton from './HomeButton'
+import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit} from "./Utilities/Icons";
+import HomeButton from './Utilities/HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
 import { getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct } from "../API/API.js";
@@ -176,6 +176,8 @@ export default function ReportAvailability(props) {
         case 6: //sabato
         setDateavailability(dayjs(props.date).subtract(1, 'day').format('YYYY-MM-DD'))
         break;
+        default:
+            break;
         }
     }
 
@@ -190,7 +192,8 @@ export default function ReportAvailability(props) {
                 .then(() => setDirty(false))
                 .catch(err => console.log(err))
         }
-    }, [dirty]);
+    // eslint-disable-next-line
+    }, [dirty, props.userId]);
 
     useEffect(() => {
         getFarmersOrders(props.userId, props.date, 'null')
@@ -201,7 +204,7 @@ export default function ReportAvailability(props) {
         if (dirtyO) {
             setDirtyO(false);
         }
-    }, [dirtyO, props.date]);
+    }, [dirtyO, props.date, props.userId]);
 
     const deleteImage = async (picture) => {
         const config = {
@@ -283,7 +286,7 @@ export default function ReportAvailability(props) {
                                 </tbody>
                             </Table>
                         </Tab.Pane>
-                        {!((props.date.getDay() == 6 && dayjs(props.date).hour() >= 9) || props.date.getDay() == 0 || (props.date.getDay() == 1 && dayjs(props.date).hour() < 9)) ? <>
+                        {!((props.date.getDay() === 6 && dayjs(props.date).hour() >= 9) || props.date.getDay() === 0 || (props.date.getDay() === 1 && dayjs(props.date).hour() < 9)) ? <>
                         <Tab.Pane eventKey="#link2">
                             <h3>Select the availability for the next week</h3>
                             <Table className="mt-3" striped bordered hover responsive>

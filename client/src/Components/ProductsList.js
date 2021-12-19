@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Button, Offcanvas, InputGroup, Form, Card, Container, Accordion, Alert } from "react-bootstrap";
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
-import { iconFilter, arrowdown, arrowup, iconCart, iconSub, iconAdd, iconAddDisabled, iconSubDisabled } from "./Icons";
-import HomeButton from './HomeButton';
+import { iconFilter, arrowdown, arrowup, iconCart, iconSub, iconAdd, iconAddDisabled, iconSubDisabled } from "./Utilities/Icons";
+import HomeButton from './Utilities/HomeButton';
 import { getFarmers, getAvailableProducts } from "../API/API.js";
 import dayjs from "dayjs";
 
@@ -38,6 +38,7 @@ export default function ProductsList(props) {
                 })
             setFlag(false)
         }
+        // eslint-disable-next-line
     }, [props.dirtyAvailability, props.date, props.setProducts, flag]);
 
     //this use effect is used to show a message when the cart button is clicked
@@ -59,8 +60,8 @@ export default function ProductsList(props) {
             props.setProducts(list)
             props.setDirtyQuantity([]);
         }
-    }
-        , [props.setDirtyQuantity, props.dirtyQuantity, props.products, props.setProducts])
+        // eslint-disable-next-line
+    }, [props.setDirtyQuantity, props.dirtyQuantity, props.products, props.setProducts])
 
     function showFarmer(id) {
         if (!selectedFarmers.includes(id)) {
@@ -157,7 +158,7 @@ export default function ProductsList(props) {
             </Row>
             <Row className="mt-3 d-block m-0">
                 <Row className="mt-0 p-0 justify-content-center">
-                    {props.products.filter(p => (selected) ? (p.category === selected || selected === "All")&&(selectedFarmers.includes(p.farmerid)) : false).map((prod, index) =>
+                    {props.products.filter(p => (selected) ? (p.category === selected || selected === "All") && (selectedFarmers.includes(p.farmerid)) : false).map((prod, index) =>
                         <Product
                             prod={prod}
                             key={index}
@@ -219,7 +220,7 @@ function Product(props) {
     }
 
     return (
-        <Accordion flush className="m-4 p-0 m-0" style={{ width: '15rem' }} className="another-product mb-2 ">
+        <Accordion flush className="m-4 p-0 m-0 another-product mb-2 " style={{ width: '15rem' }}>
             <Accordion.Item eventKey="0">
                 <Card style={{ backgroundColor: "#FFEFD6" }}> {/*text-center*/}
                     <Card.Img variant="top" className="m-0" src={props.prod.picture} />

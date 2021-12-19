@@ -1,4 +1,4 @@
-import {useEffect, useState, Fragment} from 'react'
+import {useState, Fragment} from 'react'
 import {Alert, Form, Button, Container, Row, Col, Card} from 'react-bootstrap';
 import {Link, Redirect, useLocation} from 'react-router-dom';
 import axios from 'axios';
@@ -9,6 +9,7 @@ export default function ProductForm(props){
     const id = location.state ? location.state.id : 0;
     const [name, setName] = useState(location.state ? location.state.name : '');
     const [description, setDescription] = useState(location.state ? location.state.description : '');
+    // eslint-disable-next-line
     const [farmerid, setFarmerid] = useState(location.state ? location.state.farmerid : props.userId);
     const [measure, setMeasure] = useState(location.state ? location.state.measure : '');
     const [category, setCategory] = useState(location.state ? location.state.category : '');  
@@ -16,6 +17,7 @@ export default function ProductForm(props){
     const [picture, setPicture] = useState(location.state ? location.state.picture : '')
     const [submitted, setSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState('') ;
+    // eslint-disable-next-line
     const [file, setFile] = useState(); //file image before uploaded
 
     let image = ''; //copy of the file
@@ -53,7 +55,7 @@ export default function ProductForm(props){
     //on change dell'input
     const browse = (event) =>{
         //when i select an image and another image is just uploaded, i delete the image uploaded before
-        if(picture != ' '){
+        if(picture !== ' '){
             deleteImage().then(()=>{
                 image = event.target.files[0];
                 addImage();
@@ -139,7 +141,7 @@ export default function ProductForm(props){
                             label="Kg"
                             name="formHorizontalRadios"
                             id="formHorizontalRadios1"
-                            checked={(measure == 'kg') ? true : false}
+                            checked={(measure === 'kg') ? true : false}
                             onChange={(e) => {
                                 setMeasure(e.target.value ? "kg" : "unit")
                             }}
@@ -149,7 +151,7 @@ export default function ProductForm(props){
                             label="Unit"
                             name="formHorizontalRadios"
                             id="formHorizontalRadios2"
-                            checked={(measure == 'unit') ? true : false}
+                            checked={(measure === 'unit') ? true : false}
                             onChange={(e) => setMeasure(e.target.value ? "unit" : "false")}
                             />
                         </Col>
@@ -168,8 +170,8 @@ export default function ProductForm(props){
                     </Col>
                      <Col>
                         <Card style={{width: "50%"}} className="p-3">
-                        {(picture == '') &&<h5>Your image will appear here</h5>}
-                        {(picture != '') && <><Card.Img  src={picture}></Card.Img>
+                        {(picture === '') &&<h5>Your image will appear here</h5>}
+                        {(picture !== '') && <><Card.Img  src={picture}></Card.Img>
                         <Button id="productform_delete" variant="danger" onClick={deleteImage} className='mt-2'>Delete image</Button></> }             
                         </Card>
                      </Col>               

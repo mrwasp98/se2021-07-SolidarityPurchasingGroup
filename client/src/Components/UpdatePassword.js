@@ -1,7 +1,7 @@
 import { Container, Form, Button, Row, Col, Alert, Table } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { getUsernames, updatePassword } from "../API/API.js";
-import { iconStar } from "./Icons";
+import { iconStar } from "./Utilities/Icons";
 import { useHistory, Link } from 'react-router-dom';
 
 function isAlphaNumeric(str) {

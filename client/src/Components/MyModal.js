@@ -1,5 +1,5 @@
 import { Modal, Button, Container } from "react-bootstrap";
-import { topUpWallet } from "./Icons";
+import { topUpWallet } from "./Utilities/Icons";
 import QRCode from "react-qr-code";
 
 export default function MyModal(props) {

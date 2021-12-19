@@ -1,6 +1,6 @@
 import { Container, Form, Button, Row, Col, Alert, Card, ButtonGroup, Table } from "react-bootstrap";
 import { addShopEmployee, getUsernames, addClient, addFarmer } from "../API/API.js";
-import { iconStar } from "./Icons";
+import { iconStar } from "./Utilities/Icons";
 import { Link } from "react-router-dom";
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
@@ -65,6 +65,7 @@ class RegisterUserR extends Component {
 
       //Verify if the choosen username is already present in the database!
       //Username must be unique in the database!
+      // eslint-disable-next-line
       this.state.usernames.map((us) => {
         if (us.username === this.state.username) {
           valid = false;

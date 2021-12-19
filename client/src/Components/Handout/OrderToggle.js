@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Accordion, Container, Table, Button, Alert, Badge, Col } from "react-bootstrap";
-import { handOutProduct } from '../API/API'
-import { handout, order } from './Icons'
+import { handOutProduct } from '../../API/API'
+import { handout, order } from '../Utilities/Icons'
 
 export default function OrderToggle(props) {
 
