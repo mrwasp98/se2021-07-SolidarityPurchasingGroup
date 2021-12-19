@@ -213,7 +213,7 @@ export default function ReportAvailability(props) {
             }
         }
         const url = 'http://localhost:3001/api'
-        axios.delete(url+picture, config).then().catch(err => {})
+        axios.delete(url+picture, config).then().catch(err => {console.log(err)})
       }
 
 

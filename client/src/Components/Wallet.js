@@ -76,9 +76,9 @@ export default function Wallet(props) {
                     <Alert className="alert-success" variant={"success"}>
                         The wallet has been updated!
                     </Alert>
-                ) : (error) ? (
+                ) : error &&  (
                     <Alert variant="danger">An error as occurred: {error}</Alert>
-                ) : ""
+                ) 
                 }
                 <Card className="text-left mt-4">
                     <ListGroup className="list-group-flush">

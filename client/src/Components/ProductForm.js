@@ -36,7 +36,7 @@ export default function ProductForm(props){
         axios.post(url, data, config).then((response) => {
             alert('Image uploaded successfully');
             setPicture("/img/" + image.name);
-        }).catch(err => {})
+        }).catch(err => {console.log(err)})
       }
 
 
@@ -49,7 +49,7 @@ export default function ProductForm(props){
         const url = 'http://localhost:3001/api'
         axios.delete(url+picture, config).then((response) => {
             setPicture('');
-        }).catch(err => {})
+        }).catch(err => {console.log(err)})
       }
 
     //on change dell'input
@@ -141,7 +141,7 @@ export default function ProductForm(props){
                             label="Kg"
                             name="formHorizontalRadios"
                             id="formHorizontalRadios1"
-                            checked={(measure === 'kg') ? true : false}
+                            checked={measure === 'kg'}
                             onChange={(e) => {
                                 setMeasure(e.target.value ? "kg" : "unit")
                             }}
@@ -151,7 +151,7 @@ export default function ProductForm(props){
                             label="Unit"
                             name="formHorizontalRadios"
                             id="formHorizontalRadios2"
-                            checked={(measure === 'unit') ? true : false}
+                            checked={measure === 'unit'}
                             onChange={(e) => setMeasure(e.target.value ? "unit" : "false")}
                             />
                         </Col>
@@ -176,7 +176,7 @@ export default function ProductForm(props){
                         </Card>
                      </Col>               
                 </Row>
-                {errorMessage ? <Alert className="mt-3" variant='danger'>{errorMessage}</Alert> : ''}
+                {errorMessage && <Alert className="mt-3" variant='danger'>{errorMessage}</Alert>}
             </Form.Group>
             <div className="d-flex justify-content-between mb-4 mt-4">
                 <Link to="/farmerhome"><Button id="productform_cancel" variant='danger'>Cancel</Button></Link>

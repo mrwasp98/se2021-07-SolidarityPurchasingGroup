@@ -137,7 +137,7 @@ export default function MyNav(props) {
             {props.logged ? (
               <>
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
-                {props.logged === "client" ? <MyNotifications message={notifyMessage} /> : ""}
+                {props.logged === "client" && <MyNotifications message={notifyMessage} />}
                 {" "}
                 {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
               </>
