@@ -207,7 +207,6 @@ export default function ProductRequest(props) {
 
                 {selectedClient &&
                     <>
-                        {/* STUB */}
                         {(products.filter(p => p.quantity > 0).length !== 0) ? <>
                             <ModalEnd showModal={messageProductRequest.show && messageProductRequest.type === "done"}
                                 setShowModal={() => {

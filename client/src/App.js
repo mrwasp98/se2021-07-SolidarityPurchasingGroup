@@ -4,7 +4,7 @@ import MyNav from "./Components/Navbar/MyNav";
 import { LoginForm } from "./Components/LoginForm";
 import { BrowserRouter as Router, Route} from "react-router-dom";
 import { useEffect, useState } from 'react';
-import ProductsList from "./Components/ProductsList";
+import ProductsList from "./Components/ProductsList/ProductsList"
 import ProductRequest from "./Components/ProductRequest";
 import Handout from "./Components/Handout/Handout";
 import Register from "./Components/Register";
