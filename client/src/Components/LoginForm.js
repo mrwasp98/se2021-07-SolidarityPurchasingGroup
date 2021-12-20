@@ -97,9 +97,9 @@ function LoginForm(props) {
                         <Table className="mb-3 color">
                             <Form.Group className="m-3 emailfield" controlId='email'>
                                 <Form.Label className='text-warning myText'>Email</Form.Label>
-                                <Form.Control required type="text" placeholder="Insert your username" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
+                                <Form.Control required type="email" placeholder="Insert your username" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
                                 <Form.Control.Feedback type="invalid">
-                                    Please insert a valid username.
+                                    Please insert a valid email.
                                 </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="m-3 " controlId='password'>
