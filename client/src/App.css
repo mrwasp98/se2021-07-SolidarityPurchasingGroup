@@ -294,7 +294,18 @@
     height: 500px;
     width: 400px;
 }
-
+.hover-category:hover,
+.hover-category:hover>.btn-primary ,
+.hover-category:checked>.btn-primary,
+.hover-category:active>.btn-primary,
+.hover-category:focus>.btn-primary,
+.hover-category:visited>.btn-primary {
+    background-color: #ec9a2a !important;
+    /*box-shadow: 5px 8px #888888 !important;*/
+    box-shadow: 0px 0px #888888 !important;
+    color: black !important;
+    border: 0px solid #ec9a2a !important;
+}
 .loginButton {
     position: relative;
     left: 300px;

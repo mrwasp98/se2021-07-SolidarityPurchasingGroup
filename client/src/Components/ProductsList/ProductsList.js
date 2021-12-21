@@ -89,23 +89,23 @@ export default function ProductsList(props) {
 
                 <Col className="my-auto mx-0 p-0 d-sm-none " xs={4}>
                     <Button className="px-3 pt-0 important-buttons-product-list mt-1 mx-5" style={{ "fontSize": "1rem" }}
-                        onClick={() => { setShowFilters(old => old === "none" ? "block" : "none") }}
-                    >{showmore}</Button>
+                        onClick={() => { setShowFilters(old => old === "none" ? "block" : "none") }}>
+                        {showmore}
+                    </Button>
                 </Col>
 
                 {categories.map((cat, index) =>
-                    <Col className={"border-end border-grey my-auto text-center d-sm-block d-" + showfilters} xs={index !== 3 ? 4 : 6} sm={1} key={index}>
+                    <Col  onClick={() => {setSelected(cat);}} 
+                        className={"border-end border-grey my-auto text-center d-sm-block hover-category d-" + showfilters} xs={12} sm={1} key={index}>
                         <Button className={index === 2 ? "btn-primary mx-1 px-1 py-2" : "btn-primary mx-1 px-0"} style={{ "fontSize": "0.8rem" }} id="main"
-                            onClick={() => {
-                                setSelected(cat);
-                            }}>
+                           >
                             <>{cat}</>
                         </Button>
                     </Col>
                 )}
-                <Col className={"border-end border-grey p-0 my-auto text-center d-sm-block d-" + showfilters} xs={6} sm={1}>
-                    <Button className="btn-primary py-2 mt-1" style={{ "fontSize": "0.8rem" }} id="main"
-                        onClick={() => { setSelected("All"); }}>
+                <Col onClick={() => { setSelected("All"); }} 
+                    className={"border-end border-grey p-0 my-auto text-center d-sm-block hover-category d-" + showfilters} xs={12} sm={1}>
+                    <Button className="btn-primary py-2 mt-1" style={{ "fontSize": "0.8rem" }} id="main">
                         <>All</>
                     </Button>
                 </Col>
