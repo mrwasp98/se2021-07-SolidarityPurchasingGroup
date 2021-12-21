@@ -47,7 +47,7 @@ function LoginForm(props) {
                 history.push("/employeehome")
             }
         }else if(user.type === "client"){
-            history.push("/clienthome")
+            history.push("/products")
         }else if(user.type === "farmer"){
             history.push("/farmerhome")  //this if is used to story9
         }
