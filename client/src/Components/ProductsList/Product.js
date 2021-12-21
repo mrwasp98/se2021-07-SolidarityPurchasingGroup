@@ -56,7 +56,7 @@ export default function Product(props) {
 
     return (
         <>
-            <Col md={2} xs={9} className="p-0 m-0 text-center mx-md-1">
+            <Col md={2} xs={12} className="p-0 m-0 text-center mx-md-1">
                 <OverlayTrigger placement="bottom" delay={{ show: 600, hide: 0 }} overlay={renderTooltip}
                 >
                     <Card style={{ backgroundColor: "#FFEFD6", width: "90%" }} className="mx-auto mb-3" onClick={handleShow}> {/*text-center*/}
