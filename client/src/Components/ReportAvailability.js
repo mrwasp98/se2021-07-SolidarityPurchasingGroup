@@ -227,7 +227,8 @@ export default function ReportAvailability(props) {
       }
         
     const handleReport = () => {
-        productsAvailable.map(async p => await insertAvailability(p));
+        productsAvailable.map(async p => await insertAvailability(p))
+        props.bot.sendMessage(props.chatId, 'Il farmer ha pubblicato nuovi prodotti!');
         setDirty(true)
     }
 
