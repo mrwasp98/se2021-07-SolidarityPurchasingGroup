@@ -29,7 +29,7 @@ function App() {
   const token = '5025601538:AAFbffT0RV-Xn5XmwQYX6xwAFToAwK_QbJk';
 
   const [bot, setBot] = useState(0);
-  const [chatId, setChatId] = useState(0);
+  const [chatIds, setChatIds] = useState([]);
   const [telegramStarted, setTelegramStarted] = useState(false);
   const [firstBoot, setFirstBoot] = useState(true);
 
@@ -47,7 +47,7 @@ function App() {
         // of the message
         let chatIdtemp = 0;
         chatIdtemp = msg.chat.id;
-        setChatId(chatIdtemp);
+        setChatIds(chatIds => [...chatIds,chatIdtemp]);
         setTelegramStarted(true);
         bot.sendMessage(chatIdtemp, "SPG-Bot started 🚀!");
         bot.sendMessage(chatIdtemp, "Welcome " + msg.from.username + "! 👋\nThis is SPG-G07 bot, here you here you will receive notifications when the farmers make the weekly products available 📅.");
@@ -56,9 +56,6 @@ function App() {
       // Listen for any kind of message. There are different kinds of
       // messages.
       bot.on('message', (msg) => {
-        let chatIdtemp = 0;
-        chatIdtemp = msg.chat.id;
-        setChatId(chatIdtemp);
         // send a message to the chat acknowledging receipt of their message
         //bot.sendMessage(chatId, 'Received your message');
       });
@@ -174,7 +171,7 @@ function App() {
 
         <Route exact path='/' render={() => <Home />} />
 
-        <Route exact path='/farmerhome' render={() => <ReportAvailability telegramStarted={telegramStarted} username={username} userId={userId} date={date} bot={bot} chatId={chatId} />} />
+        <Route exact path='/farmerhome' render={() => <ReportAvailability telegramStarted={telegramStarted} username={username} userId={userId} date={date} bot={bot} chatIds={chatIds} />} />
         <Route exact path='/editProduct' render={() => <ProductForm username={username} editProduct={editProduct} />} />
         <Route exact path='/addProduct' render={() => <ProductForm username={username} addProduct={addProduct} userId={userId} />} />
 

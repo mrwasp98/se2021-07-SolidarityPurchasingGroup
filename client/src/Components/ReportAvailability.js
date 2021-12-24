@@ -1,46 +1,46 @@
-import {Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image, Modal, Alert} from 'react-bootstrap'
-import {Link} from 'react-router-dom'
-import { useEffect, useState} from "react";
-import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit} from "./Utilities/Icons";
+import { Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image, Modal, Alert } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit } from "./Utilities/Icons";
 import HomeButton from './Utilities/HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
 import { getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct } from "../API/API.js";
 import axios from 'axios';
 
-function ProductAction(props){
+function ProductAction(props) {
 
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    
+
     return (<>
-          <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose}>
             <Modal.Header>
-            <Modal.Title style={{width: "100%"}}><Alert variant="danger">Deleting... </Alert></Modal.Title>
+                <Modal.Title style={{ width: "100%" }}><Alert variant="danger">Deleting... </Alert></Modal.Title>
             </Modal.Header>
             <Modal.Body>Are you sure to delete <b>{props.name}</b> from your products?</Modal.Body>
             <Modal.Footer>
-            <Button variant="secondary" id="modal_back" onClick={handleClose}>
-                Back
-            </Button>
-            <Button variant="primary" id="modal_delete" onClick={() => {
-                handleClose()
-                props.deleteProd(props.id, props.picture)
-            }}>
-                Delete
-            </Button>
+                <Button variant="secondary" id="modal_back" onClick={handleClose}>
+                    Back
+                </Button>
+                <Button variant="primary" id="modal_delete" onClick={() => {
+                    handleClose()
+                    props.deleteProd(props.id, props.picture)
+                }}>
+                    Delete
+                </Button>
             </Modal.Footer>
         </Modal>
-            <Link to={{
-                        pathname: "/editProduct",
-                        state: { id: props.id, name: props.name, description: props.description, farmerid: props.farmerid, category: props.category, typeofproduction: props.typeofproduction, measure: props.measure, picture: props.picture}
-                    }}><Button className="p-0" id={`productavailability_edit_${props.index}`}>{edit}</Button>
-            </Link>&nbsp; 
-            <span onClick={handleShow}><Button className="p-0" id={`productavailability_delete_${props.index}`}>{trash}</Button></span>
-        </>
+        <Link to={{
+            pathname: "/editProduct",
+            state: { id: props.id, name: props.name, description: props.description, farmerid: props.farmerid, category: props.category, typeofproduction: props.typeofproduction, measure: props.measure, picture: props.picture }
+        }}><Button className="p-0" id={`productavailability_edit_${props.index}`}>{edit}</Button>
+        </Link>&nbsp;
+        <span onClick={handleShow}><Button className="p-0" id={`productavailability_delete_${props.index}`}>{trash}</Button></span>
+    </>
     )
 }
 
@@ -110,7 +110,7 @@ function ProductAvailableRow(props) {
             <Form.Group controlId="formBasicPrice" >
                 {"€ "}
                 <input
-                className="align-baseline"
+                    className="align-baseline"
                     type="number"
                     min={1}
                     max={1000}
@@ -153,7 +153,7 @@ export default function ReportAvailability(props) {
     const [productsAvailable, setProductsAvailable] = useState([]);
     const [dirty, setDirty] = useState(true);
     const [dirtyO, setDirtyO] = useState(false);
-    
+
     /** This function sets the date of availability 
      * if today is saturday or sunday the date of availability is monday by 9
      * if today is monday the date of availability is today by 9
@@ -162,22 +162,22 @@ export default function ReportAvailability(props) {
     const getMondayOfTheWeek = () => {
         var today = props.date;
         switch (today.getDay()) {
-        case 0: //domenica
-        setDateavailability(dayjs(props.date).add(1, 'day').format('YYYY-MM-DD'))
-        break;
-        case 1: //lunedi
-        //if the farm sets the availability before 9 am the date of availability is this monday
-            if(dayjs(props.date).hour()<9){
-                setDateavailability(dayjs(props.date).format('YYYY-MM-DD')) 
-            } else { //if the farm sets the availability after 9 am the date of availability is this next monday
-                setDateavailability(dayjs(props.date).add(7, 'day').format('YYYY-MM-DD'))
-            }
-        break;
-        case 6: //sabato
-        setDateavailability(dayjs(props.date).subtract(1, 'day').format('YYYY-MM-DD'))
-        break;
-        default:
-            break;
+            case 0: //domenica
+                setDateavailability(dayjs(props.date).add(1, 'day').format('YYYY-MM-DD'))
+                break;
+            case 1: //lunedi
+                //if the farm sets the availability before 9 am the date of availability is this monday
+                if (dayjs(props.date).hour() < 9) {
+                    setDateavailability(dayjs(props.date).format('YYYY-MM-DD'))
+                } else { //if the farm sets the availability after 9 am the date of availability is this next monday
+                    setDateavailability(dayjs(props.date).add(7, 'day').format('YYYY-MM-DD'))
+                }
+                break;
+            case 6: //sabato
+                setDateavailability(dayjs(props.date).subtract(1, 'day').format('YYYY-MM-DD'))
+                break;
+            default:
+                break;
         }
     }
 
@@ -192,15 +192,15 @@ export default function ReportAvailability(props) {
                 .then(() => setDirty(false))
                 .catch(err => console.log(err))
         }
-    // eslint-disable-next-line
+        // eslint-disable-next-line
     }, [dirty, props.userId]);
 
     useEffect(() => {
         getFarmersOrders(props.userId, props.date, 'null')
-        .then((orders) => {
-            setOrders(orders);
-        })
-        .catch(err=>{console.log(err)})
+            .then((orders) => {
+                setOrders(orders);
+            })
+            .catch(err => { console.log(err) })
         if (dirtyO) {
             setDirtyO(false);
         }
@@ -213,8 +213,8 @@ export default function ReportAvailability(props) {
             }
         }
         const url = 'http://localhost:3001/api'
-        axios.delete(url+picture, config).then().catch(err => {console.log(err)})
-      }
+        axios.delete(url + picture, config).then().catch(err => { console.log(err) })
+    }
 
 
     const deleteProd = (productid, picture) => {
@@ -223,13 +223,16 @@ export default function ReportAvailability(props) {
         //THEN, delete the product
         deleteProduct(productid).then((res) => {
             setDirty(true)
-        }).catch((err)=> console.log(err));
-      }
-        
+        }).catch((err) => console.log(err));
+    }
+
     const handleReport = () => {
         productsAvailable.map(async p => await insertAvailability(p))
-        if(props.telegramStarted===true)
-            props.bot.sendMessage(props.chatId, "Il farmer " + props.username + " ha pubblicato nuovi prodotti!");
+        if (props.telegramStarted === true) {
+            props.chatIds.forEach(chatId =>
+                props.bot.sendMessage(chatId, "Il farmer " + props.username + " ha pubblicato nuovi prodotti!")
+            )
+        }
         setDirty(true)
     }
 
@@ -247,7 +250,7 @@ export default function ReportAvailability(props) {
                             Expected availability
                         </ListGroup.Item>
                         {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
-                            <ListGroup.Item action href="#link3"  id="link3">
+                            <ListGroup.Item action href="#link3" id="link3">
                                 Confirm preparation
                             </ListGroup.Item>
                             :
@@ -289,33 +292,33 @@ export default function ReportAvailability(props) {
                             </Table>
                         </Tab.Pane>
                         {!((props.date.getDay() === 6 && dayjs(props.date).hour() >= 9) || props.date.getDay() === 0 || (props.date.getDay() === 1 && dayjs(props.date).hour() < 9)) ? <>
-                        <Tab.Pane eventKey="#link2">
-                            <h3>Select the availability for the next week</h3>
-                            <Table className="mt-3" striped bordered hover responsive>
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Price</th>
-                                        <th>Image</th>
-                                        <th>Quantity</th>
-                                        <th>Available</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {products.map((product, index) => <ProductAvailableRow key={product.id} index={index} product={product} dateavailability={dateavailability} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
-                                </tbody>
-                            </Table>
-                            <div className="d-flex justify-content-center mb-4">
-                                <Button className="order-btn" variant="yellow" onClick={()=>handleReport()}>Send report</Button>
-                            </div>
-                        </Tab.Pane>
-                        </> 
-                        :
-                        <>
-                        <Tab.Pane eventKey="#link2">
-                            <Alert style={{fontSize: "18pt"}}>You can do the estimation by monday at 9:00 am</Alert>
-                        </Tab.Pane>
-                    </> }
+                            <Tab.Pane eventKey="#link2">
+                                <h3>Select the availability for the next week</h3>
+                                <Table className="mt-3" striped bordered hover responsive>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Image</th>
+                                            <th>Quantity</th>
+                                            <th>Available</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {products.map((product, index) => <ProductAvailableRow key={product.id} index={index} product={product} dateavailability={dateavailability} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
+                                    </tbody>
+                                </Table>
+                                <div className="d-flex justify-content-center mb-4">
+                                    <Button className="order-btn" variant="yellow" onClick={() => handleReport()}>Send report</Button>
+                                </div>
+                            </Tab.Pane>
+                        </>
+                            :
+                            <>
+                                <Tab.Pane eventKey="#link2">
+                                    <Alert style={{ fontSize: "18pt" }}>You can do the estimation by monday at 9:00 am</Alert>
+                                </Tab.Pane>
+                            </>}
                         {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
                             <Tab.Pane eventKey="#link3">
                                 <h3>Confirm the preparation of a booked orders</h3>
