@@ -23,25 +23,49 @@ import ProductForm from "./Components/ProductForm";
 import TelegramBot from "node-telegram-bot-api";
 
 function App() {
+
   ///TELEGRAM STUFF
   // replace the value below with the Telegram token you receive from @BotFather
   const token = '5025601538:AAFbffT0RV-Xn5XmwQYX6xwAFToAwK_QbJk';
-  // Create a bot that uses 'polling' to fetch new updates
-  const bot = new TelegramBot(token, { polling: true });
+
+  const [bot, setBot] = useState(0);
   const [chatId, setChatId] = useState(0);
+  const [telegramStarted, setTelegramStarted] = useState(false);
+  const [firstBoot, setFirstBoot] = useState(true);
 
-  // Listen for any kind of message. There are different kinds of
-  // messages.
-  bot.on('message', (msg) => {
-    let chatIdtemp = 0;
-    chatIdtemp = msg.chat.id;
-    console.log(chatIdtemp)
-    setChatId(chatIdtemp);
-    // send a message to the chat acknowledging receipt of their message
-    bot.sendMessage(chatIdtemp, 'Mostafa coscoscos o frat cos');
-  });
+  //this use effect is for telegram stuff
+  useEffect(() => {
+    if (firstBoot === true && !bot) {
+      setFirstBoot(false);
+      // Create a bot that uses 'polling' to fetch new updates
+      setBot(new TelegramBot(token, { polling: true }));
+    }
+    else {
+      bot.onText(/\/start/, (msg, match) => {
+        // 'msg' is the received Message from Telegram
+        // 'match' is the result of executing the regexp above on the text content
+        // of the message
+        let chatIdtemp = 0;
+        chatIdtemp = msg.chat.id;
+        setChatId(chatIdtemp);
+        setTelegramStarted(true);
+        bot.sendMessage(chatIdtemp, "SPG-Bot started 🚀!");
+        bot.sendMessage(chatIdtemp, "Welcome " + msg.from.username + "! 👋\nThis is SPG-G07 bot, here you here you will receive notifications when the farmers make the weekly products available 📅.");
+      });
 
-  
+      // Listen for any kind of message. There are different kinds of
+      // messages.
+      bot.on('message', (msg) => {
+        let chatIdtemp = 0;
+        chatIdtemp = msg.chat.id;
+        setChatId(chatIdtemp);
+        // send a message to the chat acknowledging receipt of their message
+        //bot.sendMessage(chatId, 'Received your message');
+      });
+    }
+  }, [firstBoot]);
+
+
   // eslint-disable-next-line
   const [categories, setCategories] = useState(["Vegetables", "Meat", "Bread", "Eggs", "Milk"]); //main categories of the products
   const [date, setDate] = useState(new Date()); //virtual clock date
@@ -150,7 +174,7 @@ function App() {
 
         <Route exact path='/' render={() => <Home />} />
 
-        <Route exact path='/farmerhome' render={() => <ReportAvailability username={username} userId={userId} date={date} bot={bot} chatId={chatId}/>} />
+        <Route exact path='/farmerhome' render={() => <ReportAvailability telegramStarted={telegramStarted} username={username} userId={userId} date={date} bot={bot} chatId={chatId} />} />
         <Route exact path='/editProduct' render={() => <ProductForm username={username} editProduct={editProduct} />} />
         <Route exact path='/addProduct' render={() => <ProductForm username={username} addProduct={addProduct} userId={userId} />} />
 

@@ -228,7 +228,8 @@ export default function ReportAvailability(props) {
         
     const handleReport = () => {
         productsAvailable.map(async p => await insertAvailability(p))
-        props.bot.sendMessage(props.chatId, 'Il farmer ha pubblicato nuovi prodotti!');
+        if(props.telegramStarted===true)
+            props.bot.sendMessage(props.chatId, "Il farmer " + props.username + " ha pubblicato nuovi prodotti!");
         setDirty(true)
     }
 
