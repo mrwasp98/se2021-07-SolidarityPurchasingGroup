@@ -486,6 +486,30 @@ We check the quality of our code relying on SonarCloud analysis.
 * Description: update an orderline status given the related orderid and productid. Then it checks if this orderline update should affect the orderline's order status. If so, it updates it. 
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
+### Get weekly report about unretrieved food
+* URL: `api/manager/weeklyReport/<date>`
+* HTTP method: GET
+* Description: get last week's report about unretrieved food 
+* Request body: None
+* Response body: an array of products and quantities
+``` JSON
+[
+{
+    "productid":1,
+    "name": "Apple",
+    "quantity": 3,
+    "measure": "kg"
+},
+{
+    "productid":2,
+    "name": "Banana",
+    "quantity": 1,
+    "measure": "kg"
+}
+]
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
 ## USER API
 
 - POST `/api/login`
