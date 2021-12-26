@@ -1,3 +1,7 @@
+import 'cypress-react-selector'
+import '@testing-library/cypress/add-commands'
+
+
 //testing login farmer
 describe('SPG login (farmer)', () => {
     it('open route', () => {
@@ -13,7 +17,7 @@ describe('SPG login (farmer)', () => {
 })
 
 //testing edit product
-describe('SPG farmer navigational steps', () => {
+describe('SPG farmer edit product', () => {
 
     it('click on edit', () => {
         cy.get('#productavailability_edit_1').click()
@@ -25,21 +29,64 @@ describe('SPG farmer navigational steps', () => {
         cy.url().should('include', '/farmerhome')
     })
 
+})
+
+describe('SPG click on add product', () => {
     it('click on add product', () => {
         cy.get('#farmer_add_product').click()
         cy.url().should('include', '/addProduct')
+        cy.contains('your product')
     })
 
-    it('click on cancel', () => {
+    it('filling in the form, void', () => {
+        cy.get('#productform_save').click()
+        cy.contains("Name or description are empty")
+    })
+
+    it('filling in the form, incomplete, no picture', () => {
+        cy.get('.productName').clear().type('Chicken')
+        cy.get('.productDescr').clear().type('Very trustworthy description, I swear everything I write is right.')
+        cy.get('.productCategory').select('Meat and Cold Cuts')
+        cy.get('.productProduction').select('Local farm')
+        cy.get('#formHorizontalRadios1').check()
+        cy.get('#productform_save').click()
+        cy.contains('Select an image for your product');
         cy.get('#productform_cancel').click()
-        cy.url().should('include', '/farmerhome')
     })
+})
 
-    it('click on expected availability', () => {
-        cy.get('[href="#link2"]').click()
-        cy.url().should('include', '/farmerhome#link2')
+describe('deleting product, but then go back', () => {
+    let value;
+    it('click on delete', () => {
+        cy.get('tr').then((elements) => {
+            value = elements.length;
+        }).then(() => {
+            cy.get('#productavailability_delete_1').click()
+            cy.get('#modal_back').click()
+            cy.get('tr').should('have.length', value)
+        }
+        )
     })
-    
+})
+
+describe('deleting product, for real now', () => {
+    let value = 0;
+    it('remove the first product', () => {
+        cy.get('tr').then((elements) => {
+            value = elements.length;
+        }).then(() => {
+            cy.get('#productavailability_delete_1').click()
+            cy.get('#modal_delete').click()
+            cy.get('tr').should('have.length', value - 1)
+        })
+    })
+    it('check removal', () => {
+        cy.get('tr').should('have.length', value - 1)
+    })
+})
+
+describe('SPG expected availability', () => {
+
     it('select wrong day', () => {
         cy.get('.callandarButton').click()
         let notFound = true;
@@ -77,44 +124,6 @@ describe('SPG farmer navigational steps', () => {
 
     })
 
-    it('click on confirm preparation', () => {
-        cy.get('[href="#link3"]').click()
-        cy.url().should('include', '/farmerhome#link3')
-        cy.contains('Confirm the preparation of a booked orders')
-    })
-
-    it('click on your products', () => {
-        cy.get('[href="#link1"]').click()
-        cy.url().should('include', '/farmerhome#link1')
-        cy.contains('These are all your products')
-    })
-})
-
-describe('SPG click on add product', () => {
-    it('click on add product', () => {
-        cy.get('#farmer_add_product').click()
-        cy.url().should('include', '/addProduct')
-        cy.contains('your product')
-    })
-
-    it('filling in the form, void', () => {
-        cy.get('#productform_save').click()
-        cy.contains("Name or description are empty")
-    })
-
-    it('filling in the form, incomplete, no picture', () => {
-        cy.get('.productName').clear().type('Chicken')
-        cy.get('.productDescr').clear().type('Very trustworthy description, I swear everything I write is right.')
-        cy.get('.productCategory').select('Meat and Cold Cuts')
-        cy.get('.productProduction').select('Local farm')
-        cy.get('#formHorizontalRadios1').check()
-        cy.get('#productform_save').click()
-        cy.contains('Select an image for your product');
-        cy.get('#productform_cancel').click()
-    })
-})
-
-describe('SPG expected availability', () => {
     it('click on expected availability', () => {
         cy.get('[href="#link2"]').click()
         cy.url().should('include', '/farmerhome#link2')
@@ -133,21 +142,5 @@ describe('SPG expected availability', () => {
         cy.contains('1 kg')
         cy.get('.sub-btn-1').click()
         cy.contains('0 kg')
-    })
-})
-
-describe('SPG deleting product, but then go back', () => {
-    it('click on delete', () => {
-        cy.get('#productavailability_delete_1').click()
-        cy.get('#modal_back').click()
-        cy.contains("Parsley").should('exist')
-    })
-})
-
-describe('SPG deleting product, for real', () => {
-    it('click on delete', () => {
-        cy.get('#productavailability_delete_1').click()
-        cy.get('#modal_delete').click()
-        cy.contains("Parsley").should('not.exist')
     })
 })

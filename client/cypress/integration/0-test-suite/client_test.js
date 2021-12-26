@@ -5,22 +5,12 @@ describe('SPG client home', () => {
         cy.get('.emailfield').type("client1@polito.it");
         cy.get('.passwordfield').type('qwerty123')
         cy.get('.loginbutton').click(); 
-        cy.url().should('include', '/clienthome')
-    })
-
-    it('goes to product page', () => {
-        cy.get('#toprod').click()
         cy.url().should('include', '/products')
     })
 
     it('goes to home client', () => {
         cy.get('.home-here').click()
         cy.url().should('include', '/clienthome')
-    })
-
-    after(()=>{
-        cy.get('.logoutButton').click();
-        cy.url().should('include', '/')
     })
 
 })
