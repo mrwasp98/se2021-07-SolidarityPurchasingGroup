@@ -11,11 +11,11 @@ describe('SPG login (shopemployee)', () => {
 
     it("no username given", () => {
         cy.get('.loginbutton').click();
-        cy.contains('Please insert a valid username.')
+        cy.contains('Please insert a valid email.')
     })
 
     it('bad password message error', () => {
-        cy.get('.emailfield').clear().type("shopemployee");
+        cy.get('.emailfield').clear().type("shopemployee@polito.it");
         cy.get('.passwordfield').type('aaa')
         cy.get('.loginbutton').click();
         cy.contains("The password must be at least 6 characters long and must contain both alphabetical and numerical values.")
@@ -388,7 +388,7 @@ describe('SPG product show page', () => {
     })
     it('selected category', () => {
         cy.contains('Fruit and Vegetables').click()
-        cy.get('.selected-items').should('contain', 'Fruit and Vegetables')
+        cy.contains('Fruit and Vegetables')
     })
     it('filter farmers', () => {
         cy.get('.farmers-filter').click()

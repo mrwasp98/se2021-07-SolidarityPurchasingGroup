@@ -5,7 +5,7 @@ describe('SPG login (farmer)', () => {
     })
 
     it('farmer login', () => {
-        cy.get('.emailfield').type("farmer2");
+        cy.get('.emailfield').type("farmer2@polito.it");
         cy.get('.passwordfield').type('qwerty123')
         cy.get('.loginbutton').click();
         cy.url().should('include', '/farmerhome')
@@ -14,6 +14,7 @@ describe('SPG login (farmer)', () => {
 
 //testing edit product
 describe('SPG farmer navigational steps', () => {
+
     it('click on edit', () => {
         cy.get('#productavailability_edit_1').click()
         cy.url().should('include', '/editProduct')
@@ -37,7 +38,43 @@ describe('SPG farmer navigational steps', () => {
     it('click on expected availability', () => {
         cy.get('[href="#link2"]').click()
         cy.url().should('include', '/farmerhome#link2')
+    })
+    
+    it('select wrong day', () => {
+        cy.get('.callandarButton').click()
+        let notFound = true;
+        let loop = 5;
+        while (notFound && loop > 0) {
+            cy.get('.react-calendar__navigation__label__labelText').then(($btn) => {
+                // assert on the text
+                if ($btn.text().includes('novembre 2021')) {
+                    notFound = false;
+                } else {
+                    cy.get('.react-calendar__navigation__prev-button').click();
+                }
+            })
+            loop--;
+        }
+        cy.contains('28').click()
+        cy.get('.callandarButton').should("contain", "28 Nov")
+        cy.get('.btn-hour').click()
+        cy.get('.input-hour').clear().type('12')
+        cy.get('.input-min').clear().type('00')
+        cy.get('.save-btn').click()
+        cy.contains('You can do the estimation by monday at 9:00 am')
+    })
+
+    it('day ok', () => {
+        cy.get('.callandarButton').click()
+        cy.contains('29').click()
+        cy.get('.callandarButton').should("contain", "29 Nov")
+        cy.get('.btn-hour').click()
+        cy.get('.input-hour').clear().type('10')
+        cy.get('.input-min').clear().type('00')
+        cy.get('.save-btn').click()
+        cy.contains("You can do the estimation by monday at 9:00 am").should('not.exist')
         cy.contains('Select the availability for the next week')
+
     })
 
     it('click on confirm preparation', () => {

@@ -1,5 +1,5 @@
 import {Alert, Button, Form, Container, Col, Table} from 'react-bootstrap';
-import { iconStar } from "./Icons";
+import { iconStar } from "./Utilities/Icons";
 import {useState} from 'react';
 import '../App.css';
 import { useHistory } from 'react-router-dom';
@@ -47,7 +47,7 @@ function LoginForm(props) {
                 history.push("/employeehome")
             }
         }else if(user.type === "client"){
-            history.push("/clienthome")
+            history.push("/products")
         }else if(user.type === "farmer"){
             history.push("/farmerhome")  //this if is used to story9
         }
@@ -97,9 +97,9 @@ function LoginForm(props) {
                         <Table className="mb-3 color">
                             <Form.Group className="m-3 emailfield" controlId='email'>
                                 <Form.Label className='text-warning myText'>Email</Form.Label>
-                                <Form.Control required type="text" placeholder="Insert your username" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
+                                <Form.Control required type="email" placeholder="Insert your username" onChange={ev => { setUsername(ev.target.value); setShow(false) }}/>
                                 <Form.Control.Feedback type="invalid">
-                                    Please insert a valid username.
+                                    Please insert a valid email.
                                 </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="m-3 " controlId='password'>

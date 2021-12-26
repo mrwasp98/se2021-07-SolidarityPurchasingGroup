@@ -13,10 +13,10 @@ export default function ModalClaimDate(props) {
   const handleClose = () => {
     if (
       !(
-        props.claimdate.getDay() == 0 ||
-        props.claimdate.getDay() == 1 ||
-        props.claimdate.getDay() == 2 ||
-        props.claimdate.getDay() == 6
+        props.claimdate.getDay() === 0 ||
+        props.claimdate.getDay() === 1 ||
+        props.claimdate.getDay() === 2 ||
+        props.claimdate.getDay() === 6
       )
     ) {
       props.handleOrder();
@@ -101,7 +101,7 @@ export default function ModalClaimDate(props) {
                       id="checkdefadd"
                       label="Default address"
                       onClick={() => {
-                        props.setAddress(()=>{return props.clientAddress});
+                        props.setAddress(() => { return props.clientAddress });
                         setShowAddressForm(() => false);
                       }}
                     />
@@ -141,7 +141,7 @@ export default function ModalClaimDate(props) {
                   onChange={(date) => props.setClaimdate(date)}
                   filterDate={notSelectableDates}
                   filterTime={notSelectableTimes}
-                  dateFormat="dd-mm-yyyy HH:mm"
+                  dateFormat="dd-MM-yyyy HH:mm"
                   showTimeSelect
                   timeFormat="HH:mm"
                 />
@@ -160,10 +160,10 @@ export default function ModalClaimDate(props) {
               variant="primary"
               onClick={handleClose}
               disabled={
-                props.claimdate.getDay() == 0 ||
-                props.claimdate.getDay() == 1 ||
-                props.claimdate.getDay() == 2 ||
-                props.claimdate.getDay() == 6
+                props.claimdate.getDay() === 0 ||
+                props.claimdate.getDay() === 1 ||
+                props.claimdate.getDay() === 2 ||
+                props.claimdate.getDay() === 6
               }
             >
               Check and Order

@@ -1,4 +1,4 @@
-import {useEffect, useState, Fragment} from 'react'
+import {useState} from 'react'
 import {Alert, Form, Button, Container, Row, Col, Card} from 'react-bootstrap';
 import {Link, Redirect, useLocation} from 'react-router-dom';
 import axios from 'axios';
@@ -9,13 +9,15 @@ export default function ProductForm(props){
     const id = location.state ? location.state.id : 0;
     const [name, setName] = useState(location.state ? location.state.name : '');
     const [description, setDescription] = useState(location.state ? location.state.description : '');
-    const [farmerid, setFarmerid] = useState(1); //TO DO
+    // eslint-disable-next-line
+    const [farmerid, setFarmerid] = useState(location.state ? location.state.farmerid : props.userId);
     const [measure, setMeasure] = useState(location.state ? location.state.measure : '');
     const [category, setCategory] = useState(location.state ? location.state.category : '');  
     const [typeofproduction, setTypeofproduction] = useState(location.state ? location.state.typeofproduction : '');  
     const [picture, setPicture] = useState(location.state ? location.state.picture : '')
     const [submitted, setSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState('') ;
+    // eslint-disable-next-line
     const [file, setFile] = useState(); //file image before uploaded
 
     let image = ''; //copy of the file
@@ -34,7 +36,7 @@ export default function ProductForm(props){
         axios.post(url, data, config).then((response) => {
             alert('Image uploaded successfully');
             setPicture("/img/" + image.name);
-        }).catch(err => {})
+        }).catch(err => {console.log(err)})
       }
 
 
@@ -47,23 +49,29 @@ export default function ProductForm(props){
         const url = 'http://localhost:3001/api'
         axios.delete(url+picture, config).then((response) => {
             setPicture('');
-        }).catch(err => {})
+        }).catch(err => {console.log(err)})
       }
 
     //on change dell'input
     const browse = (event) =>{
         //when i select an image and another image is just uploaded, i delete the image uploaded before
-        if(image != ' '){
-            deleteImage()
+        if(picture !== ' '){
+            deleteImage().then(()=>{
+                image = event.target.files[0];
+                addImage();
+            })
+        } else{
+            image = event.target.files[0];
+            addImage();
         }
-        image = event.target.files[0];
-        addImage();
+
     };
 
     const submit = (e) => {
         e.preventDefault();
         const product = {id:id, name: name, description: description, farmerid: farmerid, measure: measure, category: category, typeofproduction: typeofproduction, picture: picture};
         let valid = true;
+
         if(name === '' || description === ''){
             valid = false;    
             setErrorMessage("Name or description are empty");
@@ -72,19 +80,19 @@ export default function ProductForm(props){
             valid=false;
             setErrorMessage("Select at least one type of production");
             setSubmitted(false)
+        } else if(picture === ''){
+            valid=false;
+            setErrorMessage("Select an image for your product");
+            setSubmitted(false)
         }
-
-        // TO DO: validation for insert only a type of a measure
-
 
         if(valid === true){
             if(path === '/addProduct'){
-               // props.addProduct(product); 
+                props.addProduct(product); 
                 setSubmitted(true);
             }
-
             if(path === '/editProduct'){
-                //props.editProduct(product);
+                props.editProduct(product);
                 setSubmitted(true);
             }
         }
@@ -95,16 +103,15 @@ export default function ProductForm(props){
             <h1>Edit your product</h1>
             <hr></hr>
             <Form onSubmit={submit}>
-            {errorMessage ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
             <Form.Group controlId="formProduct">
                 <Form.Label style={{marginTop: "10px"}}>Name</Form.Label>
-                <Form.Control type="name" placeholder="Enter name" onChange={(e) => setName(e.target.value)} value={name}/>
+                <Form.Control type="name" placeholder="Enter name" onChange={(e) => setName(e.target.value)} value={name} className="productName"/>
                 <Form.Label style={{marginTop: "30px"}}>Description</Form.Label>
-                <Form.Control as="textarea" placeholder="Enter description" rows={3} onChange={(e) => setDescription(e.target.value)} value={description}/>
+                <Form.Control as="textarea" placeholder="Enter description" rows={3} onChange={(e) => setDescription(e.target.value)} className="productDescr" value={description}/>
                 <Row>
                     <Col>
                     <Form.Label style={{marginTop: "30px"}}>Category</Form.Label>
-                        <Form.Select aria-label="Select category" defaultValue={category} onChange={(e) => setCategory(e.target.value)}>
+                        <Form.Select aria-label="Select category" className="productCategory" defaultValue={category} onChange={(e) => setCategory(e.target.value)}>
                             <option value="Choose..." selected hidden>Choose...</option>
                             <option value="Meat and Cold Cuts">Meat and Cold Cuts</option>
                             <option value="Fruit and Vegetables">Fruit and Vegetables</option>
@@ -114,7 +121,7 @@ export default function ProductForm(props){
                     </Col>
                     <Col>
                     <Form.Label style={{marginTop: "30px"}}>Type of production</Form.Label>
-                        <Form.Select aria-label="Select category" defaultValue={typeofproduction} onChange={(e) => setTypeofproduction(e.target.value)}>
+                        <Form.Select aria-label="Select category" className="productProduction" defaultValue={typeofproduction} onChange={(e) => setTypeofproduction(e.target.value)}>
                             <option value="Choose..." selected hidden>Choose...</option>
                             <option value="Biological agriculture">Biological agriculture</option>
                             <option value="Local farm">Local farm</option>
@@ -134,7 +141,7 @@ export default function ProductForm(props){
                             label="Kg"
                             name="formHorizontalRadios"
                             id="formHorizontalRadios1"
-                            checked={(measure == 'kg') ? true : false}
+                            checked={measure === 'kg'}
                             onChange={(e) => {
                                 setMeasure(e.target.value ? "kg" : "unit")
                             }}
@@ -144,7 +151,7 @@ export default function ProductForm(props){
                             label="Unit"
                             name="formHorizontalRadios"
                             id="formHorizontalRadios2"
-                            checked={(measure == 'unit') ? true : false}
+                            checked={measure === 'unit'}
                             onChange={(e) => setMeasure(e.target.value ? "unit" : "false")}
                             />
                         </Col>
@@ -163,16 +170,17 @@ export default function ProductForm(props){
                     </Col>
                      <Col>
                         <Card style={{width: "50%"}} className="p-3">
-                        {(picture == '') &&<h5>Your image will appear here</h5>}
-                        {(picture != '') && <><Card.Img  src={picture}></Card.Img>
-                        <Button variant="danger" onClick={deleteImage} className='mt-2'>Delete image</Button></> }             
+                        {(picture === '') &&<h5>Your image will appear here</h5>}
+                        {(picture !== '') && <><Card.Img  src={picture}></Card.Img>
+                        <Button id="productform_delete" variant="danger" onClick={deleteImage} className='mt-2'>Delete image</Button></> }             
                         </Card>
                      </Col>               
                 </Row>
+                {errorMessage && <Alert className="mt-3" variant='danger'>{errorMessage}</Alert>}
             </Form.Group>
             <div className="d-flex justify-content-between mb-4 mt-4">
-                <Link to="/farmerhome"><Button variant='danger'>Cancel</Button></Link>
-                <Button variant="yellow" onClick={submit}>Save</Button> 
+                <Link to="/farmerhome"><Button id="productform_cancel" variant='danger'>Cancel</Button></Link>
+                <Button id="productform_save"variant="yellow" onClick={submit}>Save</Button> 
             </div>
             </Form>
         </Container>

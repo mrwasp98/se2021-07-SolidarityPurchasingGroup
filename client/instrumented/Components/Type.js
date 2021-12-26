@@ -1,5 +1,5 @@
 import { Card, Button, ButtonGroup, Container } from "react-bootstrap";
-import HomeButton from './HomeButton';
+import HomeButton from './Utilities/HomeButton';
 import { Link } from "react-router-dom";
 
 export default function Type() {

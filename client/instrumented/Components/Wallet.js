@@ -2,8 +2,8 @@ import { useEffect, useState, React } from "react";
 import { Card, Container, Image, Form, ListGroup, ListGroupItem, Alert, Row, Col, Button } from "react-bootstrap";
 import Select from 'react-select'
 import { getClients, topUpWallet } from "../API/API"
-import HomeButton from "./HomeButton";
-import {piggy} from "./Icons";
+import HomeButton from "./Utilities/HomeButton";
+import {piggy} from "./Utilities/Icons";
 import { useParams } from "react-router-dom";
 
 export default function Wallet(props) {
@@ -76,9 +76,9 @@ export default function Wallet(props) {
                     <Alert className="alert-success" variant={"success"}>
                         The wallet has been updated!
                     </Alert>
-                ) : (error) ? (
+                ) : error &&  (
                     <Alert variant="danger">An error as occurred: {error}</Alert>
-                ) : ""
+                ) 
                 }
                 <Card className="text-left mt-4">
                     <ListGroup className="list-group-flush">

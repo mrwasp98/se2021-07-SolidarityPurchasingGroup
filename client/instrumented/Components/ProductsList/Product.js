@@ -59,7 +59,7 @@ export default function Product(props) {
             <Col md={2} xs={12} className="p-0 m-0 text-center mx-md-1">
                 <OverlayTrigger placement="bottom" delay={{ show: 600, hide: 0 }} overlay={renderTooltip}
                 >
-                    <Card style={{ backgroundColor: "#FFEFD6", width: "90%" }} className="mx-auto mb-3 another-product" onClick={handleShow}> {/*text-center*/}
+                    <Card style={{ backgroundColor: "#FFEFD6", width: "90%" }} className="mx-auto mb-3" onClick={handleShow}> {/*text-center*/}
                         <Card.Img variant="top" className="m-0" src={props.prod.picture} style={{ height: "100%", width: "100%" }} />
                         <Card.Body className="mt-2 p-0">
                             <Card.Header className="myTitle d-inline p-0 " style={{ fontSize: "23px", fontWeight: "600", backgroundColor: "#FFEFD6" }}>{props.prod.name}

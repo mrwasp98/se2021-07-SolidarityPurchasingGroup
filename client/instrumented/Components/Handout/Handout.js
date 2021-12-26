@@ -1,9 +1,9 @@
 import { useEffect, useState, React } from "react";
 import { Card, Container, Form, ListGroup, ListGroupItem, Alert } from "react-bootstrap";
 import Select from 'react-select'
-import { getClients, getClientOrders } from "../API/API"
+import { getClients, getClientOrders } from "../../API/API"
 import OrderToggle from "./OrderToggle";
-import HomeButton from "./HomeButton";
+import HomeButton from "../Utilities/HomeButton";
 import dayjs from "dayjs";
 
 export default function Handout(props) {

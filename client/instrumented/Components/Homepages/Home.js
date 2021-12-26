@@ -58,13 +58,23 @@ export default function Home(props) {
                 </Row>
             </Container>
             <Container className="my-4">
+            <Row className="text-center division pb-3 mb-3">
+                    <Col sm={12} md={6}>
+                        <h2>Are you curious?</h2>
+                    </Col>
+                    <Col sm={12} md={6}>
+                        <Link to="/products">
+                            <Button id="homepage_browseproducts" variant="yellow" size="lg">Browse products for next week!</Button>
+                        </Link>
+                    </Col>
+                </Row>
                 <Row className="text-center">
                     <Col sm={12} md={6}>
                         <h2>What are you waiting for?</h2>
                     </Col>
                     <Col sm={12} md={6}>
                         <Link to="/user">
-                            <Button variant="yellow" size="lg">Join us!</Button>
+                            <Button id="homepage_joinus" variant="yellow" size="lg">Join us!</Button>
                         </Link>
                     </Col>
                 </Row>

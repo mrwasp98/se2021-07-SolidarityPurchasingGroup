@@ -1,7 +1,7 @@
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { addClient } from "../API/API.js";
-import HomeButton from "./HomeButton";
+import HomeButton from "./Utilities/HomeButton";
 
 export default function Register(props) {
   const [name, setName] = useState("");

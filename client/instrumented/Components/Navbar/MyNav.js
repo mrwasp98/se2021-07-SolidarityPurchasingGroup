@@ -1,15 +1,15 @@
 import { useHistory, Link } from 'react-router-dom';
 import { Navbar, Container, Button, Modal, Row, Col, Table, ListGroup, Alert, Offcanvas } from "react-bootstrap";
 import { useState, useEffect, React } from "react";
-import { clock, iconStar, iconCalendar, iconCart, cartFill, cross, coin } from "./Icons";
+import { clock, iconStar, iconCalendar, iconCart, cartFill, cross, coin } from "../Utilities/Icons";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import dayjs from "dayjs";
 import Clock from "./Clock";
 import MyNotifications from "./MyNotifications";
-import { addPRequest } from '../API/API';
-import ModalClaimDate from "./ModalClaimDate"
-import ModalEnd from './ModalEnd';
+import { addPRequest } from '../../API/API';
+import ModalClaimDate from "../Utilities/ModalClaimDate"
+import ModalEnd from '../Utilities/ModalEnd';
 
 export default function MyNav(props) {
 
@@ -21,6 +21,7 @@ export default function MyNav(props) {
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
   const [message, setMessage] = useState([]);
+  // eslint-disable-next-line
   const [notifyMessage, setNotifyMessage] = useState({
     topUpWallet: props.topUpWallet
   });
@@ -136,7 +137,7 @@ export default function MyNav(props) {
             {props.logged ? (
               <>
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
-                {props.logged === "client" ? <MyNotifications message={notifyMessage} /> : ""}
+                {props.logged === "client" && <MyNotifications message={notifyMessage} />}
                 {" "}
                 {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
               </>
@@ -196,7 +197,7 @@ function BasketOffCanvas(props) {
       }
       props.setDirtyBasket(false);
     }
-
+    // eslint-disable-next-line
   }, [props.dirtyBasket, props.setDirtyBasket])
 
   //this use effect does the cleanup if the date changes

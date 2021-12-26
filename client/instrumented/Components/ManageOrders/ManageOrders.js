@@ -1,21 +1,24 @@
 import { useEffect, useState, React } from "react";
 import { Card, ListGroup, ListGroupItem, Col, Table, Accordion, Container } from "react-bootstrap";
-import { getClientOrders, getOrdersByStatus, getClients } from "../API/API"
-import HomeButton from "./HomeButton";
+import { getClientOrders, getOrdersByStatus, getClients } from "../../API/API"
+import HomeButton from "../Utilities/HomeButton";
 import ContactClient from "./ContactClient";
-import { fail, order, handout, account, euro} from "./Icons";
+import { fail, order, handout, account, euro } from "../Utilities/Icons";
 
 export default function ManageOrders(props) {
     const [oldLength, setOldLength] = useState(0); //metodo che fa acqua, da aggiornare quando gli ordini canceled possono essere rimossi
+    // eslint-disable-next-line
     const [error, setError] = useState("");
+
     useEffect(() => {
-        if (oldLength == 0 || props.failedOrders.length != oldLength) {
+        if (oldLength === 0 || props.failedOrders.length !== oldLength) {
             getOrdersByStatus("pending") //da cambiare in ....
                 .then((orders) => {
                     props.setFailedOrders(orders);
                     setOldLength(orders.length);
                 }); //deve essere cambiato nella giusta dicitura , es "canceled"
         }
+        // eslint-disable-next-line
     }, [props.failedOrders]);
 
     /*used to get all the clients when the component is being loaded
@@ -62,6 +65,7 @@ then, converts the information in the best format to show options in the Select 
 
 
 function FailedOrder(props) {
+    // eslint-disable-next-line
     const [client, setClient] = useState(props.clients.filter(o => o.userid === props.order.userid)[0]);
     const [orderFailed, setOrderFailed] = useState();
     const [dirtyOrder, setDirtyOrder] = useState(true);
@@ -74,7 +78,7 @@ function FailedOrder(props) {
                     setDirtyOrder(false)
                 })
         }
-    }, [dirtyOrder]);
+    }, [dirtyOrder, client, props.order.id]);
 
     //this function is called in order to calculate the total price of an order.
     function totalprice() {
