@@ -17,11 +17,11 @@ exports.getProductsAvailable = (date) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT P.id, P.name, P.description, P.farmerid, P.price, P.measure, P.category, P.typeofproduction, P.picture, A.dateavailability, A.quantity, A.status FROM product AS P, availability AS A WHERE P.id=A.productid AND A.quantity<>0';
         db.all(sql, [], (err, rows) => {
-            if(err) {
+            if (err) {
                 reject(err);
             }
-            const products = rows.map((p) => ({id: p.id, name: p.name, description: p.description, farmerid: p.farmerid, price: p.price, measure: p.measure, category: p.category, typeofproduction: p.typeofproduction, picture: p.picture, dateavailability: p.dateavailability, quantity: p.quantity}))
-                            .filter((p) => {return ((dayjs(p.dateavailability)).isBefore(thisSaturday9Am) && (dayjs(p.dateavailability).isAfter(lastSaturday9Am)))});
+            const products = rows.map((p) => ({ id: p.id, name: p.name, description: p.description, farmerid: p.farmerid, price: p.price, measure: p.measure, category: p.category, typeofproduction: p.typeofproduction, picture: p.picture, dateavailability: p.dateavailability, quantity: p.quantity }))
+                .filter((p) => { return ((dayjs(p.dateavailability)).isBefore(thisSaturday9Am) && (dayjs(p.dateavailability).isAfter(lastSaturday9Am))) });
             resolve(products);
         });
     });
@@ -32,7 +32,7 @@ exports.getProductsByFarmer = (farmerid) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM product AS P WHERE P.farmerid = ?';
         db.all(sql, [farmerid], (err, rows) => {
-            if(err) {
+            if (err) {
                 reject(err);
             }
             resolve(rows);
@@ -42,7 +42,7 @@ exports.getProductsByFarmer = (farmerid) => {
 
 //Update the quantity field of a product
 exports.updateProductsQuantity = (productid, quantity) => {
-    return new Promise((resolve, reject ) => {
+    return new Promise((resolve, reject) => {
         const sql = 'UPDATE availability SET quantity = quantity - ? WHERE productid == ?;';
         db.get(sql, [quantity, productid], (err, row) => {
             if (err) {
@@ -59,7 +59,7 @@ exports.getProductById = (id) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM product WHERE id=?';
         db.get(sql, [id], (err, row) => {
-            if(err) {
+            if (err) {
                 reject(err);
             }
             resolve(row); //could be undefined
@@ -148,4 +148,44 @@ exports.insertAvailability = (availability) => {
     });
 };
 
-/**  JUST FOR TESTS **/
+//Get products unretrieved in a certain week
+exports.getUnretrievedProducts = (beginDate, endDate) => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT ol.productid, p.name, ol.quantity, p.measure FROM 'order' AS o, orderline AS ol, product AS p WHERE o.id=ol.orderid AND ol.productid=p.id AND o.status='unretrieved' AND o.claimdate>=? AND o.claimdate<=?";
+        db.all(sql, [beginDate, endDate], (err, rows) => {
+            if (err) {
+                reject(err);
+            }
+            //sum quantities of the same product
+            const ret = sumQuantitiesOfSameProduct(rows);
+            resolve(ret);
+        });
+    });
+};
+
+const sumQuantitiesOfSameProduct = (products) => {
+    const ret = [];
+    for(let i=0;i<products.length;i++) {
+        if (!alreadySeen(products[i], ret)) {
+            let sum = 0;
+            for (let j=i;j<products.length;j++) {
+                if (products[j].productid === products[i].productid) {
+                    sum += products[j].quantity;
+                }
+            }
+            ret.push({
+                productid: products[i].productid,
+                name: products[i].name,
+                quantity: sum,
+                measure: products[i].measure
+            })
+        }//if
+    }
+    return ret;
+}
+
+const alreadySeen = (product,productList) => {
+    for(let p of productList)
+        if(p.productid===product.productid) return true;
+    return false;
+}

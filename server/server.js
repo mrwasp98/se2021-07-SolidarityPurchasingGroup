@@ -499,7 +499,8 @@ app.get("/api/orders/status/:status", async (req, res) => {
 });
 
 /*** For the photo upload ***/
-const fs = require('fs')
+const fs = require('fs');
+const dayjs = require("dayjs");
 
 var storage = destinazione => multer.diskStorage({
   destination: function (req, file, cb) {
@@ -573,3 +574,74 @@ app.put("/api/orderlines", async (req, res) => {
     res.status(500).end();
   }
 });
+
+//GET: get last week report about unretrieved food -ant
+app.get("/api/manager/weeklyReport/:date", async (req, res) => {
+  try {
+    const [beginDate,endDate]=getWeekRange(req.params.date);
+    const products = await productDao.getUnretrievedProducts(beginDate, endDate);
+    res.status(200).json(products);
+  } catch (err) {
+    res.status(500).end();
+  }
+});
+
+//used in GET /api/manager/weeklyReport/:date
+const getWeekRange = (date) => {
+  //Remember: dayjs has sunday as start of week and saturday as end of week,
+  //so the next comments will deal with this format
+
+  /*
+    beginDate should be:
+    - wednesday of this week if 'date' is saturday
+    - wednesday of last week if date is sunday to friday
+
+    endDate should be:
+    - friday of this week if 'date' is saturday
+    - friday of last week if 'date' is sunday to friday
+    */
+  let beginDate;
+  let endDate;
+  if (dayjs(date).format('dddd') === 'Saturday') {
+    //beginDate is wednesday of this week
+    beginDate = dayjs(date).startOf('week').add(3, 'day').format('YYYY-MM-DD');
+    //endDate is friday of this week (==yesterday since date is saturday)
+    endDate = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
+  }
+  else {
+    //beginDate is wednesday of last week
+    beginDate = dayjs(date).startOf('week').subtract(1, 'week').add(3, 'day').format('YYYY-MM-DD');
+    //endDate is friday of last week
+    endDate = dayjs(date).startOf('week').subtract(1, 'week').add(5, 'day').format('YYYY-MM-DD');
+  }
+  return [beginDate, endDate];
+}
+
+//GET: get last month report about unretrieved food -ant
+app.get("/api/manager/monthlyReport/:date", async (req, res) => {
+  //we assume that an order belongs to a month if its claimdate belongs to that month
+  try {
+    const [beginDate,endDate]=getMonthRange(req.params.date);
+    const products = await productDao.getUnretrievedProducts(beginDate, endDate);
+    res.status(200).json(products);
+  } catch (err) {
+    res.status(500).end();
+  }
+});
+
+//used in GET /api/manager/monthlyReport/:date
+const getMonthRange = (date) => {
+  //Remember: dayjs has sunday as start of week and saturday as end of week
+  const beginDate=dayjs(date).startOf('month').subtract(1,'month').format('YYYY-MM-DD');
+  let endDate;
+  if (dayjs(date).subtract(1,'month').format('MMMM') === 'November' || dayjs(date).format('MMMM') === 'April' || dayjs(date).format('MMMM') === 'June' || dayjs(date).format('MMMM') === 'September'){
+    endDate=dayjs(date).subtract(1,'month').day(30).format('YYYY-MM-DD');
+  }
+  else if(dayjs(date).subtract(1,'month').format('MMMM') === 'February'){
+    endDate=dayjs(date).subtract(1,'month').day(28).format('YYYY-MM-DD');
+  }
+  else{
+    endDate=dayjs(date).subtract(1,'month').day(31).format('YYYY-MM-DD');
+  }
+  return [beginDate, endDate];
+}
