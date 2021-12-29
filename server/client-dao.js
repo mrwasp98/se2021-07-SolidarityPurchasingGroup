@@ -31,7 +31,7 @@ exports.deleteAllClients = () => {
 //Insert a new client in the client table
 exports.insertClient = (client) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO client(userid, name, surname, wallet, address) VALUES(?,?,?,?,?)';
+        const sql = 'INSERT INTO client(userid, name, surname, wallet, address,missed_pickups) VALUES(?,?,?,?,?,0)';
         db.run(sql, [client.userid, client.name, client.surname, client.wallet, client.address], function (err) {
             if (err) {
                 reject(err);
@@ -55,10 +55,36 @@ exports.topUp = (clientid, ammount) => {
     });
 };
 
+//Increment the counter of missed_pickups
+exports.incrementMissedPickups = (clientid,quantity) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE client SET missed_pickups = missed_pickups + ? WHERE userid == ?';
+        db.run(sql, [quantity,clientid], function (err) {
+            if (err) {
+                reject(err);
+            }
+            resolve();
+        });
+    });
+};
+
 //Get a client from client table by hi id
 exports.getClientById = (clientid) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM client WHERE userid=?';
+        db.get(sql, [clientid], (err, row) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(row); //manage in server.js in row is undefined or not
+        });
+    });
+};
+
+//Get client's missed pickups
+exports.getClientMissedPickups = (clientid) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT missed_pickups FROM client WHERE userid=?';
         db.get(sql, [clientid], (err, row) => {
             if (err) {
                 reject(err);

@@ -41,8 +41,8 @@ describe('Testing GET on /api/clients', () => {
         //clear and fill (mock) client database with fakeClient1 and fakeClient2
         await userDao.deleteAllUsers();
         userId1 = await userDao.insertUser(fakeUser1);
-        userId2 =  await userDao.insertUser(fakeUser2);
-        userId3 =  await userDao.insertUser(fakeUser3);
+        userId2 = await userDao.insertUser(fakeUser2);
+        userId3 = await userDao.insertUser(fakeUser3);
 
         const fakeClient1 = {
             userid: userId1,
@@ -69,7 +69,7 @@ describe('Testing GET on /api/clients', () => {
         await clientDao.deleteAllClients();
     });
 
-    afterAll(()=>{
+    afterAll(() => {
         app.close(); //without that, jest won't exit
     })
 
@@ -82,14 +82,16 @@ describe('Testing GET on /api/clients', () => {
             name: 'John',
             surname: 'Doe',
             wallet: 50.30,
-            address: 'Corso Duca degli Abruzzi, 21, Torino'
+            address: 'Corso Duca degli Abruzzi, 21, Torino',
+            missed_pickups:0
         }
         const fakeClient2 = {
             userid: userId2,
             name: 'Mario',
             surname: 'Rossi',
             wallet: 12.30,
-            address: 'Corso Mediterraneo, 70, Torino'
+            address: 'Corso Mediterraneo, 70, Torino',
+            missed_pickups:0
         }
         expect(response.body).toEqual([fakeClient1, fakeClient2]);
     });
@@ -98,7 +100,7 @@ describe('Testing GET on /api/clients', () => {
 
 describe('Testing GET on api/client/:clientid', () => {
 
-    beforeEach(async ()=>{
+    beforeEach(async () => {
         await userDao.deleteAllUsers();
         await clientDao.deleteAllClients();
     });
@@ -114,10 +116,11 @@ describe('Testing GET on api/client/:clientid', () => {
             name: 'John',
             surname: 'Doe',
             wallet: 50.30,
-            address: 'Corso Duca degli Abruzzi, 21, Torino'
+            address: 'Corso Duca degli Abruzzi, 21, Torino',
+            missed_pickups:0
         }
         await clientDao.insertClient(fakeClient1);
-        const response = await request(app).get('/api/client/'+userId1);
+        const response = await request(app).get('/api/client/' + userId1);
         expect(response.body).toStrictEqual(fakeClient1);
     });
 
@@ -131,12 +134,12 @@ describe('Testing GET on api/client/:clientid', () => {
             address: 'Corso Duca degli Abruzzi, 21, Torino'
         }
         await clientDao.insertClient(fakeClient1);
-        const response = await request(app).get('/api/client/'+userId1);
+        const response = await request(app).get('/api/client/' + userId1);
         expect(response.status).toBe(200);
     });
 
     test("It should respond with 404 status", async () => {
-        const response = await request(app).get('/api/client/'+1);
+        const response = await request(app).get('/api/client/' + 1);
         expect(response.status).toBe(404);
     });
 
@@ -148,17 +151,17 @@ describe('Testing POST on /api/client', () => {
         clientDao.deleteAllClients();
     });
 
-    afterAll(()=>{
+    afterAll(() => {
         app.close(); //without that, jest won't exit
     })
 
     test('It should respond with 200 status code', async () => {
         const response = await request(app).post('/api/client').send({
             userid: userId1,
-            name: "Grrmafa", 
-            surname: "Idcamcv", 
+            name: "Grrmafa",
+            surname: "Idcamcv",
             username: "prova@prova.com",
-            wallet: 50.30, 
+            wallet: 50.30,
             address: "Corso Duca degli Abruzzi, 21, Torino",
             password: "1234567",
             type: "farmer"
@@ -175,9 +178,9 @@ describe('Testing POST on /api/client', () => {
                 wallet: 50.30,
                 address: 'Corso Duca degli Abruzzi, 21, Torino'
             };
-            for (let [key,value] of Object.entries(obj)) {
+            for (let [key, value] of Object.entries(obj)) {
                 //at each iteration it will create an object with one parameter missing
-                const wrongObjArray = Object.entries(obj).filter(keyValue => JSON.stringify(keyValue)!==JSON.stringify([key,value]));
+                const wrongObjArray = Object.entries(obj).filter(keyValue => JSON.stringify(keyValue) !== JSON.stringify([key, value]));
                 //need to convert from array to object
                 const wrongObj = Object.fromEntries(wrongObjArray);
                 const response = await request(app).post('/api/client').send(wrongObj);
@@ -251,6 +254,7 @@ describe('Testing PUT on /api/clients/:clientid', () => {
     afterAll(async () => {
         await userDao.deleteAllUsers();
         await clientDao.deleteAllClients();
+        app.close();
     })
 
     test('It should respond with 200 status code', async () => {
@@ -262,7 +266,7 @@ describe('Testing PUT on /api/clients/:clientid', () => {
             address: 'Corso Duca degli Abruzzi, 21, Torino'
         }
         id1 = await clientDao.insertClient(fakeClient1);
-        const response = await request(app).put('/api/clients/'+userId3+'/?ammount=30').send({
+        const response = await request(app).put('/api/clients/' + userId3 + '/?ammount=30').send({
             status: 'completed'
         })
         expect(response.statusCode).toBe(200);;
@@ -276,12 +280,98 @@ describe('Testing PUT on /api/clients/:clientid', () => {
             wallet: 50.30,
             address: 'Corso Duca degli Abruzzi, 21, Torino'
         }
-        const clientIdNotExisting = userId3+1;
+        const clientIdNotExisting = userId3 + 1;
         id1 = await clientDao.insertClient(fakeClient1);
-        const response = await request(app).put('/api/clients/'+clientIdNotExisting+'/?ammount=30').send({
+        const response = await request(app).put('/api/clients/' + clientIdNotExisting + '/?ammount=30').send({
             status: 'completed'
         })
         expect(response.statusCode).toBe(404);;
+    });
+
+});
+
+describe('Testing PUT on /api/clients/missedPickups/:clientid', () => {
+
+    const fakeClient1 = {
+        userid: 1,
+        name: 'John',
+        surname: 'Doe',
+        wallet: 50.30,
+        address: 'Corso Duca degli Abruzzi, 21, Torino'
+    };
+
+    beforeEach(async () => {
+        await clientDao.deleteAllClients();
+        await clientDao.insertClient(fakeClient1);
+    })
+
+    afterAll(async () => {
+        await clientDao.deleteAllClients();
+        app.close();
+    })
+
+    test("It should increment to 1 client's missed pickups", async () => {
+        const response = await request(app).put('/api/clients/missedPickups/'+fakeClient1.userid).send({
+            quantity:1
+        })
+        expect(response.body).toEqual({missed_pickups:1});;
+    });
+
+    test("It should increment to 1 and then 3 client's missed pickups", async () => {
+        await request(app).put('/api/clients/missedPickups/'+fakeClient1.userid).send({
+            quantity:1
+        })
+        const response = await request(app).put('/api/clients/missedPickups/'+fakeClient1.userid).send({
+            quantity:2
+        })
+        expect(response.body).toEqual({missed_pickups:3});;
+    });
+
+    test("It should respond with 200 status code", async () => {
+        const response = await request(app).put('/api/clients/missedPickups/'+fakeClient1.userid).send({
+            quantity:1
+        })
+        expect(response.status).toBe(200);
+    });
+
+});
+
+describe('Testing GET on /api/clients/missedPickups/:clientid', () => {
+
+    const fakeClient1 = {
+        userid: 1,
+        name: 'John',
+        surname: 'Doe',
+        wallet: 50.30,
+        address: 'Corso Duca degli Abruzzi, 21, Torino'
+    };
+
+    beforeEach(async () => {
+        await clientDao.deleteAllClients();
+        await clientDao.insertClient(fakeClient1);
+    })
+
+    afterAll(async () => {
+        await clientDao.deleteAllClients();
+        app.close();
+    })
+
+    test("It should respond with the correct value (0)", async () => {
+        const response = await request(app).get('/api/clients/missedPickups/'+fakeClient1.userid);
+        expect(response.body).toEqual({missed_pickups:0});;
+    });
+
+    test("It should respond with the correct value (2)", async () => {
+        await request(app).put('/api/clients/missedPickups/'+fakeClient1.userid).send({
+            quantity:2
+        })
+        const response = await request(app).get('/api/clients/missedPickups/'+fakeClient1.userid);
+        expect(response.body).toEqual({missed_pickups:2});;
+    });
+
+    test("It should respond with 200 status code", async () => {
+        const response = await request(app).put('/api/clients/missedPickups/'+fakeClient1.userid);
+        expect(response.status).toBe(200);
     });
 
 });

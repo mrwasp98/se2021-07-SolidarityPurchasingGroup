@@ -578,7 +578,7 @@ app.put("/api/orderlines", async (req, res) => {
 //GET: get last week report about unretrieved food -ant
 app.get("/api/manager/weeklyReport/:date", async (req, res) => {
   try {
-    const [beginDate,endDate]=getWeekRange(req.params.date);
+    const [beginDate, endDate] = getWeekRange(req.params.date);
     const products = await productDao.getUnretrievedProducts(beginDate, endDate);
     res.status(200).json(products);
   } catch (err) {
@@ -586,7 +586,7 @@ app.get("/api/manager/weeklyReport/:date", async (req, res) => {
   }
 });
 
-//used in GET /api/manager/weeklyReport/:date
+//used in GET /api/manager/weeklyReport/:date -ant
 const getWeekRange = (date) => {
   //Remember: dayjs has sunday as start of week and saturday as end of week,
   //so the next comments will deal with this format
@@ -621,7 +621,7 @@ const getWeekRange = (date) => {
 app.get("/api/manager/monthlyReport/:date", async (req, res) => {
   //we assume that an order belongs to a month if its claimdate belongs to that month
   try {
-    const [beginDate,endDate]=getMonthRange(req.params.date);
+    const [beginDate, endDate] = getMonthRange(req.params.date);
     const products = await productDao.getUnretrievedProducts(beginDate, endDate);
     res.status(200).json(products);
   } catch (err) {
@@ -629,19 +629,41 @@ app.get("/api/manager/monthlyReport/:date", async (req, res) => {
   }
 });
 
-//used in GET /api/manager/monthlyReport/:date
+//used in GET /api/manager/monthlyReport/:date -ant
 const getMonthRange = (date) => {
   //Remember: dayjs has sunday as start of week and saturday as end of week
-  const beginDate=dayjs(date).startOf('month').subtract(1,'month').format('YYYY-MM-DD');
+  const beginDate = dayjs(date).startOf('month').subtract(1, 'month').format('YYYY-MM-DD');
   let endDate;
-  if (dayjs(date).subtract(1,'month').format('MMMM') === 'November' || dayjs(date).format('MMMM') === 'April' || dayjs(date).format('MMMM') === 'June' || dayjs(date).format('MMMM') === 'September'){
-    endDate=dayjs(date).subtract(1,'month').day(30).format('YYYY-MM-DD');
+  if (dayjs(date).subtract(1, 'month').format('MMMM') === 'November' || dayjs(date).format('MMMM') === 'April' || dayjs(date).format('MMMM') === 'June' || dayjs(date).format('MMMM') === 'September') {
+    endDate = dayjs(date).subtract(1, 'month').day(30).format('YYYY-MM-DD');
   }
-  else if(dayjs(date).subtract(1,'month').format('MMMM') === 'February'){
-    endDate=dayjs(date).subtract(1,'month').day(28).format('YYYY-MM-DD');
+  else if (dayjs(date).subtract(1, 'month').format('MMMM') === 'February') {
+    endDate = dayjs(date).subtract(1, 'month').day(28).format('YYYY-MM-DD');
   }
-  else{
-    endDate=dayjs(date).subtract(1,'month').day(31).format('YYYY-MM-DD');
+  else {
+    endDate = dayjs(date).subtract(1, 'month').day(31).format('YYYY-MM-DD');
   }
   return [beginDate, endDate];
 }
+
+//PUT: increments the client's counter about missed pick-ups and returns the actual value -ant
+app.put("/api/clients/missedPickups/:clientid", async (req, res) => {
+  try {
+    await clientDao.incrementMissedPickups(req.params.clientid, req.body.quantity);
+    const missed_pickups = await clientDao.getClientMissedPickups(req.params.clientid);
+    res.status(200).json(missed_pickups);
+  } catch (err) {
+    res.status(500).end();
+  }
+});
+
+//GET: get the client's counter about missed pick-ups -ant
+app.get("/api/clients/missedPickups/:clientid", async (req, res) => {
+  try {
+    const missed_pickups = await clientDao.getClientMissedPickups(req.params.clientid);
+    res.status(200).json(missed_pickups);
+  } catch (err) {
+    res.status(500).end();
+  }
+});
+
