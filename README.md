@@ -534,7 +534,7 @@ We check the quality of our code relying on SonarCloud analysis.
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
-### Increment a client's missed pickups counter and returns its actual value
+### Increment a client's missed pickups counter and get its actual value
 * URL: `/api/clients/missedPickups/<clientid>`
 * HTTP method: PUT
 * Request body:
