@@ -539,9 +539,9 @@ We check the quality of our code relying on SonarCloud analysis.
 * HTTP method: PUT
 * Request body:
 ``` JSON
-[{
+{
     "quantity": 1
-}]
+}
 ```
 * Description: increments by a given quantity the counter of missed pickups related to a client 
 * Request parameters: clientid
