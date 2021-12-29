@@ -553,6 +553,20 @@ We check the quality of our code relying on SonarCloud analysis.
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
+### Get a client's missed pickups counter
+* URL: `/api/clients/missedPickups/<clientid>`
+* HTTP method: GET
+* Request body: none
+* Description: gets the counter of missed pickups related to a client
+* Request parameters: clientid
+* Response body: the actual value of missed pickups
+``` JSON
+{
+    "missed_pickups": 1
+}
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
 ## USER API
 
 - POST `/api/login`
