@@ -7,6 +7,7 @@ const app = require("../server.js");
 const productDao = require('../product-dao');
 const orderDao = require('../order-dao');
 const orderlineDao = require('../orderline-dao');
+const farmerDao = require('../farmer-dao');
 
 /*
 REMEMBER
@@ -18,7 +19,7 @@ describe('Testing GET on /api/manager/weeklyReport/:date', () => {
     const fakeProduct1 = {
         name: 'Artichoke',
         description: 'prova description1',
-        farmerid: 1,
+        farmerid: 1, //Henry Jekill
         price: 1,
         measure: 'kg',
         category: 'Vegetables',
@@ -28,7 +29,7 @@ describe('Testing GET on /api/manager/weeklyReport/:date', () => {
     const fakeProduct2 = {
         name: 'Banana',
         description: 'prova description2',
-        farmerid: 1,
+        farmerid: 1, //Henry Jekill
         price: 15.00,
         measure: 'kg',
         category: 'Fruit',
@@ -38,12 +39,26 @@ describe('Testing GET on /api/manager/weeklyReport/:date', () => {
     const fakeProduct3 = {
         name: 'Mela',
         description: 'prova description3',
-        farmerid: 0,
+        farmerid: 0, //Edward Hyde
         price: 11.00,
         measure: 'kg',
         category: 'Fruit',
         typeofproduction: 'Bio',
         picture: ''
+    }
+    const fakeFarmer1 = {
+        userid: 1,
+        name: 'Henry',
+        surname: 'Jekyll',
+        place: 'Cooperativa di Dr. Jekyll',
+        address: 'Via Trotta, 3, Torino, TO'
+    }
+    const fakeFarmer2 = {
+        userid: 0,
+        name: 'Edward',
+        surname: 'Hyde',
+        place: 'Azienda Agricola di Mr. Hyde',
+        address: 'Str. Val Chiapini, 70, Torino, TO'
     }
     const fakeOrder1 = {
         userid: 1,
@@ -120,6 +135,9 @@ describe('Testing GET on /api/manager/weeklyReport/:date', () => {
 
 
     beforeAll(async () => {
+        await farmerDao.deleteAllFarmers();
+        await farmerDao.insertFarmer(fakeFarmer1);
+        await farmerDao.insertFarmer(fakeFarmer2);
         await productDao.deleteAllProducts();
         productid1 = await productDao.insertProduct(fakeProduct1);
         productid2 = await productDao.insertProduct(fakeProduct2);
@@ -148,6 +166,7 @@ describe('Testing GET on /api/manager/weeklyReport/:date', () => {
     });
 
     afterAll(async () => {
+        await farmerDao.deleteAllFarmers();
         await orderDao.deleteAllOrders();
         await productDao.deleteAllProducts();
         await orderlineDao.deleteAllOrderlines();
@@ -157,16 +176,20 @@ describe('Testing GET on /api/manager/weeklyReport/:date', () => {
     test("Checking date = Saturday", async () => {
         const expectedResult = [
             {
-                productid:productid1,
-                name:fakeProduct1.name,
-                quantity:fakeOrderline11.quantity,
-                measure:fakeProduct1.measure
+                productid: productid1,
+                name: fakeProduct1.name,
+                quantity: fakeOrderline11.quantity,
+                measure: fakeProduct1.measure,
+                farmerName: fakeFarmer1.name,
+                farmerSurname: fakeFarmer1.surname
             },
             {
-                productid:productid2,
-                name:fakeProduct2.name,
-                quantity:fakeOrderline12.quantity+fakeOrderline22.quantity,
-                measure:fakeProduct1.measure
+                productid: productid2,
+                name: fakeProduct2.name,
+                quantity: fakeOrderline12.quantity + fakeOrderline22.quantity,
+                measure: fakeProduct1.measure,
+                farmerName: fakeFarmer1.name,
+                farmerSurname: fakeFarmer1.surname
             }
         ]
         const response = await request(app).get('/api/manager/weeklyReport/2021-12-25 21:00');
@@ -176,16 +199,20 @@ describe('Testing GET on /api/manager/weeklyReport/:date', () => {
     test("Checking date = Tuesday", async () => {
         const expectedResult = [
             {
-                productid:productid1,
-                name:fakeProduct1.name,
-                quantity:fakeOrderline11.quantity,
-                measure:fakeProduct1.measure
+                productid: productid1,
+                name: fakeProduct1.name,
+                quantity: fakeOrderline11.quantity,
+                measure: fakeProduct1.measure,
+                farmerName: fakeFarmer1.name,
+                farmerSurname: fakeFarmer1.surname
             },
             {
-                productid:productid2,
-                name:fakeProduct2.name,
-                quantity:fakeOrderline12.quantity+fakeOrderline22.quantity,
-                measure:fakeProduct1.measure
+                productid: productid2,
+                name: fakeProduct2.name,
+                quantity: fakeOrderline12.quantity + fakeOrderline22.quantity,
+                measure: fakeProduct1.measure,
+                farmerName: fakeFarmer1.name,
+                farmerSurname: fakeFarmer1.surname
             }
         ]
         const response = await request(app).get('/api/manager/weeklyReport/2021-12-28 21:00');
@@ -230,6 +257,20 @@ describe('Testing GET on /api/manager/monthlyReport/:date', () => {
         category: 'Fruit',
         typeofproduction: 'Bio',
         picture: ''
+    }
+    const fakeFarmer1 = {
+        userid: 1,
+        name: 'Henry',
+        surname: 'Jekyll',
+        place: 'Cooperativa di Dr. Jekyll',
+        address: 'Via Trotta, 3, Torino, TO'
+    }
+    const fakeFarmer2 = {
+        userid: 0,
+        name: 'Edward',
+        surname: 'Hyde',
+        place: 'Azienda Agricola di Mr. Hyde',
+        address: 'Str. Val Chiapini, 70, Torino, TO'
     }
     const fakeOrder1 = {
         userid: 1,
@@ -306,6 +347,9 @@ describe('Testing GET on /api/manager/monthlyReport/:date', () => {
 
 
     beforeAll(async () => {
+        await farmerDao.deleteAllFarmers();
+        await farmerDao.insertFarmer(fakeFarmer1);
+        await farmerDao.insertFarmer(fakeFarmer2);
         await productDao.deleteAllProducts();
         productid1 = await productDao.insertProduct(fakeProduct1);
         productid2 = await productDao.insertProduct(fakeProduct2);
@@ -334,6 +378,7 @@ describe('Testing GET on /api/manager/monthlyReport/:date', () => {
     });
 
     afterAll(async () => {
+        await farmerDao.deleteAllFarmers();
         await orderDao.deleteAllOrders();
         await productDao.deleteAllProducts();
         await orderlineDao.deleteAllOrderlines();
@@ -343,16 +388,20 @@ describe('Testing GET on /api/manager/monthlyReport/:date', () => {
     test("Checking date = January (it should give a report about December)", async () => {
         const expectedResult = [
             {
-                productid:productid1,
-                name:fakeProduct1.name,
-                quantity:fakeOrderline11.quantity,
-                measure:fakeProduct1.measure
+                productid: productid1,
+                name: fakeProduct1.name,
+                quantity: fakeOrderline11.quantity,
+                measure: fakeProduct1.measure,
+                farmerName: fakeFarmer1.name,
+                farmerSurname: fakeFarmer1.surname
             },
             {
-                productid:productid2,
-                name:fakeProduct2.name,
-                quantity:fakeOrderline12.quantity+fakeOrderline22.quantity,
-                measure:fakeProduct1.measure
+                productid: productid2,
+                name: fakeProduct2.name,
+                quantity: fakeOrderline12.quantity + fakeOrderline22.quantity,
+                measure: fakeProduct1.measure,
+                farmerName: fakeFarmer1.name,
+                farmerSurname: fakeFarmer1.surname
             }
         ]
         const response = await request(app).get('/api/manager/monthlyReport/2022-01-25 21:00');
@@ -363,5 +412,5 @@ describe('Testing GET on /api/manager/monthlyReport/:date', () => {
         const response = await request(app).get('/api/manager/monthlyReport/2022-01-25 21:00');
         expect(response.status).toBe(200);
     });
-    
+
 });

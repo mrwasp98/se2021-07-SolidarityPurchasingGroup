@@ -151,7 +151,7 @@ exports.insertAvailability = (availability) => {
 //Get products unretrieved in a certain week
 exports.getUnretrievedProducts = (beginDate, endDate) => {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT ol.productid, p.name, ol.quantity, p.measure FROM 'order' AS o, orderline AS ol, product AS p WHERE o.id=ol.orderid AND ol.productid=p.id AND o.status='unretrieved' AND o.claimdate>=? AND o.claimdate<=?";
+        const sql = "SELECT ol.productid, p.name, ol.quantity, p.measure, f.name AS 'farmerName', f.surname AS 'farmerSurname' FROM 'order' AS o, orderline AS ol, product AS p, farmer AS f WHERE o.id=ol.orderid AND ol.productid=p.id AND f.userid=p.farmerid AND o.status='unretrieved' AND o.claimdate>=? AND o.claimdate<=?";
         db.all(sql, [beginDate, endDate], (err, rows) => {
             if (err) {
                 reject(err);
@@ -177,7 +177,9 @@ const sumQuantitiesOfSameProduct = (products) => {
                 productid: products[i].productid,
                 name: products[i].name,
                 quantity: sum,
-                measure: products[i].measure
+                measure: products[i].measure,
+                farmerName:products[i].farmerName,
+                farmerSurname:products[i].farmerSurname
             })
         }//if
     }
