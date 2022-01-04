@@ -68,7 +68,18 @@ function FailedOrder(props) {
     // eslint-disable-next-line
     
     let client = props.clients.filter(o => o.userid === props.order.userid)[0];
-    let orderFailed = props.order;
+    const [orderFailed, setOrderFailed] = useState();
+    const [dirtyOrder, setDirtyOrder] = useState(true);
+
+    useEffect(() => {
+        if (dirtyOrder && client) {
+            getClientOrders(client.userid)
+                .then((res) => {
+                    setOrderFailed(res.filter(o => o.id === props.order.id)[0])
+                    setDirtyOrder(false)
+                })
+        }
+    }, [client]);
 
     //this function is called in order to calculate the total price of an order.
     function totalprice() {
