@@ -14,7 +14,7 @@ export default function MyNotifications(props) {
 
   return (
     <>
-      <Button onClick={toggleShowB}>{bell}</Button>
+      <Button onClick={toggleShowB} className="">{bell}</Button>
       <Toast
         onClose={toggleShowB}
         show={showB}
