@@ -498,13 +498,17 @@ We check the quality of our code relying on SonarCloud analysis.
     "productid":1,
     "name": "Apple",
     "quantity": 3,
-    "measure": "kg"
+    "measure": "kg",
+    "farmerName":"Neil",
+    "farmerSurname":"Watts"
 },
 {
     "productid":2,
     "name": "Banana",
     "quantity": 1,
-    "measure": "kg"
+    "measure": "kg",
+    "farmerName":"Eva",
+    "farmerSurname":"Rosalene"
 }
 ]
 ```
@@ -522,13 +526,17 @@ We check the quality of our code relying on SonarCloud analysis.
     "productid":1,
     "name": "Apple",
     "quantity": 3,
-    "measure": "kg"
+    "measure": "kg",
+    "farmerName":"Neil",
+    "farmerSurname":"Watts"
 },
 {
     "productid":2,
     "name": "Banana",
     "quantity": 1,
-    "measure": "kg"
+    "measure": "kg",
+    "farmerName":"Eva",
+    "farmerSurname":"Rosalene"
 }
 ]
 ```
