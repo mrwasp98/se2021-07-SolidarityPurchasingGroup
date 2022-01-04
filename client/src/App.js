@@ -21,6 +21,7 @@ import ManageOrders from "./Components/ManageOrders/ManageOrders";
 import ReportAvailability from "./Components/ReportAvailability";
 import ProductForm from "./Components/ProductForm";
 import TelegramBot from "node-telegram-bot-api";
+import ManagerHome from "./Components/Homepages/ManagerHome";
 
 function App() {
 
@@ -176,6 +177,7 @@ function App() {
         <Route exact path='/addProduct' render={() => <ProductForm username={username} addProduct={addProduct} userId={userId} />} />
 
         <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
+        <Route exact path='/managerhome' render={() => <ManagerHome date={date}/>} />
 
         <Route exact path='/clienthome' render={() => <ClientHome />} />
 
