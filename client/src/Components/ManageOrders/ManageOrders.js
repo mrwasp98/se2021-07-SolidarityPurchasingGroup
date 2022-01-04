@@ -66,19 +66,9 @@ then, converts the information in the best format to show options in the Select 
 
 function FailedOrder(props) {
     // eslint-disable-next-line
-    const [client, setClient] = useState(props.clients.filter(o => o.userid === props.order.userid)[0]);
-    const [orderFailed, setOrderFailed] = useState();
-    const [dirtyOrder, setDirtyOrder] = useState(true);
-
-    useEffect(() => {
-        if (dirtyOrder && client) {
-            getClientOrders(client.userid)
-                .then((res) => {
-                    setOrderFailed(res.filter(o => o.id === props.order.id)[0])
-                    setDirtyOrder(false)
-                })
-        }
-    }, [dirtyOrder, client, props.order.id]);
+    
+    let client = props.clients.filter(o => o.userid === props.order.userid)[0];
+    let orderFailed = props.order;
 
     //this function is called in order to calculate the total price of an order.
     function totalprice() {
