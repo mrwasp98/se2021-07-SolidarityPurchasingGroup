@@ -1,5 +1,5 @@
 import { useHistory, Link } from 'react-router-dom';
-import { Navbar, Container, Button, Modal, Row, Col, Table, ListGroup, Alert, Offcanvas } from "react-bootstrap";
+import { Navbar, Container, Button, Modal, Row, Col, Table, ListGroup, Alert, Offcanvas, ButtonGroup } from "react-bootstrap";
 import { useState, useEffect, React } from "react";
 import { clock, iconStar, iconCalendar, iconCart, cartFill, cross, coin } from "../Utilities/Icons";
 import Calendar from "react-calendar";
@@ -136,10 +136,13 @@ export default function MyNav(props) {
 
             {props.logged ? (
               <>
+
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
-                {props.logged === "client" && <MyNotifications message={notifyMessage} />}
-                {" "}
-                {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
+                <ButtonGroup >
+                  {props.logged === "client" && <MyNotifications message={notifyMessage} />}
+                  {" "}
+                  {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
+                </ButtonGroup>
               </>
             ) : (
               <>
@@ -172,7 +175,7 @@ function BasketOffCanvas(props) {
   const [claimdate, setClaimdate] = useState(new Date());
   const [showModalClaim, setShowModalClaim] = useState(false) //this is used for the "claim date modal", shows up after clicking "continue"
   const [showModal, setShowModal] = useState(false); //this is used for the "recap modal", shows up at the confirmation of the order
-  const [deliveryAddress, setDeliveryAddress] = useState(()=>{return props.clientAddress});
+  const [deliveryAddress, setDeliveryAddress] = useState(() => { return props.clientAddress });
 
 
   let total;

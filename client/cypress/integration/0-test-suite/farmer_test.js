@@ -73,7 +73,7 @@ describe('deleting product, for real now', () => {
     let value = 0;
     it('remove the first product', () => {
         cy.get('tr').then((elements) => {
-            value = elements.length;
+            value = elements.length - 1; //header
         }).then(() => {
             cy.get('#productavailability_delete_1').click()
             cy.get('#modal_delete').click()
