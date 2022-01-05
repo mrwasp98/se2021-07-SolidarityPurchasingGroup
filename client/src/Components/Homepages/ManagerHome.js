@@ -4,6 +4,7 @@ import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-
 import { useState } from 'react';
 import dayjs from "dayjs";
 import { useEffect } from 'react';
+import {getWeeklyReport } from '../../API/API'
 
 // Create styles
 const styles = StyleSheet.create({
@@ -17,10 +18,10 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10
     },
-    footer:{
+    footer: {
         position: 'absolute',
         bottom: 0,
-        width:'100%'
+        width: '100%'
     },
     text: {
         marginBottom: 5
@@ -35,39 +36,39 @@ const styles = StyleSheet.create({
         paddingBottom: 8,
         borderBottom: '1px solid black'
     },
-    col:{
-        marginLeft:20,
+    col: {
+        marginLeft: 20,
         width: "33%"
-    }, 
-    header:{
-        backgroundColor:'#797877',
-        color:'#E4E4E4'
     },
-    summaryHeader:{
+    header: {
+        backgroundColor: '#797877',
+        color: '#E4E4E4'
+    },
+    summaryHeader: {
         textAlign: 'center',
-        marginTop:20,
-        marginBottom:10,
+        marginTop: 20,
+        marginBottom: 10,
         fontSize: 30
     },
-    summary:{
-        marginLeft:20
+    summary: {
+        marginLeft: 20
     }
 });
 
 
 // Create Document Component
-const Report = (props) => (  
+const Report = (props) => (
     <Document title="SPG Weekly report">
         <Page size="A4" style={styles.page}>
             <View style={styles.title} fixed>
                 <Text style={styles.text}>SPG - Weekly report</Text>
-                <Text style={styles.text}>{dayjs(props.start).format('DD/MM/YYYY')} to {dayjs(props.start).add(props.duration,'day').format('DD/MM/YYYY')}</Text>
+                <Text style={styles.text}>{dayjs(props.start).format('DD/MM/YYYY')} to {dayjs(props.start).add(props.duration, 'day').format('DD/MM/YYYY')}</Text>
             </View>
             <View style={styles.table}>
                 <View style={[styles.row, styles.header]} fixed>
-                    <Text style={[styles.header, styles.col ]}>Product Name</Text>
-                    <Text style={[styles.header, styles.col ]}>Farmer</Text>
-                    <Text style={[styles.header, styles.col ]}>Quantity</Text>
+                    <Text style={[styles.header, styles.col]}>Product Name</Text>
+                    <Text style={[styles.header, styles.col]}>Farmer</Text>
+                    <Text style={[styles.header, styles.col]}>Quantity</Text>
                 </View>
                 {
                     props.data.map((el, i) =>
@@ -81,14 +82,17 @@ const Report = (props) => (
             </View>
         </Page>
         <Page>
-        <View style={styles.title} fixed>
+            <View style={styles.title} fixed>
                 <Text style={styles.text}>SPG - Weekly report</Text>
-                <Text style={styles.text}>10/01/2022 to 16/01/2022</Text>
+                <Text style={styles.text}>{dayjs(props.start).format('DD/MM/YYYY')} to {dayjs(props.start).add(props.duration, 'day').format('DD/MM/YYYY')}</Text>
             </View>
             <View>
                 <Text style={[styles.text, styles.summaryHeader, styles.summary]}>Summary:</Text>
-                <Text style={[styles.text, styles.summary]}>Wasted kg: 700</Text>
-                <Text style={[styles.text, styles.summary]}>Wasted units: 80</Text>
+                {
+                    props.summary.map((el, i)=>(
+                        <Text key={i} style={[styles.text, styles.summary]}>Wasted {el.measure}: {el.quantity}</Text>
+                    ))
+                }
             </View>
             <View style={[styles.title, styles.footer]}>
                 <Text>End of report</Text>
@@ -98,19 +102,9 @@ const Report = (props) => (
 );
 
 export default function ManagerHome(props) {
-
-    function getMonday(d) {
-        d = new Date(d);
-        var day = d.getDay(),
-            diff = d.getDate() - day + (day === 0 ? -6:1); // adjust when day is sunday
-        return new Date(d.setDate(diff));
-      }
-    const [monday, setMonday] = useState(); // Mon Nov 08 2010
-
-    useEffect(()=>{
-        setMonday(getMonday(props.date))
-    }, [props.date])
-
+    const [monday, setMonday] = useState(); //gets the monday of the week
+    const [data, setData] = useState([]); //data to be printed in the report
+    const [summary, setSummary] = useState([]); //summary data tu be printed in the report
     const wreport = [
         {
             productid: 1,
@@ -235,6 +229,44 @@ export default function ManagerHome(props) {
         }
     ]
 
+    function getMonday(d) {
+        d = new Date(d);
+        var day = d.getDay(),
+            diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        // adjust when day is sunday
+        return new Date(d.setDate(diff));
+    }
+
+    useEffect(() => {
+        setMonday(getMonday(props.date))
+    }, [props.date])
+
+    useEffect(() => {
+        getWeeklyReport(props.date)
+        .then(res=>{
+            setData(res)
+            let x = res.map(el => {
+                return { quantity: el.quantity, measure: el.measure }
+            })
+            var holder = {};
+            x.forEach(function (d) {
+                if (holder.hasOwnProperty(d.measure)) {
+                    holder[d.measure] = holder[d.measure] + d.quantity;
+                } else {
+                    holder[d.measure] = d.quantity;
+                }
+            });
+            var y = [];
+            for (var prop in holder) {
+                y.push({quantity: holder[prop], measure: prop});
+            }
+            console.log(y);
+            setSummary(y);
+        })
+        .catch(err=> console.log(err))
+        
+    }, [props.date])
+
     return (
         <Container className="justify-content-center">
             <Card className="mt-4">
@@ -242,13 +274,13 @@ export default function ManagerHome(props) {
                 <Card.Body className="mb-2">
                     <ButtonGroup vertical aria-label="Directions" className="d-flex" >
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprod">
-                            <PDFDownloadLink document={<Report data={wreport} start={monday} duration={6}/>} fileName="SPG-weekly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
+                            <PDFDownloadLink document={<Report data={data} start={monday} duration={6} summary={summary}/>} fileName="SPG-weekly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
                                 {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Get weekly report')}
                             </PDFDownloadLink>
                         </Button>
 
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprod">
-                            <PDFDownloadLink document={<Report data={wreport} day={props.date}/>} fileName="SPG-monthly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
+                            <PDFDownloadLink document={<Report data={data} day={props.date} duration={30} summary={summary}/>} fileName="SPG-monthly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
                                 {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Get monthly report')}
                             </PDFDownloadLink>
                         </Button>

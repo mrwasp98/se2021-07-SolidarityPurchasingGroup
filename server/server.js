@@ -579,6 +579,8 @@ app.put("/api/orderlines", async (req, res) => {
 app.get("/api/manager/weeklyReport/:date", async (req, res) => {
   try {
     const [beginDate, endDate] = getWeekRange(req.params.date);
+    console.log(beginDate)
+    console.log(endDate)
     const products = await productDao.getUnretrievedProducts(beginDate, endDate);
     res.status(200).json(products);
   } catch (err) {
