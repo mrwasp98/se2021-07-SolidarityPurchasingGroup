@@ -172,7 +172,7 @@ function BasketOffCanvas(props) {
   const [claimdate, setClaimdate] = useState(new Date());
   const [showModalClaim, setShowModalClaim] = useState(false) //this is used for the "claim date modal", shows up after clicking "continue"
   const [showModal, setShowModal] = useState(false); //this is used for the "recap modal", shows up at the confirmation of the order
-  const [deliveryAddress, setDeliveryAddress] = useState(()=>{return props.clientAddress});
+  const [deliveryAddress, setDeliveryAddress] = useState(() => { return props.clientAddress });
 
 
   let total;
@@ -314,18 +314,21 @@ function BasketOffCanvas(props) {
             :
             <p className="mt-3">Your basket is currently empty.</p>
           }
-          <Container className="fixed-bottom" style={{ position: "absolute", maxHeigh: "25vh" }}>
-            {elements && elements.length > 0 &&
+          {elements && elements.length > 0 &&
+            <Container className="fixed-bottom" style={{ position: "absolute", maxHeigh: "25vh" }}>
               <Row style={{ position: "relative", bottom: "3rem", left: "0.5rem" }} className="mb-3 division">
                 <Col><strong>Total:</strong></Col>
                 <Col><strong>{getTotal()} €</strong></Col>
-              </Row>}
-            <Button className="order-btn" style={{ position: "absolute", left: "12rem", bottom: "1rem" }}
-              disabled={!(elements && elements.length > 0)} variant="yellow"
-              onClick={() => setShowModalClaim(true)}>
-              <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Done!
-            </Button>
-          </Container>
+              </Row>
+              <Row className="m-0 p-0 justify-content-center">
+                <Button className="order-btn" style={{ position: "absolute", left: "12rem", bottom: "1rem" }}
+                  disabled={!(elements && elements.length > 0)} variant="yellow"
+                  onClick={() => setShowModalClaim(true)}>
+                  <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Done!
+                </Button>
+              </Row>
+            </Container>
+          }
         </Offcanvas.Body>
       </Offcanvas>
     </>

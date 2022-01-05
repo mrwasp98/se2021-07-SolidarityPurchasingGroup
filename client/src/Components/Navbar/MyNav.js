@@ -317,18 +317,19 @@ function BasketOffCanvas(props) {
             :
             <p className="mt-3">Your basket is currently empty.</p>
           }
-          <Container className="fixed-bottom" style={{ position: "absolute", maxHeigh: "25vh" }}>
-            {elements && elements.length > 0 &&
+          {elements && elements.length > 0 &&
+            <Container className="fixed-bottom" style={{ position: "absolute", maxHeigh: "25vh" }}>
               <Row style={{ position: "relative", bottom: "3rem", left: "0.5rem" }} className="mb-3 division">
                 <Col><strong>Total:</strong></Col>
-                <Col><strong>{getTotal()} €</strong></Col>
-              </Row>}
-            <Button className="order-btn" style={{ position: "absolute", left: "12rem", bottom: "1rem" }}
-              disabled={!(elements && elements.length > 0)} variant="yellow"
-              onClick={() => setShowModalClaim(true)}>
-              <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Done!
-            </Button>
-          </Container>
+                <Col md={{ span: 3, offset:  2}} style={{fontSize:"20px"}}><strong>{getTotal()} €</strong></Col>
+              </Row>
+              <Button className="order-btn" style={{ position: "absolute", right: "10px", bottom: "10px" }}
+                disabled={!(elements && elements.length > 0)} variant="yellow"
+                onClick={() => setShowModalClaim(true)}>
+                <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Done!
+              </Button>
+            </Container>
+          }
         </Offcanvas.Body>
       </Offcanvas>
     </>

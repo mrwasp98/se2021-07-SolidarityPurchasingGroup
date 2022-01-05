@@ -53,7 +53,7 @@ export default function Product(props) {
             setCounter(0);
             props.setDirtyBasket(true)
         }
-        else{
+        else {
             props.setInserted(false);
             props.setShowAlert(true);
         }
@@ -81,17 +81,17 @@ export default function Product(props) {
                                 <Card.Footer className='p-1'>
                                     <Row className="justify-content-between p-3 pt-0 pb-0">
                                         <InputGroup.Text className="priceDescription">
-                                            <Col md="3">
+                                            <Col xs="3">
                                                 {counter === 0 ?
                                                     <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconSubDisabled}</Button>
                                                     :
                                                     <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { sub() }}>{iconSub}</Button>
                                                 }
                                             </Col>
-                                            <Col md="6">
+                                            <Col xs="6">
                                                 <p className="px-2 m-0">{parseFloat(counter).toFixed(1)} {props.prod.measure}</p>
                                             </Col>
-                                            <Col md="3">
+                                            <Col xs="3">
                                                 {counter >= props.prod.quantity ?
                                                     <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconAddDisabled}</Button>
                                                     :
