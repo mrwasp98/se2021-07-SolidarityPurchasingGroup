@@ -118,9 +118,9 @@ export default function ProductsList(props) {
 
             {/* title of the page and utilities */}
             <Container className="d-flex justify-content-around">
-                <Row className="p-0 w-100">
+                <Row className="p-0 w-100 mt-4">
                     <Col className="mx-auto pl-0 text-center mt-4">
-                        <h1 className="myTitle" style={{ fontSize: "30px" }}>Available Products : <u className=""> {selected} </u></h1>
+                        <h1 className="myPageTitle">Available Products : <u className=""> {selected} </u></h1>
                     </Col>
                 </Row>
                 {inserted && <Alert className="position-fixed" variant="success"

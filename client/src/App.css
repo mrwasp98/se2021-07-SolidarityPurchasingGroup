@@ -148,7 +148,12 @@
     font-weight: 500 !important;
 }
 
+.myPageTitle{
+    font-size: 30px !important;
+}
+
 .myTitle {
+    font-size: 22px !important;
     font-weight: 600 !important;
     font-family: Helvetica, sans-serif;
     color: #143642;
