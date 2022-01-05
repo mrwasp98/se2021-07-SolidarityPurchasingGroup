@@ -9,11 +9,11 @@ describe('SPG client home', () => {
         cy.get('.emailfield').type("client1@polito.it");
         cy.get('.passwordfield').type('qwerty123')
         cy.get('.loginbutton').click(); 
-        cy.url().should('include', '/products')
-
     })
 
     it('select the day', () => {
+        cy.url().should('include', '/products')
+        cy.contains('Available Products')
         cy.get('.callandarButton').click()
         let notFound = true;
         let loop = 5;
