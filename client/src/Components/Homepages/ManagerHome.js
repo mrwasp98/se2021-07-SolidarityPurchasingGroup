@@ -62,7 +62,7 @@ const Report = (props) => (
         <Page size="A4" style={styles.page}>
             <View style={styles.title} fixed>
                 <Text style={styles.text}>SPG - Weekly report</Text>
-                <Text style={styles.text}>{dayjs(props.start).format('DD/MM/YYYY')} to {dayjs(props.start).add(props.duration, 'day').format('DD/MM/YYYY')}</Text>
+                <Text style={styles.text}>{dayjs(props.beginDate).format('DD/MM/YYYY')} to {dayjs(props.endDate).format('DD/MM/YYYY')}</Text>
             </View>
             <View style={styles.table}>
                 <View style={[styles.row, styles.header]} fixed>
@@ -84,7 +84,7 @@ const Report = (props) => (
         <Page>
             <View style={styles.title} fixed>
                 <Text style={styles.text}>SPG - Weekly report</Text>
-                <Text style={styles.text}>{dayjs(props.start).format('DD/MM/YYYY')} to {dayjs(props.start).add(props.duration, 'day').format('DD/MM/YYYY')}</Text>
+                <Text style={styles.text}>{dayjs(props.beginDate).format('DD/MM/YYYY')} to {dayjs(props.endDate).format('DD/MM/YYYY')}</Text>
             </View>
             <View>
                 <Text style={[styles.text, styles.summaryHeader, styles.summary]}>Summary:</Text>
@@ -102,9 +102,12 @@ const Report = (props) => (
 );
 
 export default function ManagerHome(props) {
-    const [monday, setMonday] = useState(); //gets the monday of the week
+    const [beginDate, setBeginDate] = useState(); //start date of the report
+    const [endDate, setEndDate] = useState(); //end date of the report
+
     const [data, setData] = useState([]); //data to be printed in the report
     const [summary, setSummary] = useState([]); //summary data tu be printed in the report
+   
     const wreport = [
         {
             productid: 1,
@@ -229,16 +232,28 @@ export default function ManagerHome(props) {
         }
     ]
 
-    function getMonday(d) {
-        d = new Date(d);
-        var day = d.getDay(),
-            diff = d.getDate() - day + (day === 0 ? -6 : 1);
-        // adjust when day is sunday
-        return new Date(d.setDate(diff));
-    }
+    const getWeekRange = (date) => {
+        let beginDate;
+        let endDate;
+        if (dayjs(date).format('dddd') === 'Saturday') {
+          //beginDate is wednesday of this week
+          beginDate = dayjs(date).startOf('week').add(3, 'day').format('YYYY-MM-DD');
+          //endDate is friday of this week (==yesterday since date is saturday)
+          endDate = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
+        }
+        else {
+          //beginDate is wednesday of last week
+          beginDate = dayjs(date).startOf('week').subtract(1, 'week').add(3, 'day').format('YYYY-MM-DD');
+          //endDate is friday of last week
+          endDate = dayjs(date).startOf('week').subtract(1, 'week').add(5, 'day').format('YYYY-MM-DD');
+        }
+        return [beginDate, endDate];
+      }
 
     useEffect(() => {
-        setMonday(getMonday(props.date))
+        const [bDate, eDate]  = getWeekRange(props.date)
+        setBeginDate(bDate)
+        setEndDate(eDate)
     }, [props.date])
 
     useEffect(() => {
@@ -274,13 +289,13 @@ export default function ManagerHome(props) {
                 <Card.Body className="mb-2">
                     <ButtonGroup vertical aria-label="Directions" className="d-flex" >
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprod">
-                            <PDFDownloadLink document={<Report data={data} start={monday} duration={6} summary={summary}/>} fileName="SPG-weekly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
+                            <PDFDownloadLink document={<Report data={data} beginDate={beginDate} endDate={endDate} summary={summary}/>} fileName="SPG-weekly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
                                 {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Get weekly report')}
                             </PDFDownloadLink>
                         </Button>
 
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprod">
-                            <PDFDownloadLink document={<Report data={data} day={props.date} duration={30} summary={summary}/>} fileName="SPG-monthly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
+                            <PDFDownloadLink document={<Report data={data} beginDate={beginDate} endDate={endDate}  summary={summary}/>} fileName="SPG-monthly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
                                 {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Get monthly report')}
                             </PDFDownloadLink>
                         </Button>
