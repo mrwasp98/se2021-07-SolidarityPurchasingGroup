@@ -3,6 +3,8 @@ import { iconStar } from "./Utilities/Icons";
 import {useState} from 'react';
 import '../App.css';
 import { useHistory } from 'react-router-dom';
+import { getSuspendedDate } from "../API/API.js";
+import dayjs from 'dayjs';
 
 //This function verify if a string contains both numeric and alphabetic caracthers
 function isAlphaNumeric(str) {
@@ -60,7 +62,7 @@ function LoginForm(props) {
         })
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         if (event.currentTarget.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
@@ -80,10 +82,25 @@ function LoginForm(props) {
             //If everything is ok the login is performed
             if (username === '' || password === '' || password.length < 6 || isAlphaNumeric(password) === false) {
                 valid = false;
+                setError('The password must be at least 6 characters long and must contain both alphabetical and numerical values.')
                 setShow(true);
             } else {
                 valid = true;
             }
+
+            await getSuspendedDate(username).then( d => {
+                if(d.supended !== null) {
+                    if(dayjs().isBefore(d.suspended)){
+                        valid=false;
+                        var error = 'You are suspended from this site untill ' + d.suspended;
+                        setError(error);
+                        setShow(true);
+                    }
+                }
+            }).catch( () => {
+                valid=true;
+            });
+            
             if (valid) {
                 doLogIn(credentials);
             }
@@ -110,7 +127,6 @@ function LoginForm(props) {
                             </Form.Group>
                             {show ? <Alert variant='danger' className='error-box' onClose={() => (setShow(false))} dismissible>
                                 <Alert.Heading>{error}</Alert.Heading>
-                                <p>The password must be at least 6 characters long and must contain both alphabetical and numerical values.</p>
                             </Alert>
                             : ''}
                         </Table>

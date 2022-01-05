@@ -653,6 +653,12 @@ app.put("/api/clients/missedPickups/:clientid", async (req, res) => {
   try {
     await clientDao.incrementMissedPickups(req.params.clientid, req.body.quantity);
     const missed_pickups = await clientDao.getClientMissedPickups(req.params.clientid);
+    if(missed_pickups.missed_pickups >= 5) {
+      //Suspend client for a mounth
+      await clientDao.suspendClient(req.params.clientid);
+      //Put the missed_pickup field to 0 again
+      await clientDao.resetMissedPickups(req.params.clientid);
+    }
     res.status(200).json(missed_pickups);
   } catch (err) {
     res.status(500).end();
@@ -664,6 +670,16 @@ app.get("/api/clients/missedPickups/:clientid", async (req, res) => {
   try {
     const missed_pickups = await clientDao.getClientMissedPickups(req.params.clientid);
     res.status(200).json(missed_pickups);
+  } catch (err) {
+    res.status(500).end();
+  }
+});
+
+//GET: get suspended date of a client
+app.get("/api/suspended/:username", async (req, res) => {
+  try {
+    const date = await clientDao.getClientSuspendedDate(req.params.username);
+    res.status(200).json(date);
   } catch (err) {
     res.status(500).end();
   }

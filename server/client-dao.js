@@ -1,5 +1,6 @@
 'use strict';
 
+const dayjs = require('dayjs');
 const db = require('./database');
 
 //Get all the rows of the client table
@@ -110,3 +111,44 @@ exports.subtractFromWallet = (clientid, amount) => {
     });
 };
 */
+
+//Add a date at the suspended field of the client table
+exports.suspendClient = (clientid) => {
+    return new Promise((resolve, reject) => {
+        const date = dayjs().add(1, 'month').format('YYYY-MM-DD');
+        const sql = 'UPDATE client SET suspended = ? WHERE userid == ?';
+        db.run(sql, [date, clientid], function (err) {
+            if (err) {
+                reject(err);
+            }
+            if (this.changes === 0) resolve(false);
+            else resolve(true);
+        });
+    });
+};
+
+//Reset the counter of missed_pickups
+exports.resetMissedPickups = (clientid) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE client SET missed_pickups = 0 WHERE userid == ?';
+        db.run(sql, [clientid], function (err) {
+            if (err) {
+                reject(err);
+            }
+            resolve();
+        });
+    });
+};
+
+//Get suspended date
+exports.getClientSuspendedDate = (username) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT C.suspended FROM client C, user U WHERE U.id=C.userid AND usename = ?';
+        db.get(sql, [username], (err, row) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(row); 
+        });
+    });
+};
