@@ -361,10 +361,21 @@ describe('Testing GET on /api/clients/missedPickups/:clientid', () => {
         expect(response.body).toEqual({missed_pickups:0});;
     });
 
+    test("It should respond with the correct value (1)", async () => {
+        await request(app).put('/api/clients/missedPickups/'+fakeClient1.userid).send({
+            quantity:1
+        })
+        const response = await request(app).get('/api/clients/missedPickups/'+fakeClient1.userid);
+        expect(response.body).toEqual({missed_pickups:1});;
+    });
+
     test("It should respond with the correct value (2)", async () => {
         await request(app).put('/api/clients/missedPickups/'+fakeClient1.userid).send({
-            quantity:2
-        })
+            quantity:1
+        });
+        await request(app).put('/api/clients/missedPickups/'+fakeClient1.userid).send({
+            quantity:1
+        });
         const response = await request(app).get('/api/clients/missedPickups/'+fakeClient1.userid);
         expect(response.body).toEqual({missed_pickups:2});;
     });
