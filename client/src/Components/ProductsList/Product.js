@@ -23,6 +23,7 @@ export default function Product(props) {
     function addToBasket() {
         if (counter > 0) {
             props.setInserted(true);
+            props.setShowAlert(true);
             let obj = { productid: props.prod.id, name: props.prod.name, quantity: counter, measure: props.prod.measure, price: props.prod.price, subtotal: props.prod.price * counter }
             let list;
             //i only want to have a single list of product in the session storage. I check if it already exists
@@ -51,6 +52,10 @@ export default function Product(props) {
             props.prod.quantity -= counter;
             setCounter(0);
             props.setDirtyBasket(true)
+        }
+        else{
+            props.setInserted(false);
+            props.setShowAlert(true);
         }
     }
 
