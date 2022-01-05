@@ -83,19 +83,19 @@ export default function Product(props) {
                                         <InputGroup.Text className="priceDescription">
                                             <Col xs="3">
                                                 {counter === 0 ?
-                                                    <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconSubDisabled}</Button>
+                                                    <Button className="p-0 subButton" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconSubDisabled}</Button>
                                                     :
-                                                    <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { sub() }}>{iconSub}</Button>
+                                                    <Button className="p-0 subButton" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { sub() }}>{iconSub}</Button>
                                                 }
                                             </Col>
                                             <Col xs="6">
-                                                <p className="px-2 m-0">{parseFloat(counter).toFixed(1)} {props.prod.measure}</p>
+                                                <p className="px-2 m-0 quantityLabel">{parseFloat(counter).toFixed(1)} {props.prod.measure}</p>
                                             </Col>
                                             <Col xs="3">
                                                 {counter >= props.prod.quantity ?
-                                                    <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconAddDisabled}</Button>
+                                                    <Button className="p-0 addButton" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconAddDisabled}</Button>
                                                     :
-                                                    <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { add() }}>{iconAdd}</Button>
+                                                    <Button className="p-0 addButton" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { add() }}>{iconAdd}</Button>
                                                 }
                                             </Col>
                                         </InputGroup.Text>

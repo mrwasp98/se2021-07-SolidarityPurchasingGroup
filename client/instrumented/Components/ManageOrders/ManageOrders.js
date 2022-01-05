@@ -66,7 +66,8 @@ then, converts the information in the best format to show options in the Select 
 
 function FailedOrder(props) {
     // eslint-disable-next-line
-    const [client, setClient] = useState(props.clients.filter(o => o.userid === props.order.userid)[0]);
+    
+    let client = props.clients.filter(o => o.userid === props.order.userid)[0];
     const [orderFailed, setOrderFailed] = useState();
     const [dirtyOrder, setDirtyOrder] = useState(true);
 
@@ -78,7 +79,7 @@ function FailedOrder(props) {
                     setDirtyOrder(false)
                 })
         }
-    }, [dirtyOrder, client, props.order.id]);
+    }, [client]);
 
     //this function is called in order to calculate the total price of an order.
     function totalprice() {

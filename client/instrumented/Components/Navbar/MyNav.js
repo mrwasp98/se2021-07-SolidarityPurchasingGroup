@@ -1,5 +1,5 @@
 import { useHistory, Link } from 'react-router-dom';
-import { Navbar, Container, Button, Modal, Row, Col, Table, ListGroup, Alert, Offcanvas } from "react-bootstrap";
+import { Navbar, Container, Button, Modal, Row, Col, Table, ListGroup, Alert, Offcanvas, ButtonGroup } from "react-bootstrap";
 import { useState, useEffect, React } from "react";
 import { clock, iconStar, iconCalendar, iconCart, cartFill, cross, coin } from "../Utilities/Icons";
 import Calendar from "react-calendar";
@@ -136,10 +136,13 @@ export default function MyNav(props) {
 
             {props.logged ? (
               <>
+
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
-                {props.logged === "client" && <MyNotifications message={notifyMessage} />}
-                {" "}
-                {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
+                <ButtonGroup >
+                  {props.logged === "client" && <MyNotifications message={notifyMessage} />}
+                  {" "}
+                  {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
+                </ButtonGroup>
               </>
             ) : (
               <>
@@ -318,15 +321,13 @@ function BasketOffCanvas(props) {
             <Container className="fixed-bottom" style={{ position: "absolute", maxHeigh: "25vh" }}>
               <Row style={{ position: "relative", bottom: "3rem", left: "0.5rem" }} className="mb-3 division">
                 <Col><strong>Total:</strong></Col>
-                <Col><strong>{getTotal()} €</strong></Col>
+                <Col md={{ span: 3, offset:  2}} style={{fontSize:"20px"}}><strong>{getTotal()} €</strong></Col>
               </Row>
-              <Row className="m-0 p-0 justify-content-center">
-                <Button className="order-btn" style={{ position: "absolute", left: "12rem", bottom: "1rem" }}
-                  disabled={!(elements && elements.length > 0)} variant="yellow"
-                  onClick={() => setShowModalClaim(true)}>
-                  <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Done!
-                </Button>
-              </Row>
+              <Button className="order-btn" style={{ position: "absolute", right: "10px", bottom: "10px" }}
+                disabled={!(elements && elements.length > 0)} variant="yellow"
+                onClick={() => setShowModalClaim(true)}>
+                <span style={{ position: "relative", bottom: "0.1rem" }}>{coin}</span> Done!
+              </Button>
             </Container>
           }
         </Offcanvas.Body>

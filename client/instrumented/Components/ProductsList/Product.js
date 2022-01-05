@@ -23,6 +23,7 @@ export default function Product(props) {
     function addToBasket() {
         if (counter > 0) {
             props.setInserted(true);
+            props.setShowAlert(true);
             let obj = { productid: props.prod.id, name: props.prod.name, quantity: counter, measure: props.prod.measure, price: props.prod.price, subtotal: props.prod.price * counter }
             let list;
             //i only want to have a single list of product in the session storage. I check if it already exists
@@ -52,88 +53,98 @@ export default function Product(props) {
             setCounter(0);
             props.setDirtyBasket(true)
         }
+        else {
+            props.setInserted(false);
+            props.setShowAlert(true);
+        }
     }
 
     return (
         <>
-            <Col md={2} xs={12} className="p-0 m-0 text-center mx-md-1">
-                <OverlayTrigger placement="bottom" delay={{ show: 600, hide: 0 }} overlay={renderTooltip}
-                >
-                    <Card style={{ backgroundColor: "#FFEFD6", width: "90%" }} className="mx-auto mb-3" onClick={handleShow}> {/*text-center*/}
-                        <Card.Img variant="top" className="m-0" src={props.prod.picture} style={{ height: "100%", width: "100%" }} />
-                        <Card.Body className="mt-2 p-0">
-                            <Card.Header className="myTitle d-inline p-0 " style={{ fontSize: "23px", fontWeight: "600", backgroundColor: "#FFEFD6" }}>{props.prod.name}
-                            </Card.Header>
-                        </Card.Body>
-                        <Card.Footer className="mt-3 p-0 mb-1">
-                            <Row className="m-0 p-0">
-                                <Col><p style={{ fontSize: "1rem" }} className="my-auto">Price:
-                                    <strong style={{ "fontWeight": "700" }}> {parseFloat(props.prod.price).toFixed(2)}€/{props.prod.measure}</strong></p></Col>
-                            </Row>
-                        </Card.Footer>
-                        {props.logged === "client" &&
-                            <Card.Footer className='p-0'>
-                                <Container className="d-flex justify-content-between p-0">
-                                    <InputGroup.Text className="priceDescription">
-                                        {counter === 0 ?
-                                            <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconSubDisabled}</Button>
-                                            :
-                                            <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { sub() }}>{iconSub}</Button>
-                                        }
-                                        <p className="px-2 m-0">{parseFloat(counter).toFixed(1)} {props.prod.measure}</p>
-                                        {counter >= props.prod.quantity ?
-                                            <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconAddDisabled}</Button>
-                                            :
-                                            <Button className="p-0" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { add() }}>{iconAdd}</Button>
-                                        }
-                                    </InputGroup.Text>
-                                    <Button variant="primary" className="cartButton" onClick={() => { addToBasket() }} size="sm">{iconCart}</Button>
-                                </Container>
+            <Col md={3} xs={12} className="p-0 m-0 text-center mx-md-1">
+                <Row className="m-0 p-0 justify-content-center">
+                    <OverlayTrigger placement="bottom" delay={{ show: 600, hide: 0 }} overlay={renderTooltip}
+                    >
+                        <Card style={{ backgroundColor: "#FFEFD6", width: "85%" }} className="mb-3 p-2 another-product" > {/*text-center*/}
+                            <Card.Img onClick={handleShow} variant="top" className="m-0 p-0" src={props.prod.picture} style={{ height: "100%", width: "100%" }} />
+                            <Card.Body className="mt-2 p-0">
+                                <Card.Header className="myTitle d-inline p-0 " style={{ fontSize: "23px", fontWeight: "600", backgroundColor: "#FFEFD6" }}>{props.prod.name}
+                                </Card.Header>
+                            </Card.Body>
+                            <Card.Footer className="mt-3 p-0 mb-1">
+                                <Row className="m-0 p-0">
+                                    <Col><p style={{ fontSize: "1rem" }} className="my-auto">Price:
+                                        <strong style={{ "fontWeight": "700" }}> {parseFloat(props.prod.price).toFixed(2)}€/{props.prod.measure}</strong></p></Col>
+                                </Row>
                             </Card.Footer>
-                        }
-                    </Card>
-                </OverlayTrigger>
-                <Modal show={show} onHide={handleClose} size="lg" centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>{props.prod.name}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Row className="mb-2">
+                            {props.logged === "client" &&
+                                <Card.Footer className='p-1'>
+                                    <Row className="justify-content-between p-3 pt-0 pb-0">
+                                        <InputGroup.Text className="priceDescription">
+                                            <Col xs="3">
+                                                {counter === 0 ?
+                                                    <Button className="p-0 subButton" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconSubDisabled}</Button>
+                                                    :
+                                                    <Button className="p-0 subButton" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { sub() }}>{iconSub}</Button>
+                                                }
+                                            </Col>
+                                            <Col xs="6">
+                                                <p className="px-2 m-0 quantityLabel">{parseFloat(counter).toFixed(1)} {props.prod.measure}</p>
+                                            </Col>
+                                            <Col xs="3">
+                                                {counter >= props.prod.quantity ?
+                                                    <Button className="p-0 addButton" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }}>{iconAddDisabled}</Button>
+                                                    :
+                                                    <Button className="p-0 addButton" variant="flat" style={{ backgroundColor: "white", boxShadow: 'none' }} onClick={() => { add() }}>{iconAdd}</Button>
+                                                }
+                                            </Col>
+                                        </InputGroup.Text>
+                                    </Row>
+                                    <Button style={{ position: "absolute", top: "0px", right: "0px", zIndex: '2' }} variant="primary" className="cartButton p-2" onClick={() => { addToBasket() }} size="sm">{iconCart}</Button>
+                                </Card.Footer>
+                            }
+                        </Card>
+                    </OverlayTrigger>
+                    <Modal show={show} onHide={handleClose} size="lg" centered>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{props.prod.name}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Row className="mb-2">
+                                <Col sm={8} className="my-auto">
+                                    <p>
+                                        <Image style={{ height: "1.5rem", width: "1.5rem", marginRight: "10px" }} src="https://cdn-icons-png.flaticon.com/512/498/498231.png" alt="Farmer" title="Farmer" class="loaded" />
+                                        <strong>Farmer: </strong> {props.farmerName}</p>
+                                    <p>
+                                        <Image style={{ height: "1.5rem", width: "1.5rem", marginRight: "10px" }} src="https://cdn-icons-png.flaticon.com/512/498/498229.png" alt="Vegetables  free icon" title="Vegetables free icon" />
+                                        <strong>Category: </strong>{props.prod.category}</p>
+                                    <p className='mb-0'>
+                                        <Image style={{ height: "1.5rem", width: "1.5rem", marginRight: "10px" }} src="https://cdn-icons-png.flaticon.com/512/498/498224.png" alt="Sunrise" title="Sunrise" class="loaded" />
 
-                            <Col sm={8} className="my-auto">
-                                <p>
-                                    <Image style={{ height: "1.5rem", width: "1.5rem", marginRight: "10px" }} src="https://cdn-icons-png.flaticon.com/512/498/498231.png" alt="Farmer" title="Farmer" class="loaded" />
-                                    <strong>Farmer: </strong> {props.farmerName}</p>
-                                <p>
-                                    <Image style={{ height: "1.5rem", width: "1.5rem", marginRight: "10px" }} src="https://cdn-icons-png.flaticon.com/512/498/498229.png" alt="Vegetables  free icon" title="Vegetables free icon" />
-                                    <strong>Category: </strong>{props.prod.category}</p>
-                                <p className='mb-0'>
-                                    <Image style={{ height: "1.5rem", width: "1.5rem", marginRight: "10px" }} src="https://cdn-icons-png.flaticon.com/512/498/498224.png" alt="Sunrise" title="Sunrise" class="loaded" />
+                                        <strong>Type of production: </strong>{props.prod.typeofproduction}</p>
+                                </Col>
+                                <Col sm={3}>
+                                    <Image src={props.prod.picture} style={{ height: "100%", width: "100%" }} />
+                                </Col>
+                            </Row>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Accordion flush style={{ width: "100%" }}>
+                                <Accordion.Item eventKey="1">
+                                    <Card className="border-0">
+                                        <CustomToggle eventKey="1" className="mt-1 mb-1 myText">
+                                            <span><Image style={{ height: "1.5rem", width: "1.5rem", marginRight: "10px", marginLeft: "5px" }} src="https://cdn-icons-png.flaticon.com/512/498/498260.png" alt="Stall" title="Stall" class="loaded" />
+                                                <strong style={{ fontSize: "1rem" }}>Description: </strong></span></CustomToggle>
+                                        <Accordion.Collapse eventKey="1">
+                                            <Card.Body className="mt-0 mb-0">{props.prod.description} </Card.Body>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion.Item>
+                            </Accordion>
 
-                                    <strong>Type of production: </strong>{props.prod.typeofproduction}</p>
-                            </Col>
-                            <Col sm={3}>
-                                <Image src={props.prod.picture} style={{ height: "100%", width: "100%" }} />
-                            </Col>
-                        </Row>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Accordion flush style={{ width: "100%" }}>
-                            <Accordion.Item eventKey="1">
-                                <Card className="border-0">
-                                    <CustomToggle eventKey="1" className="mt-1 mb-1 myText">
-                                        <span><Image style={{ height: "1.5rem", width: "1.5rem", marginRight: "10px", marginLeft: "5px" }} src="https://cdn-icons-png.flaticon.com/512/498/498260.png" alt="Stall" title="Stall" class="loaded" />
-                                            <strong style={{ fontSize: "1rem" }}>Description: </strong></span></CustomToggle>
-                                    <Accordion.Collapse eventKey="1">
-                                        <Card.Body className="mt-0 mb-0">{props.prod.description} </Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
-                            </Accordion.Item>
-                        </Accordion>
-
-                    </Modal.Footer>
-                </Modal>
-
+                        </Modal.Footer>
+                    </Modal>
+                </Row>
             </Col >
 
         </>

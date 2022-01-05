@@ -29,7 +29,6 @@ function ProductAction(props) {
                 <Button variant="primary" id="modal_delete" onClick={() => {
                     handleClose()
                     props.deleteProd(props.id, props.picture)
-                    className="productavailability_delete_1"
                 }}>
                     Delete
                 </Button>
@@ -61,7 +60,7 @@ function OrderAction(props) {
 function ProductRow(props) {
     const { product } = props;
 
-    return (<tr >
+    return (<tr>
         <td>{product.name}</td>
         <td>{product.description}</td>
         <td><Image style={{ width: "100px" }} src={product.picture} fluid /></td>

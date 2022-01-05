@@ -141,7 +141,7 @@ export default function MyNav(props) {
                 <ButtonGroup >
                   {props.logged === "client" && <MyNotifications message={notifyMessage} />}
                   {" "}
-                  {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
+                  {props.logged === "client" && <Button className="ml-2 cartNavButton" onClick={() => handleShowBasket()}>{iconCart}</Button>}
                 </ButtonGroup>
               </>
             ) : (
@@ -296,7 +296,7 @@ function BasketOffCanvas(props) {
                 {elements.map((el, index) => {
                   return (
                     <>
-                      <Row key={index} className={index === 0 ? "" : "mt-2"} style={{ borderBottom: "1px solid gray" }}>
+                      <Row key={index} className={index === 0 ? "basketRow" : "mt-2 basketRow"} style={{ borderBottom: "1px solid gray" }}>
                         <Row className="p-0 m-0 w-100">
                           <Col xs={5}>{el.name}</Col>
                           <Col style={{ paddingLeft: "0px" }}>{el.quantity} {el.measure} </Col>

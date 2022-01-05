@@ -15,6 +15,7 @@ export default function ProductsList(props) {
     const [farmersPresent, setFarmersPresent] = useState([]);
     const [selectedFarmers, setSelectedFarmers] = useState([]);
     const [inserted, setInserted] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
     const [lastDate, setLastDate] = useState(dayjs(props.date));
     const [flag, setFlag] = useState(true)
     const [showfilters, setShowFilters] = useState("none")
@@ -46,9 +47,9 @@ export default function ProductsList(props) {
     //this use effect is used to show a message when the cart button is clicked
     useEffect(() => {
         setTimeout(() => {
-            setInserted(false);
-        }, 5000);
-    }, [inserted]);
+            setShowAlert(false);
+        }, 1500);
+    }, [showAlert]);
 
     //this use effect is called when something is deleted from the basket. 
     //it is meant to realling the quantities
@@ -95,15 +96,15 @@ export default function ProductsList(props) {
                 </Col>
 
                 {categories.map((cat, index) =>
-                    <Col  onClick={() => {setSelected(cat);}} 
+                    <Col onClick={() => { setSelected(cat); }}
                         className={"border-end border-grey my-auto text-center d-sm-block hover-category d-" + showfilters} xs={12} sm={1} key={index}>
                         <Button className={index === 2 ? "btn-primary mx-1 px-1 py-2" : "btn-primary mx-1 px-0"} style={{ "fontSize": "0.8rem" }} id="main"
-                           >
+                        >
                             <>{cat}</>
                         </Button>
                     </Col>
                 )}
-                <Col onClick={() => { setSelected("All"); }} 
+                <Col onClick={() => { setSelected("All"); }}
                     className={"border-end border-grey p-0 my-auto text-center d-sm-block hover-category d-" + showfilters} xs={12} sm={1}>
                     <Button className="btn-primary py-2 mt-1" style={{ "fontSize": "0.8rem" }} id="main">
                         <>All</>
@@ -111,22 +112,32 @@ export default function ProductsList(props) {
                 </Col>
                 <Col style={{ "minWidth": "200px" }} className='p-0'>
                     <Form className="d-flex align-items-start my-2 p-0">
-                        <Form.Control type="product" placeholder="Search product" onChange={(ev) => {setProduct(ev.target.value)}} />
+                        <Form.Control type="product" placeholder="Search product" onChange={(ev) => { setProduct(ev.target.value) }} />
                     </Form>
                 </Col>
             </Row>
 
             {/* title of the page and utilities */}
             <Container className="d-flex justify-content-around">
-                <Row className="p-0 w-100">
+                <Row className="p-0 w-100 mt-4">
                     <Col className="mx-auto pl-0 text-center mt-4">
-                        <h1 className="myTitle" style={{ fontSize: "40px" }}>Available Products : <u className=""> {selected} </u></h1>
+                        <h1 className="myPageTitle">Available Products : <u className=""> {selected} </u></h1>
                     </Col>
                 </Row>
-                {inserted && <Alert className="position-fixed" variant="success"
-                    style={{ bottom: '3rem', zIndex: '100', background: '#0C7373', color: "white" }} >
-                    Product has been added to cart.
-                </Alert>}
+                {showAlert ?
+                    inserted ?
+                        <Alert className="position-fixed" variant="success"
+                            style={{ bottom: '3rem', zIndex: '200', background: '#12A1A1', color: "white" }} >
+                            Product has been added to cart
+                        </Alert>
+                        :
+                        <Alert className="position-fixed"
+                            style={{ bottom: '3rem', zIndex: '200', background: '#C1260B', color: "white" }} >
+                            Select a quantity first
+                        </Alert>
+                    :
+                    <></>
+                }
                 <HomeButton className="home-here" logged={props.logged} />
             </Container>
 
@@ -165,9 +176,10 @@ export default function ProductsList(props) {
                             prod={prod}
                             key={index}
                             logged={props.logged}
-                            className="another-product"
                             farmerName={farmersPresent.length > 0 && farmersPresent.filter(farmer => farmer.userid === prod.farmerid)[0] && farmersPresent.filter(farmer => farmer.userid === prod.farmerid)[0].place}
                             setInserted={setInserted}
+                            setShowAlert={setShowAlert}
+                            setAl
                             setDirtyBasket={props.setDirtyBasket}
                         />)}
                 </Row>
