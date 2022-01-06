@@ -7,6 +7,17 @@
     pointer-events: none;
 }
 
+.inputFarmerTable{
+    width: 40%;
+}
+.pricefarmer{
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.tabFarmer{
+    width: 100%;
+}
 
 /*For the farmer*/
 
@@ -293,6 +304,9 @@
     background-color: #75F0F0 !important;
 }
 
+.tabFarmer{
+    margin-top: 0rem;
+}
 .alertHeader {
     background-color: #FFB3B3;
     font-weight: 500;
