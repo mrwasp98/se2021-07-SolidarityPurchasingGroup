@@ -1,7 +1,7 @@
 import { Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image, Modal, Alert } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react";
-import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit } from "./Utilities/Icons";
+import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit, reportAvailabilitiesBIG, reportAvailabilitiesSMALL, basket2, box } from "./Utilities/Icons";
 import HomeButton from './Utilities/HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
@@ -104,7 +104,7 @@ function ProductAvailableRow(props) {
         }
     }
 
-    return (<tr>
+    return (<tr className="align-middle">
         <td style={{ fontSize: "18pt" }}>{product.name}</td>
         <td>
             <Form.Group controlId="formBasicPrice" >
@@ -121,12 +121,13 @@ function ProductAvailableRow(props) {
             </Form.Group>
         </td>
         <td><Image style={{ width: "100px" }} src={product.picture} fluid /></td>
-        <td className="align-middle">{(quantity > -1) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
+        <td>{(quantity > -1) ?
+            <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
             : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
+            {quantity + " " + product.measure + " "}
             {quantity > 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
                 : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
         </td>
-        <td>{quantity + " " + product.measure}</td>
     </tr>
     )
 }
@@ -244,13 +245,17 @@ export default function ReportAvailability(props) {
                 <Col sm={3} style={{ backgroundColor: '#f2f2f2' }}>
                     <ListGroup variant="flush" className="mt-3">
                         <ListGroup.Item action href="#link1" id="link1">
+                            <span classname="pb-1">{basket2} </span>
+
                             Your products
                         </ListGroup.Item>
                         <ListGroup.Item action href="#link2" id="link2">
-                            Expected availability
+                            <span classname="pb-1">{reportAvailabilitiesSMALL} </span>
+                            Report product availability
                         </ListGroup.Item>
                         {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
                             <ListGroup.Item action href="#link3" id="link3">
+                                <span classname="pb-1">{box} </span>
                                 Confirm preparation
                             </ListGroup.Item>
                             :
@@ -293,7 +298,8 @@ export default function ReportAvailability(props) {
                         </Tab.Pane>
                         {!((props.date.getDay() === 6 && dayjs(props.date).hour() >= 9) || props.date.getDay() === 0 || (props.date.getDay() === 1 && dayjs(props.date).hour() < 9)) ? <>
                             <Tab.Pane eventKey="#link2">
-                                <h3>Select the availability for the next week</h3>
+                                <h3>Report the availability for the next week</h3>
+                                <span className='text-muted'>Select the quantities you expect to deliver for next week. When you're done, click on the light blue button.</span>
                                 <Table className="mt-3" striped bordered hover responsive>
                                     <thead>
                                         <tr>
@@ -301,16 +307,18 @@ export default function ReportAvailability(props) {
                                             <th>Price</th>
                                             <th>Image</th>
                                             <th>Quantity</th>
-                                            <th>Available</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {products.map((product, index) => <ProductAvailableRow key={product.id} index={index} product={product} dateavailability={dateavailability} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
+                                        {products.map((product, index) =>
+                                            <ProductAvailableRow key={product.id} index={index} product={product} dateavailability={dateavailability} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
                                     </tbody>
                                 </Table>
-                                <div className="d-flex justify-content-center mb-4">
-                                    <Button className="order-btn" variant="yellow" onClick={() => handleReport()}>Send report</Button>
-                                </div>
+
+                                <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow" onClick={() => handleReport()}
+                                    style={{ width: '4rem', height: '4rem', bottom: '3rem', zIndex: '100', right: '8rem' }}>
+                                    {reportAvailabilitiesBIG}
+                                </Button>
                             </Tab.Pane>
                         </>
                             :
@@ -345,5 +353,6 @@ export default function ReportAvailability(props) {
             </Row>
         </Tab.Container>
         <HomeButton logged={props.logged} />
-    </Container>)
+    </Container>
+    )
 }

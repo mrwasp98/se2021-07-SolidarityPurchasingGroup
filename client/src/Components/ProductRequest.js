@@ -95,6 +95,11 @@ export default function ProductRequest(props) {
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
 
+    //cleanup use effect so that the client is not selected when you change date
+    useEffect(()=>{
+        setSelectedClient("");
+    }, [props.date])
+
     //this use Effect is used to load the clients when the component is loaded
     useEffect(() => {
         if (props.dirtyClients) {
