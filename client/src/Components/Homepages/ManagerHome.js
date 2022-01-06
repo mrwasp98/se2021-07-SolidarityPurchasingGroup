@@ -4,7 +4,7 @@ import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-
 import { useState } from 'react';
 import dayjs from "dayjs";
 import { useEffect } from 'react';
-import {getWeeklyReport } from '../../API/API'
+import {getReport } from '../../API/API'
 
 // Create styles
 const styles = StyleSheet.create({
@@ -58,10 +58,10 @@ const styles = StyleSheet.create({
 
 // Create Document Component
 const Report = (props) => (
-    <Document title="SPG Weekly report">
+    <Document title={props.title}>
         <Page size="A4" style={styles.page}>
             <View style={styles.title} fixed>
-                <Text style={styles.text}>SPG - Weekly report</Text>
+                <Text style={styles.text}>{props.title}</Text>
                 <Text style={styles.text}>{dayjs(props.beginDate).format('DD/MM/YYYY')} to {dayjs(props.endDate).format('DD/MM/YYYY')}</Text>
             </View>
             <View style={styles.table}>
@@ -83,7 +83,7 @@ const Report = (props) => (
         </Page>
         <Page>
             <View style={styles.title} fixed>
-                <Text style={styles.text}>SPG - Weekly report</Text>
+                <Text style={styles.text}>{props.title}</Text>
                 <Text style={styles.text}>{dayjs(props.beginDate).format('DD/MM/YYYY')} to {dayjs(props.endDate).format('DD/MM/YYYY')}</Text>
             </View>
             <View>
@@ -102,184 +102,100 @@ const Report = (props) => (
 );
 
 export default function ManagerHome(props) {
-    const [beginDate, setBeginDate] = useState(); //start date of the report
-    const [endDate, setEndDate] = useState(); //end date of the report
+    //weekly report:
+    const [wbeginDate, setWBeginDate] = useState(); //start date of the report
+    const [wendDate, setWEndDate] = useState(); //end date of the report
+    const [wdata, setWData] = useState([]); //data to be printed in the report
+    const [wsummary, setWSummary] = useState([]); //summary data tu be printed in the report
 
-    const [data, setData] = useState([]); //data to be printed in the report
-    const [summary, setSummary] = useState([]); //summary data tu be printed in the report
-   
-    const wreport = [
-        {
-            productid: 1,
-            name: "mela",
-            quantity: 3,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        },
-        {
-            productid: 2,
-            name: "patate",
-            quantity: 1,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        }, {
-            productid: 3,
-            name: "cipolle",
-            quantity: 1,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        },
-        {
-            productid: 4,
-            name: "uova",
-            quantity: 2,
-            measure: "units",
-            farmerName: "Faye",
-            farmerSurname: "Total"
-        }, {
-            productid: 1,
-            name: "mela",
-            quantity: 3,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        },
-        {
-            productid: 2,
-            name: "patate",
-            quantity: 1,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        }, {
-            productid: 3,
-            name: "cipolle",
-            quantity: 1,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        },
-        {
-            productid: 4,
-            name: "uova",
-            quantity: 2,
-            measure: "units",
-            farmerName: "Faye",
-            farmerSurname: "Total"
-        }, {
-            productid: 1,
-            name: "mela",
-            quantity: 3,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        },
-        {
-            productid: 2,
-            name: "patate",
-            quantity: 1,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        }, {
-            productid: 3,
-            name: "cipolle",
-            quantity: 1,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        },
-        {
-            productid: 4,
-            name: "uova",
-            quantity: 2,
-            measure: "units",
-            farmerName: "Faye",
-            farmerSurname: "Total"
-        }, {
-            productid: 1,
-            name: "mela",
-            quantity: 3,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        },
-        {
-            productid: 2,
-            name: "patate",
-            quantity: 1,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        }, {
-            productid: 3,
-            name: "cipolle",
-            quantity: 1,
-            measure: "kg",
-            farmerName: "Spike",
-            farmerSurname: "Spiegel"
-        },
-        {
-            productid: 4,
-            name: "uova",
-            quantity: 2,
-            measure: "units",
-            farmerName: "Faye",
-            farmerSurname: "Total"
-        }
-    ]
+    //monthly report
+    const [mbeginDate, setMBeginDate] = useState(); //start date of the report
+    const [mendDate, setMEndDate] = useState(); //end date of the report
+    const [mdata, setMData] = useState([]); //data to be printed in the report
+    const [msummary, setMSummary] = useState([]); //summary data tu be printed in the report
 
     const getWeekRange = (date) => {
-        let beginDate;
-        let endDate;
+        let wbeginDate;
+        let wendDate;
         if (dayjs(date).format('dddd') === 'Saturday') {
-          //beginDate is wednesday of this week
-          beginDate = dayjs(date).startOf('week').add(3, 'day').format('YYYY-MM-DD');
-          //endDate is friday of this week (==yesterday since date is saturday)
-          endDate = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
+          //wbeginDate is wednesday of this week
+          wbeginDate = dayjs(date).startOf('week').add(3, 'day').format('YYYY-MM-DD');
+          //wendDate is friday of this week (==yesterday since date is saturday)
+          wendDate = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
         }
         else {
-          //beginDate is wednesday of last week
-          beginDate = dayjs(date).startOf('week').subtract(1, 'week').add(3, 'day').format('YYYY-MM-DD');
-          //endDate is friday of last week
-          endDate = dayjs(date).startOf('week').subtract(1, 'week').add(5, 'day').format('YYYY-MM-DD');
+          //wbeginDate is wednesday of last week
+          wbeginDate = dayjs(date).startOf('week').subtract(1, 'week').add(3, 'day').format('YYYY-MM-DD');
+          //wendDate is friday of last week
+          wendDate = dayjs(date).startOf('week').subtract(1, 'week').add(5, 'day').format('YYYY-MM-DD');
+        }
+        return [wbeginDate, wendDate];
+      }
+
+      const getMonthRange = (date) => {
+        //Remember: dayjs has sunday as start of week and saturday as end of week
+        const beginDate = dayjs(date).startOf('month').subtract(1, 'month').format('YYYY-MM-DD');
+        let endDate;
+        if (dayjs(date).subtract(1, 'month').format('MMMM') === 'November' || dayjs(date).format('MMMM') === 'April' || dayjs(date).format('MMMM') === 'June' || dayjs(date).format('MMMM') === 'September') {
+          endDate = dayjs(date).subtract(1, 'month').day(30).format('YYYY-MM-DD');
+        }
+        else if (dayjs(date).subtract(1, 'month').format('MMMM') === 'February') {
+          endDate = dayjs(date).subtract(1, 'month').day(28).format('YYYY-MM-DD');
+        }
+        else {
+          endDate = dayjs(date).subtract(1, 'month').day(31).format('YYYY-MM-DD');
         }
         return [beginDate, endDate];
       }
 
+      const createSummary = (res, mod)=> {
+        let x = res.map(el => {
+            return { quantity: el.quantity, measure: el.measure }
+        })
+        var holder = {};
+        x.forEach(function (d) {
+            if (holder.hasOwnProperty(d.measure)) {
+                holder[d.measure] = holder[d.measure] + d.quantity;
+            } else {
+                holder[d.measure] = d.quantity;
+            }
+        });
+        var y = [];
+        for (var prop in holder) {
+            y.push({quantity: holder[prop], measure: prop});
+        }
+        if(mod ==="weekly")
+        setWSummary(y);
+        else
+        setMSummary(y)
+      }
+
     useEffect(() => {
-        const [bDate, eDate]  = getWeekRange(props.date)
-        setBeginDate(bDate)
-        setEndDate(eDate)
+        const [wbDate, weDate]  = getWeekRange(props.date)
+        const [mbDate, meDate]  = getMonthRange(props.date)
+        setWBeginDate(wbDate)
+        setWEndDate(weDate)
+        setMBeginDate(mbDate)
+        setMEndDate(meDate)
     }, [props.date])
 
     useEffect(() => {
-        getWeeklyReport(props.date)
+        getReport(props.date, "weekly")
         .then(res=>{
-            setData(res)
-            let x = res.map(el => {
-                return { quantity: el.quantity, measure: el.measure }
-            })
-            var holder = {};
-            x.forEach(function (d) {
-                if (holder.hasOwnProperty(d.measure)) {
-                    holder[d.measure] = holder[d.measure] + d.quantity;
-                } else {
-                    holder[d.measure] = d.quantity;
-                }
-            });
-            var y = [];
-            for (var prop in holder) {
-                y.push({quantity: holder[prop], measure: prop});
-            }
-            console.log(y);
-            setSummary(y);
+            console.log(res)
+            setWData(res)
+            createSummary(res, "weekly")
         })
         .catch(err=> console.log(err))
-        
+
+        getReport(props.date, "monthly")
+        .then(res=>{
+            console.log(res)
+            setMData(res)
+            createSummary(res, "monthly")
+        })
+        .catch(err=> console.log(err))
+
     }, [props.date])
 
     return (
@@ -289,13 +205,15 @@ export default function ManagerHome(props) {
                 <Card.Body className="mb-2">
                     <ButtonGroup vertical aria-label="Directions" className="d-flex" >
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprod">
-                            <PDFDownloadLink document={<Report data={data} beginDate={beginDate} endDate={endDate} summary={summary}/>} fileName="SPG-weekly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
+                            <PDFDownloadLink document={<Report data={wdata} beginDate={wbeginDate} endDate={wendDate} summary={wsummary} title={"SPG weekly report"}/>} 
+                            fileName="SPG-weekly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
                                 {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Get weekly report')}
                             </PDFDownloadLink>
                         </Button>
 
                         <Button variant="yellow" className="mx-auto d-flex p-0 mb-4" size="lg" id="toprod">
-                            <PDFDownloadLink document={<Report data={data} beginDate={beginDate} endDate={endDate}  summary={summary}/>} fileName="SPG-monthly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
+                            <PDFDownloadLink document={<Report data={mdata} beginDate={mbeginDate} endDate={mendDate}  summary={msummary} title={"SPG monthly report"}/>} 
+                            fileName="SPG-monthly-report.pdf" className="py-2 yellowLink" style={{ minWidth: "100%", textDecoration: "none" }}>
                                 {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Get monthly report')}
                             </PDFDownloadLink>
                         </Button>

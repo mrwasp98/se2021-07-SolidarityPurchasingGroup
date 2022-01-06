@@ -557,9 +557,9 @@ async function getUserInfo() {
 }
 
 //this API fetches the weekly report data
-const getWeeklyReport = (date) => {
+const getReport = (date, mod) => {
   return new Promise((resolve, reject) => {
-    fetch('/api/manager/weeklyReport/' + date, {
+    fetch(`/api/manager/${mod}Report/` + date, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -602,4 +602,4 @@ const getSuspendedDate = (username) => {
 
 
 
-export {getWeeklyReport, getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct, getSuspendedDate}
+export {getReport, getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct, getSuspendedDate}

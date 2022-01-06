@@ -579,11 +579,11 @@ app.put("/api/orderlines", async (req, res) => {
 app.get("/api/manager/weeklyReport/:date", async (req, res) => {
   try {
     const [beginDate, endDate] = getWeekRange(req.params.date);
-    console.log(beginDate)
-    console.log(endDate)
+    console.log(beginDate,"--",  endDate)
     const products = await productDao.getUnretrievedProducts(beginDate, endDate);
     res.status(200).json(products);
   } catch (err) {
+    console.log(err)
     res.status(500).end();
   }
 });
@@ -606,15 +606,15 @@ const getWeekRange = (date) => {
   let endDate;
   if (dayjs(date).format('dddd') === 'Saturday') {
     //beginDate is wednesday of this week
-    beginDate = dayjs(date).startOf('week').add(3, 'day').format('YYYY-MM-DD');
+    beginDate = dayjs(date).startOf('week').add(3, 'day').format('YYYY-MM-DD HH:MM');
     //endDate is friday of this week (==yesterday since date is saturday)
-    endDate = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
+    endDate = dayjs(date).subtract(1, 'day').hour(23).minute(59).format('YYYY-MM-DD HH:MM');
   }
   else {
     //beginDate is wednesday of last week
-    beginDate = dayjs(date).startOf('week').subtract(1, 'week').add(3, 'day').format('YYYY-MM-DD');
+    beginDate = dayjs(date).startOf('week').subtract(1, 'week').add(3, 'day').format('YYYY-MM-DD HH:MM');
     //endDate is friday of last week
-    endDate = dayjs(date).startOf('week').subtract(1, 'week').add(5, 'day').format('YYYY-MM-DD');
+    endDate = dayjs(date).startOf('week').subtract(1, 'week').add(5, 'day').hour(23).minute(59).format('YYYY-MM-DD HH:MM');
   }
   return [beginDate, endDate];
 }
@@ -634,16 +634,16 @@ app.get("/api/manager/monthlyReport/:date", async (req, res) => {
 //used in GET /api/manager/monthlyReport/:date -ant
 const getMonthRange = (date) => {
   //Remember: dayjs has sunday as start of week and saturday as end of week
-  const beginDate = dayjs(date).startOf('month').subtract(1, 'month').format('YYYY-MM-DD');
+  const beginDate = dayjs(date).startOf('month').subtract(1, 'month').format('YYYY-MM-DD HH:mm');
   let endDate;
   if (dayjs(date).subtract(1, 'month').format('MMMM') === 'November' || dayjs(date).format('MMMM') === 'April' || dayjs(date).format('MMMM') === 'June' || dayjs(date).format('MMMM') === 'September') {
-    endDate = dayjs(date).subtract(1, 'month').day(30).format('YYYY-MM-DD');
+    endDate = dayjs(date).subtract(1, 'month').day(30).hour(23).minute(59).format('YYYY-MM-DD HH:MM');
   }
   else if (dayjs(date).subtract(1, 'month').format('MMMM') === 'February') {
-    endDate = dayjs(date).subtract(1, 'month').day(28).format('YYYY-MM-DD');
+    endDate = dayjs(date).subtract(1, 'month').day(28).hour(23).minute(59).format('YYYY-MM-DD HH:MM');
   }
   else {
-    endDate = dayjs(date).subtract(1, 'month').day(31).format('YYYY-MM-DD');
+    endDate = dayjs(date).subtract(1, 'month').day(31).hour(23).minute(59).format('YYYY-MM-DD HH:MM');
   }
   return [beginDate, endDate];
 }

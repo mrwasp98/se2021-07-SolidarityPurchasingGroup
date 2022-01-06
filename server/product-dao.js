@@ -154,6 +154,7 @@ exports.getUnretrievedProducts = (beginDate, endDate) => {
         const sql = "SELECT ol.productid, p.name, ol.quantity, p.measure, f.name AS 'farmerName', f.surname AS 'farmerSurname' FROM 'order' AS o, orderline AS ol, product AS p, farmer AS f WHERE o.id=ol.orderid AND ol.productid=p.id AND f.userid=p.farmerid AND o.status='unretrieved' AND o.claimdate>=? AND o.claimdate<=?";
         db.all(sql, [beginDate, endDate], (err, rows) => {
             if (err) {
+                console.log(err)
                 reject(err);
             }
             //sum quantities of the same product
