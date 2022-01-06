@@ -21,7 +21,6 @@ export default function MyNav(props) {
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
   const [message, setMessage] = useState([]);
-  // eslint-disable-next-line
   const [notifyMessage, setNotifyMessage] = useState({
     topUpWallet: props.topUpWallet
   });
@@ -235,7 +234,7 @@ function BasketOffCanvas(props) {
   function checkAndOrder() {
     addPRequest(props.userId,
       props.date,
-      dayjs(claimdate).format("dd-mm-yyyy HH:mm"),
+      dayjs(claimdate).format("YYYY-MM-DD HH:mm"),
       null,
       deliveryAddress,
       null,

@@ -11,14 +11,8 @@ export default function ModalClaimDate(props) {
   const [showAddressForm, setShowAddressForm] = useState(false);
 
   const handleClose = () => {
-    if (
-      !(
-        props.claimdate.getDay() === 0 ||
-        props.claimdate.getDay() === 1 ||
-        props.claimdate.getDay() === 2 ||
-        props.claimdate.getDay() === 6
-      )
-    ) {
+    if (!(props.claimdate.getDay() === 0 ||props.claimdate.getDay() === 1 
+    ||props.claimdate.getDay() === 2 ||props.claimdate.getDay() === 6)) {
       props.handleOrder();
       props.setShow(false);
     }
