@@ -82,6 +82,7 @@ export default function BasketOffCanvas(props) {
         }
         else if (result.status !== undefined && result.status === 200) {
           props.setMessage(["success", "Order received!"])
+          props.setSomethingInTheBasket(false);
           setShowModal(true);
         }
       }).catch(err => { props.setMessage(["danger", err.message]) })

@@ -186,6 +186,10 @@
     color: white;
 }
 
+.cartNavButton{
+    background-color: #FFC670;
+    color:red;
+}
 .color {
     color: #0f8b8b;
 }

@@ -100,7 +100,7 @@ export default function Product(props) {
                                             </Col>
                                         </InputGroup.Text>
                                     </Row>
-                                    <Button style={{ position: "absolute", top: "0px", right: "0px", zIndex: '2' }} variant="primary" className="cartButton p-2" onClick={() => { addToBasket() }} size="sm">{iconCart}</Button>
+                                    <Button style={{ position: "absolute", top: "0px", right: "0px", zIndex: '2' }} variant="primary" className="cartButton p-2" onClick={() => { addToBasket(); props.setSomethingInTheBasket(old=> {if(old===false) return !old; else return old})}} size="sm">{iconCart}</Button>
                                 </Card.Footer>
                             }
                         </Card>

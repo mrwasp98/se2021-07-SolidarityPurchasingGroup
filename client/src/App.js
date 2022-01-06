@@ -25,6 +25,8 @@ import ManagerHome from "./Components/Homepages/ManagerHome";
 
 function App() {
 
+  const [somethingInTheBasket, setSomethingInTheBasket] = useState(false);
+  
   ///TELEGRAM STUFF
   // replace the value below with the Telegram token you receive from @BotFather
   const token = '5025601538:AAFbffT0RV-Xn5XmwQYX6xwAFToAwK_QbJk';
@@ -48,7 +50,7 @@ function App() {
         // of the message
         let chatIdtemp = 0;
         chatIdtemp = msg.chat.id;
-        setChatIds(chatIds => [...chatIds,chatIdtemp]);
+        setChatIds(chatIds => [...chatIds, chatIdtemp]);
         setTelegramStarted(true);
         bot.sendMessage(chatIdtemp, "SPG-Bot started 🚀!");
         bot.sendMessage(chatIdtemp, "Welcome " + msg.from.username + "! 👋\nThis is SPG-G07 bot, here you here you will receive notifications when the farmers make the weekly products available 📅.");
@@ -77,7 +79,7 @@ function App() {
   const [clientAddress, setClientAddress] = useState('');
   const [showTopUpWalletModal, setShowTopUpWalletModal] = useState(false);
   const [notify, setNotify] = useState(false);
-
+  
   const [products, setProducts] = useState([]);
   const [dirtyAvailability, setDirtyAvailability] = useState(true); //state used to indicate if the availability of some product has been changed
 
@@ -139,6 +141,7 @@ function App() {
       <Router>
         <Route path="/">
           <MyNav
+            somethingInTheBasket={somethingInTheBasket}
             logged={logged}
             date={date}
             setDate={setDate}
@@ -151,6 +154,7 @@ function App() {
             setDirtyAvailability={setDirtyAvailability}
             topUpWallet={notify}
             clientAddress={clientAddress}
+            setSomethingInTheBasket={setSomethingInTheBasket}
           />
           <MyModal
             userid={client.userid}
@@ -168,6 +172,7 @@ function App() {
             dirtyAvailability={dirtyAvailability} setDirtyAvailability={setDirtyAvailability}
             setDirtyBasket={setDirtyBasket}
             dirtyQuantity={dirtyQuantity} setDirtyQuantity={setDirtyQuantity}
+            setSomethingInTheBasket={setSomethingInTheBasket}
           />
         } />
 
@@ -178,7 +183,7 @@ function App() {
         <Route exact path='/addProduct' render={() => <ProductForm username={username} addProduct={addProduct} userId={userId} />} />
 
         <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
-        <Route exact path='/managerhome' render={() => <ManagerHome date={date}/>} />
+        <Route exact path='/managerhome' render={() => <ManagerHome date={date} />} />
 
         <Route exact path='/clienthome' render={() => <ClientHome />} />
 
