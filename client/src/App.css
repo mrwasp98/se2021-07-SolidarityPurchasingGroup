@@ -196,6 +196,44 @@
     background-color: #C1260B !important;
 }
 
+.footerHomePage{
+    background-color:#4A4A4A;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 7rem;
+    height: 15rem;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.footerTitle{
+    color:white;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: right;
+}
+
+.footerButton{
+    min-width: 60%;
+    margin-bottom: 0.5rem;
+}
+
+.footerTitleDx{
+    color:white;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: left;
+}
+
+.footerInfo{
+    color:white;
+    font-size: 15px;
+    margin-top: none;
+    margin-bottom: 0rem;
+    margin-left: 1rem;
+    text-align: right;
+}
+
 .table-striped>tbody>tr:nth-child(2n+1)>td,
 .table-striped>tbody>tr:nth-child(2n+1)>th {
     background-color: #FFF4C7;
@@ -358,7 +396,8 @@
 }
 
 .division {
-    border-bottom: 2px solid #ec9a2a;
+    border-right: 2px solid #ec9a2a;
+    height: 15rem;
 }
 
 .noborderbottom {

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Carousel, Container, Row, Col, Button } from "react-bootstrap";
+import { Carousel, Container, Row, Col, Button, ButtonGroup } from "react-bootstrap";
 
 export default function Home(props) {
     return (
@@ -39,48 +39,43 @@ export default function Home(props) {
             </Carousel>
 
             <Container className="d-flex justify-content-center" >
-                <h1 className="mb-5">Welcome to solidarity purchasing group!</h1>
+                <h1 className="mb-5 mt-4">Welcome to solidarity purchasing group!</h1>
             </Container>
             <Container className="d-flex justify-content-center ">
                 <Row className="justify-content-center">
-                    <Col sm={4} className="text-center division pb-3">
+                    <Col sm={4} className="text-center pb-3">
                         <img src="/carousel/bread.png" alt="Bread" className="d-block mx-auto my-2" style={{ height: "100px" }} />
                         <span><strong>A new way of thinking.</strong> <br /> Embrace the new economy and partake in the global food revolution, zero kilometer food is the future.</span>
                     </Col>
-                    <Col sm={4} className="text-center division pb-3">
+                    <Col sm={4} className="text-center pb-3">
                         <img src="/carousel/meat.png" alt="Meat" className="d-block mx-auto my-2" style={{ height: "100px" }} />
                         <span><strong>Exceptional Quality.</strong> <br /> Our local farmer are respecting all the high quality standars that are hard to find in mass market.</span>
                     </Col>
-                    <Col sm={4} className="text-center division pb-3">
+                    <Col sm={4} className="text-center pb-3">
                         <img src="/carousel/broccoli.png" alt="Broccoli" className="d-block mx-auto my-2" style={{ height: "100px" }} />
                         <span><strong>From soil to your table.</strong> <br />You will be able to enjoy the most delicious vegetables, wihtout overlooking sustainability.</span>
                     </Col>
                 </Row>
             </Container>
-            <Container className="my-4">
-            <Row className="text-center division pb-3 mb-3">
-                    <Col sm={12} md={6}>
-                        <h2>Are you curious?</h2>
+            <Container className="footerHomePage">
+                <Row>
+                    <Col className="p-4 text-aligned-right division" sm={6}>
+                        <p className="footerTitle">SPG GROUP 07</p>
+                        <p className="footerInfo">Corso Duca degli Abruzzi, 24</p>
+                        <p className="footerInfo">10129 Torino, ITALY</p>
+                        <p className="footerInfo">P.IVA/C.F.: 00518460019</p>
+
                     </Col>
-                    <Col sm={12} md={6}>
-                        <Link to="/products">
-                            <Button id="homepage_browseproducts" variant="yellow" size="lg">Browse products for next week!</Button>
-                        </Link>
-                    </Col>
-                </Row>
-                <Row className="text-center">
-                    <Col sm={12} md={6}>
-                        <h2>What are you waiting for?</h2>
-                    </Col>
-                    <Col sm={12} md={6}>
-                        <Link to="/user">
-                            <Button id="homepage_joinus" variant="yellow" size="lg">Join us!</Button>
-                        </Link>
+                    <Col className="p-4" sm={6}>
+                        <p className="footerTitleDx">USEFUL LINKS</p>
+                            <Link to="/products">
+                                <Button className="footerButton" id="homepage_browseproducts" variant="yellow" size="md">Browse products for next week!</Button>
+                            </Link>
+                            <Link to="/user">
+                                <Button className="footerButton" id="homepage_joinus " variant="yellow" size="md">Join us!</Button>
+                            </Link>
                     </Col>
                 </Row>
-            </Container>
-            <Container>
-                <img src="/carousel/divider.png" alt="divider" className="d-block mx-auto my-2 w-100 h-80 mb-4" />
             </Container>
         </>
     )

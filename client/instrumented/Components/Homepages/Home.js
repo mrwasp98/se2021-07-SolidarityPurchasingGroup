@@ -60,7 +60,7 @@ export default function Home(props) {
             <Container className="my-4">
             <Row className="text-center division pb-3 mb-3">
                     <Col sm={12} md={6}>
-                        <h2>Are you curious?</h2>
+                        <h3>Are you curious?</h3>
                     </Col>
                     <Col sm={12} md={6}>
                         <Link to="/products">
