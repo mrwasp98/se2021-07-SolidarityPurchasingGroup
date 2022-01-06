@@ -139,15 +139,16 @@ export default function MyNav(props) {
                 <ButtonGroup >
                   {props.logged === "client" && <MyNotifications message={notifyMessage} />}
                   {" "}
-                  {props.logged === "client" ?
-                    props.somethingInTheBasket === true ?
-                      <Button className="ml-2 cartNavButton" onClick={() => handleShowBasket()}>{iconCart}</Button>
-                      :
-                      <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>
-                    :
-                    <></>
-                  }
+                  {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
                 </ButtonGroup>
+                {props.logged === "client" && props.somethingInTheBasket === true ?
+                  <Button
+                    className='position-relative rounded-circle'
+                    style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '20px', zIndex: '100', "backgroundColor": "red" }}
+                  />
+                  :
+                  <></>
+                }
               </>
             ) : (
               <>
@@ -165,7 +166,7 @@ export default function MyNav(props) {
         </Container>
       </Navbar>
       {message.length > 0 && <Alert className="m-0 w-100" style={{ position: "absolute", zIndex: "2" }} variant={message[0]}>{message[1]}</Alert>}
-      <BasketOffCanvas setSomethingInTheBasket={props.setSomethingInTheBasket}  showBasket={props.showBasket} setShowBasket={props.setShowBasket} clientAddress={props.clientAddress}
+      <BasketOffCanvas setSomethingInTheBasket={props.setSomethingInTheBasket} showBasket={props.showBasket} setShowBasket={props.setShowBasket} clientAddress={props.clientAddress}
         dirtyBasket={props.dirtyBasket} setDirtyBasket={props.setDirtyBasket} setDirtyQuantity={props.setDirtyQuantity}
         userId={props.userId} date={props.date} setMessage={setMessage} setDirtyAvailability={props.setDirtyAvailability}
       />
