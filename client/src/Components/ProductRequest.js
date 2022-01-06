@@ -52,16 +52,16 @@ function ProductLine(props) {
         <td className="align-middle" style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>
             <Row className="align-items-center">
                 <Col style={{ marginLeft: "0.5rem" }}>
-                    <p style={{ fontSize: "18pt" }}>{product.name}</p>
-                    {product.quantity + " " + product.measure + " available"}
-                    <div className="d-block d-md-none mt-2">{basket}: <b>{quantity + " " + product.measure}</b></div>
+                    <p style={{ fontSize: "19px", margin:"0px" }}>{product.name}</p>
+                    <p className="text-muted" style={{fontSize:"14px"}}>{product.quantity + " " + product.measure + " available"}</p>
                 </Col>
                 <Col className="d-none d-md-block colBasket">{basket}: <b>{quantity + " " + product.measure}</b></Col>
             </Row>
         </td>
-        <td className="align-middle" style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}><p style={{ fontSize: "18pt" }}>{parseFloat(product.price).toFixed(2)}€</p></td>
-        <td className="align-middle">{(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
-            : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
+        <td className="align-middle" style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}><p style={{ fontSize: "18px" }}>{parseFloat(product.price).toFixed(2)}€</p></td>
+        <td className="align-middle">
+            {(quantity < product.quantity) ? <span style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</span>
+                : <span style={{ cursor: 'pointer' }}>{iconAddDisabled}</span>}&nbsp;
             {quantity !== 0 ? <span style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</span>
                 : <span style={{ cursor: 'pointer' }}>{iconSubDisabled}</span>}
         </td>
@@ -96,7 +96,7 @@ export default function ProductRequest(props) {
     const handleShowModal = () => setShowModal(true);
 
     //cleanup use effect so that the client is not selected when you change date
-    useEffect(()=>{
+    useEffect(() => {
         setSelectedClient("");
     }, [props.date])
 
@@ -221,9 +221,9 @@ export default function ProductRequest(props) {
                                         text: messageProductRequest.text
                                     })
                                 }}
-                                handleCloseModal={handleCloseModal} 
+                                handleCloseModal={handleCloseModal}
                                 handleShowModal={handleShowModal}
-                                products={{ summary: summary, total: calculateTotal(summary) }} 
+                                products={{ summary: summary, total: calculateTotal(summary) }}
                                 setDirtyAvailability={props.setDirtyAvailability} />
                             <Row>
                                 <Col className="d-none d-md-block">
