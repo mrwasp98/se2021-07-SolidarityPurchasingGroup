@@ -63,7 +63,7 @@ function ProductRow(props) {
     return (<tr>
         <td>{product.name}</td>
         <td>{product.description}</td>
-        <td><Image style={{ width: "100px" }} src={product.picture} fluid /></td>
+        <td><Image style={{ width: "200px" }} src={product.picture} fluid /></td>
         <td><ProductAction index={props.index} id={product.id} name={product.name} description={product.description} farmerid={props.farmerid} category={product.category} typeofproduction={product.typeofproduction} measure={product.measure} picture={product.picture} deleteProd={props.deleteProd}></ProductAction></td>
     </tr>
     )
@@ -113,21 +113,23 @@ function ProductAvailableRow(props) {
                     className="align-baseline inputFarmerTable"
                     type="number"
                     min={1}
+                    id="test"
                     max={1000}
-                    step={0.01}
+                    step={0.1}
                     value={price}
                     onChange={e => setPrice(e.target.value)}
+                    style={{ width: "80%" }}
                 />
             </Form.Group>
         </td>
-        <td><Image style={{ width: "130px" }} src={product.picture} fluid /></td>
+        <td> <Row className="justify-content-center"><Image style={{ width: "130px" }} src={product.picture} fluid /></Row></td>
         <td>
-            <Row>{(quantity > -1) ?
-                <Col xs={3} style={{ cursor: 'pointer' }} className={"add-btn-" + props.index} onClick={add}>{iconAdd}</Col>
-                : <Col xs={3} style={{ cursor: 'pointer' }}>{iconAddDisabled}</Col>}&nbsp;
-                <Col xs={3}>{quantity + " " + product.measure + " "}</Col>
-                {quantity > 0 ? <Col xs={3} style={{ cursor: 'pointer' }} className={"sub-btn-" + props.index} onClick={sub}>{iconSub}</Col>
-                    : <Col xs={3} style={{ cursor: 'pointer' }}>{iconSubDisabled}</Col>}
+            <Row className="justify-content-center">
+                {quantity > 0 ? <Col style={{ cursor: 'pointer' }} className={"text-center sub-btn-" + props.index} onClick={sub}>{iconSub}</Col>
+                    : <Col className="text-center" style={{ cursor: 'pointer' }}>{iconSubDisabled}</Col>}
+                <Col>{quantity + " " + product.measure + " "}</Col>
+                {(quantity > -1) ? <Col style={{ cursor: 'pointer' }} className={"text-center add-btn-" + props.index} onClick={add}>{iconAdd}</Col>
+                    : <Col style={{ cursor: 'pointer' }} className="text-center">{iconAddDisabled}</Col>}&nbsp;
             </Row>
         </td>
     </tr>
@@ -255,7 +257,7 @@ export default function ReportAvailability(props) {
         <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
             {showAlert ?
                 <Alert variant="success" className="m-0"
-                    style={{position:"fixed", width:"90%", top: '3rem', zIndex: '200', background: '#14B8B8', color: "white" }}>Report sent successfully!</Alert>
+                    style={{ position: "fixed", width: "90%", top: '3rem', zIndex: '200', background: '#14B8B8', color: "white" }}>Report sent successfully!</Alert>
                 :
                 <></>
             }
