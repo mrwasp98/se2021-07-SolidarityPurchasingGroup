@@ -1,9 +1,8 @@
 import { Card, Container, Form, Table, ListGroup, ListGroupItem, Button, Alert, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Select from 'react-select'
-import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket } from "./Utilities/Icons";
+import { reportAvailabilitiesBIG, reportAvailabilitiesSMALL, iconAdd, iconSub, iconAddDisabled, iconSubDisabled, basket } from "./Utilities/Icons";
 import dayjs from "dayjs";
-import { Link } from 'react-router-dom'
 import { getClients, getAvailableProducts, addPRequest } from "../API/API.js";
 import HomeButton from "./Utilities/HomeButton";
 import ModalEnd from "./Utilities/ModalEnd"
@@ -52,8 +51,8 @@ function ProductLine(props) {
         <td className="align-middle" style={quantity > 0 ? { background: "#ffdead" } : { background: "" }}>
             <Row className="align-items-center">
                 <Col style={{ marginLeft: "0.5rem" }}>
-                    <p style={{ fontSize: "19px", margin:"0px" }}>{product.name}</p>
-                    <p className="text-muted" style={{fontSize:"14px"}}>{product.quantity + " " + product.measure + " available"}</p>
+                    <p style={{ fontSize: "19px", margin: "0px" }}>{product.name}</p>
+                    <p className="text-muted" style={{ fontSize: "14px" }}>{product.quantity + " " + product.measure + " available"}</p>
                 </Col>
                 <Col className="d-none d-md-block colBasket">{basket}: <b>{quantity + " " + product.measure}</b></Col>
             </Row>
@@ -80,6 +79,7 @@ export default function ProductRequest(props) {
     const [flag, setFlag] = useState(true)
     const [claimdate, setClaimdate] = useState(new Date());
     const [deliveryAddress, setDeliveryAddress] = useState("");
+    const [showAlert, setShowAlert] = useState(true);
 
     const [messageProductRequest, setMessageProductRequest] = useState({
         type: "",
@@ -128,14 +128,20 @@ export default function ProductRequest(props) {
         return total.toFixed(2);
     }
 
-    const handleOrder = () => {
-        if (productsSelected.length === 0) {
+    const checkQuantity = () => {
+        if (productsSelected.length !== 0)
+            setShowModalClaim(old => !old)
+        else {
             setMessageProductRequest({
                 type: "error",
                 show: true,
                 text: "Select the amount of at least one product"
             })
-        } else {
+        }
+    }
+
+    const handleOrder = () => {
+        if (productsSelected.length !== 0) {
             console.log(productsSelected)
             setSummary(productsSelected);
             //add the order in the db
@@ -188,8 +194,8 @@ export default function ProductRequest(props) {
 
     return (<>
         {dayjs(props.date).isAfter(sat9am) && dayjs(props.date).isBefore(sun23pm) ?
-            <Container className="justify-content-center mt-3">
-                <h1>Enter a new product request</h1>
+            <Container className="justify-content-center mt-4">
+                <h2>Enter a new product request</h2>
                 <Card className="text-left mt-4">
                     <ListGroup className="list-group-flush">
                         <ListGroupItem className="p-0">
@@ -239,8 +245,17 @@ export default function ProductRequest(props) {
                                     </Form>
                                 </Col>
                             </Row>
-
-                            <Table className="mt-3" striped bordered hover responsive>
+                            {messageProductRequest.show && messageProductRequest.type === "error" &&
+                                <Alert className="mt-3" show={messageProductRequest.show} onClose={() => setMessageProductRequest({
+                                    type: messageProductRequest.type,
+                                    show: false,
+                                    text: messageProductRequest.text
+                                })} variant="danger" dismissible>{messageProductRequest.text}</Alert>
+                            }
+                            {productsSelected.length > 0 && <h4 style={{ marginLeft: "0rem", marginBottom: "1rem" }}>{"Total order"}: <strong>{calculateTotal(productsSelected)}</strong> €</h4>}
+                            {showAlert ? <Alert dismissible onClose={() => setShowAlert(old => !old)} variant="info"><strong>Tooltip: </strong>To terminate product request press press   {reportAvailabilitiesSMALL}
+                            </Alert> : ""}
+                            <Table className="mt-1" style={{ marginBottom: "10rem" }} striped bordered hover responsive>
                                 <thead>
                                     <tr>
                                         <th>Product</th>
@@ -254,18 +269,6 @@ export default function ProductRequest(props) {
                                         .map((p, index) => <ProductLine product={p} index={index} key={index} productsSelected={productsSelected} setProductsSelected={setProductsSelected}></ProductLine>)}
                                 </tbody>
                             </Table>
-                            {messageProductRequest.show && messageProductRequest.type === "error" &&
-                                <Alert className="mt-3" show={messageProductRequest.show} onClose={() => setMessageProductRequest({
-                                    type: messageProductRequest.type,
-                                    show: false,
-                                    text: messageProductRequest.text
-                                })} variant="danger" dismissible>{messageProductRequest.text}</Alert>
-                            }
-                            {productsSelected.length > 0 && <Alert style={{ width: "100%", textAlign: "rigth" }} variant="primary">Total order: {calculateTotal(productsSelected)}€</Alert>}
-                            <div className="d-flex justify-content-between mb-4">
-                                <Link to="/employeehome"><Button variant="danger" className="back-btn">Back</Button></Link>
-                                <Button className="order-btn" variant="yellow" onClick={() => setShowModalClaim(old => !old)}>Continue</Button>
-                            </div>
                             {showModalClaim &&
                                 <ModalClaimDate show={showModalClaim}
                                     setShow={setShowModalClaim}
@@ -273,13 +276,17 @@ export default function ProductRequest(props) {
                                     setClaimdate={setClaimdate}
                                     address={deliveryAddress}
                                     setAddress={setDeliveryAddress}
-
                                     handleOrder={handleOrder} />}
                         </>
                             :
                             <Alert className="mt-3" variant="primary">There are no available products</Alert>}
                     </>
                 }
+                <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow"
+                    style={{ width: '4rem', height: '4rem', bottom: '3rem', zIndex: '100', right: '8rem' }}
+                    onClick={() => checkQuantity()}>
+                    {reportAvailabilitiesBIG}
+                </Button>
                 <HomeButton logged={props.logged} />
 
             </Container>

@@ -1,7 +1,7 @@
 import { Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image, Modal, Alert } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react";
-import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit, reportAvailabilitiesBIG, reportAvailabilitiesSMALL, basket2, box } from "./Utilities/Icons";
+import {iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit, reportAvailabilitiesBIG, reportAvailabilitiesSMALL, basket2, box } from "./Utilities/Icons";
 import HomeButton from './Utilities/HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
