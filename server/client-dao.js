@@ -32,8 +32,8 @@ exports.deleteAllClients = () => {
 //Insert a new client in the client table
 exports.insertClient = (client) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO client(userid, name, surname, wallet, address,missed_pickups) VALUES(?,?,?,?,?,0)';
-        db.run(sql, [client.userid, client.name, client.surname, client.wallet, client.address], function (err) {
+        const sql = 'INSERT INTO client(userid, name, surname, wallet, address, missed_pickups, suspended) VALUES(?,?,?,?,?,0,?)';
+        db.run(sql, [client.userid, client.name, client.surname, client.wallet, client.address, client.suspended], function (err) {
             if (err) {
                 reject(err);
             }

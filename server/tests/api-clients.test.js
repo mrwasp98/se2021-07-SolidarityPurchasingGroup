@@ -49,14 +49,18 @@ describe('Testing GET on /api/clients', () => {
             name: 'John',
             surname: 'Doe',
             wallet: 50.30,
-            address: 'Corso Duca degli Abruzzi, 21, Torino'
+            address: 'Corso Duca degli Abruzzi, 21, Torino',
+            missed_pickups:0,
+            suspended: '2022-02-13'
         }
         const fakeClient2 = {
             userid: userId2,
             name: 'Mario',
             surname: 'Rossi',
             wallet: 12.30,
-            address: 'Corso Mediterraneo, 70, Torino'
+            address: 'Corso Mediterraneo, 70, Torino',
+            missed_pickups:0,
+            suspended: '2022-03-13'
         }
 
         await clientDao.deleteAllClients();
@@ -83,7 +87,8 @@ describe('Testing GET on /api/clients', () => {
             surname: 'Doe',
             wallet: 50.30,
             address: 'Corso Duca degli Abruzzi, 21, Torino',
-            missed_pickups:0
+            missed_pickups:0,
+            suspended: '2022-02-13'
         }
         const fakeClient2 = {
             userid: userId2,
@@ -91,7 +96,8 @@ describe('Testing GET on /api/clients', () => {
             surname: 'Rossi',
             wallet: 12.30,
             address: 'Corso Mediterraneo, 70, Torino',
-            missed_pickups:0
+            missed_pickups:0,
+            suspended: '2022-03-13'
         }
         expect(response.body).toEqual([fakeClient1, fakeClient2]);
     });
@@ -117,7 +123,8 @@ describe('Testing GET on api/client/:clientid', () => {
             surname: 'Doe',
             wallet: 50.30,
             address: 'Corso Duca degli Abruzzi, 21, Torino',
-            missed_pickups:0
+            missed_pickups:0,
+            suspended: '2022-02-13'
         }
         await clientDao.insertClient(fakeClient1);
         const response = await request(app).get('/api/client/' + userId1);
@@ -131,7 +138,8 @@ describe('Testing GET on api/client/:clientid', () => {
             name: 'John',
             surname: 'Doe',
             wallet: 50.30,
-            address: 'Corso Duca degli Abruzzi, 21, Torino'
+            address: 'Corso Duca degli Abruzzi, 21, Torino',
+            suspended: '2022-02-13'
         }
         await clientDao.insertClient(fakeClient1);
         const response = await request(app).get('/api/client/' + userId1);
@@ -385,4 +393,51 @@ describe('Testing GET on /api/clients/missedPickups/:clientid', () => {
         expect(response.status).toBe(200);
     });
 
+});
+
+
+describe('Testing GET on api/suspended/:username', () => {
+
+    beforeEach(async () => {
+        await userDao.deleteAllUsers();
+        await clientDao.deleteAllClients();
+    });
+
+    afterAll(async() => {
+        await userDao.deleteAllUsers();
+        await clientDao.deleteAllClients();
+        app.close(); //without that, jest won't exit
+    })
+
+    test("It should respond with the right suspended date", async () => {
+        const userId1 = await userDao.insertUser(fakeUser1);
+        const fakeClient1 = {
+            userid: userId1,
+            name: 'John',
+            surname: 'Doe',
+            wallet: 50.30,
+            address: 'Corso Duca degli Abruzzi, 21, Torino',
+            missed_pickups:0, 
+            suspended: '2022-02-13'
+        }
+        await clientDao.insertClient(fakeClient1);
+        const response = await request(app).get('/api/suspended/' + fakeUser1.username);
+        expect(response.body).toStrictEqual({suspended: fakeClient1.suspended});
+    });
+
+    test("It should respond with 200 status", async () => {
+        const userId1 = await userDao.insertUser(fakeUser1);
+        const fakeClient1 = {
+            userid: userId1,
+            name: 'John',
+            surname: 'Doe',
+            wallet: 50.30,
+            address: 'Corso Duca degli Abruzzi, 21, Torino',
+            missed_pickups:0, 
+            suspended: '2022-02-13'
+        }
+        await clientDao.insertClient(fakeClient1);
+        const response = await request(app).get('/api/suspended/' + fakeUser1.username);
+        expect(response.status).toBe(200);
+    });
 });
