@@ -59,7 +59,7 @@ export default function Home(props) {
             </Container>
             <Container className="footerHomePage">
                 <Row>
-                    <Col className="p-4 text-aligned-right division" sm={6}>
+                    <Col className="p-4 text-aligned-right divisionRight" sm={6}>
                         <p className="footerTitle">SPG GROUP 07</p>
                         <p className="footerInfo">Corso Duca degli Abruzzi, 24</p>
                         <p className="footerInfo">10129 Torino, ITALY</p>

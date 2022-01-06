@@ -181,7 +181,9 @@ export default function ProductsList(props) {
                             setShowAlert={setShowAlert}
                             setAl
                             setDirtyBasket={props.setDirtyBasket}
-                        />)}
+                        />
+                    )
+                    }
                 </Row>
             </Row>
         </>

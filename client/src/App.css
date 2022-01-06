@@ -409,9 +409,13 @@
     color: #143642;
 }
 
-.division {
+.divisionRight {
     border-right: 2px solid #ec9a2a;
     height: 15rem;
+}
+
+.division {
+    border-bottom: 2px solid #ec9a2a;
 }
 
 .noborderbottom {
