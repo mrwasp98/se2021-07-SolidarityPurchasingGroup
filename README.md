@@ -575,7 +575,7 @@ We check the quality of our code relying on SonarCloud analysis.
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
-### Get the dateuntill the client is suspended
+### Get the date untill when the client is suspended
 * URL: `/api/suspended/<username>`
 * HTTP method: GET
 * Request body: none
