@@ -575,6 +575,20 @@ We check the quality of our code relying on SonarCloud analysis.
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
+### Get the dateuntill the client is suspended
+* URL: `/api/suspended/<username>`
+* HTTP method: GET
+* Request body: none
+* Description: gets the date untill when the client is suspended
+* Request parameters: username of the client
+* Response body: the date untill the when the client is suspended, if it's not suspend it gets null.
+``` JSON
+{
+    "suspended": "2022-02-13"
+}
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
 ## USER API
 
 - POST `/api/login`
@@ -652,7 +666,7 @@ We check the quality of our code relying on SonarCloud analysis.
 ## Database tables
 - User (id, username, password, type) 
 - Farmer (userid, name, surname, place, address)
-- Client(userid, name, surname, wallet, address)
+- Client(userid, name, surname, wallet, address, missed_pickups, suspended)
 - Product (id, name, description, farmerid, price, measure, category, typeofproduction, picture) 
 - Availability (productid, dateavailability, quantity, status, price)
 - Order (id, userid, creationdate, claimdate, confirmationdate, deliveryaddress, status)
