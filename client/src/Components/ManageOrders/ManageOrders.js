@@ -79,6 +79,7 @@ function FailedOrder(props) {
                     setDirtyOrder(false)
                 })
         }
+    // eslint-disable-next-line
     }, [client]);
 
     //this function is called in order to calculate the total price of an order.

@@ -1,105 +1,11 @@
 import React from 'react';
-import { Card, Button, ButtonGroup, Container } from "react-bootstrap";
-import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import { Card, Button, ButtonGroup, Container, Alert } from "react-bootstrap";
+import { PDFDownloadLink} from '@react-pdf/renderer';
 import { useState } from 'react';
 import dayjs from "dayjs";
 import { useEffect } from 'react';
 import {getReport } from '../../API/API'
-
-// Create styles
-const styles = StyleSheet.create({
-    page: {
-        flexDirection: 'col'
-    },
-    title: {
-        backgroundColor: '#143642',
-        color: 'white',
-        textAlign: 'center',
-        paddingTop: 10,
-        paddingBottom: 10
-    },
-    footer: {
-        position: 'absolute',
-        bottom: 0,
-        width: '100%'
-    },
-    text: {
-        marginBottom: 5
-    },
-    table: {
-        width: '100%',
-    },
-    row: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingTop: 8,
-        paddingBottom: 8,
-        borderBottom: '1px solid black'
-    },
-    col: {
-        marginLeft: 20,
-        width: "33%"
-    },
-    header: {
-        backgroundColor: '#797877',
-        color: '#E4E4E4'
-    },
-    summaryHeader: {
-        textAlign: 'center',
-        marginTop: 20,
-        marginBottom: 10,
-        fontSize: 30
-    },
-    summary: {
-        marginLeft: 20
-    }
-});
-
-
-// Create Document Component
-const Report = (props) => (
-    <Document title={props.title}>
-        <Page size="A4" style={styles.page}>
-            <View style={styles.title} fixed>
-                <Text style={styles.text}>{props.title}</Text>
-                <Text style={styles.text}>{dayjs(props.beginDate).format('DD/MM/YYYY')} to {dayjs(props.endDate).format('DD/MM/YYYY')}</Text>
-            </View>
-            <View style={styles.table}>
-                <View style={[styles.row, styles.header]} fixed>
-                    <Text style={[styles.header, styles.col]}>Product Name</Text>
-                    <Text style={[styles.header, styles.col]}>Farmer</Text>
-                    <Text style={[styles.header, styles.col]}>Quantity</Text>
-                </View>
-                {
-                    props.data.map((el, i) =>
-                    (<View key={i} style={styles.row} wrap={false}>
-                        <Text style={styles.col}>{el.name}</Text>
-                        <Text style={styles.col}>{el.farmerName} {el.farmerSurname}</Text>
-                        <Text style={styles.col}>{el.quantity} {el.measure}</Text>
-                    </View>)
-                    )
-                }
-            </View>
-        </Page>
-        <Page>
-            <View style={styles.title} fixed>
-                <Text style={styles.text}>{props.title}</Text>
-                <Text style={styles.text}>{dayjs(props.beginDate).format('DD/MM/YYYY')} to {dayjs(props.endDate).format('DD/MM/YYYY')}</Text>
-            </View>
-            <View>
-                <Text style={[styles.text, styles.summaryHeader, styles.summary]}>Summary:</Text>
-                {
-                    props.summary.map((el, i)=>(
-                        <Text key={i} style={[styles.text, styles.summary]}>Wasted {el.measure}: {el.quantity}</Text>
-                    ))
-                }
-            </View>
-            <View style={[styles.title, styles.footer]}>
-                <Text>End of report</Text>
-            </View>
-        </Page>
-    </Document>
-);
+import {Report} from '../Utilities/Report'
 
 export default function ManagerHome(props) {
     //weekly report:
@@ -113,6 +19,8 @@ export default function ManagerHome(props) {
     const [mendDate, setMEndDate] = useState(); //end date of the report
     const [mdata, setMData] = useState([]); //data to be printed in the report
     const [msummary, setMSummary] = useState([]); //summary data tu be printed in the report
+
+    const [showAlert, setShowAlert] = useState(""); //state that controls the error message
 
     const getWeekRange = (date) => {
         let wbeginDate;
@@ -179,22 +87,29 @@ export default function ManagerHome(props) {
         setMEndDate(meDate)
     }, [props.date])
 
+   //this use effect is used to show a error message
+   useEffect(() => {
+    setTimeout(() => {
+        setShowAlert("");
+    }, 1500);
+}, [showAlert]);
+
     useEffect(() => {
-        getReport(props.date, "weekly")
+        getReport(dayjs(props.date).format("YYYY-MM-DD"), "weekly")
         .then(res=>{
             console.log(res)
             setWData(res)
             createSummary(res, "weekly")
         })
-        .catch(err=> console.log(err))
+        .catch(err=> setShowAlert("An error occured with the creation of the reports"))
 
-        getReport(props.date, "monthly")
+        getReport(dayjs(props.date).format("YYYY-MM-DD"), "monthly")
         .then(res=>{
             console.log(res)
             setMData(res)
             createSummary(res, "monthly")
         })
-        .catch(err=> console.log(err))
+        .catch(err=> setShowAlert("An error occured with the creation of the reports"))
 
     }, [props.date])
 
@@ -220,6 +135,13 @@ export default function ManagerHome(props) {
                     </ButtonGroup>
                 </Card.Body>
             </Card>
+            {showAlert &&
+             <Alert className="position-fixed"
+             style={{ bottom: '3rem', zIndex: '200', background: '#C1260B', color: "white" }} >
+             {showAlert}
+         </Alert>
+            }
+           
         </Container>
     );
 }

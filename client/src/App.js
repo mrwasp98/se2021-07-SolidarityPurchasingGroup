@@ -61,6 +61,7 @@ function App() {
         //bot.sendMessage(chatId, 'Received your message');
       });
     }
+    // eslint-disable-next-line
   }, [firstBoot]);
 
 

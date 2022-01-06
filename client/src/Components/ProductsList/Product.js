@@ -1,6 +1,6 @@
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import { arrowdown, arrowup, iconCart, iconSub, iconAdd, iconAddDisabled, iconSubDisabled } from "../Utilities/Icons";
-import { Button, InputGroup, Card, Container, Accordion, Col, Row, Modal, Image, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button, InputGroup, Card, Accordion, Col, Row, Modal, Image, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { React, useState } from 'react';
 
 export default function Product(props) {
