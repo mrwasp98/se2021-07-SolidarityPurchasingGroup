@@ -7,7 +7,8 @@ import "react-calendar/dist/Calendar.css";
 import dayjs from "dayjs";
 import Clock from "./Clock";
 import MyNotifications from "./MyNotifications";
-import BasketOffCanvas from './BasketOffCanvas'
+import BasketOffCanvas from './BasketOffCanvas';
+import { getSuspendedDate } from '../../API/API';
 
 export default function MyNav(props) {
 
@@ -19,6 +20,7 @@ export default function MyNav(props) {
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
   const [message, setMessage] = useState([]);
+  const [suspended, setSuspended] = useState('');
 
   const [showMissedPickups, setShowMissedPickups] = useState(true);
   
@@ -30,6 +32,12 @@ export default function MyNav(props) {
   }
 
   console.log(notifyMessage)
+
+  useEffect(async () => {
+    await getSuspendedDate(props.user).then( (d) => {
+      setSuspended(d.suspended);
+    });
+  }, [props.user]);
 
   const toggleShowHour = () => {
     setShow(false);
@@ -144,7 +152,7 @@ export default function MyNav(props) {
 
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
                 <ButtonGroup >
-                  {props.logged === "client" && <MyNotifications message={notifyMessage} />}
+                  {props.logged === "client" && <MyNotifications message={notifyMessage} user={props.user} date={props.date}/>}
                   {" "}
                   {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
                 </ButtonGroup>
@@ -186,10 +194,10 @@ export default function MyNav(props) {
         <Alert.Heading>Oh {props.client.name}! There is a warning!</Alert.Heading>         
         You have to take {props.client.missed_pickups} orders! Remember that you reach 5 orders not taken you'll be banned!
       </Alert>}
-      {props.logged && props.client.name != ' ' && props.client.missed_pickups == 5 && 
+      {props.logged && props.client.name != ' ' && props.client.missed_pickups == 0 && dayjs(props.date).isBefore(suspended) && 
       <Alert style={{marginBottom: '0px'}} variant="danger"> 
         <Alert.Heading>Oh {props.client.name}! You are banned!</Alert.Heading>         
-        You have {props.client.missed_pickups} to collected! Firts to create a new order you must take the pickups in warehouse
+        You have 5 to collected! Firts to create a new order you must take the pickups in warehouse
       </Alert>}
       {message.length > 0 && <Alert className="m-0 w-100" style={{ position: "absolute", zIndex: "2" }} variant={message[0]}>{message[1]}</Alert>}
       <BasketOffCanvas setSomethingInTheBasket={props.setSomethingInTheBasket} showBasket={props.showBasket} setShowBasket={props.setShowBasket} clientAddress={props.clientAddress}
