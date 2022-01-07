@@ -1,12 +1,48 @@
 import { Container, Table, ListGroup, Tab, Row, Col, Form, Button, Image, Modal, Alert } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react";
-import {iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit, reportAvailabilitiesBIG, reportAvailabilitiesSMALL, basket2, box } from "./Utilities/Icons";
+import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit, reportAvailabilitiesBIG, reportAvailabilitiesSMALL, basket2, bagcheckBIG, bagcheckSMALL } from "./Utilities/Icons";
 import HomeButton from './Utilities/HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
 import { getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct } from "../API/API.js";
 import axios from 'axios';
+
+const expectedavailabilities = [
+    {
+        productid: "1",
+        productName: "Product 1",
+        dateavailability: "00/00/0000",
+        quantity: 3.0,
+        measure: "l",
+        status: "pending",
+        price: 12.00
+    }, {
+        productid: "2",
+        productName: "Product 2",
+        dateavailability: "00/00/0000",
+        quantity: 4.0,
+        measure: "kg",
+        status: "pending",
+        price: 1.00
+    }, {
+        productid: "3",
+        productName: "Product 3",
+        dateavailability: "00/00/0000",
+        quantity: 1.0,
+        measure: "kg",
+        status: "pending",
+        price: 10.00
+    }, {
+        productid: "4",
+        productName: "Product 4",
+        dateavailability: "00/00/0000",
+        quantity: 6.5,
+        measure: "units",
+        status: "pending",
+        price: 16.12
+    }
+]
 
 function ProductAction(props) {
 
@@ -137,14 +173,31 @@ function ProductAvailableRow(props) {
 }
 
 function ConfirmRow(props) {
-    const { order } = props;
+    const { availability, setConfirmedAvailabilities } = props;
+    const [checked, setChecked] = useState(false)
+
+    const handleCheck = () => {
+        setChecked(old => !old);
+        setConfirmedAvailabilities(old =>{
+            let x = old.map(e => {
+                if(e.productid === availability.productid){
+                    return {...e, status:!checked}
+                }else return e
+            }) 
+            console.log(x)
+            return x
+        })
+    }
 
     return (<tr>
-        <td>{order.name}</td>
-        <td>{order.quantity}</td>
-        <td>{order.measure}</td>
-        <td>{order.price}</td>
-        <td><OrderAction orderid={order.orderid} productid={order.productid} setDirtyO={props.setDirtyO} /></td>
+        <td>{availability.productName}</td>
+        <td>{availability.price} €</td>
+        <td>{parseFloat(availability.quantity).toFixed(2)} {availability.measure}</td>
+        <td>
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                <Form.Check type="checkbox" label={checked ? "Available!" : "Not available!"} checked={checked} onChange={() => { handleCheck() }} />
+            </Form.Group>
+        </td>
     </tr>
     )
 }
@@ -153,12 +206,13 @@ export default function ReportAvailability(props) {
     const [products, setProducts] = useState([]);
     const [product, setProduct] = useState("");
 
-    const [orders, setOrders] = useState([]);
+    const [pendingAvailabilities, setPendingAvailabilities] = useState([]); //those are the expected availabilities that can be confirmed
+    const [confirmedAvailabilities, setConfirmedAvailabilities] = useState([]) //saves the status of the availabilites that are about to be confirmed
+
     const [dateavailability, setDateavailability] = useState(dayjs(props.date).add(1, 'day').format('YYYY-MM-DD'))
     const [productsAvailable, setProductsAvailable] = useState([]);
     const [dirty, setDirty] = useState(true);
     const [showAlert, setShowAlert] = useState(false);
-    const [dirtyO, setDirtyO] = useState(false);
 
     /** This function sets the date of availability 
      * if today is saturday or sunday the date of availability is monday by 9
@@ -210,15 +264,18 @@ export default function ReportAvailability(props) {
     }, [dirty, props.userId]);
 
     useEffect(() => {
-        getFarmersOrders(props.userId, props.date, 'null')
-            .then((orders) => {
-                setOrders(orders);
-            })
-            .catch(err => { console.log(err) })
-        if (dirtyO) {
-            setDirtyO(false);
-        }
-    }, [dirtyO, props.date, props.userId]);
+        //getFarmersOrders(props.userId, props.date, 'null')
+        //    .then((pendingAvailabilities) => {
+        setPendingAvailabilities(expectedavailabilities);
+        setConfirmedAvailabilities(expectedavailabilities.map(el => {
+            return { productid: el.productid, dateavailability: el.dateavailability, status: false }
+        }))
+        //    })
+        //    .catch(err => { console.log(err) })
+        //if (dirtyO) {
+        //    setDirtyO(false);
+        //}
+    }, [props.date]);
 
     const deleteImage = async (picture) => {
         const config = {
@@ -275,8 +332,8 @@ export default function ReportAvailability(props) {
                         </ListGroup.Item>
                         {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
                             <ListGroup.Item action href="#link3" id="link3">
-                                <span classname="pb-1">{box} </span>
-                                Confirm preparation
+                                <span classname="pb-1">{bagcheckSMALL} </span>
+                                Confirm availability
                             </ListGroup.Item>
                             :
                             <></>
@@ -319,7 +376,7 @@ export default function ReportAvailability(props) {
                             </Row>
                         </Tab.Pane>
                         {!((props.date.getDay() === 6 && dayjs(props.date).hour() >= 9) || props.date.getDay() === 0 || (props.date.getDay() === 1 && dayjs(props.date).hour() < 9)) ? <>
-                            <Tab.Pane eventKey="#link2" className="p-4">
+                            <Tab.Pane eventKey="#link2" className="p-4 pt-0">
                                 <h3>Report the availability for the next week</h3>
                                 <span className='text-muted'>Select the quantities you expect to deliver for next week. When you're done, click on the light blue button.</span>
                                 <Table className="mt-3 " striped bordered hover responsive>
@@ -350,22 +407,26 @@ export default function ReportAvailability(props) {
                                 </Tab.Pane>
                             </>}
                         {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
-                            <Tab.Pane eventKey="#link3">
-                                <h3>Confirm the preparation of a booked orders</h3>
+                            <Tab.Pane eventKey="#link3" className="p-4 pt-0">
+                                <h3>Confirm reported availabilities</h3>
+                                <span className='text-muted'>You can give confirmation on your expected availabilities for next week. <br /> <strong>Take notice that the confirmation can only be done once!</strong></span>
                                 <Table className="mt-3" striped bordered hover responsive>
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Quantity</th>
-                                            <th>Measure</th>
                                             <th>Price</th>
-                                            <th>Actions</th>
+                                            <th>Quantity</th>
+                                            <th>Select</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {orders.map(order => <ConfirmRow order={order} setDirtyO={setDirtyO} />)}
+                                        {pendingAvailabilities.map(availability => <ConfirmRow availability={availability} setConfirmedAvailabilities={setConfirmedAvailabilities} />)}
                                     </tbody>
                                 </Table>
+                                <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow" onClick={() => handleReport()}
+                                    style={{ width: '4rem', height: '4rem', bottom: '3rem', zIndex: '100', right: '8rem' }}>
+                                    {bagcheckBIG}
+                                </Button>
                             </Tab.Pane>
                             :
                             <></>

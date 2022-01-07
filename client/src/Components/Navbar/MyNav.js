@@ -29,8 +29,6 @@ export default function MyNav(props) {
     missed_pickups: props.client.missed_pickups
   }
 
-  console.log(notifyMessage)
-
   const toggleShowHour = () => {
     setShow(false);
     setShowHour(!show)
