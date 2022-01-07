@@ -50,6 +50,8 @@ export default function BasketOffCanvas(props) {
       let list = JSON.parse(sessionStorage.getItem("productList"));
       let info = [id, quantity]
       list = list.filter((el) => el.productid !== id)
+      if(list.length==0)
+        props.setSomethingInTheBasket(false);
       sessionStorage.setItem("productList", JSON.stringify(list))
       props.setDirtyBasket(true)
       props.setDirtyQuantity(info)

@@ -3,8 +3,6 @@ import { iconStar } from "./Utilities/Icons";
 import {useState} from 'react';
 import '../App.css';
 import { useHistory } from 'react-router-dom';
-import { getSuspendedDate } from "../API/API.js";
-import dayjs from 'dayjs';
 
 //This function verify if a string contains both numeric and alphabetic caracthers
 function isAlphaNumeric(str) {
@@ -87,19 +85,6 @@ function LoginForm(props) {
             } else {
                 valid = true;
             }
-
-            await getSuspendedDate(username).then( d => {
-                if(d.supended !== null) {
-                    if(dayjs().isBefore(d.suspended)){
-                        valid=false;
-                        var error = 'You are suspended from this site untill ' + d.suspended;
-                        setError(error);
-                        setShow(true);
-                    }
-                }
-            }).catch( () => {
-                valid=true;
-            });
             
             if (valid) {
                 doLogIn(credentials);

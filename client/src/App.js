@@ -75,6 +75,7 @@ function App() {
 
   const [logged, setLogged] = useState(''); //this state is used to store the type of the user logged
   const [username, setUsername] = useState(''); //this state saves the name of the logged user
+  const [user, setUser] = useState(''); //this state saves the name of the logged user
   const [userId, setUserId] = useState(0); //this state saves the id of the logged user
   const [clientAddress, setClientAddress] = useState('');
   const [showTopUpWalletModal, setShowTopUpWalletModal] = useState(false);
@@ -100,6 +101,7 @@ function App() {
       try {
         const user = await getUserInfo();
         setUsername(user.name);
+        setUser(user.username);
         setLogged(user.type);
         setUserId(user.id);
       } catch (err) {
@@ -145,6 +147,7 @@ function App() {
             logged={logged}
             date={date}
             setDate={setDate}
+            date={date}
             logout={logout} setLogged={setLogged}
             showBasket={showBasket} setShowBasket={setShowBasket}
             dirtyBasket={dirtyBasket} setDirtyBasket={setDirtyBasket}
@@ -156,6 +159,7 @@ function App() {
             clientAddress={clientAddress}
             client={client} //client inserted here for notify the missed pickups
             setSomethingInTheBasket={setSomethingInTheBasket}
+            user={user}
           />
           <MyModal
             userid={client.userid}
