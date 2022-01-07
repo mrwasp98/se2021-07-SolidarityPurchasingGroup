@@ -154,6 +154,7 @@ function App() {
             setDirtyAvailability={setDirtyAvailability}
             topUpWallet={notify}
             clientAddress={clientAddress}
+            client={client} //client inserted here for notify the missed pickups
             setSomethingInTheBasket={setSomethingInTheBasket}
           />
           <MyModal

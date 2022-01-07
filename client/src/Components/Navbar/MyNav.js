@@ -19,10 +19,14 @@ export default function MyNav(props) {
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
   const [message, setMessage] = useState([]);
+
+  const [showMissedPickups, setShowMissedPickups] = useState(true);
+  
   // eslint-disable-next-line
-  const [notifyMessage, setNotifyMessage] = useState({
-    topUpWallet: props.topUpWallet
-  });
+  const notifyMessage = {
+    topUpWallet: props.topUpWallet,
+    missed_pickups: props.client.missed_pickups
+  }
 
   const toggleShowHour = () => {
     setShow(false);
@@ -165,12 +169,22 @@ export default function MyNav(props) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      {/** ALERT FOR NOTIFY TO USER THE MISSED PICKUPS */}
+      {props.logged && props.client.name != ' ' && (props.client.missed_pickups > 2 && props.client.missed_pickups < 5) && 
+      <Alert style={{marginBottom: '0px'}} variant="warning" show={showMissedPickups} onClose={() => setShowMissedPickups(false)} dismissible>
+        <Alert.Heading>Oh {props.client.name}! There is a warning!</Alert.Heading>         
+        You have to take {props.client.missed_pickups} orders! Remember that you reach 5 orders not taken you'll be banned!
+      </Alert>}
+      {props.logged && props.client.name != ' ' && props.client.missed_pickups == 5 && 
+      <Alert style={{marginBottom: '0px'}} variant="danger"> 
+        <Alert.Heading>Oh {props.client.name}! You are banned!</Alert.Heading>         
+        You have {props.client.missed_pickups} to collected! Firts to create a new order you must take the pickups in warehouse
+      </Alert>}
       {message.length > 0 && <Alert className="m-0 w-100" style={{ position: "absolute", zIndex: "2" }} variant={message[0]}>{message[1]}</Alert>}
       <BasketOffCanvas setSomethingInTheBasket={props.setSomethingInTheBasket} showBasket={props.showBasket} setShowBasket={props.setShowBasket} clientAddress={props.clientAddress}
         dirtyBasket={props.dirtyBasket} setDirtyBasket={props.setDirtyBasket} setDirtyQuantity={props.setDirtyQuantity}
         userId={props.userId} date={props.date} setMessage={setMessage} setDirtyAvailability={props.setDirtyAvailability}
       />
-
 
     </>
   );
