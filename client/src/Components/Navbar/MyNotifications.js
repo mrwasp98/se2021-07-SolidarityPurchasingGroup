@@ -1,24 +1,26 @@
 import { bell } from "../Utilities/Icons";
-import { Button, Toast } from "react-bootstrap";
+import { Button, Toast, Card } from "react-bootstrap";
 import { useState, useEffect } from "react";
 
 export default function MyNotifications(props) {
   const [showB, setShowB] = useState(false);
   const toggleShowB = () => setShowB(!showB);
   const [message, setMessage] = useState("There isn't any unread message");
+  console.log(props.message)
 
   useEffect(() => {
     if(props.message.topUpWallet && props.message.missed_pickups < 3)
       setMessage("Please add money in your wallet!");
-    if(!props.message.topUpWallet && (props.message.missed_pickups > 2 && props.message.missed_pickups < 5))
+    if(props.message.topUpWallet === false && (props.message.missed_pickups > 2 && props.message.missed_pickups < 5))
       setMessage(`You have to take ${props.message.missed_pickups} orders!`);
     if(props.message.topUpWallet && (props.message.missed_pickups > 2 && props.message.missed_pickups < 5))
-      setMessage("- Please add money in your wallet!" + `You have to take ${props.message.missed_pickups} orders!`);
+      setMessage("Please add money in your wallet!" + `-You have to take ${props.message.missed_pickups} orders!`);
     if((props.message.topUpWallet && props.message.missed_pickups == 5))
-      setMessage("- Please add money in your wallet!" + `You are banned`);
+      setMessage("Please add money in your wallet!" + `-You are banned!!`);
     if(!props.message.topUpWallet && props.message.missed_pickups == 5)
       setMessage(`You are banned`);
-  }, []);
+
+  }, [props.message]);
 
   return (
     <>
@@ -32,7 +34,7 @@ export default function MyNotifications(props) {
         <Toast.Header>
           <strong className="me-auto">Notifications</strong>
         </Toast.Header>
-        <Toast.Body>{message}</Toast.Body>
+        <Toast.Body style={{color: 'black'}} className="m-2">{message.split('-').map( m => <Card className='p-1 m-1' bg="warning">{m}</Card>)}</Toast.Body>
       </Toast>
     </>
   );

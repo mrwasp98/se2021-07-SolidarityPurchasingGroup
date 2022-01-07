@@ -24,9 +24,12 @@ export default function MyNav(props) {
   
   // eslint-disable-next-line
   const notifyMessage = {
+    valid: props.topUpWallet || props.client.missed_pickups > 2 ? true : false,
     topUpWallet: props.topUpWallet,
     missed_pickups: props.client.missed_pickups
   }
+
+  console.log(notifyMessage)
 
   const toggleShowHour = () => {
     setShow(false);
@@ -145,6 +148,7 @@ export default function MyNav(props) {
                   {" "}
                   {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
                 </ButtonGroup>
+
                 {props.logged === "client" && props.somethingInTheBasket === true ?
                   <Button
                     className='position-relative rounded-circle'
@@ -153,6 +157,13 @@ export default function MyNav(props) {
                   :
                   <></>
                 }
+                {props.logged === "client" && notifyMessage.valid == true ?
+                  <Button
+                    className='position-relative rounded-circle'
+                    style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '85px', zIndex: '100', "backgroundColor": "red" }}
+                  />
+                  :
+                  <></>}
               </>
             ) : (
               <>

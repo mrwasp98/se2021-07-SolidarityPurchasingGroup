@@ -182,6 +182,7 @@ export default function ProductsList(props) {
                             setAl
                             setDirtyBasket={props.setDirtyBasket}
                             setSomethingInTheBasket={props.setSomethingInTheBasket}
+                            client={props.client}
                         />
                     )
                     }

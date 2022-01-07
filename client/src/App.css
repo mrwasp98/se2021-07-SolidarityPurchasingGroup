@@ -430,6 +430,7 @@
 
 .mynotify {
     position: fixed;
+    z-index: 999999;
     right: 12px;
     top: 40px;
     background-color: #edeaea;
