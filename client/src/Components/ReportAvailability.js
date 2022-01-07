@@ -178,12 +178,12 @@ function ConfirmRow(props) {
 
     const handleCheck = () => {
         setChecked(old => !old);
-        setConfirmedAvailabilities(old =>{
+        setConfirmedAvailabilities(old => {
             let x = old.map(e => {
-                if(e.productid === availability.productid){
-                    return {...e, status:!checked}
-                }else return e
-            }) 
+                if (e.productid === availability.productid) {
+                    return { ...e, status: !checked }
+                } else return e
+            })
             console.log(x)
             return x
         })
@@ -330,14 +330,10 @@ export default function ReportAvailability(props) {
                             <span classname="pb-1">{reportAvailabilitiesSMALL} </span>
                             Report product availability
                         </ListGroup.Item>
-                        {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
-                            <ListGroup.Item action href="#link3" id="link3">
-                                <span classname="pb-1">{bagcheckSMALL} </span>
-                                Confirm availability
-                            </ListGroup.Item>
-                            :
-                            <></>
-                        }
+                        <ListGroup.Item action href="#link3" id="link3">
+                            <span classname="pb-1">{bagcheckSMALL} </span>
+                            Confirm availability
+                        </ListGroup.Item>
                     </ListGroup>
                 </Col>
                 <Col sm={9} className="p-0 m-0">
@@ -375,61 +371,70 @@ export default function ReportAvailability(props) {
                                 </Table>
                             </Row>
                         </Tab.Pane>
-                        {!((props.date.getDay() === 6 && dayjs(props.date).hour() >= 9) || props.date.getDay() === 0 || (props.date.getDay() === 1 && dayjs(props.date).hour() < 9)) ? <>
-                            <Tab.Pane eventKey="#link2" className="p-4 pt-0">
-                                <h3>Report the availability for the next week</h3>
-                                <span className='text-muted'>Select the quantities you expect to deliver for next week. When you're done, click on the light blue button.</span>
-                                <Table className="mt-3 " striped bordered hover responsive>
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Price</th>
-                                            <th>Image</th>
-                                            <th>Quantity</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {products.map((product, index) =>
-                                            <ProductAvailableRow key={product.id} index={index} product={product} dateavailability={dateavailability} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
-                                    </tbody>
-                                </Table>
+                        {
+                            //By Saturday morning at 9 am farmers provide estimates of available products (with prices and quantities)
+                            ((props.date.getDay() === 6 && dayjs(props.date).hour() < 9) || (props.date.getDay() === 1 && dayjs(props.date).hour() > 9 || (props.date.getDay() > 1 && props.date.getDay() < 6)))
+                                ? <>
+                                    <Tab.Pane eventKey="#link2" className="p-4 pt-0">
+                                        <h3>Report the availability for the next week</h3>
+                                        <span className='text-muted'>Select the quantities you expect to deliver for next week. When you're done, click on the light blue button.</span>
+                                        <Table className="mt-3 " striped bordered hover responsive>
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Price</th>
+                                                    <th>Image</th>
+                                                    <th>Quantity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {products.map((product, index) =>
+                                                    <ProductAvailableRow key={product.id} index={index} product={product} dateavailability={dateavailability} productsAvailable={productsAvailable} setProductsAvailable={setProductsAvailable}></ProductAvailableRow>)}
+                                            </tbody>
+                                        </Table>
 
-                                <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow" onClick={() => handleReport()}
-                                    style={{ width: '4rem', height: '4rem', bottom: '3rem', zIndex: '100', right: '8rem' }}>
-                                    {reportAvailabilitiesBIG}
-                                </Button>
-                            </Tab.Pane>
-                        </>
-                            :
-                            <>
-                                <Tab.Pane eventKey="#link2">
-                                    <Alert style={{ fontSize: "18pt" }}>You can do the estimation by monday at 9:00 am</Alert>
+                                        <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow" onClick={() => handleReport()}
+                                            style={{ width: '4rem', height: '4rem', bottom: '3rem', zIndex: '100', right: '8rem' }}>
+                                            {reportAvailabilitiesBIG}
+                                        </Button>
+                                    </Tab.Pane>
+                                </>
+                                :
+                                <>
+                                    <Tab.Pane eventKey="#link2"  className="p-4 pt-0">
+                                        <Alert style={{ fontSize: "18pt" }}>You can report the expected products only between Monday after 9:00 AM and Saturday before 9:00 AM</Alert>
+                                    </Tab.Pane>
+                                </>
+                        }
+                        {
+                            //On Monday by 9:00 am the Farmers confirm available products
+                            !((props.date.getDay() === 6 && dayjs(props.date).hour() < 9) || (props.date.getDay() === 1 && dayjs(props.date).hour() > 9 || (props.date.getDay() > 1 && props.date.getDay() < 6)))
+                                ?
+                                <Tab.Pane eventKey="#link3" className="p-4 pt-0">
+                                    <h3>Confirm reported availabilities</h3>
+                                    <span className='text-muted'>You can give confirmation on your expected availabilities for next week. <br /> <strong>Take notice that the confirmation can only be done once!</strong></span>
+                                    <Table className="mt-3" striped bordered hover responsive>
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Select</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {pendingAvailabilities.map(availability => <ConfirmRow availability={availability} setConfirmedAvailabilities={setConfirmedAvailabilities} />)}
+                                        </tbody>
+                                    </Table>
+                                    <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow" onClick={() => handleReport()}
+                                        style={{ width: '4rem', height: '4rem', bottom: '3rem', zIndex: '100', right: '8rem' }}>
+                                        {bagcheckBIG}
+                                    </Button>
                                 </Tab.Pane>
-                            </>}
-                        {(dayjs(props.date).format('dddd') !== 'Sunday' && dayjs(props.date).format('dddd') !== 'Saturday' && dayjs(props.date).format('dddd HH') !== 'Friday 20' && dayjs(props.date).format('dddd HH') !== 'Friday 21' && dayjs(props.date).format('dddd HH') !== 'Friday 22' && dayjs(props.date).format('dddd HH') !== 'Friday 23') ?
-                            <Tab.Pane eventKey="#link3" className="p-4 pt-0">
-                                <h3>Confirm reported availabilities</h3>
-                                <span className='text-muted'>You can give confirmation on your expected availabilities for next week. <br /> <strong>Take notice that the confirmation can only be done once!</strong></span>
-                                <Table className="mt-3" striped bordered hover responsive>
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Select</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {pendingAvailabilities.map(availability => <ConfirmRow availability={availability} setConfirmedAvailabilities={setConfirmedAvailabilities} />)}
-                                    </tbody>
-                                </Table>
-                                <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow" onClick={() => handleReport()}
-                                    style={{ width: '4rem', height: '4rem', bottom: '3rem', zIndex: '100', right: '8rem' }}>
-                                    {bagcheckBIG}
-                                </Button>
-                            </Tab.Pane>
-                            :
-                            <></>
+                                :
+                                <Tab.Pane eventKey="#link3"  className="p-4 pt-0">
+                                    <Alert style={{ fontSize: "18pt" }}>You can confirm the declared availabilities only between Saturday after 9:00 AM and Monday before 9:00 AM</Alert>
+                                </Tab.Pane>
                         }
                     </Tab.Content>
                 </Col>
