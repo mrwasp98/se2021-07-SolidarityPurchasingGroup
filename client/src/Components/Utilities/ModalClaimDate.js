@@ -41,7 +41,7 @@ export default function ModalClaimDate(props) {
     <>
       <Modal
         show={props.show}
-        onHide={handleClose}
+        onHide={()=>{props.setShow(false);}}
         backdrop="static"
         keyboard={false}
         centered
