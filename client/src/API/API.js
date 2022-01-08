@@ -612,10 +612,7 @@ const confirmAvailabilities = (confirmedAvailabilities) => {
     })
       .then((res) => {
         if (res.ok)
-          resolve(res.json());
-        else if (res.status === 406)
-          resolve(res.json());
-
+          resolve(res.status);
         else if (!res.ok) {
           const error = new Error(`${res.status}: ${res.statusText}`);
           error.response = res;
@@ -631,7 +628,6 @@ const confirmAvailabilities = (confirmedAvailabilities) => {
 
 //this API gets the products availability for a cetein farme
 const getProductAvailability = (farmerid, date) => {
-  console.log("hi ", date)
   return new Promise((resolve, reject) => {
     fetch(`/api/availability/`+ farmerid + '?date=' + date, {
       method: "GET",
