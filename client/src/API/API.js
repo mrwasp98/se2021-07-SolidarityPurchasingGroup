@@ -601,5 +601,33 @@ const getSuspendedDate = (username) => {
 }
 
 
+const confirmAvailabilities = (confirmedAvailabilities) => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/availabilities', {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(confirmedAvailabilities)
+    })
+      .then((res) => {
+        if (res.ok)
+          resolve(res.json());
+        else if (res.status === 406)
+          resolve(res.json());
 
-export {getReport, getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct, getSuspendedDate}
+        else if (!res.ok) {
+          const error = new Error(`${res.status}: ${res.statusText}`);
+          error.response = res;
+
+          throw error;
+        }
+      })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
+}
+
+
+export {confirmAvailabilities, getReport, getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct, getSuspendedDate}

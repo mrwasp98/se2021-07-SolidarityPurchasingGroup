@@ -5,7 +5,7 @@ import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit, report
 import HomeButton from './Utilities/HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
-import { getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct } from "../API/API.js";
+import {getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct, confirmAvailabilities } from "../API/API.js";
 import axios from 'axios';
 
 const expectedavailabilities = [
@@ -213,6 +213,7 @@ export default function ReportAvailability(props) {
     const [productsAvailable, setProductsAvailable] = useState([]);
     const [dirty, setDirty] = useState(true);
     const [showAlert, setShowAlert] = useState(false);
+    const [showErrorAlert, setShowErrorAlert] = useState(false);
 
     /** This function sets the date of availability 
      * if today is saturday or sunday the date of availability is monday by 9
@@ -244,10 +245,18 @@ export default function ReportAvailability(props) {
     useEffect(() => {
         if (showAlert === true) {
             setTimeout(() => {
-                setShowAlert(false);
+                setShowAlert("");
             }, 1500);
         }
     }, [showAlert]);
+
+    useEffect(() => {
+        if (showErrorAlert === true) {
+            setTimeout(() => {
+                setShowAlert("");
+            }, 1500);
+        }
+    }, [showErrorAlert]);
 
     // this useEffect gets all the product of a particular farmer
     useEffect(() => {
@@ -263,6 +272,7 @@ export default function ReportAvailability(props) {
         // eslint-disable-next-line
     }, [dirty, props.userId]);
 
+    //use effect used to load the expected availabilities that can be confirmed
     useEffect(() => {
         //getFarmersOrders(props.userId, props.date, 'null')
         //    .then((pendingAvailabilities) => {
@@ -304,26 +314,36 @@ export default function ReportAvailability(props) {
                 props.bot.sendMessage(chatId, "Il farmer " + props.username + " ha pubblicato nuovi prodotti!")
             )
         }
-        setShowAlert(true);
+        setShowAlert("Report sent successfully!");
         setDirty(true)
+    }
+
+    const handleAvailabilities=()=>{
+        confirmAvailabilities(confirmedAvailabilities)
+        .then(()=>{
+            setShowAlert("Availabilities have been correctly confirmed.")
+        }).catch((err)=>{
+            setShowErrorAlert(err.message);
+        })
     }
 
     return (<Container className="justify-content-center pt-4">
         <h1>Hello <i>{props.username}</i>!</h1>
         <hr></hr>
         <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
-            {showAlert ?
+            {showAlert &&
                 <Alert variant="success" className="m-0"
-                    style={{ position: "fixed", width: "90%", top: '3rem', zIndex: '200', background: '#14B8B8', color: "white" }}>Report sent successfully!</Alert>
-                :
-                <></>
+                    style={{ position: "fixed", width: "90%", top: '3rem', zIndex: '200', background: '#14B8B8', color: "white" }}>{showAlert}</Alert>
+            }
+            {showErrorAlert &&
+                <Alert variant="danger" className="m-0"
+                    style={{ position: "fixed", width: "90%", top: '3rem', zIndex: '200' }}>An error occurred: {showErrorAlert}</Alert>
             }
             <Row>
                 <Col sm={3} style={{ backgroundColor: '#f2f2f2' }}>
                     <ListGroup variant="flush" className="mt-3">
                         <ListGroup.Item action href="#link1" id="link1">
                             <span classname="pb-1">{basket2} </span>
-
                             Your products
                         </ListGroup.Item>
                         <ListGroup.Item action href="#link2" id="link2">
@@ -426,7 +446,7 @@ export default function ReportAvailability(props) {
                                             {pendingAvailabilities.map(availability => <ConfirmRow availability={availability} setConfirmedAvailabilities={setConfirmedAvailabilities} />)}
                                         </tbody>
                                     </Table>
-                                    <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow" onClick={() => handleReport()}
+                                    <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow" onClick={() => handleAvailabilities()}
                                         style={{ width: '4rem', height: '4rem', bottom: '3rem', zIndex: '100', right: '8rem' }}>
                                         {bagcheckBIG}
                                     </Button>
