@@ -204,9 +204,10 @@ exports.getProductsAvailability = (farmerid, date) => {
         thisSaturday9Am = dayjs(date).endOf('week').subtract(1, 'week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         lastSaturday9Am = dayjs(thisSaturday9Am).subtract(1, 'week')
     }
+    const status = 'pending';
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM availability as A, product as P WHERE A.productid=P.id AND P.farmerid=?";
-        db.all(sql, [farmerid], (err, rows) => {
+        const sql = "SELECT * FROM availability as A, product as P WHERE A.productid=P.id AND P.farmerid=? AND A.status=?";
+        db.all(sql, [farmerid, status], (err, rows) => {
             if (err) {
                 console.log(err)
                 reject(err);
