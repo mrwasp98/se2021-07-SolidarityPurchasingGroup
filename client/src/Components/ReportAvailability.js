@@ -111,13 +111,13 @@ function ProductAvailableRow(props) {
     const [quantity, setQuantity] = useState(0);
 
     const add = () => {
-        let x = quantity + 1;
+        let x = quantity + 0.5;
         handleProductsAvailable(x, price)
     }
 
     const sub = () => {
         if (quantity > 0) {
-            let x = quantity - 1;
+            let x = quantity - 0.5;
             handleProductsAvailable(x, price)
         }
     }
