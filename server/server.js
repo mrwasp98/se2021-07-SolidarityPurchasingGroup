@@ -685,3 +685,37 @@ app.get("/api/suspended/:username", async (req, res) => {
   }
 });
 
+//PUT: updates the status for each availability in the list -ant
+app.put("/api/availabilities", async (req, res) => {
+  try {
+      //per ogni availability ho un prodotto, una dateavailability e uno status
+      //metto quello status a ogni orderline che ha come productid quel productid e
+      //come ordine un ordine con data da vedere in base a dateavailability
+      //dateavailability può essere da martedì 9:00 a domenica 23:00
+    for(let availability of req.body){
+      //la data dell'ordine va da sabato 9:00 a domenica 23:00
+      let dateMin, dateMax;
+      if(dayjs(availability.dateavailability).format('dddd') === 'Sunday'){
+        //dateMin is yesterday at 9
+        dateMin=dayjs(dateavailability).subtract(1,'day').hour(9).format('YYYY-MM-DD HH:mm');
+        //dateMax is today at 23
+        dateMax=dayjs(dateavailability).hour(9).format('YYYY-MM-DD HH:mm');
+      }
+      else{
+        //dateavailability can be tuesday to saturday
+        //dateMin is end of week (saturday) at 9
+        dateMin=dayjs(dateavailability).endOf('week').hour(9).format('YYYY-MM-DD HH:mm');
+        //dateMax is end of week (saturday)+1 at 23
+        dateMin=dayjs(dateavailability).endOf('week').add(1,'day').hour(23).format('YYYY-MM-DD HH:mm');
+      }
+      const orderlines = await orderlineDao.getOrderlinesByProductOrderdate(availability.productid,dateMin,dateMax);
+      const status = availability.status=='true' ? 'confirmed' : 'failed';
+      for(let orderline of orderlines){
+        await orderlineDao.updateOrderLineStatus(orderline.orderid,orderline.productid,status);
+        await orderDao.checkForStatusUpdate(orderline.orderid,status);
+      }
+    }
+  } catch (err) {
+    res.status(500).end();
+  }
+});

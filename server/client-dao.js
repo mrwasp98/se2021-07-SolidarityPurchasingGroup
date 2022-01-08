@@ -96,8 +96,7 @@ exports.getClientMissedPickups = (clientid) => {
 };
 
 //Function to subtract an amout from a client's wallet after the confirmation of the order
-//antmat99
-/*
+//-ant
 exports.subtractFromWallet = (clientid, amount) => {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE client SET wallet = wallet - ? WHERE userid == ?';
@@ -110,7 +109,7 @@ exports.subtractFromWallet = (clientid, amount) => {
         });
     });
 };
-*/
+
 
 //Add a date at the suspended field of the client table
 exports.suspendClient = (clientid) => {

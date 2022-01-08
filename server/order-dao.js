@@ -120,17 +120,17 @@ exports.checkForStatusUpdate = async (orderid,status) => {
                 await privateUpdateOrderStatus(orderid,'packaged');
             } 
         }break;
-        //some cases for future stories
-        /*
         case 'failed':{
             //if an orderline fails, the order should fail
-            updateOrderStatus('failed');
+            await privateUpdateOrderStatus(orderid,'failed');
         }
         case 'confirmed':{
             //if all orderlines are confirmed, the order should result as confirmed
-            if(allOrderlinesStatus(orderid,'confirmed')) updateOrderStatus('confirmed');
+            if(await allOrderlinesStatus(orderid,'confirmed')) {
+                await privateUpdateOrderStatus(orderid,'confirmed'); 
+                //TODO trigger wallet decrement (use function in client-dao)
+            }
         };break;
-        */
         default:{
             //TODO
         }

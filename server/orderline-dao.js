@@ -137,3 +137,16 @@ exports.getOrderLine = (orderid,productid) => {
     });
 };
 
+//Get orderlines given a productid and a range in which the creationdate of the order they belong should be
+//-ant
+exports.getOrderlinesByProductOrderdate = (productid,dateMin,dateMax) => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM orderline AS ol, 'order' AS o WHERE ol.orderid=o.id AND productid=? AND o.creationdate>=? AND o.creationdate<=?";
+        db.all(sql, [productid,dateMin,dateMax], (err, rows) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(rows); //the caller should manage if undefined
+        });
+    });
+};
