@@ -719,3 +719,13 @@ app.put("/api/availabilities", async (req, res) => {
     res.status(500).end();
   }
 });
+
+//GET: get products availability
+app.get("/api/availability/:farmerid/", async (req, res) => {
+  try {
+    const availabilities = await productDao.getProductsAvailability(req.params.farmerid, req.query.date);
+    res.status(200).json(availabilities);
+  } catch (err) {
+    res.status(500).end();
+  }
+});

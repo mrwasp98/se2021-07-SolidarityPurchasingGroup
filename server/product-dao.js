@@ -192,3 +192,28 @@ const alreadySeen = (product,productList) => {
         if(p.productid===product.productid) return true;
     return false;
 }
+
+//Get products availability
+exports.getProductsAvailability = (farmerid, date) => {
+    let thisSaturday9Am;
+    let lastSaturday9Am;
+    if (dayjs(date).format('dddd') !== 'Sunday') {
+        thisSaturday9Am = dayjs(date).endOf('week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        lastSaturday9Am = dayjs(thisSaturday9Am).subtract(1, 'week')
+    } else {
+        thisSaturday9Am = dayjs(date).endOf('week').subtract(1, 'week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        lastSaturday9Am = dayjs(thisSaturday9Am).subtract(1, 'week')
+    }
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM availability as A, product as P WHERE A.productid=P.id AND P.farmerid=?";
+        db.all(sql, [farmerid], (err, rows) => {
+            if (err) {
+                console.log(err)
+                reject(err);
+            }
+            const products = rows.map((p) => ({ productid: p.productid, productName: p.name, dateavailability: p.dateavailability, quantity: p.initial_quantity, measure: p.measure, status: p.status, price: p.price}))
+                .filter((p) => { return ((dayjs(p.dateavailability)).isBefore(thisSaturday9Am) && (dayjs(p.dateavailability).isAfter(lastSaturday9Am))) });
+            resolve(products);
+        });
+    });
+};

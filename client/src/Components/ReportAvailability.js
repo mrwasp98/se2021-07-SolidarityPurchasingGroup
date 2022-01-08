@@ -5,10 +5,10 @@ import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit, report
 import HomeButton from './Utilities/HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
-import {getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct, confirmAvailabilities } from "../API/API.js";
+import {getProductAvailability, getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct, confirmAvailabilities } from "../API/API.js";
 import axios from 'axios';
 
-const expectedavailabilities = [
+/*const expectedavailabilities = [
     {
         productid: "1",
         productName: "Product 1",
@@ -42,7 +42,7 @@ const expectedavailabilities = [
         status: "pending",
         price: 16.12
     }
-]
+]*/
 
 function ProductAction(props) {
 
@@ -273,11 +273,13 @@ export default function ReportAvailability(props) {
     }, [dirty, props.userId]);
 
     //use effect used to load the expected availabilities that can be confirmed
-    useEffect(() => {
+    useEffect(async () => {
         //getFarmersOrders(props.userId, props.date, 'null')
         //    .then((pendingAvailabilities) => {
-        setPendingAvailabilities(expectedavailabilities);
-        setConfirmedAvailabilities(expectedavailabilities.map(el => {
+        const expected = await getProductAvailability(props.userId, props.date);
+        console.log(expected);
+        setPendingAvailabilities(expected);
+        setConfirmedAvailabilities(expected.map(el => {
             return { productid: el.productid, dateavailability: el.dateavailability, status: false }
         }))
         //    })

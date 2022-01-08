@@ -629,5 +629,27 @@ const confirmAvailabilities = (confirmedAvailabilities) => {
   });
 }
 
+//this API gets the products availability for a cetein farme
+const getProductAvailability = (farmerid, date) => {
+  return new Promise((resolve, reject) => {
+    fetch(`/api/availability/`+ farmerid + '?date=' + date, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        const error = new Error(`${res.status}: ${res.statusText}`);
+        error.response = res;
+        throw error;
+      }
+      resolve(res.json());
+    })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
+}
 
-export {confirmAvailabilities, getReport, getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct, getSuspendedDate}
+
+export {confirmAvailabilities, getReport, getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct, getSuspendedDate, getProductAvailability}
