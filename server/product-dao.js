@@ -138,8 +138,8 @@ exports.deleteAvailability = () => {
 //Insert a new row in the availability rable (for the story 9)
 exports.insertAvailability = (availability) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO availability(productid, dateavailability, quantity, status, price) VALUES(?,?,?,?,?)';
-        db.run(sql, [availability.productid, availability.dateavailability, availability.quantity, availability.status, availability.price], function (err) {
+        const sql = 'INSERT INTO availability(productid, dateavailability, quantity, status, price, initial_quantity) VALUES(?,?,?,?,?,?)';
+        db.run(sql, [availability.productid, availability.dateavailability, availability.quantity, availability.status, availability.price, availability.quantity], function (err) {
             if (err) {
                 reject(err);
             }

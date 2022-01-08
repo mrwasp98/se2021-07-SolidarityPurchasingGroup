@@ -453,7 +453,7 @@ async function insertAvailability(availability) {
               error.response = res;
               throw error;
             }
-            resolve(res.json())
+            resolve(res.text())
           })
           .catch((err) => {
             reject({ message: err.message })
@@ -592,7 +592,7 @@ const getSuspendedDate = (username) => {
         error.response = res;
         throw error;
       }
-      resolve(res.json());
+      resolve(res.text());
     })
       .catch((err) => {
         reject({ message: err.message });

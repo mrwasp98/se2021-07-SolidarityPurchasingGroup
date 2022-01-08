@@ -23,10 +23,10 @@ exports.getProductAvailabilityByIdFarmer = (id) => {
 exports.insertEstimateAvailabilityProdcut = (productid, dateAvailability, price, quantity) => {
     return new Promise((resolve, reject) => {
         const STATUS = "estimated"
-        const sql = 'INSERT INTO availability(productid, dateavailability, price, quantity, status) ' +
+        const sql = 'INSERT INTO availability(productid, dateavailability, price, quantity, status, initial_quantity) ' +
             ' VALEUS(?,?,?,?,?); ';
 
-        db.run(sql, [productid, dateAvailability, price, quantity, STATUS], function (err) {
+        db.run(sql, [productid, dateAvailability, price, quantity, STATUS, quantity], function (err) {
             if (err) {
                 reject(err);
             }
