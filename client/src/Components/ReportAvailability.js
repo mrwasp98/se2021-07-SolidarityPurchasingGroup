@@ -393,7 +393,7 @@ export default function ReportAvailability(props) {
                         </Tab.Pane>
                         {
                             //By Saturday morning at 9 am farmers provide estimates of available products (with prices and quantities)
-                            ((props.date.getDay() === 6 && dayjs(props.date).hour() < 9) || (props.date.getDay() === 1 && dayjs(props.date).hour() > 9 || (props.date.getDay() > 1 && props.date.getDay() < 6)))
+                            ((props.date.getDay() === 6 && dayjs(props.date).hour() < 9) || ((props.date.getDay() === 1 && dayjs(props.date).hour() > 9) || (props.date.getDay() > 1 && props.date.getDay() < 6)))
                                 ? <>
                                     <Tab.Pane eventKey="#link2" className="p-4 pt-0">
                                         <h3>Report the availability for the next week</h3>
@@ -428,7 +428,7 @@ export default function ReportAvailability(props) {
                         }
                         {
                             //On Monday by 9:00 am the Farmers confirm available products
-                            !((props.date.getDay() === 6 && dayjs(props.date).hour() < 9) || (props.date.getDay() === 1 && dayjs(props.date).hour() > 9 || (props.date.getDay() > 1 && props.date.getDay() < 6)))
+                            !((props.date.getDay() === 6 && dayjs(props.date).hour() < 9) || ((props.date.getDay() === 1 && dayjs(props.date).hour() > 9) || (props.date.getDay() > 1 && props.date.getDay() < 6)))
                                 ?
                                 <Tab.Pane eventKey="#link3" className="p-4 pt-0">
                                     <h3>Confirm reported availabilities</h3>
