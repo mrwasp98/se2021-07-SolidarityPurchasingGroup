@@ -265,7 +265,6 @@ export default function ReportAvailability(props) {
     //use effect used to load the expected availabilities that can be confirmed
     useEffect(async () => {
         const expected = await getProductAvailability(props.userId, props.date);
-        console.log("expected: ", expected);
         setPendingAvailabilities(expected);
         setConfirmedAvailabilities(expected.map(el => {
             return { productid: el.productid, dateavailability: el.dateavailability, status: false }

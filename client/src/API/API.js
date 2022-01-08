@@ -604,7 +604,7 @@ const getSuspendedDate = (username) => {
 const confirmAvailabilities = (confirmedAvailabilities) => {
   return new Promise((resolve, reject) => {
     fetch('/api/availabilities', {
-      method: "POST",
+      method: "PUT",
       headers: {
         "content-type": "application/json",
       },
