@@ -272,12 +272,16 @@ export default function ReportAvailability(props) {
         // eslint-disable-next-line
     }, [dirty, props.userId]);
 
+
+    //this useEffect is used to align props.data to dateavailability
+    useEffect(()=>{
+        setDateavailability(dayjs(props.date).add(1, 'day').format('YYYY-MM-DD'))
+    }, [props.date])
+
     //use effect used to load the expected availabilities that can be confirmed
     useEffect(async () => {
-        //getFarmersOrders(props.userId, props.date, 'null')
-        //    .then((pendingAvailabilities) => {
         const expected = await getProductAvailability(props.userId, props.date);
-        console.log(expected);
+        console.log("expected: ", expected);
         setPendingAvailabilities(expected);
         setConfirmedAvailabilities(expected.map(el => {
             return { productid: el.productid, dateavailability: el.dateavailability, status: false }
@@ -299,7 +303,6 @@ export default function ReportAvailability(props) {
         axios.delete(url + picture, config).then().catch(err => { console.log(err) })
     }
 
-
     const deleteProd = (productid, picture) => {
         //FIRST, delete the image
         deleteImage(picture)
@@ -310,6 +313,7 @@ export default function ReportAvailability(props) {
     }
 
     const handleReport = () => {
+        console.log("products available ", productsAvailable)
         productsAvailable.map(async p => await insertAvailability(p))
         if (props.telegramStarted === true) {
             props.chatIds.forEach(chatId =>
@@ -318,6 +322,7 @@ export default function ReportAvailability(props) {
         }
         setShowAlert("Report sent successfully!");
         setDirty(true)
+        setProductsAvailable([])
     }
 
     const handleAvailabilities=()=>{
@@ -334,11 +339,11 @@ export default function ReportAvailability(props) {
         <hr></hr>
         <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
             {showAlert &&
-                <Alert variant="success" className="m-0"
+                <Alert variant="success" className="m-0" dismissible onClose={() => setShowAlert("")}
                     style={{ position: "fixed", width: "90%", top: '3rem', zIndex: '200', background: '#14B8B8', color: "white" }}>{showAlert}</Alert>
             }
             {showErrorAlert &&
-                <Alert variant="danger" className="m-0"
+                <Alert variant="danger" className="m-0" dismissible  onClose={() => setShowErrorAlert("")}
                     style={{ position: "fixed", width: "90%", top: '3rem', zIndex: '200' }}>An error occurred: {showErrorAlert}</Alert>
             }
             <Row>

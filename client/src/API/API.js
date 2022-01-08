@@ -440,6 +440,7 @@ async function deleteProduct(productid) {
 }
 
 async function insertAvailability(availability) {
+  console.log.log(availability)
   return new Promise((resolve, reject) => {
     fetch('/api/availability', {
       method: "POST",
@@ -631,6 +632,7 @@ const confirmAvailabilities = (confirmedAvailabilities) => {
 
 //this API gets the products availability for a cetein farme
 const getProductAvailability = (farmerid, date) => {
+  console.log("hi ", date)
   return new Promise((resolve, reject) => {
     fetch(`/api/availability/`+ farmerid + '?date=' + date, {
       method: "GET",
