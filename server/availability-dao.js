@@ -39,7 +39,7 @@ exports.insertEstimateAvailabilityProdcut = (productid, dateAvailability, price,
 exports.updateStatusAvailabilityProduct = (productid, dateAvailability) => {
     return new Promise((resolve, reject) => {
         const STAUTS = "ok";
-        const sql = ' UPDATE availabiliy SET status = ? WHERE productid = ? AND dateAvailability = ?; ';
+        const sql = ' UPDATE availability SET status = ? WHERE productid = ? AND dateAvailability = ?; ';
 
         db.get(sql, [STAUTS, productid, dateAvailability], (err, row) => {
             if (err)
@@ -52,7 +52,7 @@ exports.updateStatusAvailabilityProduct = (productid, dateAvailability) => {
 //Update the quantity field of the availability table given the product id and the date of availability
 exports.updateQuantityAvailabilityProduct = (productid, dateAvailability, quantity) => {
     return new Promise((resolve, reject) => {
-        const sql = ' UPDATE availabiliy SET quantity = ? WHERE productid = ? AND dateAvailability = ?; ';
+        const sql = ' UPDATE availability SET quantity = ? WHERE productid = ? AND dateAvailability = ?; ';
 
         db.get(sql, [quantity, productid, dateAvailability], (err, row) => {
             if (err)
@@ -88,6 +88,30 @@ exports.getEffectivePriceofProduct = (productid, dateAvailability) => {
             if (err) {
                 reject(err);
             }
+            resolve(row);
+        });
+    });
+}
+
+//Update the status field of the availability table
+exports.updateStatus = (productid, dateAvailability, status) => {
+    return new Promise((resolve, reject) => {
+        const sql = ' UPDATE availability SET status = ? WHERE productid = ? AND dateavailability = ?';
+        db.run(sql, [status, productid, dateAvailability], (err, row) => {
+            if (err)
+                reject(err);
+            resolve(row);
+        });
+    });
+}
+
+//Get availability by key
+exports.getAvailability = (productid, dateAvailability) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM availability WHERE productid = ? AND dateavailability =?';
+        db.get(sql, [productid, dateAvailability], (err, row) => {
+            if (err)
+                reject(err);
             resolve(row);
         });
     });

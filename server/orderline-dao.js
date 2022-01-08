@@ -115,7 +115,7 @@ exports.getOrderLinesByFarmerDateStatusWithProductInfo = (farmerid,date,status) 
 exports.updateOrderLineStatus = (orderid, productid, status) => {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE orderline SET status = ? WHERE orderid == ? AND productid == ?';
-        db.run(sql, [status, orderid, productid], (err, rows) => {
+        db.get(sql, [status, orderid, productid], (err, row) => {
             if (err) {
                 reject(err);
             }
@@ -141,7 +141,7 @@ exports.getOrderLine = (orderid,productid) => {
 //-ant
 exports.getOrderlinesByProductOrderdate = (productid,dateMin,dateMax) => {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM orderline AS ol, 'order' AS o WHERE ol.orderid=o.id AND productid=? AND o.creationdate>=? AND o.creationdate<=?";
+        const sql = "SELECT ol.orderid, ol.productid FROM orderline AS ol, 'order' AS o WHERE ol.orderid=o.id AND productid=? AND o.creationdate>=? AND o.creationdate<=?";
         db.all(sql, [productid,dateMin,dateMax], (err, rows) => {
             if (err) {
                 reject(err);

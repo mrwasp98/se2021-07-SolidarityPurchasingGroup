@@ -151,3 +151,16 @@ exports.getClientSuspendedDate = (username) => {
         });
     });
 };
+
+//get client's wallet amount
+exports.getWallet = (clientid) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT wallet FROM client WHERE userid=?';
+        db.get(sql, [clientid], (err, row) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(row.wallet); 
+        });
+    });
+};
