@@ -440,7 +440,6 @@ async function deleteProduct(productid) {
 }
 
 async function insertAvailability(availability) {
-  console.log.log(availability)
   return new Promise((resolve, reject) => {
     fetch('/api/availability', {
       method: "POST",

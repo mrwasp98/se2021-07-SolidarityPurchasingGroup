@@ -242,22 +242,6 @@ export default function ReportAvailability(props) {
         }
     }
 
-    useEffect(() => {
-        if (showAlert === true) {
-            setTimeout(() => {
-                setShowAlert("");
-            }, 1500);
-        }
-    }, [showAlert]);
-
-    useEffect(() => {
-        if (showErrorAlert === true) {
-            setTimeout(() => {
-                setShowAlert("");
-            }, 1500);
-        }
-    }, [showErrorAlert]);
-
     // this useEffect gets all the product of a particular farmer
     useEffect(() => {
         if (dirty) {
@@ -286,11 +270,6 @@ export default function ReportAvailability(props) {
         setConfirmedAvailabilities(expected.map(el => {
             return { productid: el.productid, dateavailability: el.dateavailability, status: false }
         }))
-        //    })
-        //    .catch(err => { console.log(err) })
-        //if (dirtyO) {
-        //    setDirtyO(false);
-        //}
     }, [props.date]);
 
     const deleteImage = async (picture) => {
