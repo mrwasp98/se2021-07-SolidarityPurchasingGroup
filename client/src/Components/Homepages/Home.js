@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Carousel, Container, Row, Col, Button, ButtonGroup } from "react-bootstrap";
+import { Carousel, Container, Row, Col, Button } from "react-bootstrap";
 
 export default function Home(props) {
     return (

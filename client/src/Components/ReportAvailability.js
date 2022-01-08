@@ -5,7 +5,7 @@ import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit, report
 import HomeButton from './Utilities/HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
-import {getProductAvailability, getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct, confirmAvailabilities } from "../API/API.js";
+import { getProductAvailability, insertAvailability, getProductsByFarmer, deleteProduct, confirmAvailabilities } from "../API/API.js";
 import axios from 'axios';
 
 /*const expectedavailabilities = [
@@ -80,7 +80,7 @@ function ProductAction(props) {
     )
 }
 
-function OrderAction(props) {
+/*function OrderAction(props) {
     const action = () => {
         updateOrderStatus(props.orderid, props.productid, "packaged").then(() => {
             props.setDirtyO(true)
@@ -91,7 +91,7 @@ function OrderAction(props) {
         <Button onClick={action}>Confirm</Button>
     </>
     )
-}
+}*/
 
 function ProductRow(props) {
     const { product } = props;
@@ -258,18 +258,21 @@ export default function ReportAvailability(props) {
 
 
     //this useEffect is used to align props.data to dateavailability
-    useEffect(()=>{
+    useEffect(() => {
         setDateavailability(dayjs(props.date).add(1, 'day').format('YYYY-MM-DD'))
     }, [props.date])
 
     //use effect used to load the expected availabilities that can be confirmed
-    useEffect(async () => {
-        const expected = await getProductAvailability(props.userId, props.date);
-        setPendingAvailabilities(expected);
-        setConfirmedAvailabilities(expected.map(el => {
-            return { productid: el.productid, dateavailability: el.dateavailability, status: false }
-        }))
-    }, [props.date]);
+    useEffect(() => {
+        async function f() {
+            const expected = await getProductAvailability(props.userId, props.date);
+            setPendingAvailabilities(expected);
+            setConfirmedAvailabilities(expected.map(el => {
+                return { productid: el.productid, dateavailability: el.dateavailability, status: false }
+            }))
+        }
+        f();
+    }, [props.date, props.userId]);
 
     const deleteImage = async (picture) => {
         const config = {
@@ -303,13 +306,13 @@ export default function ReportAvailability(props) {
         setProductsAvailable([])
     }
 
-    const handleAvailabilities=()=>{
+    const handleAvailabilities = () => {
         confirmAvailabilities(confirmedAvailabilities)
-        .then(()=>{
-            setShowAlert("Availabilities have been correctly confirmed.")
-        }).catch((err)=>{
-            setShowErrorAlert(err.message);
-        })
+            .then(() => {
+                setShowAlert("Availabilities have been correctly confirmed.")
+            }).catch((err) => {
+                setShowErrorAlert(err.message);
+            })
     }
 
     return (<Container className="justify-content-center pt-4">
@@ -321,7 +324,7 @@ export default function ReportAvailability(props) {
                     style={{ position: "fixed", width: "90%", top: '3rem', zIndex: '200', background: '#14B8B8', color: "white" }}>{showAlert}</Alert>
             }
             {showErrorAlert &&
-                <Alert variant="danger" className="m-0" dismissible  onClose={() => setShowErrorAlert("")}
+                <Alert variant="danger" className="m-0" dismissible onClose={() => setShowErrorAlert("")}
                     style={{ position: "fixed", width: "90%", top: '3rem', zIndex: '200' }}>An error occurred: {showErrorAlert}</Alert>
             }
             <Row>
@@ -406,7 +409,7 @@ export default function ReportAvailability(props) {
                                 </>
                                 :
                                 <>
-                                    <Tab.Pane eventKey="#link2"  className="p-4 pt-0">
+                                    <Tab.Pane eventKey="#link2" className="p-4 pt-0">
                                         <Alert style={{ fontSize: "18pt" }}>You can report the expected products only between Monday after 9:00 AM and Saturday before 9:00 AM</Alert>
                                     </Tab.Pane>
                                 </>
@@ -437,7 +440,7 @@ export default function ReportAvailability(props) {
                                     </Button>
                                 </Tab.Pane>
                                 :
-                                <Tab.Pane eventKey="#link3"  className="p-4 pt-0">
+                                <Tab.Pane eventKey="#link3" className="p-4 pt-0">
                                     <Alert style={{ fontSize: "18pt" }}>You can confirm the declared availabilities only between Saturday after 9:00 AM and Monday before 9:00 AM</Alert>
                                 </Tab.Pane>
                         }
