@@ -81,6 +81,7 @@ function App() {
   const [clientAddress, setClientAddress] = useState('');
   const [showTopUpWalletModal, setShowTopUpWalletModal] = useState(false);
   const [notify, setNotify] = useState(false);
+  // eslint-disable-next-line
   const [farmer, setFarmer] = useState(false);
   
   const [products, setProducts] = useState([]);
@@ -118,7 +119,7 @@ function App() {
   useEffect(() => {
     async function fetchdata() {
 
-      if ((logged === "client" || logged === "warehouse" )&& userId != undefined) {
+      if ((logged === "client" || logged === "warehouse" )&& userId !== undefined) {
         let res = await getClientById(userId);
         setClientAddress(res.address);
         setClient(res);

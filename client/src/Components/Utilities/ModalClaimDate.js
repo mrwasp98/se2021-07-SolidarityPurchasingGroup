@@ -11,8 +11,8 @@ export default function ModalClaimDate(props) {
   const [showAddressForm, setShowAddressForm] = useState(false);
 
   const handleClose = () => {
-    if (!(props.claimdate.getDay() === 0 ||props.claimdate.getDay() === 1 
-    ||props.claimdate.getDay() === 2 ||props.claimdate.getDay() === 6)) {
+    if (!(props.claimdate.getDay() === 0 || props.claimdate.getDay() === 1
+      || props.claimdate.getDay() === 2 || props.claimdate.getDay() === 6)) {
       props.handleOrder();
       props.setShow(false);
     }
@@ -37,11 +37,24 @@ export default function ModalClaimDate(props) {
     );
   };
 
+  const getMaxDate = () => {
+    //max date is next monday
+    let monday = new Date(props.date);
+    if (props.date.getDay() !== 0) {
+      monday.setDate(props.date.getDate() - props.date.getDay()- 1)
+      return monday.setDate(monday.getDate() +14)
+    }
+    else {
+      monday.setDate(props.date.getDay() + 1)
+      return monday.setDate(props.date.getDate() +7)
+    }
+  }
+
   return (
     <>
       <Modal
         show={props.show}
-        onHide={()=>{props.setShow(false);}}
+        onHide={() => { props.setShow(false); }}
         backdrop="static"
         keyboard={false}
         centered
@@ -131,14 +144,15 @@ export default function ModalClaimDate(props) {
                   Choose time for delivery:
                 </Form.Label>
                 <DatePicker
-                  selected={props.date}
-                  onChange={(date) => props.setClaimdate(date)}
+                  selected={props.claimdate}
+                  onChange={(date) => { props.setClaimdate(date) }}
                   filterDate={notSelectableDates}
                   filterTime={notSelectableTimes}
                   dateFormat="dd-MM-yyyy HH:mm"
                   showTimeSelect
                   timeFormat="HH:mm"
                   minDate={props.date}
+                maxDate={getMaxDate()}
                 />
               </Form>
             </ListGroup.Item>
