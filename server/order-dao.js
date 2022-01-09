@@ -1,6 +1,8 @@
 'use strict';
 
 const db = require('./database');
+const orderlineDao = require('./orderline-dao');
+const clientDao = require('./client-dao');
 
 //Get all rows of the order table
 exports.getOrders = (clientId) => {
@@ -116,23 +118,37 @@ exports.checkForStatusUpdate = async (orderid,status) => {
     switch(status){
         case 'packaged':{
             //if all orderlines are packaged, the order should result as packaged
-            if(await allOrderlinesHaveStatus(orderid,'packaged')){
+            const allPackaged = await allOrderlinesHaveStatus(orderid,'packaged');
+            if(allPackaged){
                 await privateUpdateOrderStatus(orderid,'packaged');
             } 
         }break;
         case 'failed':{
             //if an orderline fails, the order should fail
             await privateUpdateOrderStatus(orderid,'failed');
-        }
+        }break;
         case 'confirmed':{
             //if all orderlines are confirmed, the order should result as confirmed
-            if(await allOrderlinesStatus(orderid,'confirmed')) {
+            const allConfirmed = await allOrderlinesHaveStatus(orderid,'confirmed');
+            if(allConfirmed) {
+                //set to confirmed the order
                 await privateUpdateOrderStatus(orderid,'confirmed'); 
-                //TODO trigger wallet decrement (use function in client-dao)
+                //see if client's wallet balance is enough to pay the order
+                const clientid = await getClient(orderid);
+                const clientWallet = await clientDao.getWallet(clientid);
+                const orderPrice = await getOrderPrice(orderid);
+                if(clientWallet < orderPrice){
+                    //insufficient wallet balance, set to waitingForCharge the order status
+                    privateUpdateOrderStatus(orderid,'waitingForCharge');
+                }
+                else{
+                    //sufficient balance, subtract the import from the order
+                    clientDao.subtractFromWallet(clientid,orderPrice);
+                }
             }
         };break;
         default:{
-            //TODO
+            console.log('default')
         }
     }
 };
@@ -155,11 +171,11 @@ Counts the number of orderlines related to an order
 const countOrderLines = (orderid) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT COUNT(*) FROM orderline WHERE orderid=?";
-        db.get(sql, [orderid], function (err,res) {
+        db.all(sql, [orderid], function (err,res) {
             if (err) {
                 reject(err);
             }
-            resolve(res['COUNT(*)']);
+            resolve(res[0]['COUNT(*)']);
         });
     });
 };
@@ -173,11 +189,32 @@ Counts the number of orderlines with a certain status related to an order
 const countOrderLinesWithStatus = (orderid,status) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT COUNT(*) FROM orderline WHERE orderid=? AND status=?";
-        db.get(sql, [orderid,status], function (err,res) {
+        db.all(sql, [orderid,status], function (err,res) {
             if (err) {
                 reject(err);
             }
-            resolve(res['COUNT(*)']);
+            resolve(res[0]['COUNT(*)']);
         });
     });
 };
+
+//return order's total price
+const getOrderPrice = async (orderid) => {
+    const orderlines = await orderlineDao.getOrderLines(orderid);
+    let sum = 0;
+    for(let orderline of orderlines) sum += orderline.price;
+    return sum;
+};
+
+//get the client who made the order
+const getClient = (orderid) => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT userid FROM 'order' WHERE id=?";
+        db.get(sql, [orderid], function (err,row) {
+            if (err) {
+                reject(err);
+            }
+            resolve(row.userid);
+        });
+    });
+}

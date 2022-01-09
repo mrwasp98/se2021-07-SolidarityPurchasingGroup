@@ -138,8 +138,8 @@ exports.deleteAvailability = () => {
 //Insert a new row in the availability rable (for the story 9)
 exports.insertAvailability = (availability) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO availability(productid, dateavailability, quantity, status, price) VALUES(?,?,?,?,?)';
-        db.run(sql, [availability.productid, availability.dateavailability, availability.quantity, availability.status, availability.price], function (err) {
+        const sql = 'INSERT INTO availability(productid, dateavailability, quantity, status, price, initial_quantity) VALUES(?,?,?,?,?,?)';
+        db.run(sql, [availability.productid, availability.dateavailability, availability.quantity, availability.status, availability.price, availability.quantity], function (err) {
             if (err) {
                 reject(err);
             }
@@ -192,3 +192,32 @@ const alreadySeen = (product,productList) => {
         if(p.productid===product.productid) return true;
     return false;
 }
+
+//Get products availability
+exports.getProductsAvailability = (farmerid, date) => {
+    let lastSaturday9Am;
+    let previewsSaturday9Am;
+    if (dayjs(date).format('dddd') == 'Saturday') {
+        lastSaturday9Am = dayjs(date).endOf('day').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        previewsSaturday9Am = dayjs(lastSaturday9Am).subtract(1, 'week')
+    } else if (dayjs(date).format('dddd') == 'Sunday'){
+        lastSaturday9Am = dayjs(date).endOf('day').subtract(1, 'day').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        previewsSaturday9Am = dayjs(lastSaturday9Am).subtract(1, 'week')
+    } else if (dayjs(date).format('dddd') == 'Monday'){
+        lastSaturday9Am = dayjs(date).endOf('day').subtract(2, 'day').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        previewsSaturday9Am = dayjs(lastSaturday9Am).subtract(1, 'week')
+    }
+    const status = 'pending';
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM availability as A, product as P WHERE A.productid=P.id AND P.farmerid=? AND A.status=?";
+        db.all(sql, [farmerid, status], (err, rows) => {
+            if (err) {
+                console.log(err)
+                reject(err);
+            }
+            const products = rows.map((p) => ({ productid: p.productid, productName: p.name, dateavailability: p.dateavailability, quantity: p.initial_quantity, measure: p.measure, status: p.status, price: p.price}))
+                .filter((p) => { return ((dayjs(p.dateavailability)).isBefore(lastSaturday9Am) && (dayjs(p.dateavailability).isAfter(previewsSaturday9Am))) });
+            resolve(products);
+        });
+    });
+};

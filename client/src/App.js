@@ -116,7 +116,11 @@ function App() {
   //this use effect is used to show the modal when the client logs in  
   useEffect(() => {
     async function fetchdata() {
+<<<<<<< HEAD
       if ((logged === "client" || logged === "warehouse" )&& userId != undefined) {
+=======
+      if (logged === "client" && userId !== undefined) {
+>>>>>>> c243d34f8dee1d39aa5d197b787293176e49fa40
         let res = await getClientById(userId);
         setClientAddress(res.address);
         setClient(res);
@@ -149,7 +153,6 @@ function App() {
             logged={logged}
             date={date}
             setDate={setDate}
-            date={date}
             logout={logout} setLogged={setLogged}
             showBasket={showBasket} setShowBasket={setShowBasket}
             dirtyBasket={dirtyBasket} setDirtyBasket={setDirtyBasket}

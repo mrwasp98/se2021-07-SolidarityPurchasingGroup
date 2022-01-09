@@ -5,44 +5,8 @@ import { iconAdd, iconSub, iconAddDisabled, iconSubDisabled, trash, edit, report
 import HomeButton from './Utilities/HomeButton'
 import "../App.css";
 import dayjs from 'dayjs';
-import {getFarmersOrders, updateOrderStatus, insertAvailability, getProductsByFarmer, deleteProduct, confirmAvailabilities } from "../API/API.js";
+import { getProductAvailability, insertAvailability, getProductsByFarmer, deleteProduct, confirmAvailabilities } from "../API/API.js";
 import axios from 'axios';
-
-const expectedavailabilities = [
-    {
-        productid: "1",
-        productName: "Product 1",
-        dateavailability: "00/00/0000",
-        quantity: 3.0,
-        measure: "l",
-        status: "pending",
-        price: 12.00
-    }, {
-        productid: "2",
-        productName: "Product 2",
-        dateavailability: "00/00/0000",
-        quantity: 4.0,
-        measure: "kg",
-        status: "pending",
-        price: 1.00
-    }, {
-        productid: "3",
-        productName: "Product 3",
-        dateavailability: "00/00/0000",
-        quantity: 1.0,
-        measure: "kg",
-        status: "pending",
-        price: 10.00
-    }, {
-        productid: "4",
-        productName: "Product 4",
-        dateavailability: "00/00/0000",
-        quantity: 6.5,
-        measure: "units",
-        status: "pending",
-        price: 16.12
-    }
-]
 
 function ProductAction(props) {
 
@@ -80,7 +44,7 @@ function ProductAction(props) {
     )
 }
 
-function OrderAction(props) {
+/*function OrderAction(props) {
     const action = () => {
         updateOrderStatus(props.orderid, props.productid, "packaged").then(() => {
             props.setDirtyO(true)
@@ -91,7 +55,7 @@ function OrderAction(props) {
         <Button onClick={action}>Confirm</Button>
     </>
     )
-}
+}*/
 
 function ProductRow(props) {
     const { product } = props;
@@ -173,7 +137,7 @@ function ProductAvailableRow(props) {
 }
 
 function ConfirmRow(props) {
-    const { availability, setConfirmedAvailabilities } = props;
+    const { availability, setConfirmedAvailabilities, disable } = props;
     const [checked, setChecked] = useState(false)
 
     const handleCheck = () => {
@@ -194,8 +158,8 @@ function ConfirmRow(props) {
         <td>{availability.price} €</td>
         <td>{parseFloat(availability.quantity).toFixed(2)} {availability.measure}</td>
         <td>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label={checked ? "Available!" : "Not available!"} checked={checked} onChange={() => { handleCheck() }} />
+            <Form.Group className="mb-3" controlId="formBasicCheckbox" >
+                <Form.Check type="checkbox" label={checked ? "Available!" : "Not available!"} checked={checked} onChange={() => { if (!disable) handleCheck() }} />
             </Form.Group>
         </td>
     </tr>
@@ -214,6 +178,8 @@ export default function ReportAvailability(props) {
     const [dirty, setDirty] = useState(true);
     const [showAlert, setShowAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
+
+    const [disable, setDisable] = useState(false);
 
     /** This function sets the date of availability 
      * if today is saturday or sunday the date of availability is monday by 9
@@ -242,22 +208,6 @@ export default function ReportAvailability(props) {
         }
     }
 
-    useEffect(() => {
-        if (showAlert === true) {
-            setTimeout(() => {
-                setShowAlert("");
-            }, 1500);
-        }
-    }, [showAlert]);
-
-    useEffect(() => {
-        if (showErrorAlert === true) {
-            setTimeout(() => {
-                setShowAlert("");
-            }, 1500);
-        }
-    }, [showErrorAlert]);
-
     // this useEffect gets all the product of a particular farmer
     useEffect(() => {
         if (dirty) {
@@ -272,20 +222,25 @@ export default function ReportAvailability(props) {
         // eslint-disable-next-line
     }, [dirty, props.userId]);
 
+
+    //this useEffect is used to align props.data to dateavailability
+    useEffect(() => {
+        setDateavailability(dayjs(props.date).add(1, 'day').format('YYYY-MM-DD'))
+    }, [props.date])
+
     //use effect used to load the expected availabilities that can be confirmed
     useEffect(() => {
-        //getFarmersOrders(props.userId, props.date, 'null')
-        //    .then((pendingAvailabilities) => {
-        setPendingAvailabilities(expectedavailabilities);
-        setConfirmedAvailabilities(expectedavailabilities.map(el => {
-            return { productid: el.productid, dateavailability: el.dateavailability, status: false }
-        }))
-        //    })
-        //    .catch(err => { console.log(err) })
-        //if (dirtyO) {
-        //    setDirtyO(false);
-        //}
-    }, [props.date]);
+        async function f() {
+            const expected = await getProductAvailability(props.userId, props.date);
+            console.log(expected)
+            setPendingAvailabilities(expected);
+            setConfirmedAvailabilities(expected.map(el => {
+                return { productid: el.productid, dateavailability: el.dateavailability, status: false }
+            }))
+        }
+        f();
+        setDisable(false)
+    }, [props.date, props.userId]);
 
     const deleteImage = async (picture) => {
         const config = {
@@ -297,7 +252,6 @@ export default function ReportAvailability(props) {
         axios.delete(url + picture, config).then().catch(err => { console.log(err) })
     }
 
-
     const deleteProd = (productid, picture) => {
         //FIRST, delete the image
         deleteImage(picture)
@@ -308,6 +262,7 @@ export default function ReportAvailability(props) {
     }
 
     const handleReport = () => {
+        console.log("products available ", productsAvailable)
         productsAvailable.map(async p => await insertAvailability(p))
         if (props.telegramStarted === true) {
             props.chatIds.forEach(chatId =>
@@ -316,15 +271,17 @@ export default function ReportAvailability(props) {
         }
         setShowAlert("Report sent successfully!");
         setDirty(true)
+        setProductsAvailable([])
     }
 
-    const handleAvailabilities=()=>{
+    const handleAvailabilities = () => {
         confirmAvailabilities(confirmedAvailabilities)
-        .then(()=>{
-            setShowAlert("Availabilities have been correctly confirmed.")
-        }).catch((err)=>{
-            setShowErrorAlert(err.message);
-        })
+            .then(() => {
+                setShowAlert("Availabilities have been correctly confirmed.")
+                setDisable(true)
+            }).catch((err) => {
+                setShowErrorAlert(err.message);
+            })
     }
 
     return (<Container className="justify-content-center pt-4">
@@ -332,11 +289,11 @@ export default function ReportAvailability(props) {
         <hr></hr>
         <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
             {showAlert &&
-                <Alert variant="success" className="m-0"
+                <Alert variant="success" className="m-0" dismissible onClose={() => setShowAlert("")}
                     style={{ position: "fixed", width: "90%", top: '3rem', zIndex: '200', background: '#14B8B8', color: "white" }}>{showAlert}</Alert>
             }
             {showErrorAlert &&
-                <Alert variant="danger" className="m-0"
+                <Alert variant="danger" className="m-0" dismissible onClose={() => setShowErrorAlert("")}
                     style={{ position: "fixed", width: "90%", top: '3rem', zIndex: '200' }}>An error occurred: {showErrorAlert}</Alert>
             }
             <Row>
@@ -421,7 +378,7 @@ export default function ReportAvailability(props) {
                                 </>
                                 :
                                 <>
-                                    <Tab.Pane eventKey="#link2"  className="p-4 pt-0">
+                                    <Tab.Pane eventKey="#link2" className="p-4 pt-0">
                                         <Alert style={{ fontSize: "18pt" }}>You can report the expected products only between Monday after 9:00 AM and Saturday before 9:00 AM</Alert>
                                     </Tab.Pane>
                                 </>
@@ -433,26 +390,32 @@ export default function ReportAvailability(props) {
                                 <Tab.Pane eventKey="#link3" className="p-4 pt-0">
                                     <h3>Confirm reported availabilities</h3>
                                     <span className='text-muted'>You can give confirmation on your expected availabilities for next week. <br /> <strong>Take notice that the confirmation can only be done once!</strong></span>
-                                    <Table className="mt-3" striped bordered hover responsive>
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Price</th>
-                                                <th>Quantity</th>
-                                                <th>Select</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {pendingAvailabilities.map(availability => <ConfirmRow availability={availability} setConfirmedAvailabilities={setConfirmedAvailabilities} />)}
-                                        </tbody>
-                                    </Table>
-                                    <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow" onClick={() => handleAvailabilities()}
+                                    {pendingAvailabilities && pendingAvailabilities.length !== 0 ?
+                                        <Table className="mt-3" striped bordered responsive >
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Price</th>
+                                                    <th>Quantity</th>
+                                                    <th>Select</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {pendingAvailabilities.map(availability => <ConfirmRow availability={availability} setConfirmedAvailabilities={setConfirmedAvailabilities} disable={disable} />)}
+                                            </tbody>
+                                        </Table>
+                                        :
+                                        <Tab.Pane eventKey="#link3" className="pt-2">
+                                            <Alert variant="danger" style={{ fontSize: "18pt"}}>You have nothing to confirm.</Alert>
+                                        </Tab.Pane>
+                                    }
+                                    <Button className="order-btn position-fixed d-none d-md-block mx-auto rounded-circle pt-2" variant="yellow" disabled={disable} onClick={() => handleAvailabilities()}
                                         style={{ width: '4rem', height: '4rem', bottom: '3rem', zIndex: '100', right: '8rem' }}>
                                         {bagcheckBIG}
                                     </Button>
                                 </Tab.Pane>
                                 :
-                                <Tab.Pane eventKey="#link3"  className="p-4 pt-0">
+                                <Tab.Pane eventKey="#link3" className="p-4 pt-0">
                                     <Alert style={{ fontSize: "18pt" }}>You can confirm the declared availabilities only between Saturday after 9:00 AM and Monday before 9:00 AM</Alert>
                                 </Tab.Pane>
                         }

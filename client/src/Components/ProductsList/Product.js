@@ -101,7 +101,7 @@ export default function Product(props) {
                                             </Col>
                                         </InputGroup.Text>
                                     </Row>
-                                    {props.client.missed_pickups != 5 && <Button style={{ position: "absolute", top: "0px", right: "0px", zIndex: '2' }} variant="primary" className="cartButton p-2" onClick={() => { addToBasket();}} size="sm">{iconCart}</Button>}
+                                    {props.client.missed_pickups !== 5 && <Button style={{ position: "absolute", top: "0px", right: "0px", zIndex: '2' }} variant="primary" className="cartButton p-2" onClick={() => { addToBasket();}} size="sm">{iconCart}</Button>}
                                 </Card.Footer>
                             }
                         </Card>
