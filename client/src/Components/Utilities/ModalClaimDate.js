@@ -131,13 +131,14 @@ export default function ModalClaimDate(props) {
                   Choose time for delivery:
                 </Form.Label>
                 <DatePicker
-                  selected={props.claimdate}
+                  selected={props.date}
                   onChange={(date) => props.setClaimdate(date)}
                   filterDate={notSelectableDates}
                   filterTime={notSelectableTimes}
                   dateFormat="dd-MM-yyyy HH:mm"
                   showTimeSelect
                   timeFormat="HH:mm"
+                  minDate={props.date}
                 />
               </Form>
             </ListGroup.Item>

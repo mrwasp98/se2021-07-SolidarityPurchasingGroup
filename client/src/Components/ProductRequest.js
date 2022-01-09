@@ -276,7 +276,8 @@ export default function ProductRequest(props) {
                                     setClaimdate={setClaimdate}
                                     address={deliveryAddress}
                                     setAddress={setDeliveryAddress}
-                                    handleOrder={handleOrder} />}
+                                    handleOrder={handleOrder}
+                                    date={props.date} />}
                         </>
                             :
                             <Alert className="mt-3" variant="primary">There are no available products</Alert>}

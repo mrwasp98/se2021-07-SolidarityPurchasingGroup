@@ -138,6 +138,14 @@ export default function ProductsList(props) {
                     :
                     <></>
                 }
+                {
+                    !((props.date.getDay() === 6 && dayjs(props.date).hour() > 9) || (props.date.getDay() === 0 && dayjs(props.date).hour()<23)) &&
+                    props.logged &&
+                    <Alert className="position-fixed" variant="warning" dismissible
+                            style={{ bottom: '3rem', zIndex: '200', border:'1px solid #CE8012'}} >
+                            You can only order products from Saturday after 9:00 and Sunday before 23:00.
+                        </Alert>
+                }
                 <HomeButton className="home-here" logged={props.logged} />
             </Container>
 
@@ -177,6 +185,7 @@ export default function ProductsList(props) {
                             key={index}
                             logged={props.logged}
                             farmerName={farmersPresent.length > 0 && farmersPresent.filter(farmer => farmer.userid === prod.farmerid)[0] && farmersPresent.filter(farmer => farmer.userid === prod.farmerid)[0].place}
+                            date={props.date}
                             setInserted={setInserted}
                             setShowAlert={setShowAlert}
                             setAl

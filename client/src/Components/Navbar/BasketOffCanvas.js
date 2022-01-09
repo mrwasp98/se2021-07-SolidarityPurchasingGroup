@@ -105,6 +105,7 @@ export default function BasketOffCanvas(props) {
           clientAddress={props.clientAddress}
           address={deliveryAddress}
           setAddress={setDeliveryAddress}
+          date={props.date}
         />}
 
       {showModal &&

@@ -2,6 +2,7 @@ import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import { arrowdown, arrowup, iconCart, iconSub, iconAdd, iconAddDisabled, iconSubDisabled } from "../Utilities/Icons";
 import { Button, InputGroup, Card, Accordion, Col, Row, Modal, Image, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { React, useState } from 'react';
+import dayjs from 'dayjs';
 
 export default function Product(props) {
 
@@ -78,7 +79,7 @@ export default function Product(props) {
                                         <strong style={{ "fontWeight": "700" }}> {parseFloat(props.prod.price).toFixed(2)}€/{props.prod.measure}</strong></p></Col>
                                 </Row>
                             </Card.Footer>
-                            {props.logged === "client" &&
+                            {props.logged === "client" && ((props.date.getDay() === 6 && dayjs(props.date).hour() > 9) ||  (props.date.getDay() === 0 && dayjs(props.date).hour()<23)) &&
                                 <Card.Footer className='p-1'>
                                     <Row className="justify-content-between p-3 pt-0 pb-0">
                                         <InputGroup.Text className="priceDescription">
