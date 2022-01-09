@@ -102,6 +102,7 @@ function App() {
     const checkAuth = async () => {
       try {
         const user = await getUserInfo();
+        console.log(user)
         setUsername(user.name);
         setUser(user.username);
         setLogged(user.type);
@@ -192,7 +193,7 @@ function App() {
         <Route exact path='/addProduct' render={() => <ProductForm username={username} addProduct={addProduct} userId={userId} />} />
 
         <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
-        <Route exact path='/warehousehome' render={() => <WarehouseHome />} />
+        <Route exact path='/warehousehome' render={() => <WarehouseHome date={date} username={username}/>} />
         <Route exact path='/managerhome' render={() => <ManagerHome date={date} />} />
 
         <Route exact path='/clienthome' render={() => <ClientHome />} />

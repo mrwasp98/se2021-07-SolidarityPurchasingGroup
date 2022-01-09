@@ -38,7 +38,8 @@ export default function MyNav(props) {
         setSuspended(d.suspended);
       });
     }
-    f()
+    if(props.logged === 'client')
+      f()
   }, [props.user]);
 
   const toggleShowHour = () => {
@@ -170,12 +171,22 @@ export default function MyNav(props) {
                   <></>
                 }
 
-                {(props.logged === "client"|| props.logged ==="warehouse") && notifyMessage.valid == true ?
+                {props.logged === "client" && notifyMessage.valid == true ?
 
 
                   <Button
                     className='position-relative rounded-circle'
                     style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '85px', zIndex: '100', "backgroundColor": "red" }}
+                  />
+                  :
+                  <></>}
+
+                  {props.logged === "warehouse" && notifyMessage.valid == true ?
+
+
+                  <Button
+                    className='position-relative rounded-circle'
+                    style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '20px', zIndex: '100', "backgroundColor": "red" }}
                   />
                   :
                   <></>}
