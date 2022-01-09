@@ -202,7 +202,7 @@ const countOrderLinesWithStatus = (orderid,status) => {
 const getOrderPrice = async (orderid) => {
     const orderlines = await orderlineDao.getOrderLines(orderid);
     let sum = 0;
-    for(let orderline of orderlines) sum += orderline.price;
+    for(let orderline of orderlines) sum += orderline.price * orderline.quantity;
     return sum;
 };
 
