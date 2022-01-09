@@ -1,14 +1,15 @@
 import dayjs from 'dayjs';
 import React from 'react';
-import { Card, Button, ButtonGroup, Container, Alert } from "react-bootstrap";
+import {Container, Alert } from "react-bootstrap";
 
 export default function WarehouseHome(props) {
+    // eslint-disable-next-line
     const {date, username} = props
 
     const reportVisible = 
-    dayjs(date).format('dddd') != 'Sunday' || 
-    (dayjs(date).format('dddd') == 'Saturday' && dayjs(date).format('H') < 9) || 
-    (dayjs(date).format('dddd') == 'Monday' && dayjs(date).format > 9) ? true : false
+    dayjs(date).format('dddd') !== 'Sunday' || 
+    (dayjs(date).format('dddd') === 'Saturday' && dayjs(date).format('H') < 9) || 
+    (dayjs(date).format('dddd') === 'Monday' && dayjs(date).format > 9) ? true : false
 
     return(
         <Container>

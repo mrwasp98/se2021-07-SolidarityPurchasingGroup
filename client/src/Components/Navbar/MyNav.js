@@ -40,6 +40,7 @@ export default function MyNav(props) {
     }
     if(props.logged === 'client')
       f()
+    // eslint-disable-next-line
   }, [props.user]);
 
   const toggleShowHour = () => {
@@ -171,7 +172,7 @@ export default function MyNav(props) {
                   <></>
                 }
 
-                {props.logged === "client" && notifyMessage.valid == true ?
+                {props.logged === "client" && notifyMessage.valid === true ?
 
 
                   <Button
@@ -181,7 +182,7 @@ export default function MyNav(props) {
                   :
                   <></>}
 
-                  {props.logged === "warehouse" && notifyMessage.valid == true ?
+                  {props.logged === "warehouse" && notifyMessage.valid === true ?
 
 
                   <Button
