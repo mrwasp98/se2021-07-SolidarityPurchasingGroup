@@ -275,6 +275,7 @@ export default function ReportAvailability(props) {
     }
 
     const handleAvailabilities = () => {
+        console.log(confirmedAvailabilities)
         confirmAvailabilities(confirmedAvailabilities)
             .then(() => {
                 setShowAlert("Availabilities have been correctly confirmed.")

@@ -268,7 +268,7 @@ export default function ProductRequest(props) {
                                     setClaimdate={setClaimdate}
                                     address={deliveryAddress}
                                     setAddress={setDeliveryAddress}
-
+                                    date={props.date}
                                     handleOrder={handleOrder} />}
                         </>
                             :
