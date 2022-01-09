@@ -694,7 +694,7 @@ app.put("/api/availabilities", async (req, res) => {
     //come ordine un ordine con data da vedere in base a dateavailability
     //dateavailability può essere da martedì 9:00 a domenica 23:00
     for (let availability of req.body) {
-      const status = availability.status === 'true' ? 'confirmed' : 'failed';
+      const status = availability.status === true ? 'confirmed' : 'failed';
       //update availability status
       await availabilityDao.updateStatus(availability.productid, availability.dateavailability, status);
       //update related orderlines and orders
