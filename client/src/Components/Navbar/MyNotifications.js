@@ -9,7 +9,6 @@ export default function MyNotifications(props) {
   const [showB, setShowB] = useState(false);
   const toggleShowB = () => setShowB(!showB);
   const [message, setMessage] = useState("There isn't any unread message");
-  console.log(props.message)
 
   useEffect(()=>{
     async function f() {

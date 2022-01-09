@@ -24,13 +24,13 @@ export default function MyNav(props) {
 
   const [showMissedPickups, setShowMissedPickups] = useState(true);
 
-  // eslint-disable-next-line
   const notifyMessage = {
-    valid: props.topUpWallet || props.farmer.delivered || props.client.missed_pickups > 2 ? true : false,
+    valid: props.topUpWallet || props.farmer.delivered || dayjs(props.date).isBefore(suspended) ? true : false,
     topUpWallet: props.topUpWallet,
     missed_pickups: props.client.missed_pickups,
     productDelivered: props.farmer.delivered
   }
+
 
   useEffect(() => {
     async function f() {
@@ -38,7 +38,8 @@ export default function MyNav(props) {
         setSuspended(d.suspended);
       });
     }
-    f()
+    if(props.logged === 'client')
+      f()
   }, [props.user]);
 
   const toggleShowHour = () => {
@@ -170,12 +171,22 @@ export default function MyNav(props) {
                   <></>
                 }
 
-                {(props.logged === "client"|| props.logged ==="warehouse") && notifyMessage.valid == true ?
+                {props.logged === "client" && notifyMessage.valid == true ?
 
 
                   <Button
                     className='position-relative rounded-circle'
                     style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '85px', zIndex: '100', "backgroundColor": "red" }}
+                  />
+                  :
+                  <></>}
+
+                  {props.logged === "warehouse" && notifyMessage.valid == true ?
+
+
+                  <Button
+                    className='position-relative rounded-circle'
+                    style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '20px', zIndex: '100', "backgroundColor": "red" }}
                   />
                   :
                   <></>}
@@ -196,12 +207,12 @@ export default function MyNav(props) {
         </Container>
       </Navbar>
       {/** ALERT FOR NOTIFY TO USER THE MISSED PICKUPS */}
-      {props.logged && props.client.name !== ' ' && (props.client.missed_pickups > 2 && props.client.missed_pickups < 5) &&
+      {props.logged === 'client' && props.client.name !== ' ' && (props.client.missed_pickups > 2 && props.client.missed_pickups < 5) &&
         <Alert style={{ marginBottom: '0px' }} variant="warning" show={showMissedPickups} onClose={() => setShowMissedPickups(false)} dismissible>
           <Alert.Heading>Oh {props.client.name}! There is a warning!</Alert.Heading>
           You have to take {props.client.missed_pickups} orders! Remember that you reach 5 orders not taken you'll be banned!
         </Alert>}
-      {props.logged && props.client.name !== ' ' && props.client.missed_pickups === 0 && dayjs(props.date).isBefore(suspended) &&
+      {props.logged === 'client' && props.client.name !== ' ' && props.client.missed_pickups === 0 && dayjs(props.date).isBefore(suspended) &&
         <Alert style={{ marginBottom: '0px' }} variant="danger">
           <Alert.Heading>Oh {props.client.name}! You are banned!</Alert.Heading>
           You have 5 to collected! Firts to create a new order you must take the pickups in warehouse
