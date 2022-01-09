@@ -219,6 +219,7 @@ function App() {
             farmers={farmers}
             clients={clients}
             setClients={setClients}
+            clientAddress={clientAddress}
             dirtyClients={dirtyClients}
             setDirtyClients={setDirtyClients}
             products={products}
