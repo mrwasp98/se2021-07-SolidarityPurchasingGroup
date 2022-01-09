@@ -26,9 +26,10 @@ export default function MyNav(props) {
 
   // eslint-disable-next-line
   const notifyMessage = {
-    valid: props.topUpWallet || props.client.missed_pickups > 2 ? true : false,
+    valid: props.topUpWallet || props.farmer.delivered || props.client.missed_pickups > 2 ? true : false,
     topUpWallet: props.topUpWallet,
-    missed_pickups: props.client.missed_pickups
+    missed_pickups: props.client.missed_pickups,
+    productDelivered: props.farmer.delivered
   }
 
   useEffect(() => {
@@ -153,9 +154,11 @@ export default function MyNav(props) {
 
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
                 <ButtonGroup >
-                  {props.logged === "client" && <MyNotifications message={notifyMessage} user={props.user} date={props.date} />}
+
+                  {(props.logged === "client"|| props.logged ==="warehouse") && <MyNotifications message={notifyMessage} user={props.user} date={props.date}/>}
+
                   {" "}
-                  {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
+                  {props.logged === "client"&& <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
                 </ButtonGroup>
 
                 {props.logged === "client" && props.somethingInTheBasket === true ?
@@ -166,7 +169,10 @@ export default function MyNav(props) {
                   :
                   <></>
                 }
-                {props.logged === "client" && notifyMessage.valid === true ?
+
+                {(props.logged === "client"|| props.logged ==="warehouse") && notifyMessage.valid == true ?
+
+
                   <Button
                     className='position-relative rounded-circle'
                     style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '85px', zIndex: '100', "backgroundColor": "red" }}
