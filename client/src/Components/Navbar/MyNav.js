@@ -24,8 +24,10 @@ export default function MyNav(props) {
 
   const [showMissedPickups, setShowMissedPickups] = useState(true);
 
+  const [farmers, setFarmers] = useState(false) //TO FILL WITH GET PLACES OF FARMERS OF STORY 5
+
   const notifyMessage = {
-    valid: props.topUpWallet || props.farmer.delivered || dayjs(props.date).isBefore(suspended) ? true : false,
+    valid: props.topUpWallet || props.farmers || dayjs(props.date).isBefore(suspended) ? true : false,
     topUpWallet: props.topUpWallet,
     missed_pickups: props.client.missed_pickups,
     productDelivered: props.farmer.delivered
@@ -38,9 +40,16 @@ export default function MyNav(props) {
         setSuspended(d.suspended);
       });
     }
+
+    // async function getFarmers(date) {
+    //   await getProductsDelivered(date).then((f) => {
+    //     setFarmers(f);
+    //   });
+    // }
     if(props.logged === 'client')
       f()
-    // eslint-disable-next-line
+    // if(props.logged === 'warehouse')
+    //   getFarmers()
   }, [props.user]);
 
   const toggleShowHour = () => {
@@ -157,7 +166,7 @@ export default function MyNav(props) {
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
                 <ButtonGroup >
 
-                  {(props.logged === "client"|| props.logged ==="warehouse") && <MyNotifications message={notifyMessage} user={props.user} date={props.date}/>}
+                  {(props.logged === "client"|| props.logged ==="warehouse") && <MyNotifications message={notifyMessage} farmers={farmers} logged={props.logged} user={props.user} date={props.date}/>}
 
                   {" "}
                   {props.logged === "client"&& <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
@@ -172,7 +181,7 @@ export default function MyNav(props) {
                   <></>
                 }
 
-                {props.logged === "client" && notifyMessage.valid === true ?
+                {props.logged === "client" && notifyMessage.valid == true ?
 
 
                   <Button
@@ -182,7 +191,7 @@ export default function MyNav(props) {
                   :
                   <></>}
 
-                  {props.logged === "warehouse" && notifyMessage.valid === true ?
+                  {props.logged === "warehouse" && notifyMessage.valid == true ?
 
 
                   <Button
