@@ -85,7 +85,7 @@ function App() {
   const [dirtyAvailability, setDirtyAvailability] = useState(true); //state used to indicate if the availability of some product has been changed
 
   const [clients, setClients] = useState([]);
-  const [client, setClient] = useState([]); //????????????????????????
+  const [client, setClient] = useState([]); 
   const [dirtyClients, setDirtyClients] = useState(true); //state used to indicate if a new user has been added
   const [clientOrders, setClientOrders] = useState([]);
 
