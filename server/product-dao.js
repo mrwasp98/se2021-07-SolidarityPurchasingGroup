@@ -24,8 +24,9 @@ exports.getDeliveredProducts = (date) => {
             if (err) {
                 reject(err);
             }
-            console.log(rows)
             const farmersId = rows.map((p) => ({ farmerid: p.farmerid}))
+            console.log(farmersId)
+            console.log("ciaoooooo")
             resolve(farmersId);
         });
     });

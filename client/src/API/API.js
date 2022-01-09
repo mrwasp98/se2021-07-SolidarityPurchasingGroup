@@ -17,6 +17,27 @@
  */
 import dayjs from "dayjs";
 
+/** STORY 1a5 **/
+const getProductsDelivered = async (date) => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/products/delivered/' + dayjs(date).format('YYYY-MM-DD'), {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        const error = new Error(`${res.status}: ${res.statusText}`);
+        error.response = res;
+        throw error;
+      }
+      resolve(res.json());
+    })
+      .catch((err) => {
+        reject({ message: err.message });
+      });
+  });
+}
 
 const addPRequest = async (userid, creationdate, claimdate, confirmationdate, deliveryaddress, deliveryid, status, products) => {
   return new Promise((resolve, reject) => {
@@ -649,4 +670,4 @@ const getProductAvailability = (farmerid, date) => {
 }
 
 
-export {confirmAvailabilities, getReport, getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct, getSuspendedDate, getProductAvailability}
+export {getProductsDelivered,confirmAvailabilities, getReport, getOrdersByStatus, addPRequest, getClients, addClient, getClientById, getAvailableProducts, handOutProduct, getFarmers, login, logout, getUserInfo, getClientOrders, topUpWallet, addShopEmployee, getUsernames, addFarmer, updatePassword, getFarmersOrders, updateOrderStatus, insertProduct, insertAvailability, getProductsByFarmer, updateProduct, deleteProduct, getSuspendedDate, getProductAvailability}

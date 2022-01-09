@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import Clock from "./Clock";
 import MyNotifications from "./MyNotifications";
 import BasketOffCanvas from './BasketOffCanvas';
-import { getSuspendedDate } from '../../API/API';
+import { getSuspendedDate,getFarmers, getProductsDelivered } from '../../API/API';
 
 export default function MyNav(props) {
 
@@ -24,7 +24,7 @@ export default function MyNav(props) {
 
   const [showMissedPickups, setShowMissedPickups] = useState(true);
 
-  const [farmers, setFarmers] = useState(false) //TO FILL WITH GET PLACES OF FARMERS OF STORY 5
+  const [farmersdNames, setFarmersNames] = useState([]) //TO FILL WITH GET PLACES OF FARMERS OF STORY 5
 
   const notifyMessage = {
     valid: props.topUpWallet || props.farmers || dayjs(props.date).isBefore(suspended) ? true : false,
@@ -33,23 +33,36 @@ export default function MyNav(props) {
     productDelivered: props.farmer.delivered
   }
 
+  async function getFarmersThatDelivered() {
+    let farmersId;
+    await getProductsDelivered(date).then((f) => {
+      farmersId = f;
+      console.log(farmersId)
+      console.log("Ciaooooooooo")
+    }).then(() => {
+      getFarmers()
+        .then((farmers) => {
+          console.log(farmers)
+          let fList = farmers.filter(f => farmersId.includes(f.userid));
+          setFarmersNames(fList);
+        });
+    });
+  }
 
   useEffect(() => {
+    console.log(props.logged)
     async function f() {
       await getSuspendedDate(props.user).then((d) => {
         setSuspended(d.suspended);
       });
     }
-
-    // async function getFarmers(date) {
-    //   await getProductsDelivered(date).then((f) => {
-    //     setFarmers(f);
-    //   });
-    // }
-    if(props.logged === 'client')
+    console.log(props.logged)
+    if (props.logged === 'client')
       f()
-    // if(props.logged === 'warehouse')
-    //   getFarmers()
+    if (props.logged === 'warehouse'){
+      console.log("qui")
+      getFarmersThatDelivered()
+    }
   }, [props.user]);
 
   const toggleShowHour = () => {
@@ -166,10 +179,10 @@ export default function MyNav(props) {
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
                 <ButtonGroup >
 
-                  {(props.logged === "client"|| props.logged ==="warehouse") && <MyNotifications message={notifyMessage} farmers={farmers} logged={props.logged} user={props.user} date={props.date}/>}
+                  {(props.logged === "client" || props.logged === "warehouse") && <MyNotifications message={notifyMessage} farmers={farmersdNames} logged={props.logged} user={props.user} date={props.date} />}
 
                   {" "}
-                  {props.logged === "client"&& <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
+                  {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
                 </ButtonGroup>
 
                 {props.logged === "client" && props.somethingInTheBasket === true ?
@@ -191,7 +204,7 @@ export default function MyNav(props) {
                   :
                   <></>}
 
-                  {props.logged === "warehouse" && notifyMessage.valid == true ?
+                {props.logged === "warehouse" && notifyMessage.valid == true ?
 
 
                   <Button
