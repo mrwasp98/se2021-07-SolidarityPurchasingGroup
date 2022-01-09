@@ -48,6 +48,8 @@ function LoginForm(props) {
             } else {
                 history.push("/employeehome")
             }
+        }else if(user.type === "warehouse"){
+            history.push("/warehousehome")
         }else if(user.type === "client"){
             history.push("/products")
         }else if(user.type === "farmer"){

@@ -22,6 +22,7 @@ import ReportAvailability from "./Components/ReportAvailability";
 import ProductForm from "./Components/ProductForm";
 import TelegramBot from "node-telegram-bot-api";
 import ManagerHome from "./Components/Homepages/ManagerHome";
+import WarehouseHome from "./Components/Homepages/WarehouseHome";
 
 function App() {
 
@@ -80,6 +81,7 @@ function App() {
   const [clientAddress, setClientAddress] = useState('');
   const [showTopUpWalletModal, setShowTopUpWalletModal] = useState(false);
   const [notify, setNotify] = useState(false);
+  const [farmer, setFarmer] = useState(false);
   
   const [products, setProducts] = useState([]);
   const [dirtyAvailability, setDirtyAvailability] = useState(true); //state used to indicate if the availability of some product has been changed
@@ -114,7 +116,7 @@ function App() {
   //this use effect is used to show the modal when the client logs in  
   useEffect(() => {
     async function fetchdata() {
-      if (logged === "client" && userId != undefined) {
+      if ((logged === "client" || logged === "warehouse" )&& userId != undefined) {
         let res = await getClientById(userId);
         setClientAddress(res.address);
         setClient(res);
@@ -156,6 +158,7 @@ function App() {
             className="myNav"
             setDirtyAvailability={setDirtyAvailability}
             topUpWallet={notify}
+            farmer={farmer}
             clientAddress={clientAddress}
             client={client} //client inserted here for notify the missed pickups
             setSomethingInTheBasket={setSomethingInTheBasket}
@@ -189,6 +192,7 @@ function App() {
         <Route exact path='/addProduct' render={() => <ProductForm username={username} addProduct={addProduct} userId={userId} />} />
 
         <Route exact path='/employeehome' render={() => <ShopEmployeeHome />} />
+        <Route exact path='/warehousehome' render={() => <WarehouseHome />} />
         <Route exact path='/managerhome' render={() => <ManagerHome date={date} />} />
 
         <Route exact path='/clienthome' render={() => <ClientHome />} />
