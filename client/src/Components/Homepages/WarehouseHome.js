@@ -11,7 +11,7 @@ export default function WarehouseHome(props) {
     (dayjs(date).format('dddd') == 'Monday' && dayjs(date).format > 9) ? true : false
 
     return(
-        <Container>
+        <Container className="p-4">
             <h1>Hi warehouse manager</h1>
             {reportVisible ? <p>You can will see the delivery</p>
             

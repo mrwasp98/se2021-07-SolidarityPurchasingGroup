@@ -4,6 +4,34 @@ const dayjs = require('dayjs');
 const db = require('./database');
 
 //Get all the available products in a specified date
+exports.getDeliveredProducts = (date) => {
+    let lastSaturday9Am;
+    let lastlastSaturday9Am;
+    if (dayjs(date).format('dddd') !== 'Sunday') {
+        lastSaturday9Am = dayjs(date).endOf('week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        lastlastSaturday9Am = dayjs(lastSaturday9Am).subtract(1, 'week')
+    } else {
+        lastSaturday9Am = dayjs(date).endOf('week').subtract(1, 'week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
+        lastlastSaturday9Am = dayjs(lastSaturday9Am).subtract(1, 'week')
+    }
+   lastSaturday9Am = lastSaturday9Am.subtract(1,'week').add(1,'day').format('YYYY-MM-DD')
+   lastlastSaturday9Am = lastlastSaturday9Am.subtract(1,'week').format('YYYY-MM-DD')
+   //console.log(lastlastSaturday9Am,"---", lastSaturday9Am)
+
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT DISTINCT(P.farmerid) FROM product AS P, availability AS A WHERE P.id=A.productid AND A.status="delivered" AND A.dateavailability>? AND A.dateavailability<=?';
+        db.all(sql, [lastlastSaturday9Am, lastSaturday9Am], (err, rows) => {
+            if (err) {
+                reject(err);
+            }
+            console.log(rows)
+            const farmersId = rows.map((p) => ({ farmerid: p.farmerid}))
+            resolve(farmersId);
+        });
+    });
+};
+
+//Get all the available products in a specified date
 exports.getProductsAvailable = (date) => {
     let thisSaturday9Am;
     let lastSaturday9Am;
