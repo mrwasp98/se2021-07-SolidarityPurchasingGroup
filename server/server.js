@@ -201,7 +201,7 @@ app.get("/api/products/delivered/:date", async (req, res) => {
   productDao
     .getDeliveredProducts(req.params.date)
     .then((farmersId) => res.status(200).json(farmersId))
-    .catch(() => res.status(500).end());
+    .catch(() => res.status(200).end());
 });
 
 //GET: get all products of a farmer
