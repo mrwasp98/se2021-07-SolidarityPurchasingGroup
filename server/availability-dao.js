@@ -4,6 +4,7 @@ const dayjs = require('dayjs');
 const db = require('./database');
 
 //Get the inormation af available products given the farmer id
+/*
 exports.getProductAvailabilityByIdFarmer = (id) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM availability A, product P WHERE P.id = A.productid AND P.farmerid = ?';
@@ -18,8 +19,10 @@ exports.getProductAvailabilityByIdFarmer = (id) => {
         });
     });
 };
+*/
 
 //Insert a new row in the availability table
+/*
 exports.insertEstimateAvailabilityProdcut = (productid, dateAvailability, price, quantity) => {
     return new Promise((resolve, reject) => {
         const STATUS = "estimated"
@@ -34,8 +37,10 @@ exports.insertEstimateAvailabilityProdcut = (productid, dateAvailability, price,
         })
     })
 }
+*/
 
 //Update the status field of the availability table
+/*
 exports.updateStatusAvailabilityProduct = (productid, dateAvailability) => {
     return new Promise((resolve, reject) => {
         const STAUTS = "ok";
@@ -48,8 +53,10 @@ exports.updateStatusAvailabilityProduct = (productid, dateAvailability) => {
         });
     });
 }
+*/
 
 //Update the quantity field of the availability table given the product id and the date of availability
+/*
 exports.updateQuantityAvailabilityProduct = (productid, dateAvailability, quantity) => {
     return new Promise((resolve, reject) => {
         const sql = ' UPDATE availability SET quantity = ? WHERE productid = ? AND dateAvailability = ?; ';
@@ -61,8 +68,10 @@ exports.updateQuantityAvailabilityProduct = (productid, dateAvailability, quanti
         });
     });
 }
+*/
 
 //Delete a row from availability given the product id and the date of availability
+/*
 exports.deleteAvailabilityProduct = (productid, dateAvailability) => {
     return new Promise((resolve, reject) => {
         const sql = ' DELETE FROM availability WHERE productid = ? AND dateAvailability = ?; ';
@@ -75,8 +84,10 @@ exports.deleteAvailabilityProduct = (productid, dateAvailability) => {
         });
     });
 }
+*/
 
 // Fix the price
+/*
 exports.getEffectivePriceofProduct = (productid, dateAvailability) => {
     return new Promise((resolve, reject) => {
         const sql = ' SELECT price ' +
@@ -92,6 +103,7 @@ exports.getEffectivePriceofProduct = (productid, dateAvailability) => {
         });
     });
 }
+*/
 
 //Update the status field of the availability table
 exports.updateStatus = (productid, dateAvailability, status) => {
