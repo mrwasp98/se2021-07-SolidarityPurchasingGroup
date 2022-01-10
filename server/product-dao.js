@@ -13,8 +13,8 @@ exports.getDeliveredProducts = (date) => {
     }
     else {
 
-        lastSaturday9Am = dayjs(date).subtract(1, 'week').endOf('week').subtract(23, 'hour')
-        lastSunday23Pm = dayjs(lastSaturday9Am).add(1, 'day')
+        lastSaturday9Am = dayjs(date).subtract(1, 'week').endOf('week').subtract(23, 'hour');
+        lastSunday23Pm = dayjs(lastSaturday9Am).add(1, 'day').add(14, 'hour');
 
         lastSaturday9Am = lastSaturday9Am.format('YYYY-MM-DD')
         lastSunday23Pm = lastSunday23Pm.format('YYYY-MM-DD')
