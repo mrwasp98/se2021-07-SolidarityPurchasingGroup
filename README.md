@@ -2,11 +2,6 @@
 
 Welcome to Solidarity Purchansing Group, a project developed during the Software Engineering 2 course in Politecnico di Torino (academic year : 2021/2022).
 
-## Bot Telegram 
-It's possible to get updates via telegram (you need to be a registered user) when the list of available products for the next week is posted by a farmer. In order to do so, you have to:
-* open the following link:  https://t.me/SPGP07bot
-* type "/start"
-* wait for updates
 
 ---
 ## Table of content
@@ -16,6 +11,7 @@ It's possible to get updates via telegram (you need to be a registered user) whe
 - [API](#API)
 - [React client application routes](#React-client-application-routes)
 - [Users credentials](#Users-credentials)
+- [Bot Telegram](#Bot-telegram)
 ---
 ## The team:
 - Mostafa Asadollahy
@@ -719,4 +715,12 @@ We check the quality of our code relying on SonarCloud analysis.
 |  Shop Employee |  shopemployee |  qwerty123 |
 
 ----
+
+## Bot Telegram 
+It's possible to get updates via telegram (you need to be a registered user) when the list of available products for the next week is posted by a farmer. In order to do so, you have to:
+* open the following link:  https://t.me/SPGP07bot
+* type "/start"
+* wait for updates
+
+
 
