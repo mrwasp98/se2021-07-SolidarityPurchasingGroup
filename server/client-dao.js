@@ -134,7 +134,8 @@ exports.resetMissedPickups = (clientid) => {
             if (err) {
                 reject(err);
             }
-            resolve();
+            if (this.changes === 0) resolve(false);
+            else resolve(true);
         });
     });
 };
