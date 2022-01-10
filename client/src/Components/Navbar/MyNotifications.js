@@ -46,7 +46,7 @@ export default function MyNotifications(props) {
         {props.logged === 'client' ?
           <Toast.Body style={{ color: 'black' }} className="m-2">{message.split('-').map((m,index) => <Card key={"client-" + index + "-notification"} className='p-1 m-1' bg="warning">{m}</Card>)}</Toast.Body>
           :
-          <Toast.Body style={{ color: 'black' }} className="m-2">{props.farmers.map((f,index) => <Card key={"warehouse-" + index + "-notification"} className='p-1 m-1' bg="warning">{f + " shipped orders this week"}</Card>)}</Toast.Body>
+          <Toast.Body style={{ color: 'black' }} className="m-2">{props.farmers.map((f,index) => <Card key={"warehouse-" + index + "-notification"} className='p-1 m-1' bg="warning">{f + " shipped orders of this week"}</Card>)}</Toast.Body>
         }
       </Toast>
     </>
