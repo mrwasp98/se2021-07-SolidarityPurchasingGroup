@@ -24,7 +24,7 @@ export default function MyNav(props) {
 
   const [showMissedPickups, setShowMissedPickups] = useState(true);
 
-  const [farmersdNames, setFarmersNames] = useState([]) //TO FILL WITH GET PLACES OF FARMERS OF STORY 5
+  const [farmersNames, setFarmersNames] = useState([]) //TO FILL WITH GET PLACES OF FARMERS OF STORY 5
 
   const notifyMessage = {
     valid: props.topUpWallet || props.farmers || dayjs(props.date).isBefore(suspended) ? true : false,
@@ -35,35 +35,32 @@ export default function MyNav(props) {
 
   async function getFarmersThatDelivered() {
     let farmersId;
+    let listFarmersId = [];
     await getProductsDelivered(date).then((f) => {
       farmersId = f;
-      console.log(farmersId)
-      console.log("Ciaooooooooo")
+      farmersId.forEach(f => listFarmersId.push(f.farmerid))
     }).then(() => {
       getFarmers()
         .then((farmers) => {
-          console.log(farmers)
-          let fList = farmers.filter(f => farmersId.includes(f.userid));
+          let fList = farmers.filter(f => listFarmersId.includes(f.userid));
+          fList = fList.map(f => f.place)
           setFarmersNames(fList);
         });
     });
   }
 
   useEffect(() => {
-    console.log(props.logged)
     async function f() {
       await getSuspendedDate(props.user).then((d) => {
         setSuspended(d.suspended);
       });
     }
-    console.log(props.logged)
     if (props.logged === 'client')
       f()
     if (props.logged === 'warehouse'){
-      console.log("qui")
       getFarmersThatDelivered()
     }
-  }, [props.user]);
+  }, [props.logged, props.date]);
 
   const toggleShowHour = () => {
     setShow(false);
@@ -179,7 +176,7 @@ export default function MyNav(props) {
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
                 <ButtonGroup >
 
-                  {(props.logged === "client" || props.logged === "warehouse") && <MyNotifications message={notifyMessage} farmers={farmersdNames} logged={props.logged} user={props.user} date={props.date} />}
+                  {(props.logged === "client" || props.logged === "warehouse") && <MyNotifications message={notifyMessage} farmers={farmersNames} logged={props.logged} user={props.user} date={props.date} />}
 
                   {" "}
                   {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}

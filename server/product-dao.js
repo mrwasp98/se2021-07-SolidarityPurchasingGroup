@@ -25,8 +25,6 @@ exports.getDeliveredProducts = (date) => {
                 reject(err);
             }
             const farmersId = rows.map((p) => ({ farmerid: p.farmerid}))
-            console.log(farmersId)
-            console.log("ciaoooooo")
             resolve(farmersId);
         });
     });
