@@ -240,7 +240,7 @@ exports.getProductsAvailability = (farmerid, date) => {
     }
     const status = 'pending';
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM availability as A, product as P WHERE A.productid=P.id AND P.farmerid=? AND A.status=?";
+        const sql = "SELECT A.productid, P.name, A.dateavailability, A.initial_quantity, P.measure, A.status, A.price FROM availability as A, product as P WHERE A.productid=P.id AND P.farmerid=? AND A.status=?";
         db.all(sql, [farmerid, status], (err, rows) => {
             if (err) {
                 console.log(err)
