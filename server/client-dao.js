@@ -112,9 +112,9 @@ exports.subtractFromWallet = (clientid, amount) => {
 
 
 //Add a date at the suspended field of the client table
-exports.suspendClient = (clientid) => {
+exports.suspendClient = (clientid, today) => {
     return new Promise((resolve, reject) => {
-        const date = dayjs().add(1, 'month').format('YYYY-MM-DD');
+        const date = dayjs(today).add(1, 'month').format('YYYY-MM-DD');
         const sql = 'UPDATE client SET suspended = ? WHERE userid == ?';
         db.run(sql, [date, clientid], function (err) {
             if (err) {

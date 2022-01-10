@@ -664,7 +664,7 @@ app.put("/api/clients/missedPickups/:clientid", async (req, res) => {
     const missed_pickups = await clientDao.getClientMissedPickups(req.params.clientid);
     if (missed_pickups.missed_pickups >= 5) {
       //Suspend client for a mounth
-      await clientDao.suspendClient(req.params.clientid);
+      await clientDao.suspendClient(req.params.clientid, req.body.date);
       //Put the missed_pickup field to 0 again
       await clientDao.resetMissedPickups(req.params.clientid);
     }
@@ -741,7 +741,7 @@ const updateOrderlinesAndOrders = async (productid,dateavailability,status) => {
 }
 
 //GET: get products availability
-app.get("/api/availability/:farmerid/", async (req, res) => {
+app.get("/api/availability/:farmerid", async (req, res) => {
   try {
     const availabilities = await productDao.getProductsAvailability(req.params.farmerid, req.query.date);
     res.status(200).json(availabilities);

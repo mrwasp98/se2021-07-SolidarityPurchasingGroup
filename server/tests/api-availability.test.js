@@ -147,12 +147,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'false'
+                    status: false
                 }
             ]
         );
@@ -166,12 +166,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'confirmed'
+                    status: true
                 },
                 {
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'failed'
+                    status: false
                 }
             ]
         );
@@ -235,12 +235,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 { //all product 1 orderlines should have status confirmed
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {  
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'true'
+                    status: true
                 }
             ]
         );
@@ -284,12 +284,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {  
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'true'
+                    status: true
                 }
             ]
         );
@@ -330,12 +330,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {  
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'false'
+                    status: false
                 }
             ]
         );
@@ -376,12 +376,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {  
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'true'
+                    status: true
                 }
             ]
         );
@@ -394,13 +394,13 @@ describe('Testing PUT on /api/availabilities', () => {
         const fakeOrderline1 = { //order 1 product 1
             orderid: null,
             productid: productid,
-            quantity: 2,
+            quantity: 1,
             price: 50
         };
         const fakeOrderline2 = { //order 1 product 2
             orderid: null,
             productid: productid2,
-            quantity: 2,
+            quantity: 1,
             price: 40
         };
         const fakeOrder1 = {
@@ -422,12 +422,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {  
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'true'
+                    status: true
                 }
             ]
         );
