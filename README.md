@@ -589,6 +589,37 @@ We check the quality of our code relying on SonarCloud analysis.
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
+### Get a client's missed pickups counter
+* URL: `/api/availability/<farmerid>?date=date`
+* HTTP method: GET
+* Request body: none
+* Description: gets the available products of a given farmer
+* Request parameters: farmerid (params), date(query)
+* Response body: Available products and their informations
+``` JSON
+[
+{
+    "productid": 1, 
+    "productName": "Artichoke", 
+    "dateavailability": "2022-01-7 10:00", 
+    "quantity": 6, 
+    "measure": "kg", 
+    "status": "pending", 
+    "price": 15.00
+},
+{
+    "productid": 2, 
+    "productName": "Apple", 
+    "dateavailability": "2022-01-7 10:00", 
+    "quantity": 6, 
+    "measure": "kg", 
+    "status": "pending", 
+    "price": 15.00
+},
+] 
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
 ## USER API
 
 - POST `/api/login`
