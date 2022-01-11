@@ -10,7 +10,6 @@ export default function MyNotifications(props) {
   const toggleShowB = () => setShowB(!showB);
   const [message, setMessage] = useState("There isn't any unread message");
 
-
   useEffect(() => {
     async function f() {
       const suspended = await getSuspendedDate(props.user);
@@ -34,7 +33,11 @@ export default function MyNotifications(props) {
     <>
       <Button onClick={toggleShowB} className="">{bell}</Button>
       <Toast
-        onClose={toggleShowB}
+        onClose={() => {
+          toggleShowB()
+          if(props.logged === 'warehouse')
+            props.setFarmers([])            
+        }}
         show={showB}
         animation={false}
         className="mynotify mt-3"

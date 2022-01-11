@@ -27,7 +27,7 @@ export default function MyNav(props) {
   const [farmersNames, setFarmersNames] = useState([]) //TO FILL WITH GET PLACES OF FARMERS OF STORY 5
 
   const notifyMessage = {
-    valid: props.topUpWallet || props.farmers || (suspended != undefined && dayjs(props.date).isBefore(suspended)) ? true : false,
+    valid: props.topUpWallet || farmersNames.length != 0 || (suspended != undefined && dayjs(props.date).isBefore(suspended)) ? true : false,
     topUpWallet: props.topUpWallet,
     missed_pickups: props.client.missed_pickups,
     productDelivered: props.farmer.delivered
@@ -177,7 +177,7 @@ export default function MyNav(props) {
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
                 <ButtonGroup >
 
-                  {(props.logged === "client" || props.logged === "warehouse") && <MyNotifications message={notifyMessage} farmers={farmersNames} logged={props.logged} user={props.user} date={props.date} />}
+                  {(props.logged === "client" || props.logged === "warehouse") && <MyNotifications message={notifyMessage} farmers={farmersNames} setFarmers={setFarmersNames} logged={props.logged} user={props.user} date={props.date}/>}
 
                   {" "}
                   {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
