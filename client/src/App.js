@@ -104,6 +104,7 @@ function App() {
       try {
         const user = await getUserInfo();
         console.log(user)
+        setUsername(user.name);
         setUser(user.username);
         setLogged(user.type);
         setUserId(user.id);

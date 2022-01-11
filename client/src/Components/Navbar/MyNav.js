@@ -53,7 +53,8 @@ export default function MyNav(props) {
     async function f() {
       await getSuspendedDate(props.user).then((d) => {
         setSuspended(d.suspended)
-        console.log(d.suspended)
+        suspended != undefined && dayjs(props.date).isBefore(suspended)?
+        console.log(true) : console.log(false)
       });
     }
     setDismiss(false);
@@ -72,7 +73,6 @@ export default function MyNav(props) {
   const handleLogout = async () => {
     await props.logout();
     props.setLogged(false);
-    props.setUser("")
     history.push("/")
 
   }
