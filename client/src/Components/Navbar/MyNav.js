@@ -20,14 +20,14 @@ export default function MyNav(props) {
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
   const [message, setMessage] = useState([]);
-  const [suspended, setSuspended] = useState('');
+  const [suspended, setSuspended] = useState(undefined);
 
   const [showMissedPickups, setShowMissedPickups] = useState(true);
 
   const [farmersNames, setFarmersNames] = useState([]) //TO FILL WITH GET PLACES OF FARMERS OF STORY 5
 
   const notifyMessage = {
-    valid: props.topUpWallet || props.farmers || dayjs(props.date).isBefore(suspended) ? true : false,
+    valid: props.topUpWallet || props.farmers || (suspended != undefined && dayjs(props.date).isBefore(suspended)) ? true : false,
     topUpWallet: props.topUpWallet,
     missed_pickups: props.client.missed_pickups,
     productDelivered: props.farmer.delivered
@@ -52,7 +52,7 @@ export default function MyNav(props) {
   useEffect(() => {
     async function f() {
       await getSuspendedDate(props.user).then((d) => {
-        setSuspended(d.suspended);
+          setSuspended(d.suspended)
       });
     }
     if (props.logged === 'client')
@@ -60,6 +60,7 @@ export default function MyNav(props) {
     if (props.logged === 'warehouse'){
       getFarmersThatDelivered()
     }
+
   }, [props.logged, props.date]);
 
   const toggleShowHour = () => {
@@ -191,9 +192,7 @@ export default function MyNav(props) {
                   <></>
                 }
 
-                {props.logged === "client" && notifyMessage.valid == true ?
-
-
+                {props.logged === "client" && notifyMessage.valid === true ?
                   <Button
                     className='position-relative rounded-circle'
                     style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '85px', zIndex: '100', "backgroundColor": "red" }}
@@ -201,9 +200,7 @@ export default function MyNav(props) {
                   :
                   <></>}
 
-                {props.logged === "warehouse" && notifyMessage.valid == true ?
-
-
+                {props.logged === "warehouse" && notifyMessage.valid === true ?
                   <Button
                     className='position-relative rounded-circle'
                     style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '20px', zIndex: '100', "backgroundColor": "red" }}
@@ -232,7 +229,7 @@ export default function MyNav(props) {
           <Alert.Heading>Oh {props.client.name}! There is a warning!</Alert.Heading>
           You have to take {props.client.missed_pickups} orders! Remember that you reach 5 orders not taken you'll be banned!
         </Alert>}
-      {props.logged === 'client' && props.client.name !== ' ' && props.client.missed_pickups === 0 && dayjs(props.date).isBefore(suspended) &&
+      {props.logged === 'client' && props.client.name !== ' ' && (suspended != undefined && dayjs(props.date).isBefore(suspended)) &&
         <Alert style={{ marginBottom: '0px' }} variant="danger">
           <Alert.Heading>Oh {props.client.name}! You are banned!</Alert.Heading>
           You have 5 to collected! Firts to create a new order you must take the pickups in warehouse

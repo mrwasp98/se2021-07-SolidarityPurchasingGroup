@@ -119,7 +119,7 @@ function App() {
   useEffect(() => {
     async function fetchdata() {
 
-      if ((logged === "client" || logged === "warehouse" )&& userId !== undefined) {
+      if ((logged === "client") && userId !== undefined) {
         let res = await getClientById(userId);
         setClientAddress(res.address);
         setClient(res);
