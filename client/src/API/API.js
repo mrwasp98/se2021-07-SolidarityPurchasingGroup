@@ -613,7 +613,7 @@ const getSuspendedDate = (username) => {
         error.response = res;
         throw error;
       }
-      resolve(res.text());
+      resolve(res.json());
     })
       .catch((err) => {
         reject({ message: err.message });

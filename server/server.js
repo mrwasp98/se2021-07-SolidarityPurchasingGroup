@@ -688,6 +688,7 @@ app.get("/api/clients/missedPickups/:clientid", async (req, res) => {
 app.get("/api/suspended/:username", async (req, res) => {
   try {
     const date = await clientDao.getClientSuspendedDate(req.params.username);
+    console.log(date)
     res.status(200).json(date);
   } catch (err) {
     res.status(500).end();

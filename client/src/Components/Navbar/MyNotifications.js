@@ -35,6 +35,7 @@ export default function MyNotifications(props) {
       <Toast
         onClose={() => {
           toggleShowB()
+          props.setDismiss(true);
           if(props.logged === 'warehouse')
             props.setFarmers([])            
         }}

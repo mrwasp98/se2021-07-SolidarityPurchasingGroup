@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import Clock from "./Clock";
 import MyNotifications from "./MyNotifications";
 import BasketOffCanvas from './BasketOffCanvas';
-import { getSuspendedDate,getFarmers, getProductsDelivered } from '../../API/API';
+import { getSuspendedDate, getFarmers, getProductsDelivered } from '../../API/API';
 
 export default function MyNav(props) {
 
@@ -21,13 +21,13 @@ export default function MyNav(props) {
   const [min, setMin] = useState(0);
   const [message, setMessage] = useState([]);
   const [suspended, setSuspended] = useState(undefined);
-
   const [showMissedPickups, setShowMissedPickups] = useState(true);
+  const [dismiss, setDismiss] = useState(false);
 
   const [farmersNames, setFarmersNames] = useState([]) //TO FILL WITH GET PLACES OF FARMERS OF STORY 5
 
   const notifyMessage = {
-    valid: props.topUpWallet || farmersNames.length != 0 || (suspended != undefined && dayjs(props.date).isBefore(suspended)) ? true : false,
+    valid: (dismiss===false && (props.topUpWallet || farmersNames.length != 0 || props.client.missed_pickups > 2 || (suspended != undefined && dayjs(props.date).isBefore(suspended)))) ? true : false,
     topUpWallet: props.topUpWallet,
     missed_pickups: props.client.missed_pickups,
     productDelivered: props.farmer.delivered
@@ -52,16 +52,17 @@ export default function MyNav(props) {
   useEffect(() => {
     async function f() {
       await getSuspendedDate(props.user).then((d) => {
-          setSuspended(d.suspended)
+        setSuspended(d.suspended)
+        console.log(d.suspended)
       });
     }
+    setDismiss(false);
     if (props.logged === 'client')
       f()
-    if (props.logged === 'warehouse'){
+    if (props.logged === 'warehouse') {
       getFarmersThatDelivered()
     }
-
-  }, [props.logged, props.date]);
+  }, [props.logged, props.date, props.user]);
 
   const toggleShowHour = () => {
     setShow(false);
@@ -71,6 +72,7 @@ export default function MyNav(props) {
   const handleLogout = async () => {
     await props.logout();
     props.setLogged(false);
+    props.setUser("")
     history.push("/")
 
   }
@@ -177,7 +179,7 @@ export default function MyNav(props) {
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
                 <ButtonGroup >
 
-                  {(props.logged === "client" || props.logged === "warehouse") && <MyNotifications message={notifyMessage} farmers={farmersNames} setFarmers={setFarmersNames} logged={props.logged} user={props.user} date={props.date}/>}
+                  {(props.logged === "client" || props.logged === "warehouse") && <MyNotifications setDismiss={setDismiss} message={notifyMessage} farmers={farmersNames} setFarmers={setFarmersNames} logged={props.logged} user={props.user} date={props.date} />}
 
                   {" "}
                   {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
@@ -200,7 +202,7 @@ export default function MyNav(props) {
                   :
                   <></>}
 
-                {props.logged === "warehouse" && notifyMessage.valid === true ?
+                {props.logged === "warehouse" && farmersNames.length > 0 ?
                   <Button
                     className='position-relative rounded-circle'
                     style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '20px', zIndex: '100', "backgroundColor": "red" }}
