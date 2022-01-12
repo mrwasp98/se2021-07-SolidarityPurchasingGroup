@@ -6,26 +6,27 @@ const db = require('./database');
 //Get all the available products in a specified date
 exports.getDeliveredProducts = (date) => {
     let lastSaturday9Am;
-    let lastlastSaturday9Am;
-    if (dayjs(date).format('dddd') !== 'Sunday') {
-        lastSaturday9Am = dayjs(date).endOf('week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
-        lastlastSaturday9Am = dayjs(lastSaturday9Am).subtract(1, 'week')
-    } else {
-        lastSaturday9Am = dayjs(date).endOf('week').subtract(1, 'week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
-        lastlastSaturday9Am = dayjs(lastSaturday9Am).subtract(1, 'week')
+    let lastSunday23Pm;
+    let dayOfTheWeek = dayjs(date).format('dddd');
+    if (dayOfTheWeek == "Sunday" || dayOfTheWeek == "Saturday") {
+        console.log("don't mind, date is sunday || saturday")
     }
-   lastSaturday9Am = lastSaturday9Am.subtract(1,'week').add(1,'day').format('YYYY-MM-DD')
-   lastlastSaturday9Am = lastlastSaturday9Am.subtract(1,'week').format('YYYY-MM-DD')
-   //console.log(lastlastSaturday9Am,"---", lastSaturday9Am)
+    else {
 
+        lastSaturday9Am = dayjs(date).subtract(1, 'week').endOf('week').subtract(23, 'hour');
+        lastSunday23Pm = dayjs(lastSaturday9Am).add(1, 'day');
+
+        lastSaturday9Am = lastSaturday9Am.format('YYYY-MM-DD')
+        lastSunday23Pm = lastSunday23Pm.format('YYYY-MM-DD')
+        console.log(lastSaturday9Am, "---", lastSunday23Pm)
+    }
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT DISTINCT(P.farmerid) FROM product AS P, availability AS A WHERE P.id=A.productid AND A.status="delivered" AND A.dateavailability>? AND A.dateavailability<=?';
-        db.all(sql, [lastlastSaturday9Am, lastSaturday9Am], (err, rows) => {
+        const sql = 'SELECT DISTINCT(P.farmerid) FROM product AS P, availability AS A WHERE P.id=A.productid AND A.status="delivered" AND A.dateavailability>=? AND A.dateavailability<=?';
+        db.all(sql, [lastSaturday9Am, lastSunday23Pm], (err, rows) => {
             if (err) {
                 reject(err);
             }
-            console.log(rows)
-            const farmersId = rows.map((p) => ({ farmerid: p.farmerid}))
+            const farmersId = rows.map((p) => ({ farmerid: p.farmerid }))
             resolve(farmersId);
         });
     });
@@ -42,10 +43,10 @@ exports.getProductsAvailable = (date) => {
         thisSaturday9Am = dayjs(date).endOf('week').subtract(1, 'week').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         lastSaturday9Am = dayjs(thisSaturday9Am).subtract(1, 'week')
     }
-   thisSaturday9Am = thisSaturday9Am.add(1,'day').format('YYYY-MM-DD')
-   lastSaturday9Am = lastSaturday9Am.format('YYYY-MM-DD')
+    thisSaturday9Am = thisSaturday9Am.add(1, 'day').format('YYYY-MM-DD')
+    lastSaturday9Am = lastSaturday9Am.format('YYYY-MM-DD')
 
-    console.log(thisSaturday9Am,"---", lastSaturday9Am)
+    console.log(thisSaturday9Am, "---", lastSaturday9Am)
 
     return new Promise((resolve, reject) => {
         const sql = 'SELECT P.id, P.name, P.description, P.farmerid, A.price, P.measure, P.category, P.typeofproduction, P.picture, A.dateavailability, A.quantity, A.status FROM product AS P, availability AS A WHERE P.id=A.productid AND A.quantity<>0 AND A.dateavailability>? AND A.dateavailability<=?';
@@ -198,10 +199,10 @@ exports.getUnretrievedProducts = (beginDate, endDate) => {
 
 const sumQuantitiesOfSameProduct = (products) => {
     const ret = [];
-    for(let i=0;i<products.length;i++) {
+    for (let i = 0; i < products.length; i++) {
         if (!alreadySeen(products[i], ret)) {
             let sum = 0;
-            for (let j=i;j<products.length;j++) {
+            for (let j = i; j < products.length; j++) {
                 if (products[j].productid === products[i].productid) {
                     sum += products[j].quantity;
                 }
@@ -211,17 +212,17 @@ const sumQuantitiesOfSameProduct = (products) => {
                 name: products[i].name,
                 quantity: sum,
                 measure: products[i].measure,
-                farmerName:products[i].farmerName,
-                farmerSurname:products[i].farmerSurname
+                farmerName: products[i].farmerName,
+                farmerSurname: products[i].farmerSurname
             })
         }//if
     }
     return ret;
 }
 
-const alreadySeen = (product,productList) => {
-    for(let p of productList)
-        if(p.productid===product.productid) return true;
+const alreadySeen = (product, productList) => {
+    for (let p of productList)
+        if (p.productid === product.productid) return true;
     return false;
 }
 
@@ -232,22 +233,22 @@ exports.getProductsAvailability = (farmerid, date) => {
     if (dayjs(date).format('dddd') == 'Saturday') {
         lastSaturday9Am = dayjs(date).endOf('day').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         previewsSaturday9Am = dayjs(lastSaturday9Am).subtract(1, 'week')
-    } else if (dayjs(date).format('dddd') == 'Sunday'){
+    } else if (dayjs(date).format('dddd') == 'Sunday') {
         lastSaturday9Am = dayjs(date).endOf('day').subtract(1, 'day').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         previewsSaturday9Am = dayjs(lastSaturday9Am).subtract(1, 'week')
-    } else if (dayjs(date).format('dddd') == 'Monday'){
+    } else if (dayjs(date).format('dddd') == 'Monday') {
         lastSaturday9Am = dayjs(date).endOf('day').subtract(2, 'day').subtract(14, 'hour').subtract(59, 'minute').subtract(59, 'second')
         previewsSaturday9Am = dayjs(lastSaturday9Am).subtract(1, 'week')
     }
     const status = 'pending';
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM availability as A, product as P WHERE A.productid=P.id AND P.farmerid=? AND A.status=?";
+        const sql = "SELECT A.productid, P.name, A.dateavailability, A.initial_quantity, P.measure, A.status, A.price FROM availability as A, product as P WHERE A.productid=P.id AND P.farmerid=? AND A.status=?";
         db.all(sql, [farmerid, status], (err, rows) => {
             if (err) {
                 console.log(err)
                 reject(err);
             }
-            const products = rows.map((p) => ({ productid: p.productid, productName: p.name, dateavailability: p.dateavailability, quantity: p.initial_quantity, measure: p.measure, status: p.status, price: p.price}))
+            const products = rows.map((p) => ({ productid: p.productid, productName: p.name, dateavailability: p.dateavailability, quantity: p.initial_quantity, measure: p.measure, status: p.status, price: p.price }))
                 .filter((p) => { return ((dayjs(p.dateavailability)).isBefore(lastSaturday9Am) && (dayjs(p.dateavailability).isAfter(previewsSaturday9Am))) });
             resolve(products);
         });

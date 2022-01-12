@@ -3,6 +3,7 @@
 // we also need our app for the correct routes
 const app = require("../server.js");
 const productDao = require('../product-dao');
+const dayjs = require('dayjs');
 
 
 jest.setTimeout(10000);
@@ -25,9 +26,9 @@ const fakeProduct1 = {
 };
 const fakeAvailability1 = {
     productid: 0,
-    dateavailability: '2021-10-11',
+    dateavailability: '2021-10-19',
     quantity: 6,
-    status: 'si'
+    status: 'delivered'
 };
 
 describe('Test product-dao functions unused in any api', () => {
@@ -50,6 +51,15 @@ describe('Test product-dao functions unused in any api', () => {
         fakeProduct1.id=id;
         fakeAvailability1.productid=id;
         expect(p).toEqual(fakeProduct1);
+    });
+
+    test('Testing getDeliveredProducts function', async () => {
+        //Testing wrong case
+        const productid = await productDao.insertProduct(fakeProduct1);
+        fakeAvailability1.productid=productid;
+        await productDao.insertAvailability(fakeAvailability1);
+        const result = await productDao.getDeliveredProducts(dayjs('2021-10-13 13:00'));
+        expect(result.body).toEqual(undefined);
     });
 
 });

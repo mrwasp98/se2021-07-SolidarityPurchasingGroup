@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import Clock from "./Clock";
 import MyNotifications from "./MyNotifications";
 import BasketOffCanvas from './BasketOffCanvas';
-import { getSuspendedDate } from '../../API/API';
+import { getSuspendedDate, getFarmers, getProductsDelivered } from '../../API/API';
 
 export default function MyNav(props) {
 
@@ -20,37 +20,50 @@ export default function MyNav(props) {
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
   const [message, setMessage] = useState([]);
-  const [suspended, setSuspended] = useState('');
-
+  const [suspended, setSuspended] = useState(undefined);
   const [showMissedPickups, setShowMissedPickups] = useState(true);
+  const [dismiss, setDismiss] = useState(false);
 
-  const [farmers, setFarmers] = useState(false) //TO FILL WITH GET PLACES OF FARMERS OF STORY 5
+  const [farmersNames, setFarmersNames] = useState([]) //TO FILL WITH GET PLACES OF FARMERS OF STORY 5
 
   const notifyMessage = {
-    valid: props.topUpWallet || props.farmers || dayjs(props.date).isBefore(suspended) ? true : false,
+    valid: (dismiss===false && (props.topUpWallet || farmersNames.length != 0 || props.client.missed_pickups > 2 || (suspended != undefined && dayjs(props.date).isBefore(suspended)))) ? true : false,
     topUpWallet: props.topUpWallet,
     missed_pickups: props.client.missed_pickups,
     productDelivered: props.farmer.delivered
   }
 
+  async function getFarmersThatDelivered() {
+    let farmersId;
+    let listFarmersId = [];
+    await getProductsDelivered(date).then((f) => {
+      farmersId = f;
+      farmersId.forEach(f => listFarmersId.push(f.farmerid))
+    }).then(() => {
+      getFarmers()
+        .then((farmers) => {
+          let fList = farmers.filter(f => listFarmersId.includes(f.userid));
+          fList = fList.map(f => f.place)
+          setFarmersNames(fList);
+        });
+    });
+  }
 
   useEffect(() => {
     async function f() {
       await getSuspendedDate(props.user).then((d) => {
-        setSuspended(d.suspended);
+        setSuspended(d.suspended)
+        suspended != undefined && dayjs(props.date).isBefore(suspended)?
+        console.log(true) : console.log(false)
       });
     }
-
-    // async function getFarmers(date) {
-    //   await getProductsDelivered(date).then((f) => {
-    //     setFarmers(f);
-    //   });
-    // }
-    if(props.logged === 'client')
+    setDismiss(false);
+    if (props.logged === 'client')
       f()
-    // if(props.logged === 'warehouse')
-    //   getFarmers()
-  }, [props.user]);
+    if (props.logged === 'warehouse') {
+      getFarmersThatDelivered()
+    }
+  }, [props.logged, props.date, props.user]);
 
   const toggleShowHour = () => {
     setShow(false);
@@ -166,10 +179,10 @@ export default function MyNav(props) {
                 <Button className="logoutButton" variant="link" style={{ color: "#ec9a2a", fontSize: "20px", textDecoration: "none" }} onClick={handleLogout} id="logoutbutton">Logout</Button>
                 <ButtonGroup >
 
-                  {(props.logged === "client"|| props.logged ==="warehouse") && <MyNotifications message={notifyMessage} farmers={farmers} logged={props.logged} user={props.user} date={props.date}/>}
+                  {(props.logged === "client" || props.logged === "warehouse") && <MyNotifications setDismiss={setDismiss} message={notifyMessage} farmers={farmersNames} setFarmers={setFarmersNames} logged={props.logged} user={props.user} date={props.date} />}
 
                   {" "}
-                  {props.logged === "client"&& <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
+                  {props.logged === "client" && <Button className="ml-2" onClick={() => handleShowBasket()}>{iconCart}</Button>}
                 </ButtonGroup>
 
                 {props.logged === "client" && props.somethingInTheBasket === true ?
@@ -181,9 +194,7 @@ export default function MyNav(props) {
                   <></>
                 }
 
-                {props.logged === "client" && notifyMessage.valid == true ?
-
-
+                {props.logged === "client" && notifyMessage.valid === true ?
                   <Button
                     className='position-relative rounded-circle'
                     style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '85px', zIndex: '100', "backgroundColor": "red" }}
@@ -191,9 +202,7 @@ export default function MyNav(props) {
                   :
                   <></>}
 
-                  {props.logged === "warehouse" && notifyMessage.valid == true ?
-
-
+                {props.logged === "warehouse" && farmersNames.length > 0 ?
                   <Button
                     className='position-relative rounded-circle'
                     style={{ padding: "7px", width: '10px', height: '10px', top: '-5px', right: '20px', zIndex: '100', "backgroundColor": "red" }}
@@ -222,7 +231,7 @@ export default function MyNav(props) {
           <Alert.Heading>Oh {props.client.name}! There is a warning!</Alert.Heading>
           You have to take {props.client.missed_pickups} orders! Remember that you reach 5 orders not taken you'll be banned!
         </Alert>}
-      {props.logged === 'client' && props.client.name !== ' ' && props.client.missed_pickups === 0 && dayjs(props.date).isBefore(suspended) &&
+      {props.logged === 'client' && props.client.name !== ' ' && (suspended != undefined && dayjs(props.date).isBefore(suspended)) &&
         <Alert style={{ marginBottom: '0px' }} variant="danger">
           <Alert.Heading>Oh {props.client.name}! You are banned!</Alert.Heading>
           You have 5 to collected! Firts to create a new order you must take the pickups in warehouse

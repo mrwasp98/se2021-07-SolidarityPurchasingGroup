@@ -2,6 +2,7 @@
 
 Welcome to Solidarity Purchansing Group, a project developed during the Software Engineering 2 course in Politecnico di Torino (academic year : 2021/2022).
 
+
 ---
 ## Table of content
 - [The team](#The-team:)
@@ -10,6 +11,7 @@ Welcome to Solidarity Purchansing Group, a project developed during the Software
 - [API](#API)
 - [React client application routes](#React-client-application-routes)
 - [Users credentials](#Users-credentials)
+- [Bot Telegram](#Bot-telegram)
 ---
 ## The team:
 - Mostafa Asadollahy
@@ -589,6 +591,37 @@ We check the quality of our code relying on SonarCloud analysis.
 ```
 * Response: `200 OK`, `500 Internal Server Error` (generic error)
 
+### Get a client's missed pickups counter
+* URL: `/api/availability/<farmerid>?date=date`
+* HTTP method: GET
+* Request body: none
+* Description: gets the available products of a given farmer
+* Request parameters: farmerid (params), date(query)
+* Response body: Available products and their informations
+``` JSON
+[
+{
+    "productid": 1, 
+    "productName": "Artichoke", 
+    "dateavailability": "2022-01-7 10:00", 
+    "quantity": 6, 
+    "measure": "kg", 
+    "status": "pending", 
+    "price": 15.00
+},
+{
+    "productid": 2, 
+    "productName": "Apple", 
+    "dateavailability": "2022-01-7 10:00", 
+    "quantity": 6, 
+    "measure": "kg", 
+    "status": "pending", 
+    "price": 15.00
+},
+] 
+```
+* Response: `200 OK`, `500 Internal Server Error` (generic error)
+
 ## USER API
 
 - POST `/api/login`
@@ -682,4 +715,12 @@ We check the quality of our code relying on SonarCloud analysis.
 |  Shop Employee |  shopemployee |  qwerty123 |
 
 ----
+
+## Bot Telegram 
+It's possible to get updates via telegram (you need to be a registered user) when the list of available products for the next week is posted by a farmer. In order to do so, you have to:
+* open the following link:  https://t.me/SPGP07bot
+* type "/start"
+* wait for updates
+
+
 

@@ -147,12 +147,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'false'
+                    status: false
                 }
             ]
         );
@@ -166,12 +166,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'confirmed'
+                    status: true
                 },
                 {
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'failed'
+                    status: false
                 }
             ]
         );
@@ -235,12 +235,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 { //all product 1 orderlines should have status confirmed
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {  
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'true'
+                    status: true
                 }
             ]
         );
@@ -284,12 +284,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {  
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'true'
+                    status: true
                 }
             ]
         );
@@ -330,12 +330,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {  
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'false'
+                    status: false
                 }
             ]
         );
@@ -376,12 +376,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {  
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'true'
+                    status: true
                 }
             ]
         );
@@ -394,13 +394,13 @@ describe('Testing PUT on /api/availabilities', () => {
         const fakeOrderline1 = { //order 1 product 1
             orderid: null,
             productid: productid,
-            quantity: 2,
+            quantity: 1,
             price: 50
         };
         const fakeOrderline2 = { //order 1 product 2
             orderid: null,
             productid: productid2,
-            quantity: 2,
+            quantity: 1,
             price: 40
         };
         const fakeOrder1 = {
@@ -422,12 +422,12 @@ describe('Testing PUT on /api/availabilities', () => {
                 {
                     productid: productid,
                     dateavailability: fakeAvailability1.dateavailability,
-                    status: 'true'
+                    status: true
                 },
                 {  
                     productid: productid2,
                     dateavailability: fakeAvailability2.dateavailability,
-                    status: 'true'
+                    status: true
                 }
             ]
         );
@@ -435,4 +435,223 @@ describe('Testing PUT on /api/availabilities', () => {
         expect(client.wallet).toBe(10);
     });
 
+});
+
+
+describe('Testing GET on /api/availability/:farmerid?date=', () => {
+
+    
+    const fakeProduct1 = {
+        name: 'Artichoke',
+        description: 'prova description1',
+        farmerid: 1,
+        price: 1,
+        measure: 'kg',
+        category: 'Vegetables',
+        typeofproduction: 'Bio',
+        picture: ''
+    }
+    const fakeProduct2 = {
+        name: 'Apple',
+        description: 'prova description2',
+        farmerid: 1,
+        price: 1,
+        measure: 'kg',
+        category: 'Vegetables',
+        typeofproduction: 'Bio',
+        picture: ''
+    }
+    const fakeAvailability1 = {
+        productid: null,
+        dateavailability: '2022-01-7 10:00',
+        quantity: 6,
+        status: 'pending',
+        price: 15.00,
+        initialquantity: 6
+    }
+    const fakeAvailability2 = {
+        productid: null,
+        dateavailability: '2022-01-7 10:00',
+        quantity: 6,
+        status: 'pending',
+        price: 15.00,
+        initialquantity: 6
+    }
+    const fakeAvailability3 = {
+        productid: null,
+        dateavailability: '2022-01-23 10:00',
+        quantity: 6,
+        status: 'pending',
+        price: 15.00,
+        initialquantity: 6
+    }
+    const fakeAvailability4 = {
+        productid: null,
+        dateavailability: '2022-01-4 10:00',
+        quantity: 6,
+        status: 'delivered',
+        price: 15.00,
+        initialquantity: 6
+    }
+    let productid, productid2;
+ 
+
+    beforeEach(async() => {
+        await productDao.deleteAvailability();
+        await productDao.deleteAllProducts();
+        productid = await productDao.insertProduct(fakeProduct1);
+        fakeAvailability1.productid = productid;
+        fakeAvailability3.productid = productid;
+        await productDao.insertAvailability(fakeAvailability1);
+        await productDao.insertAvailability(fakeAvailability3);
+        productid2 = await productDao.insertProduct(fakeProduct2);
+        fakeAvailability2.productid = productid2;
+        fakeAvailability4.productid = productid2;
+        await productDao.insertAvailability(fakeAvailability2);
+        await productDao.insertAvailability(fakeAvailability4);
+
+    });
+
+    afterAll(async() => {
+        await productDao.deleteAvailability();
+        await productDao.deleteAllProducts();
+
+        app.close(); //without that, jest won't exit
+    }); 
+
+    //remember: mock database should be pre-filled with
+    //fakeProduct1 and fakeProduct2 for this method to work
+    test("It should respond with an array of availabilities", async () => {
+        const response = await request(app).get('/api/availability/1?date=Sun%20Jan%2009%202022%2000:00:00%20GMT+0100%20(CET)');
+        const fakeAv1 = {
+            productid: productid, 
+            productName: 'Artichoke', 
+            dateavailability: '2022-01-7 10:00', 
+            quantity: 6, 
+            measure: 'kg', 
+            status: 'pending', 
+            price: 15.00
+        }
+        const fakeAv2 = {
+            productid: productid2, 
+            productName: 'Apple', 
+            dateavailability: '2022-01-7 10:00', 
+            quantity: 6, 
+            measure: 'kg', 
+            status: 'pending', 
+            price: 15.00
+        }
+        expect(response.body).toEqual([fakeAv1, fakeAv2]);
+    });
+
+    test("It should respond with a 200 status code", async () => {
+        const response = await request(app).get('/api/availability/1?date=Sun%20Jan%2009%202022%2000:00:00%20GMT+0100%20(CET)');
+        expect(response.statusCode).toBe(200);
+    });
+
+    test("It should respond with a 404 status code", async () => {
+        const response = await request(app).get('/api/availabilty/1?date=Sun%20Jan%2009%202022%2000:00:00%20GMT+0100%20(CET)');
+        expect(response.statusCode).toBe(404);
+    });
+ 
+});
+
+describe('Testing GET on /api/products/delivered/:date', () => {
+
+    
+    const fakeProduct1 = {
+        name: 'Artichoke',
+        description: 'prova description1',
+        farmerid: 1,
+        price: 1,
+        measure: 'kg',
+        category: 'Vegetables',
+        typeofproduction: 'Bio',
+        picture: ''
+    }
+    const fakeProduct2 = {
+        name: 'Apple',
+        description: 'prova description2',
+        farmerid: 1,
+        price: 1,
+        measure: 'kg',
+        category: 'Vegetables',
+        typeofproduction: 'Bio',
+        picture: ''
+    }
+    const fakeAvailability1 = {
+        productid: null,
+        dateavailability: '2022-01-7 10:00',
+        quantity: 6,
+        status: 'pending',
+        price: 15.00,
+        initialquantity: 6
+    }
+    const fakeAvailability2 = {
+        productid: null,
+        dateavailability: '2022-01-7 10:00',
+        quantity: 6,
+        status: 'pending',
+        price: 15.00,
+        initialquantity: 6
+    }
+    const fakeAvailability3 = {
+        productid: null,
+        dateavailability: '2022-01-23 10:00',
+        quantity: 6,
+        status: 'pending',
+        price: 15.00,
+        initialquantity: 6
+    }
+    const fakeAvailability4 = {
+        productid: null,
+        dateavailability: '2022-01-08 10:00',
+        quantity: 6,
+        status: 'delivered',
+        price: 15.00,
+        initialquantity: 6
+    }
+    let productid, productid2;
+ 
+
+    beforeEach(async() => {
+        await productDao.deleteAvailability();
+        await productDao.deleteAllProducts();
+        productid = await productDao.insertProduct(fakeProduct1);
+        fakeAvailability1.productid = productid;
+        fakeAvailability3.productid = productid;
+        await productDao.insertAvailability(fakeAvailability1);
+        await productDao.insertAvailability(fakeAvailability3);
+        productid2 = await productDao.insertProduct(fakeProduct2);
+        fakeAvailability2.productid = productid2;
+        fakeAvailability4.productid = productid2;
+        await productDao.insertAvailability(fakeAvailability2);
+        await productDao.insertAvailability(fakeAvailability4);
+
+    });
+
+    afterAll(async() => {
+        await productDao.deleteAvailability();
+        await productDao.deleteAllProducts();
+
+        app.close(); //without that, jest won't exit
+    }); 
+
+    //remember: mock database should be pre-filled with
+    //fakeProduct1 and fakeProduct2 for this method to work
+    test("It should respond with an array of availabilities", async () => {
+        const response = await request(app).get('/api/products/delivered/Wed%20Jan%2012%202022%2000:00:00%20GMT+0100%20(CET)');
+        expect(response.body).toEqual([{farmerid:1}]);
+    });
+
+    test("It should respond with a 200 status code", async () => {
+        const response = await request(app).get('/api/products/delivered/Wed%20Jan%2012%202022%2000:00:00%20GMT+0100%20(CET)');
+        expect(response.statusCode).toBe(200);
+    });
+
+    test("It should respond with a 404 status code", async () => {
+        const response = await request(app).get('/api/product/delivered/Wed%20Jan%2012%202022%2000:00:00%20GMT+0100%20(CET)');
+        expect(response.statusCode).toBe(404);
+    });
+ 
 });

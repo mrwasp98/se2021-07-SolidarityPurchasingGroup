@@ -37,7 +37,7 @@ function LoginForm(props) {
       props.login(credentials)
       .then((user)=>{
         props.setLogged(user.type);
-        props.setUser(user.username);
+        //props.setUser(user.username);
         props.setUserId(user.id);
         //Depending on who is logging in he is redirect to a different page
         if(user.type === "shopemployee"){

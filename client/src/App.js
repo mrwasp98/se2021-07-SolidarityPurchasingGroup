@@ -25,7 +25,10 @@ import ManagerHome from "./Components/Homepages/ManagerHome";
 import WarehouseHome from "./Components/Homepages/WarehouseHome";
 
 function App() {
-
+  const [username, setUsername] = useState(''); //this state saves the name of the logged user
+  const [user, setUser] = useState(''); //this state saves the name of the logged user
+  const [userId, setUserId] = useState(0); //this state saves the id of the logged user
+  const [clientAddress, setClientAddress] = useState('');
   const [somethingInTheBasket, setSomethingInTheBasket] = useState(false);
   
   ///TELEGRAM STUFF
@@ -75,10 +78,6 @@ function App() {
   const [farmers, setFarmers] = useState([]); //farmers present in the system
 
   const [logged, setLogged] = useState(''); //this state is used to store the type of the user logged
-  const [username, setUsername] = useState(''); //this state saves the name of the logged user
-  const [user, setUser] = useState(''); //this state saves the name of the logged user
-  const [userId, setUserId] = useState(0); //this state saves the id of the logged user
-  const [clientAddress, setClientAddress] = useState('');
   const [showTopUpWalletModal, setShowTopUpWalletModal] = useState(false);
   const [notify, setNotify] = useState(false);
   // eslint-disable-next-line
@@ -101,6 +100,7 @@ function App() {
   //this use effect checks whether the user logged in previously
   useEffect(() => {
     const checkAuth = async () => {
+      console.log("ciaooooooooooooooooooooo")
       try {
         const user = await getUserInfo();
         console.log(user)
@@ -119,7 +119,7 @@ function App() {
   useEffect(() => {
     async function fetchdata() {
 
-      if ((logged === "client" || logged === "warehouse" )&& userId !== undefined) {
+      if ((logged === "client") && userId !== undefined) {
         let res = await getClientById(userId);
         setClientAddress(res.address);
         setClient(res);
@@ -165,6 +165,7 @@ function App() {
             client={client} //client inserted here for notify the missed pickups
             setSomethingInTheBasket={setSomethingInTheBasket}
             user={user}
+            setUser={setUser}
           />
           <MyModal
             userid={client.userid}
@@ -184,6 +185,7 @@ function App() {
             dirtyQuantity={dirtyQuantity} setDirtyQuantity={setDirtyQuantity}
             client={client}
             setSomethingInTheBasket={setSomethingInTheBasket}
+            user={user}
           />
         } />
 
