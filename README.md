@@ -710,9 +710,15 @@ We check the quality of our code relying on SonarCloud analysis.
 
 | Type | Username | Password |
 |---|---|---|
-| Client | client1 | qwerty123 |
-| Farmer | farmer1 | qwerty123 |
-|  Shop Employee |  shopemployee |  qwerty123 |
+| Client | client1@polito.it | qwerty123 |
+| Client | client2@polito.it | qwerty123 |
+| Client | client3@polito.it | qwerty123 |
+| Client | client1@polito.it | qwerty123 |
+| Farmer | farmer1@polito.it | qwerty123 |
+| Farmer | farmer2@polito.it | qwerty123 |
+|  Shop Employee |  shopemployee@polito.it |  qwerty123 |
+| Manager | manager@polito.it | qwerty123 |
+| Warehouse manager | warehouse@polito.it | qwerty123 |
 
 ----
 
