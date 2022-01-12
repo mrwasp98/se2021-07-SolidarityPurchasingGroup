@@ -12,9 +12,9 @@ sections:
 
 ### Macro statistics
 
-- Number of stories committed vs done => 6 vs 6
-- Total points committed vs done => 31 vs 31
-- Nr of hours planned vs spent (as a team) =>  112h vs 110h 40m
+- Number of stories committed vs done => 5 vs 5
+- Total points committed vs done => 36 vs 36
+- Nr of hours planned vs spent (as a team) =>  112 vs ???
 
 **Remember**  a story is done ONLY if it fits the Definition of Done:
  
@@ -28,13 +28,12 @@ sections:
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
-| _#0_   |    13   |    -   |     40h    |       47h    |
-| _#9_   |    3    |    5   |   11h30m   |   32h 30m    |
-| _#10_  |    3    |    8   |     19h    |    5h 25m    |
-| _#11_  |    2    |    5   |   11h30m   |       30m    |
-| _#12_  |    3    |    5   |   11h30m   |    8h 05m    |
-| _#13_  |    3    |    3   |    7h      |    4h 30m    |
-| _#14_  |    3    |    5   |   11h30m   |   12h 40m    |
+| _#0_   |    12   |    -   |    40h     |     80h      |
+| _#40_  |    1    |    13  |    26h     |     ???      |
+| _#41_  |    3    |    5   |    10h     |   7h 25m     |
+| _#42_  |    3    |    8   |    16h     |   7h 40m     |
+| _#43_  |    1    |    5   |    10h     |   6h 45m     |
+| _#15_  |    3    |    5   |    10h     |       6h     |
 
 
 - Hours per task (average, standard deviation): 3h 40m
