@@ -71,16 +71,16 @@ sections:
 	+ We thought Telegram bot development and report development would be very challenging, but it wasn't the case.
 
 - What lessons did you learn (both positive and negative) in this sprint?
-	+ It's dangerous not to keep in mind the general flow of the project, not only thinking about completing stories per se.
+	+ It's dangerous not to keep in mind the general flow of the project, not only thinking about completing stories per se. Some changes were required in the implementation of  past stories, in order to support added functionalities.
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
 	+ Improve code review and our way of testing.
 	
 - Which ones you were not able to achieve? Why?
-	+ Sadly, even if we put our effort in testing, our system has not managed to be very robust.
+	+ Sadly, even if we put our effort in testing, our system has not managed to be very robust (a bug was found before the demo and we were not able to resolve it in time).
 
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
 	+ Be mindful of the general flow of the project.
 
 - One thing you are proud of as a Team!!
-	+ We don't ever leave things uncompleted. 
+	+ We never leave things unfinished, if there is a problem in sight we are ready to solve it by hook or by crook!
